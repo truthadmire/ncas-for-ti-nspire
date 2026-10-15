@@ -1,0 +1,23 @@
+ncaskey - TI-Basic key reader for ncasgui (lets Python read keys through
+TI-Basic getKey when the OS has no Python get_key). Put it in the SAME
+problem as the ncasgui program.
+
+A) Program Editor (recommended): Add Program Editor > New...
+   Name: ncaskey   Type: Function   Library Access: None
+   Change the first line to  Define ncaskey(x)=  and type between Func and EndFunc:
+
+Local k
+If x=0
+Return 0
+k:=getKey(1)&"  "
+Return ord(left(k,1))*2^32+ord(mid(k,2,1))*2^16+ord(mid(k,3,1))
+
+   Then Check Syntax & Store (ctrl+B).
+
+B) Or one line on a Calculator page:
+
+Define ncaskey(x)=Func:Local k:If x=0:Return 0:k:=getKey(1)&"  ":Return ord(left(k,1))*2^32+ord(mid(k,2,1))*2^16+ord(mid(k,3,1)):EndFunc
+
+Test 1 (Calculator page): ncaskey(1), enter, then press any key -> a number.
+Test 2 (Python Shell):    from ti_system import *
+                          eval_function("ncaskey",1)   then press a key -> a number.
