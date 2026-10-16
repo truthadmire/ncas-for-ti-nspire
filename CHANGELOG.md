@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Full-screen mode: calculus templates in menu ▸ 9 Templates: **a** ∫ f dx,
+  **b** ∫ with lower and upper limits (▲ / ▼ move between them), **c** d/dx.
+  Integrals and derivatives in the history (typed or as results) are drawn
+  with ∫, limits and d/dx.
+- Website (`site/`) with live demos of the templates.
+
 ## 1.1
 
 Wrong answers fixed:

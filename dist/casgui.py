@@ -902,9 +902,14 @@ RAISE=8
 NODETEXT={'^':('','pow',''),'^2':('','pow','2'),'^-1':('','pow','-1'),
  'sqrt()':('','sqrt',''),'root(,)':('','root',''),
  '()/()':('','frac',''),'abs()':('','abs',''),
- 'e^':('e','pow',''),'10^':('10','pow','')}
+ 'e^':('e','pow',''),'10^':('10','pow',''),
+ 'integral()':('','int',''),'integral(,,,)':('','dint',''),
+ 'd()':('','der','')}
 MATHTPL=(('Fraction','()/()'),('Power  x^n','^'),('Square root','sqrt()'),
- ('n-th root','root(,)'),('Absolute value','abs()'),('e^x','e^'))
+ ('n-th root','root(,)'),('Absolute value','abs()'),('e^x','e^'),
+ ('Integral  \u222b f dx','integral()'),('Definite integral  \u222b[a,b]','integral(,,,)'),
+ ('Derivative  d/dx','d()'))
+CALC={'int':(2,2,1),'dint':(4,4,1),'der':(2,1,2)}
 EXITCHARS='+-*/=<>,)'
 def ed_reset():
  G['row']=[]
@@ -931,6 +936,14 @@ def ed_chars(s):
 def ed_node(kind,pre=''):
  r=ed_row()
  p=G['pos']
+ if kind in CALC:
+  n,var,first=CALC[kind]
+  node=[kind]+[[]for i in range(n)]
+  node[var].append('x')
+  r.insert(p,node)
+  G['path'].append((p,first))
+  G['pos']=0
+  return
  n=3 if kind in('frac','root')else 2
  node=[kind]+[[]for i in range(n-1)]
  for c in pre:
@@ -997,6 +1010,11 @@ def ed_vert(d):
  elif k=='pow' and d>0:
   G['path'].pop()
   G['pos']=i+1
+ elif k=='dint':
+  t=2 if d<0 else 1
+  if t!=sl:
+   G['path'][-1]=(i,t)
+   G['pos']=len(node[t])
  return True
 def ed_del():
  r=ed_row()
@@ -1052,6 +1070,14 @@ def ed_text(row=None):
    out+='root('+ed_text(it[2])+','+ed_text(it[1])+')'
   elif k=='abs':
    out+='abs('+ed_text(it[1])+')'
+  elif k=='int':
+   out+='integral('+ed_text(it[1])+','+ed_text(it[2])+')'
+  elif k=='dint':
+   lo,hi=ed_text(it[1]),ed_text(it[2])
+   out+='integral('+ed_text(it[3])+','+ed_text(it[4])
+   out+=(','+lo+','+hi+')')if lo or hi else ')'
+  elif k=='der':
+   out+='d('+ed_text(it[2])+','+ed_text(it[1])+')'
  return out
 def enclosed(s):
  if len(s)<2 or s[0]!='(' or s[-1]!=')':
@@ -1121,8 +1147,34 @@ def measi(it):
   w,a,d=meas(it[2])
   wi,ai,di=meas(it[1])
   return(wi+w+11,max(a+3,RAISE+ai),d)
+ if k in CALC:
+  return calcbox(it)[0]
  w,a,d=meas(it[1])
  return(w+11,a+3,d)
+def calcbox(it):
+ k=it[0]
+ if k=='der':
+  wx,ax,dx=meas(it[1])
+  wf,af,df=meas(it[2])
+  W=CW+wx+6
+  fa=AX+2+A_+D_
+  fd=max(D_,2-AX+ax+dx)
+  return((W+2*CW+wf+2,max(fa,af),max(fd,df)),W)
+ f,x=(it[1],it[2])if k=='int' else(it[3],it[4])
+ wf,af,df=meas(f)
+ wx,ax,dx=meas(x)
+ a=max(af,A_)+2
+ d=max(df,D_)+2
+ wb=0
+ A=a
+ D=d
+ if k=='dint':
+  wl,al,dl=meas(it[1])
+  wh,ah,dh=meas(it[2])
+  wb=max(wl,wh)+1
+  A=a+1+ah+dh
+  D=d+1+al+dl
+ return((9+wb+wf+3+CW+wx,A,D),(a,d,wb))
 def line(x1,y1,x2,y2):
  color(G.get('ink',C_TXT))
  try:
@@ -1185,6 +1237,8 @@ def itemdraw(it,x,y,dr):
     cx+=cw[j]+8
    cy+=ra[i]+rd[i]+7
   return W
+ if k in CALC:
+  return calcdraw(it,x,y,dr,ink)
  xi=x
  if k=='root':
   xi+=rowdraw(it[1],x,y-RAISE,dr)
@@ -1206,6 +1260,49 @@ def itemdraw(it,x,y,dr):
   line(xi+8,top,xi+10+w,top)
  rowdraw(rad,xi+9,y,dr)
  return xi-x+w+11
+def calcdraw(it,x,y,dr,ink):
+ k=it[0]
+ (W,A,D),geo=calcbox(it)
+ if k=='der':
+  fw=geo
+  wx=meas(it[1])[0]
+  by=y-AX
+  if dr:
+   box(x+1,by,fw-2,1,ink)
+   text(x+(fw-CW)//2,by-2-D_-BASE,'d',ink)
+   text(x+3,by+2+A_-BASE,'d',ink)
+  rowdraw(it[1],x+3+CW,by+2+A_,dr)
+  xf=x+fw+1
+  if dr:
+   text(xf,y-BASE,'(',ink)
+  wf=rowdraw(it[2],xf+CW,y,dr)
+  if dr:
+   text(xf+CW+wf,y-BASE,')',ink)
+  return W
+ a,d,wb=geo
+ top=y-a
+ bot=y+d
+ if dr:
+  line(x+5,top+2,x+3,bot-2)
+  line(x+5,top+2,x+6,top)
+  line(x+6,top,x+8,top+1)
+  line(x+3,bot-2,x+2,bot)
+  line(x+2,bot,x,bot-1)
+ xb=x+9
+ if k=='dint':
+  wl,al,dl=meas(it[1])
+  wh,ah,dh=meas(it[2])
+  rowdraw(it[2],xb,top-1-dh,dr)
+  rowdraw(it[1],xb,bot+1+al,dr)
+  f,v=it[3],it[4]
+ else:
+  f,v=it[1],it[2]
+ xf=xb+wb
+ wf=rowdraw(f,xf,y,dr)
+ if dr:
+  text(xf+wf+3,y-BASE,'d',ink)
+ rowdraw(v,xf+wf+3+CW,y,dr)
+ return W
 def catalog():
  import cashelp
  names=[]
@@ -1256,7 +1353,7 @@ def ed_tab(d):
     break
  G['path']=list(ps[t][0])
  G['pos']=ps[t][1]
-SAFE='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_+-*/^().,;=<>{}[]! \u221a\u03c0\u221e\u2260\u2264\u2265\u03b8'
+SAFE='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_+-*/^().,;=<>{}[]! \u221a\u03c0\u221e\u2260\u2264\u2265\u03b8\u222b'
 SHOW={'pi':'\u03c0','inf':'\u221e','theta':'\u03b8'}
 SHOWF={'sumseq':'\u03a3','prodseq':'\u03a0','integral':'\u222b'}
 REL2={'=':'=','/=':'\u2260','<':'<','>':'>','<=':'\u2264','>=':'\u2265'}
@@ -1356,6 +1453,12 @@ def lay(t,out):
    out.append(['root',sublay(args[1]),sublay(args[0])])
   elif name=='abs' and len(args)==1:
    out.append(['abs',sublay(args[0])])
+  elif name=='integral' and len(args)==2:
+   out.append(['int',sublay(args[0]),sublay(args[1])])
+  elif name=='integral' and len(args)==4:
+   out.append(['dint',sublay(args[2]),sublay(args[3]),sublay(args[0]),sublay(args[1])])
+  elif name=='d' and len(args)==2:
+   out.append(['der',sublay(args[1]),sublay(args[0])])
   else:
    nm=SHOWF.get(name)if OPT['uni']else None
    out.extend(list(nm or tiname(name)))

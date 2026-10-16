@@ -94,6 +94,10 @@ K += ['ctrl', 'tab', '3', '1'] + word('x^2=4') + ['enter']                      
 # 21 matrix template next to an empty [] (cursor moved one place) fills it
 K += ['menu', '4', '8', 'left', 'menu', '9', '1', 'enter', '8', 'tab', '5', 'tab', '7', 'tab', '9', 'enter', 'enter']
 K += ['menu', '4', '1', 'right', 'menu', '9', '1', 'enter', '1', 'tab', '2', 'tab', '3', 'tab', '4', 'enter', 'enter']
+# 22 calculus templates: integral, definite integral (up = upper limit), d/dx
+K += ['menu', '9', 'a', 'x', '^', '2', 'right', 'enter']                          # integral(x^2,x)
+K += ['menu', '9', 'b', '0', 'up', '2', 'right', 'x', 'right', 'right', 'enter']  # integral(x,x,0,2)
+K += ['menu', '9', 'c'] + word('x*sin(x)') + ['enter']                            # d(x*sin(x),x)
 # 11 esc leaves the history, clears the line, then quits
 K += ['up', 'esc'] + word('7') + ['esc', 'esc']
 K += ['never']          # must not be read: esc on an empty line quits
@@ -136,7 +140,8 @@ want = ['x=2 or x=3', '> ', 'd(sin(x)^2,x)', '2*cos(x)*sin(x)',
         'abcde', 'approx(1/3)', '0.3333333333', '1/=2', 'true', '[7]', 'ctrl+. not used',
         '[sqrt(4),1;1,1]', '[[2,1][1,1]]', '3/(x+1)', '2(1/3)+1', '5/3', '8/4', 'e^(x+1)', '7/9', 'sqrt(2)/2', '\u221a2/2',
         'x^(-1)+1', 'integral(x^2,x,0,1)', '1/3', '(1/2)+1', '3/2', '50/6', '25/3', 'zeros(x^2-1,x)', '{-1,1}',
-        'solve(x^2=4,x)', 'x=-2 or x=2', 'menu: commands', 'eigVc([8,5;7,9])', '210', 'nCAS  DEG', 'nCAS  RAD']
+        'solve(x^2=4,x)', 'x=-2 or x=2', 'integral(x^2,x)', 'x^3/3', 'integral(x,x,0,2)',
+        'd(x*sin(x),x)', 'x*cos(x)+sin(x)', 'menu: commands', 'eigVc([8,5;7,9])', '210', 'nCAS  DEG', 'nCAS  RAD']
 want.remove('> ')
 bad = []
 for w in want:

@@ -27,7 +27,7 @@ e
 |---|---|
 | `onefile/ncastext.py` | **Text version**: one file (~236 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
-| `onefile/ncasgui.py` | **Full-screen version**: one file (~267 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
+| `onefile/ncasgui.py` | **Full-screen version**: one file (~269 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
 | `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and is not needed). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
@@ -178,9 +178,9 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 | **catalog** | every command A–Z with its syntax under the list; type a letter to jump, enter puts `name()` on the line |
 | **trig** | sin, cos, tan, arcsin, … |
 | **ctrl** + key | the blue keypad functions: ( → `[ ]`, ) → `{ }`, ^ → root, x² → √, e^x → ln, 10^x → log10, = → ≠ ≤ ≥ list, (−) → ans, × → " ", ÷ → fraction, var → `->`, enter → ≈ decimal, del → clear, esc → undo, catalog → Symbols, trig → help. **doc** works as ctrl too. |
-| **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter inserts `[1,2;3,4]`); fraction, power, square root, n-th root, \|x\| and e^x templates |
+| **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter inserts `[1,2;3,4]`); fraction, power, square root, n-th root, \|x\| and e^x templates; **a** ∫ f dx, **b** ∫ with limits (▲ upper limit, ▼ lower), **c** d/dx (the variable slot starts as x) |
 | **2D entry** | ctrl ÷ = fraction, ^ = exponent, x² = square, ctrl x² = √, ctrl ^ = n-th root; ◄► move through slots, ▲▼ between numerator and denominator; typing + − × ÷ = < > , ) at the end of an exponent leaves it. Sent to nCAS as text: `3/(x+1)`. |
-| **2D results** | inputs (left) and results (right) in the history are drawn in 2D: stacked fractions, raised powers, √ and n-th roots, matrices as grids, lists, ≠ ≤ ≥. Messages, DMS, polar form and results too wide for the screen stay as text. |
+| **2D results** | inputs (left) and results (right) in the history are drawn in 2D: stacked fractions, raised powers, √ and n-th roots, integrals with ∫ and limits, derivatives as d/dx, matrices as grids, lists, ≠ ≤ ≥. Messages, DMS, polar form and results too wide for the screen stay as text. |
 | **menu ▸ a Symbols** | a page of 40 symbols that cannot be typed while a program runs (`; [ ] { } \| ' ≠ ≤ ≥ := → √ π ∞ ° >>` …); arrows + enter |
 | **esc** | leave the selection, clear the line, or (on an empty line) quit |
 
