@@ -6,10 +6,10 @@ on:
 
 jobs:
   cpython:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: dist/ and onefile/ match src/
@@ -38,16 +38,16 @@ jobs:
           python3 tests/verify.py
 
   micropython:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       MPY: v1.29.0
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/checkout@v7
+      - uses: actions/cache@v6
         id: cache
         with:
           path: mpbin
-          key: micropython-unix-${{ env.MPY }}
+          key: micropython-unix-${{ env.MPY }}-${{ runner.os }}-24.04
       - name: build MicroPython (unix port)
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
