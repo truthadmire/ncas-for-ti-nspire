@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="nCAS: a computer algebra system for the TI-Nspire CX II (non-CAS), written in its built-in Python.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23D97757%22/%3E%3Ctext x=%2216%22 y=%2224%22 font-size=%2222%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Georgia%22%3E%E2%88%9A%3C/text%3E%3C/svg%3E">
+<title>nCAS for TI-Nspire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a working calculator is the hero; everything after it reads like a
+   well-kept lab notebook — one column of prose, tables where facts line up. */
+:root {
+  --bg: #FAF9F5;          /* Claude ivory */
+  --surface: #F0EEE6;     /* raised paper */
+  --ink: #141413;
+  --muted: #5E5D59;
+  --line: #E1DED3;
+  --clay: #D97757;        /* Claude clay */
+  --clay-ink: #B4532F;    /* clay dark enough for text */
+  --clay-soft: #F5E2D9;
+  --code: #EDE9DF;
+  --good: #3E7B4F;
+  --bad: #A8443A;
+  --shadow: 0 1px 0 rgba(20,20,19,.04), 0 18px 40px -18px rgba(20,20,19,.25);
+  --f-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-body: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1B1A18; --surface: #252421; --ink: #F3F1EA; --muted: #ABA89E;
+    --line: #383631; --clay: #D97757; --clay-ink: #EA9574; --clay-soft: #3B2920;
+    --code: #2C2B27; --good: #7CC08C; --bad: #E58B7F;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 18px 40px -18px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1B1A18; --surface: #252421; --ink: #F3F1EA; --muted: #ABA89E;
+  --line: #383631; --clay: #D97757; --clay-ink: #EA9574; --clay-soft: #3B2920;
+  --code: #2C2B27; --good: #7CC08C; --bad: #E58B7F;
+  --shadow: 0 1px 0 rgba(0,0,0,.3), 0 18px 40px -18px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 16px/1.6 var(--f-body);
+  padding-inline: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1120px; margin-inline: auto; }
+a { color: var(--clay-ink); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--clay); outline-offset: 3px; border-radius: 6px; }
+code, .mono { font-family: var(--f-mono); font-size: .88em; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 500; text-wrap: balance; letter-spacing: -.01em; margin: 0; }
+p { margin: 0; }
+
+/* top bar */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  margin-inline: -20px; padding: 12px 20px;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; align-items: center; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 600; letter-spacing: .01em; }
+.mark {
+  width: 28px; height: 28px; border-radius: 7px; background: var(--clay); color: #fff;
+  display: grid; place-items: center; font-family: var(--f-display); font-size: 19px; line-height: 1;
+}
+.nav { display: flex; gap: 22px; margin-left: auto; font-size: 15px; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a:hover { color: var(--ink); }
+.gh {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 500;
+  background: var(--surface);
+}
+.gh:hover { border-color: var(--clay); }
+.gh svg { width: 16px; height: 16px; fill: currentColor; }
+@media (max-width: 760px) { .nav { display: none; } .bar .gh { margin-left: auto; } }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 56px; align-items: start; padding-block: 56px 72px; }
+@media (max-width: 960px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: 36px 56px; } }
+.eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--clay-ink); font-weight: 600; }
+.hero h1 { font-size: clamp(40px, 5.6vw, 64px); line-height: 1.04; margin-block: 14px 18px; }
+.hero h1 em { font-style: italic; color: var(--clay-ink); }
+.lede { font-size: 18.5px; color: var(--muted); max-width: 34em; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 26px 30px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 9px; padding: 12px 20px; border-radius: 10px;
+  font-weight: 600; font-size: 15.5px; text-decoration: none; border: 1px solid transparent; cursor: pointer;
+}
+.btn.primary { background: var(--clay); color: #fff; }
+.btn.primary:hover { background: color-mix(in srgb, var(--clay) 88%, #000); }
+.btn.ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+.btn.ghost:hover { border-color: var(--clay); }
+.btn svg { width: 17px; height: 17px; fill: currentColor; }
+
+/* example picker */
+.picker { border-top: 1px solid var(--line); padding-top: 22px; }
+.picker-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.picker-head h2 { font-size: 22px; }
+.hint { font-size: 14px; color: var(--muted); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tab {
+  font: 500 14px var(--f-body); padding: 6px 13px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+}
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--clay); margin-right: 6px; vertical-align: 2px; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.chip {
+  text-align: left; cursor: pointer; padding: 10px 12px; border-radius: 10px; min-width: 0;
+  background: var(--surface); border: 1px solid transparent; color: var(--ink);
+  display: grid; gap: 2px; font: inherit;
+}
+.chip:hover { border-color: var(--line); }
+.chip[aria-pressed="true"] { border-color: var(--clay); background: var(--clay-soft); }
+.chip .lbl { font-size: 13px; color: var(--muted); }
+.chip .in { font-family: var(--f-mono); font-size: 13.5px; overflow-wrap: anywhere; }
+
+/* the calculator */
+.device-col { display: grid; justify-items: center; gap: 14px; position: sticky; top: 84px; min-width: 0; }
+@media (max-width: 960px) { .device-col { position: static; } }
+.device {
+  --w: 380px;
+  width: min(var(--w), 100%); border-radius: 34px 34px 26px 26px; padding: 22px 20px 26px;
+  background: linear-gradient(180deg, #34363b 0%, #222327 55%, #1a1b1e 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.4), 0 30px 60px -25px rgba(20,20,19,.55);
+  color: #e9e9ec;
+}
+.device-top { display: flex; justify-content: space-between; align-items: baseline; padding-inline: 6px; margin-bottom: 12px; }
+.device-top .ti { font: 600 12.5px var(--f-body); letter-spacing: .18em; color: #d7d8dc; }
+.device-top .model { font: 500 11px var(--f-body); letter-spacing: .08em; color: #9a9ca3; }
+.bezel { border-radius: 12px; padding: 10px; background: linear-gradient(180deg, #e9eaee, #cfd1d6); }
+.screen { display: block; width: 100%; aspect-ratio: 318 / 212; height: auto; background: #fff; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
+.pad-row { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 12px; align-items: center; margin-top: 18px; }
+.keys { display: grid; gap: 8px; }
+.key {
+  height: 22px; border-radius: 6px; background: #3b3d43; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 2px 0 #121214;
+  display: grid; place-items: center; font: 600 10px var(--f-body); letter-spacing: .06em; color: #e7e7ea;
+}
+.key.blue { color: #8fc4ff; }
+.touchpad {
+  height: 64px; border-radius: 16px; background: radial-gradient(circle at 50% 40%, #55585f, #3a3c42 70%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 3px 0 #121214; position: relative;
+}
+.touchpad::after { content: ""; position: absolute; inset: 22px 42%; border-radius: 50%; background: #2a2c31; }
+.numrow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 14px; }
+.numrow .key { height: 20px; background: #f1f1f3; color: #1b1c1f; box-shadow: 0 2px 0 #8d8f96; }
+.numrow .key.op { background: #3b3d43; color: #e7e7ea; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 2px 0 #121214; }
+.caption { width: min(380px, 100%); font-size: 14px; color: var(--muted); display: grid; gap: 2px; }
+.caption .res { font-family: var(--f-mono); color: var(--ink); font-size: 14px; overflow-wrap: anywhere; }
+.note { font-size: 12.5px; color: var(--muted); width: min(380px, 100%); }
+
+/* sections */
+section { padding-block: 64px; border-top: 1px solid var(--line); }
+.sec-head { display: grid; gap: 10px; max-width: 46em; margin-bottom: 34px; }
+.sec-head h2 { font-size: clamp(30px, 3.6vw, 42px); line-height: 1.1; }
+.sec-head p { color: var(--muted); font-size: 17px; }
+
+/* three programs */
+.programs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 900px) { .programs { grid-template-columns: minmax(0, 1fr); } }
+.prog { background: var(--surface); border-radius: 14px; padding: 22px; display: grid; gap: 12px; align-content: start; }
+.prog h3 { font-size: 26px; font-family: var(--f-mono); font-weight: 500; letter-spacing: -.02em; }
+.prog h3 span { color: var(--clay-ink); }
+.prog .for { color: var(--muted); font-size: 15px; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; margin: 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+.term {
+  background: #1d1c1a; color: #ecebe5; border-radius: 10px; padding: 12px 14px;
+  font: 12.5px/1.65 var(--f-mono); overflow-x: auto; white-space: pre;
+}
+.term .p { color: #E3906F; }
+.term .r { color: #9ec8ff; }
+
+/* comparison */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+thead th { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface); }
+td.in { font-family: var(--f-mono); font-size: 13.5px; white-space: nowrap; }
+td .verdict { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; margin-bottom: 4px; }
+.v-bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, transparent); }
+.v-good { color: var(--good); background: color-mix(in srgb, var(--good) 13%, transparent); }
+td .out { font-family: var(--f-mono); font-size: 13.5px; display: block; }
+.fine { font-size: 13.5px; color: var(--muted); margin-top: 12px; max-width: 60em; }
+
+/* commands */
+.cmds { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 26px 34px; }
+.cmd h3 { font-size: 21px; margin-bottom: 8px; display: flex; align-items: baseline; gap: 10px; }
+.cmd h3 small { font: 500 13px var(--f-body); color: var(--muted); font-variant-numeric: tabular-nums; }
+.cmd p { font-family: var(--f-mono); font-size: 13px; line-height: 1.85; color: var(--muted); overflow-wrap: anywhere; }
+.cmd p b { color: var(--ink); font-weight: 500; }
+
+/* install */
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; counter-reset: s; }
+@media (max-width: 900px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.step { border-top: 2px solid var(--clay); padding-top: 16px; display: grid; gap: 8px; align-content: start; }
+.step .n { font: 500 14px var(--f-mono); color: var(--clay-ink); }
+.step h3 { font-size: 22px; }
+.step p { color: var(--muted); font-size: 15.5px; }
+.alt { margin-top: 34px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+@media (max-width: 900px) { .alt { grid-template-columns: minmax(0, 1fr); } }
+.alt h3 { font-size: 20px; margin-bottom: 8px; }
+.alt p { color: var(--muted); font-size: 15.5px; }
+.copyline { display: flex; gap: 8px; align-items: stretch; margin-top: 12px; min-width: 0; }
+.copyline code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; background: var(--code); padding: 10px 12px; border-radius: 8px; font-size: 13px; }
+.copy { font: 500 13px var(--f-body); border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 0 12px; cursor: pointer; }
+.callout { background: var(--clay-soft); border-radius: 14px; padding: 20px 22px; display: grid; gap: 6px; }
+.callout strong { font-weight: 600; }
+
+/* closing */
+.closing { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; }
+@media (max-width: 760px) { .closing { grid-template-columns: minmax(0, 1fr); } }
+.closing h2 { font-size: clamp(28px, 3.4vw, 40px); }
+footer { padding-block: 28px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; }
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true">√</span>nCAS</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#programs">Programs</a>
+      <a href="#beyond">Beyond the CAS</a>
+      <a href="#commands">Commands</a>
+      <a href="#install">Install</a>
+    </nav>
+    <a class="gh" href="https://github.com/truthadmire/ncas-for-ti-nspire" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.51-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      GitHub
+    </a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <div style="min-width:0">
+      <p class="eyebrow">For the TI-Nspire CX II · non-CAS</p>
+      <h1>The CAS your calculator <em>didn’t ship with.</em></h1>
+      <p class="lede">nCAS adds exact arithmetic, solving, calculus, symbolic matrices and differential equations to the plain CX II, written entirely in its built-in Python. Commands follow the TI-Nspire CAS Reference Guide, so <code>solve(x^2-5x+6=0,x)</code> works exactly as on a CAS model.</p>
+      <div class="ctas">
+        <a class="btn primary" href="https://github.com/truthadmire/ncas-for-ti-nspire/releases/latest" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M7.25 1h1.5v7.19l2.47-2.47 1.06 1.06L8 11.06 3.72 6.78l1.06-1.06 2.47 2.47V1ZM2 13h12v1.5H2V13Z"/></svg>
+          Download from GitHub
+        </a>
+        <a class="btn ghost" href="#install">How to install</a>
+      </div>
+
+      <div class="picker" id="demo">
+        <div class="picker-head">
+          <h2>Try a command</h2>
+          <p class="hint">Real nCAS output, drawn the way the calculator draws it.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Example categories" id="tabs"></div>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+
+    <div class="device-col">
+      <div class="device" aria-label="TI-Nspire CX II running nCAS">
+        <div class="device-top"><span class="ti">TEXAS INSTRUMENTS</span><span class="model">TI-Nspire CX II</span></div>
+        <div class="bezel">
+          <svg class="screen" id="screen" viewBox="0 0 318 212" role="img" aria-labelledby="screen-title"><title id="screen-title">nCAS screen</title></svg>
+        </div>
+        <div class="pad-row" aria-hidden="true">
+          <div class="keys"><div class="key">esc</div><div class="key">tab</div></div>
+          <div class="touchpad"></div>
+          <div class="keys"><div class="key">menu</div><div class="key">doc</div></div>
+        </div>
+        <div class="numrow" aria-hidden="true">
+          <div class="key blue">ctrl</div><div class="key op">=</div><div class="key op">^</div><div class="key op">x²</div><div class="key op">enter</div>
+        </div>
+      </div>
+      <div class="caption" aria-live="polite"><span id="cap-in">solve(x^2-5x+6=0,x)</span><span class="res" id="cap-out">x=2 or x=3</span></div>
+      <p class="note">Screens are generated by running nCAS’s full-screen mode against a simulated display. The handheld’s own font is a little narrower.</p>
+    </div>
+  </div>
+
+  <section id="programs">
+    <div class="sec-head">
+      <p class="eyebrow">Three programs</p>
+      <h2>Pick the one that fits the moment.</h2>
+      <p>Each is a single Python file you paste into a TI-Nspire document. Install one or all three; they don’t depend on each other.</p>
+    </div>
+    <div class="programs">
+      <article class="prog">
+        <h3><span>ncas</span>gui</h3>
+        <p class="for">Full screen, modelled on the CAS Calculator app. 2D entry with fraction, root and matrix templates, results drawn as real math, menus and a catalog that shows each command’s syntax.</p>
+        <dl class="facts"><dt>Size</dt><dd>267 KB · 14 paste parts</dd><dt>Keys</dt><dd>menu, catalog, tab, ctrl functions</dd><dt>Needs</dt><dd>OS with <code>ti_draw</code></dd></dl>
+      </article>
+      <article class="prog">
+        <h3><span>ncas</span>text</h3>
+        <p class="for">A command line at a <code>&gt;</code> prompt in the Python Shell, plus numbered menus that build the command for you. Works on every OS that has Python.</p>
+        <div class="term"><span class="p">deg&gt;</span> solve(sin(x)=1/2,x)|0&lt;=x&lt;=360
+<span class="r">x=30 or x=150</span>
+<span class="p">deg&gt;</span> factor(360)
+<span class="r">2^3*3^2*5</span></div>
+        <dl class="facts"><dt>Size</dt><dd>236 KB · 12 paste parts</dd><dt>Memory</dt><dd>self-test passes in 0.7 MB</dd></dl>
+      </article>
+      <article class="prog">
+        <h3><span>ncas</span>x</h3>
+        <p class="for">A small exact calculator. Type an expression, get the exact value and its decimal. No menus and no modes, and it loads three times faster.</p>
+        <div class="term"><span class="p">&gt;</span> 1/(1+sqrt(2))
+<span class="r">√2-1  ≈ 0.4142135624</span>
+<span class="p">&gt;</span> sin(pi/12)
+<span class="r">√6/4-√2/4  ≈ 0.2588190451</span></div>
+        <dl class="facts"><dt>Size</dt><dd>58 KB · 3 paste parts</dd><dt>Memory</dt><dd>about 400 KB</dd></dl>
+      </article>
+    </div>
+  </section>
+
+  <section id="beyond">
+    <div class="sec-head">
+      <p class="eyebrow">Beyond the official CAS</p>
+      <h2>Where the official CAS falls short, nCAS gives the full answer.</h2>
+      <p>These inputs come from a list of known weak spots of the CX II CAS. nCAS was built to get each one right, and every result below is checked by its test suite.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Input</th><th>Official CAS (as reported)</th><th>nCAS</th></tr></thead>
+        <tbody>
+          <tr><td class="in">(x^2-1)/(x-1)</td><td><span class="verdict v-bad">needs factor()</span><br>stays as typed</td><td><span class="verdict v-good">simplified</span><span class="out">x+1</span></td></tr>
+          <tr><td class="in">integral(sec(x)^3,x)</td><td><span class="verdict v-bad">messy</span><br>unevaluated or a long trig form</td><td><span class="verdict v-good">closed form</span><span class="out">ln(|tan(x)+1/cos(x)|)/2+tan(x)/(2*cos(x))</span></td></tr>
+          <tr><td class="in">impDif(y^3-x y=2,x,y)</td><td><span class="verdict v-bad">wrong</span><br><code>0</code></td><td><span class="verdict v-good">correct</span><span class="out">y/(-x+3*y^2)</span></td></tr>
+          <tr><td class="in">solve(r*(p+q)/(p*q)&lt;5,r)</td><td><span class="verdict v-bad">wrong</span><br>a range that doesn’t hold</td><td><span class="verdict v-good">every case</span><span class="out">r&lt;5*p*q/(p+q) and (p+q)/(p*q)&gt;0 or r&gt;5*p*q/(p+q) and (p+q)/(p*q)&lt;0 or p+q=0</span></td></tr>
+          <tr><td class="in">eigVl([a,1;0,a])</td><td><span class="verdict v-bad">error</span><br>numeric entries only</td><td><span class="verdict v-good">symbolic</span><span class="out">{a,a}</span></td></tr>
+          <tr><td class="in">integral(1/x,x,-1,1)</td><td>—</td><td><span class="verdict v-good">divergence caught</span><span class="out">undef</span></td></tr>
+          <tr><td class="in">solve(abs(x)+abs(x-2)=2,x)</td><td>—</td><td><span class="verdict v-good">whole interval</span><span class="out">0≤x≤2</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">The middle column summarises a third-party comparison of the CX II CAS and has not been re-checked on a CAS handheld. Rows marked with a dash are cases nCAS handles that the comparison did not cover.</p>
+  </section>
+
+  <section id="commands">
+    <div class="sec-head">
+      <p class="eyebrow">Coverage</p>
+      <h2>Over 150 commands, with TI’s names and syntax.</h2>
+      <p>Names are case-insensitive. Results stay exact unless you type a decimal, the same rule as the CAS’s Auto mode.</p>
+    </div>
+    <div class="cmds">
+      <div class="cmd"><h3>Algebra <small>28</small></h3><p><b>solve</b> cSolve zeros cZeros nSolve linSolve <b>factor</b> cFactor <b>expand</b> comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval tExpand tCollect simplify exact approx domain</p></div>
+      <div class="cmd"><h3>Calculus <small>21</small></h3><p><b>d</b> <b>integral</b> <b>limit</b> sumSeq prodSeq <b>taylor</b> series dominantTerm <b>deSolve</b> impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff</p></div>
+      <div class="cmd"><h3>Matrices &amp; vectors <small>35</small></h3><p><b>det</b> identity transpose <b>rref</b> ref inverse <b>eigVl</b> <b>eigVc</b> charPoly LU QR trace norm rowNorm colNorm diag augment colAugment subMat rowSwap rowAdd mRow mRowAdd crossP dotP unitV simult constructMat newMat randMat dim rowDim colDim mat►list list►mat</p></div>
+      <div class="cmd"><h3>Numbers &amp; complex <small>20</small></h3><p>gcd lcm mod remain intDiv <b>isPrime</b> <b>nCr</b> nPr ! floor ceiling round iPart fPart sign abs real imag conj angle</p></div>
+      <div class="cmd"><h3>Lists &amp; statistics <small>29</small></h3><p>seq sum product mean median stdDev stdDevPop variance varPop max min sortA sortD cumulativeSum deltaList augment left right mid count <b>normPdf</b> <b>normCdf</b> invNorm binomPdf binomCdf poissPdf poissCdf geomPdf geomCdf</p></div>
+      <div class="cmd"><h3>Conversions <small>19</small></h3><p>►Decimal ►approxFraction ►DMS ►DD ►Rad ►Grad ►Polar ►Rect ►Cylind ►Sphere ►exp ►ln ►logbase ►sin ►cos ►Base2 ►Base10 ►Base16 exp►list</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="sec-head">
+      <p class="eyebrow">Install</p>
+      <h2>Three steps, about two minutes.</h2>
+      <p>You need the TI-Nspire computer software (Student or Teacher) and a CX II with OS 5.2 or later, in normal mode.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">step 1</span><h3>Download</h3><p>Get the ready-made <code>.tns</code> document from the <a href="https://github.com/truthadmire/ncas-for-ti-nspire/releases/latest" target="_blank" rel="noopener">latest GitHub release</a>.</p></div>
+      <div class="step"><span class="n">step 2</span><h3>Send it to the handheld</h3><p>Connect the calculator by USB and drag the document onto it in the TI-Nspire software. Keep it in My Documents.</p></div>
+      <div class="step"><span class="n">step 3</span><h3>Run it</h3><p>Open the document and press <b>ctrl R</b>. Type <code>:test</code> once: you should see <code>18/18 tests passed</code>.</p></div>
+    </div>
+    <div class="alt">
+      <div>
+        <h3>Build the document yourself</h3>
+        <p>The TI editor refuses a paste this large, so the repository includes a helper that puts the program on the clipboard one part at a time. Paste each part at the end of a blank Python program, then use Check Syntax &amp; Save.</p>
+        <div class="copyline"><code id="cmd">python3 tools/paste_parts.py onefile/ncasgui.py 20000</code><button class="copy" type="button" id="copybtn">Copy</button></div>
+      </div>
+      <div class="callout">
+        <strong>Kept between runs</strong>
+        <p>Settings, variables and functions are saved inside the document, so <code>f(x):=x^2+1</code> is still there after you restart the program or reopen the file.</p>
+        <strong style="margin-top:10px">Exams</strong>
+        <p>Press-to-Test hides nCAS along with every other file, and many exams don’t allow CAS functions. Check your exam’s rules.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="closing">
+      <div style="display:grid;gap:10px;min-width:0">
+        <h2>Free and open source, under the MIT license.</h2>
+        <p class="lede" style="font-size:17px">Source, tests, the build tools and the issue tracker live on GitHub. Reports from real calculators are the most useful contribution.</p>
+      </div>
+      <a class="btn primary" href="https://github.com/truthadmire/ncas-for-ti-nspire" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.51-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.6 7.6 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        truthadmire/ncas-for-ti-nspire
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>nCAS is an independent project, not affiliated with or endorsed by Texas Instruments. TI-Nspire and TI-Nspire CX II are trademarks of Texas Instruments Incorporated, named here only to say which calculator nCAS runs on.</p>
+  </footer>
+</main>
+
+<script>
+const DATA = {"colors":["rgb(255,255,255)","rgb(30,60,130)","rgb(240,240,240)","rgb(110,110,110)","rgb(0,0,0)","rgb(220,0,0)","rgb(0,70,170)"],"ex":[{"c":"algebra","l":"Solve a quadratic","i":"solve(x^2-5x+6=0,x)","r":"x=2 or x=3","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"s",4],["t",15,204,"o",4],["t",24,204,"l",4],["t",33,204,"v",4],["t",42,204,"e",4],["t",51,204,"(",4],["t",60,204,"x",4],["t",70,196,"2",4],["t",80,204,"-",4],["t",89,204,"5",4],["t",98,204,"x",4],["t",107,204,"+",4],["t",116,204,"6",4],["t",125,204,"=",4],["t",134,204,"0",4],["t",143,204,",",4],["t",152,204,"x",4],["t",161,204,")",4],["r",175,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,43,"s",4],["t",13,43,"o",4],["t",22,43,"l",4],["t",31,43,"v",4],["t",40,43,"e",4],["t",49,43,"(",4],["t",58,43,"x",4],["t",68,35,"2",4],["t",78,43,"-",4],["t",87,43,"5",4],["t",96,43,"\u00b7",4],["t",105,43,"x",4],["t",114,43,"+",4],["t",123,43,"6",4],["t",132,43,"=",4],["t",141,43,"0",4],["t",150,43,",",4],["t",159,43,"x",4],["t",168,43,")",4],["t",222,64,"x",6],["t",231,64,"=",6],["t",240,64,"2",6],["t",249,64," ",6],["t",258,64,"o",6],["t",267,64,"r",6],["t",276,64," ",6],["t",285,64,"x",6],["t",294,64,"=",6],["t",303,64,"3",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"algebra","l":"Exact arithmetic","i":"1/3+1/6+sqrt(8)","r":"2*\u221a2+1/2","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"1",4],["t",15,204,"/",4],["t",24,204,"3",4],["t",33,204,"+",4],["t",42,204,"1",4],["t",51,204,"/",4],["t",60,204,"6",4],["t",69,204,"+",4],["t",78,204,"s",4],["t",87,204,"q",4],["t",96,204,"r",4],["t",105,204,"t",4],["t",114,204,"(",4],["t",123,204,"8",4],["t",132,204,")",4],["r",146,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",5,41,13,1,4],["t",7,35,"1",4],["t",7,56,"3",4],["t",19,46,"+",4],["r",29,41,13,1,4],["t",31,35,"1",4],["t",31,56,"6",4],["t",43,46,"+",4],["l",52,42,54,41,4],["l",54,41,56,49,4],["l",56,49,60,31,4],["l",60,31,71,31,4],["t",61,46,"8",4],["t",250,88,"2",6],["t",259,88,"\u00b7",6],["l",268,84,270,83,6],["l",270,83,272,91,6],["l",272,91,276,73,6],["l",276,73,287,73,6],["t",277,88,"2",6],["t",288,88,"+",6],["r",298,83,13,1,6],["t",300,77,"1",6],["t",300,98,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"algebra","l":"Factor over the integers","i":"factor(x^4-16)","r":"(x-2)*(x+2)*(x^2+4)","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"f",4],["t",15,204,"a",4],["t",24,204,"c",4],["t",33,204,"t",4],["t",42,204,"o",4],["t",51,204,"r",4],["t",60,204,"(",4],["t",69,204,"x",4],["t",79,196,"4",4],["t",89,204,"-",4],["t",98,204,"1",4],["t",107,204,"6",4],["t",116,204,")",4],["r",130,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,43,"f",4],["t",13,43,"a",4],["t",22,43,"c",4],["t",31,43,"t",4],["t",40,43,"o",4],["t",49,43,"r",4],["t",58,43,"(",4],["t",67,43,"x",4],["t",77,35,"4",4],["t",87,43,"-",4],["t",96,43,"1",4],["t",105,43,"6",4],["t",114,43,")",4],["t",148,72,"(",6],["t",157,72,"x",6],["t",166,72,"-",6],["t",175,72,"2",6],["t",184,72,")",6],["t",193,72,"\u00b7",6],["t",202,72,"(",6],["t",211,72,"x",6],["t",220,72,"+",6],["t",229,72,"2",6],["t",238,72,")",6],["t",247,72,"\u00b7",6],["t",256,72,"(",6],["t",265,72,"x",6],["t",275,64,"2",6],["t",285,72,"+",6],["t",294,72,"4",6],["t",303,72,")",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"algebra","l":"Partial fractions","i":"expand(1/((x+1)*(x+2)))","r":"1/(x+1)-1/(x+2)","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"e",4],["t",15,204,"x",4],["t",24,204,"p",4],["t",33,204,"a",4],["t",42,204,"n",4],["t",51,204,"d",4],["t",60,204,"(",4],["t",69,204,"1",4],["t",78,204,"/",4],["t",87,204,"(",4],["t",96,204,"(",4],["t",105,204,"x",4],["t",114,204,"+",4],["t",123,204,"1",4],["t",132,204,")",4],["t",141,204,"*",4],["t",150,204,"(",4],["t",159,204,"x",4],["t",168,204,"+",4],["t",177,204,"2",4],["t",186,204,")",4],["t",195,204,")",4],["t",204,204,")",4],["r",218,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"e",4],["t",13,46,"x",4],["t",22,46,"p",4],["t",31,46,"a",4],["t",40,46,"n",4],["t",49,46,"d",4],["t",58,46,"(",4],["r",68,41,103,1,4],["t",115,35,"1",4],["t",70,56,"(",4],["t",79,56,"x",4],["t",88,56,"+",4],["t",97,56,"1",4],["t",106,56,")",4],["t",115,56,"\u00b7",4],["t",124,56,"(",4],["t",133,56,"x",4],["t",142,56,"+",4],["t",151,56,"2",4],["t",160,56,")",4],["t",172,46,")",4],["r",238,83,31,1,6],["t",249,77,"1",6],["t",240,98,"x",6],["t",249,98,"+",6],["t",258,98,"1",6],["t",270,88,"-",6],["r",280,83,31,1,6],["t",291,77,"1",6],["t",282,98,"x",6],["t",291,98,"+",6],["t",300,98,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"algebra","l":"Rationalize","i":"1/(1+sqrt(2))","r":"\u221a2-1","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"1",4],["t",15,204,"/",4],["t",24,204,"(",4],["t",33,204,"1",4],["t",42,204,"+",4],["t",51,204,"s",4],["t",60,204,"q",4],["t",69,204,"r",4],["t",78,204,"t",4],["t",87,204,"(",4],["t",96,204,"2",4],["t",105,204,")",4],["t",114,204,")",4],["r",128,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",5,41,42,1,4],["t",21,35,"1",4],["t",7,59,"1",4],["t",16,59,"+",4],["l",25,55,27,54,4],["l",27,54,29,62,4],["l",29,62,33,44,4],["l",33,44,44,44,4],["t",34,59,"2",4],["l",274,79,276,78,6],["l",276,78,278,86,6],["l",278,86,282,68,6],["l",282,68,293,68,6],["t",283,83,"2",6],["t",294,83,"-",6],["t",303,83,"1",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Derivative","i":"d(x^3*sin(x),x)","r":"x^3*cos(x)+3*x^2*sin(x)","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"d",4],["t",15,204,"(",4],["t",24,204,"x",4],["t",34,196,"3",4],["t",44,204,"*",4],["t",53,204,"s",4],["t",62,204,"i",4],["t",71,204,"n",4],["t",80,204,"(",4],["t",89,204,"x",4],["t",98,204,")",4],["t",107,204,",",4],["t",116,204,"x",4],["t",125,204,")",4],["r",139,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,43,"d",4],["t",13,43,"(",4],["t",22,43,"x",4],["t",32,35,"3",4],["t",42,43,"\u00b7",4],["t",51,43,"s",4],["t",60,43,"i",4],["t",69,43,"n",4],["t",78,43,"(",4],["t",87,43,"x",4],["t",96,43,")",4],["t",105,43,",",4],["t",114,43,"x",4],["t",123,43,")",4],["t",119,72,"x",6],["t",129,64,"3",6],["t",139,72,"\u00b7",6],["t",148,72,"c",6],["t",157,72,"o",6],["t",166,72,"s",6],["t",175,72,"(",6],["t",184,72,"x",6],["t",193,72,")",6],["t",202,72,"+",6],["t",211,72,"3",6],["t",220,72,"\u00b7",6],["t",229,72,"x",6],["t",239,64,"2",6],["t",249,72,"\u00b7",6],["t",258,72,"s",6],["t",267,72,"i",6],["t",276,72,"n",6],["t",285,72,"(",6],["t",294,72,"x",6],["t",303,72,")",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Integral by parts","i":"integral(x*e^(2x),x)","r":"x*e^(2*x)/2-e^(2*x)/4","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"i",4],["t",15,204,"n",4],["t",24,204,"t",4],["t",33,204,"e",4],["t",42,204,"g",4],["t",51,204,"r",4],["t",60,204,"a",4],["t",69,204,"l",4],["t",78,204,"(",4],["t",87,204,"x",4],["t",96,204,"*",4],["t",105,204,"e",4],["t",115,196,"(",4],["t",124,196,"2",4],["t",133,196,"x",4],["t",142,196,")",4],["t",152,204,",",4],["t",161,204,"x",4],["t",170,204,")",4],["r",184,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,43,"\u222b",4],["t",13,43,"(",4],["t",22,43,"x",4],["t",31,43,"\u00b7",4],["t",40,43,"e",4],["t",50,35,"2",4],["t",59,35,"\u00b7",4],["t",68,35,"x",4],["t",78,43,",",4],["t",87,43,"x",4],["t",96,43,")",4],["r",198,78,60,1,6],["t",200,72,"x",6],["t",209,72,"\u00b7",6],["t",218,72,"e",6],["t",228,64,"2",6],["t",237,64,"\u00b7",6],["t",246,64,"x",6],["t",223,93,"2",6],["t",259,83,"-",6],["r",269,78,42,1,6],["t",271,72,"e",6],["t",281,64,"2",6],["t",290,64,"\u00b7",6],["t",299,64,"x",6],["t",285,93,"4",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Improper integral","i":"integral(1/(1+x^2),x,-inf,inf)","r":"\u03c0","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"i",4],["t",15,204,"n",4],["t",24,204,"t",4],["t",33,204,"e",4],["t",42,204,"g",4],["t",51,204,"r",4],["t",60,204,"a",4],["t",69,204,"l",4],["t",78,204,"(",4],["t",87,204,"1",4],["t",96,204,"/",4],["t",105,204,"(",4],["t",114,204,"1",4],["t",123,204,"+",4],["t",132,204,"x",4],["t",142,196,"2",4],["t",152,204,")",4],["t",161,204,",",4],["t",170,204,"x",4],["t",179,204,",",4],["t",188,204,"-",4],["t",197,204,"i",4],["t",206,204,"n",4],["t",215,204,"f",4],["t",224,204,",",4],["t",233,204,"i",4],["t",242,204,"n",4],["t",251,204,"f",4],["t",260,204,")",4],["r",274,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"\u222b",4],["t",13,46,"(",4],["r",23,41,42,1,4],["t",39,35,"1",4],["t",25,64,"1",4],["t",34,64,"+",4],["t",43,64,"x",4],["t",53,56,"2",4],["t",66,46,",",4],["t",75,46,"x",4],["t",84,46,",",4],["t",93,46,"-",4],["t",102,46,"\u221e",4],["t",111,46,",",4],["t",120,46,"\u221e",4],["t",129,46,")",4],["t",303,85,"\u03c0",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Limit","i":"limit((1+1/n)^n,n,inf)","r":"e","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"l",4],["t",15,204,"i",4],["t",24,204,"m",4],["t",33,204,"i",4],["t",42,204,"t",4],["t",51,204,"(",4],["t",60,204,"(",4],["t",69,204,"1",4],["t",78,204,"+",4],["t",87,204,"1",4],["t",96,204,"/",4],["t",105,204,"n",4],["t",114,204,")",4],["t",124,196,"n",4],["t",134,204,",",4],["t",143,204,"n",4],["t",152,204,",",4],["t",161,204,"i",4],["t",170,204,"n",4],["t",179,204,"f",4],["t",188,204,")",4],["r",202,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"l",4],["t",13,46,"i",4],["t",22,46,"m",4],["t",31,46,"i",4],["t",40,46,"t",4],["t",49,46,"(",4],["t",58,46,"(",4],["t",67,46,"1",4],["t",76,46,"+",4],["r",86,41,13,1,4],["t",88,35,"1",4],["t",88,56,"n",4],["t",100,46,")",4],["t",110,38,"n",4],["t",120,46,",",4],["t",129,46,"n",4],["t",138,46,",",4],["t",147,46,"\u221e",4],["t",156,46,")",4],["t",303,77,"e",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Infinite series","i":"sumSeq(1/k^2,k,1,inf)","r":"\u03c0^2/6","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"s",4],["t",15,204,"u",4],["t",24,204,"m",4],["t",33,204,"S",4],["t",42,204,"e",4],["t",51,204,"q",4],["t",60,204,"(",4],["t",69,204,"1",4],["t",78,204,"/",4],["t",87,204,"k",4],["t",97,196,"2",4],["t",107,204,",",4],["t",116,204,"k",4],["t",125,204,",",4],["t",134,204,"1",4],["t",143,204,",",4],["t",152,204,"i",4],["t",161,204,"n",4],["t",170,204,"f",4],["t",179,204,")",4],["r",193,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"\u03a3",4],["t",13,46,"(",4],["r",23,41,24,1,4],["t",30,35,"1",4],["t",25,64,"k",4],["t",35,56,"2",4],["t",48,46,",",4],["t",57,46,"k",4],["t",66,46,",",4],["t",75,46,"1",4],["t",84,46,",",4],["t",93,46,"\u221e",4],["t",102,46,")",4],["r",287,99,24,1,6],["t",289,93,"\u03c0",6],["t",299,85,"2",6],["t",294,114,"6",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Differential equation","i":"deSolve(y''+y=0 and y(0)=1 and y'(0)=0,x,y)","r":"y=cos(x)","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",-79,204,"d",4],["t",-70,204,"e",4],["t",-61,204,"S",4],["t",-52,204,"o",4],["t",-43,204,"l",4],["t",-34,204,"v",4],["t",-25,204,"e",4],["t",-16,204,"(",4],["t",-7,204,"y",4],["t",2,204,"'",4],["t",11,204,"'",4],["t",20,204,"+",4],["t",29,204,"y",4],["t",38,204,"=",4],["t",47,204,"0",4],["t",56,204," ",4],["t",65,204,"a",4],["t",74,204,"n",4],["t",83,204,"d",4],["t",92,204," ",4],["t",101,204,"y",4],["t",110,204,"(",4],["t",119,204,"0",4],["t",128,204,")",4],["t",137,204,"=",4],["t",146,204,"1",4],["t",155,204," ",4],["t",164,204,"a",4],["t",173,204,"n",4],["t",182,204,"d",4],["t",191,204," ",4],["t",200,204,"y",4],["t",209,204,"'",4],["t",218,204,"(",4],["t",227,204,"0",4],["t",236,204,")",4],["t",245,204,"=",4],["t",254,204,"0",4],["t",263,204,",",4],["t",272,204,"x",4],["t",281,204,",",4],["t",290,204,"y",4],["t",299,204,")",4],["r",0,189,5,21,2],["t",0,204,"<",3],["r",228,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,34,"deSolve(y''+y=0 and y(0)=1 and y'(0)=0,x,y)",4],["t",240,53,"y",6],["t",249,53,"=",6],["t",258,53,"c",6],["t",267,53,"o",6],["t",276,53,"s",6],["t",285,53,"(",6],["t",294,53,"x",6],["t",303,53,")",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"calculus","l":"Taylor polynomial","i":"taylor(sin(x),x,5)","r":"x^5/120-x^3/6+x","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"t",4],["t",15,204,"a",4],["t",24,204,"y",4],["t",33,204,"l",4],["t",42,204,"o",4],["t",51,204,"r",4],["t",60,204,"(",4],["t",69,204,"s",4],["t",78,204,"i",4],["t",87,204,"n",4],["t",96,204,"(",4],["t",105,204,"x",4],["t",114,204,")",4],["t",123,204,",",4],["t",132,204,"x",4],["t",141,204,",",4],["t",150,204,"5",4],["t",159,204,")",4],["r",173,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,35,"t",4],["t",13,35,"a",4],["t",22,35,"y",4],["t",31,35,"l",4],["t",40,35,"o",4],["t",49,35,"r",4],["t",58,35,"(",4],["t",67,35,"s",4],["t",76,35,"i",4],["t",85,35,"n",4],["t",94,35,"(",4],["t",103,35,"x",4],["t",112,35,")",4],["t",121,35,",",4],["t",130,35,"x",4],["t",139,35,",",4],["t",148,35,"5",4],["t",157,35,")",4],["r",227,70,31,1,6],["t",232,64,"x",6],["t",242,56,"5",6],["t",229,85,"1",6],["t",238,85,"2",6],["t",247,85,"0",6],["t",259,75,"-",6],["r",269,70,24,1,6],["t",271,64,"x",6],["t",281,56,"3",6],["t",276,85,"6",6],["t",294,75,"+",6],["t",303,75,"x",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"matrix","l":"Inverse","i":"[1,2;3,4]^-1","r":"[[-2,1][3/2,-1/2]]","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"[",4],["t",15,204,"1",4],["t",24,204,",",4],["t",33,204,"2",4],["t",42,204,";",4],["t",51,204,"3",4],["t",60,204,",",4],["t",69,204,"4",4],["t",78,204,"]",4],["t",88,196,"-",4],["t",97,196,"1",4],["r",111,184,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",5,23,1,41,4],["r",5,23,3,1,4],["r",5,63,3,1,4],["r",38,23,1,41,4],["r",36,23,3,1,4],["r",36,63,3,1,4],["t",9,36,"1",4],["t",26,36,"2",4],["t",9,60,"3",4],["t",26,60,"4",4],["t",41,40,"-",4],["t",50,40,"1",4],["r",253,70,1,62,6],["r",253,70,3,1,6],["r",253,131,3,1,6],["r",310,70,1,62,6],["r",308,70,3,1,6],["r",308,131,3,1,6],["t",257,83,"-",6],["t",266,83,"2",6],["t",290,83,"1",6],["r",259,113,13,1,6],["t",261,107,"3",6],["t",261,128,"2",6],["r",284,113,22,1,6],["t",286,107,"-",6],["t",295,107,"1",6],["t",290,128,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"matrix","l":"Exact eigenvalues","i":"eigVl([8,5;7,9])","r":"{\u221a141/2+17/2,-\u221a141/2+17/2}","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"e",4],["t",15,204,"i",4],["t",24,204,"g",4],["t",33,204,"V",4],["t",42,204,"l",4],["t",51,204,"(",4],["t",60,204,"[",4],["t",69,204,"8",4],["t",78,204,",",4],["t",87,204,"5",4],["t",96,204,";",4],["t",105,204,"7",4],["t",114,204,",",4],["t",123,204,"9",4],["t",132,204,"]",4],["t",141,204,")",4],["r",155,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,48,"e",4],["t",13,48,"i",4],["t",22,48,"g",4],["t",31,48,"V",4],["t",40,48,"l",4],["t",49,48,"(",4],["r",59,23,1,41,4],["r",59,23,3,1,4],["r",59,63,3,1,4],["r",92,23,1,41,4],["r",90,23,3,1,4],["r",90,63,3,1,4],["t",63,36,"8",4],["t",80,36,"5",4],["t",63,60,"7",4],["t",80,60,"9",4],["t",94,48,")",4],["t",122,96,"{",6],["r",132,91,42,1,6],["l",134,81,136,80,6],["l",136,80,138,88,6],["l",138,88,142,70,6],["l",142,70,171,70,6],["t",143,85,"1",6],["t",152,85,"4",6],["t",161,85,"1",6],["t",148,106,"2",6],["t",175,96,"+",6],["r",185,91,22,1,6],["t",187,85,"1",6],["t",196,85,"7",6],["t",191,106,"2",6],["t",208,96,",",6],["r",218,91,51,1,6],["t",220,85,"-",6],["l",229,81,231,80,6],["l",231,80,233,88,6],["l",233,88,237,70,6],["l",237,70,266,70,6],["t",238,85,"1",6],["t",247,85,"4",6],["t",256,85,"1",6],["t",239,106,"2",6],["t",270,96,"+",6],["r",280,91,22,1,6],["t",282,85,"1",6],["t",291,85,"7",6],["t",286,106,"2",6],["t",303,96,"}",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"matrix","l":"Symbolic eigenvalues","i":"eigVl([a,b;b,a])","r":"{a+b,a-b}","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"e",4],["t",15,204,"i",4],["t",24,204,"g",4],["t",33,204,"V",4],["t",42,204,"l",4],["t",51,204,"(",4],["t",60,204,"[",4],["t",69,204,"a",4],["t",78,204,",",4],["t",87,204,"b",4],["t",96,204,";",4],["t",105,204,"b",4],["t",114,204,",",4],["t",123,204,"a",4],["t",132,204,"]",4],["t",141,204,")",4],["r",155,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,48,"e",4],["t",13,48,"i",4],["t",22,48,"g",4],["t",31,48,"V",4],["t",40,48,"l",4],["t",49,48,"(",4],["r",59,23,1,41,4],["r",59,23,3,1,4],["r",59,63,3,1,4],["r",92,23,1,41,4],["r",90,23,3,1,4],["r",90,63,3,1,4],["t",63,36,"a",4],["t",80,36,"b",4],["t",63,60,"b",4],["t",80,60,"a",4],["t",94,48,")",4],["t",231,82,"{",6],["t",240,82,"a",6],["t",249,82,"+",6],["t",258,82,"b",6],["t",267,82,",",6],["t",276,82,"a",6],["t",285,82,"-",6],["t",294,82,"b",6],["t",303,82,"}",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"matrix","l":"Determinant","i":"det([a,b;c,d])","r":"a*d-b*c","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"d",4],["t",15,204,"e",4],["t",24,204,"t",4],["t",33,204,"(",4],["t",42,204,"[",4],["t",51,204,"a",4],["t",60,204,",",4],["t",69,204,"b",4],["t",78,204,";",4],["t",87,204,"c",4],["t",96,204,",",4],["t",105,204,"d",4],["t",114,204,"]",4],["t",123,204,")",4],["r",137,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,48,"d",4],["t",13,48,"e",4],["t",22,48,"t",4],["t",31,48,"(",4],["r",41,23,1,41,4],["r",41,23,3,1,4],["r",41,63,3,1,4],["r",74,23,1,41,4],["r",72,23,3,1,4],["r",72,63,3,1,4],["t",45,36,"a",4],["t",62,36,"b",4],["t",45,60,"c",4],["t",62,60,"d",4],["t",76,48,")",4],["t",249,82,"a",6],["t",258,82,"\u00b7",6],["t",267,82,"d",6],["t",276,82,"-",6],["t",285,82,"b",6],["t",294,82,"\u00b7",6],["t",303,82,"c",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"sec cubed, exactly","i":"integral(sec(x)^3,x,0,pi/4)","r":"\u221a2/2+ln(\u221a2+1)/2","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"i",4],["t",15,204,"n",4],["t",24,204,"t",4],["t",33,204,"e",4],["t",42,204,"g",4],["t",51,204,"r",4],["t",60,204,"a",4],["t",69,204,"l",4],["t",78,204,"(",4],["t",87,204,"s",4],["t",96,204,"e",4],["t",105,204,"c",4],["t",114,204,"(",4],["t",123,204,"x",4],["t",132,204,")",4],["t",142,196,"3",4],["t",152,204,",",4],["t",161,204,"x",4],["t",170,204,",",4],["t",179,204,"0",4],["t",188,204,",",4],["t",197,204,"p",4],["t",206,204,"i",4],["t",215,204,"/",4],["t",224,204,"4",4],["t",233,204,")",4],["r",247,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"\u222b",4],["t",13,46,"(",4],["t",22,46,"s",4],["t",31,46,"e",4],["t",40,46,"c",4],["t",49,46,"(",4],["t",58,46,"x",4],["t",67,46,")",4],["t",77,38,"3",4],["t",87,46,",",4],["t",96,46,"x",4],["t",105,46,",",4],["t",114,46,"0",4],["t",123,46,",",4],["r",133,41,13,1,4],["t",135,35,"\u03c0",4],["t",135,56,"4",4],["t",147,46,")",4],["r",198,86,24,1,6],["l",200,76,202,75,6],["l",202,75,204,83,6],["l",204,83,208,65,6],["l",208,65,219,65,6],["t",209,80,"2",6],["t",205,101,"2",6],["t",223,91,"+",6],["r",233,86,78,1,6],["t",235,80,"l",6],["t",244,80,"n",6],["t",253,80,"(",6],["l",262,76,264,75,6],["l",264,75,266,83,6],["l",266,83,270,65,6],["l",270,65,281,65,6],["t",271,80,"2",6],["t",282,80,"+",6],["t",291,80,"1",6],["t",300,80,")",6],["t",267,101,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Parameter inequality","i":"solve(a*x<5,x)","r":"x<5/a and a>0 or x>5/a and a<0 or a=0","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"s",4],["t",15,204,"o",4],["t",24,204,"l",4],["t",33,204,"v",4],["t",42,204,"e",4],["t",51,204,"(",4],["t",60,204,"a",4],["t",69,204,"*",4],["t",78,204,"x",4],["t",87,204,"<",4],["t",96,204,"5",4],["t",105,204,",",4],["t",114,204,"x",4],["t",123,204,")",4],["r",137,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,35,"s",4],["t",13,35,"o",4],["t",22,35,"l",4],["t",31,35,"v",4],["t",40,35,"e",4],["t",49,35,"(",4],["t",58,35,"a",4],["t",67,35,"\u00b7",4],["t",76,35,"x",4],["t",85,35,"<",4],["t",94,35,"5",4],["t",103,35,",",4],["t",112,35,"x",4],["t",121,35,")",4],["t",4,55,"  x<5/a and a>0 or x>5/a and a<0 or a=0",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Compound inequality","i":"solve(1<2x+1<7,x)","r":"0<x<3","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"s",4],["t",15,204,"o",4],["t",24,204,"l",4],["t",33,204,"v",4],["t",42,204,"e",4],["t",51,204,"(",4],["t",60,204,"1",4],["t",69,204,"<",4],["t",78,204,"2",4],["t",87,204,"x",4],["t",96,204,"+",4],["t",105,204,"1",4],["t",114,204,"<",4],["t",123,204,"7",4],["t",132,204,",",4],["t",141,204,"x",4],["t",150,204,")",4],["r",164,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,35,"s",4],["t",13,35,"o",4],["t",22,35,"l",4],["t",31,35,"v",4],["t",40,35,"e",4],["t",49,35,"(",4],["t",58,35,"1",4],["t",67,35,"<",4],["t",76,35,"2",4],["t",85,35,"\u00b7",4],["t",94,35,"x",4],["t",103,35,"+",4],["t",112,35,"1",4],["t",121,35," ",4],["t",130,35,"a",4],["t",139,35,"n",4],["t",148,35,"d",4],["t",157,35," ",4],["t",166,35,"2",4],["t",175,35,"\u00b7",4],["t",184,35,"x",4],["t",193,35,"+",4],["t",202,35,"1",4],["t",211,35,"<",4],["t",220,35,"7",4],["t",229,35,",",4],["t",238,35,"x",4],["t",247,35,")",4],["t",213,56,"0",6],["t",222,56,"<",6],["t",231,56,"x",6],["t",240,56," ",6],["t",249,56,"a",6],["t",258,56,"n",6],["t",267,56,"d",6],["t",276,56," ",6],["t",285,56,"x",6],["t",294,56,"<",6],["t",303,56,"3",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Divergent integral","i":"integral(1/x,x,-1,1)","r":"undef","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"i",4],["t",15,204,"n",4],["t",24,204,"t",4],["t",33,204,"e",4],["t",42,204,"g",4],["t",51,204,"r",4],["t",60,204,"a",4],["t",69,204,"l",4],["t",78,204,"(",4],["t",87,204,"1",4],["t",96,204,"/",4],["t",105,204,"x",4],["t",114,204,",",4],["t",123,204,"x",4],["t",132,204,",",4],["t",141,204,"-",4],["t",150,204,"1",4],["t",159,204,",",4],["t",168,204,"1",4],["t",177,204,")",4],["r",191,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"\u222b",4],["t",13,46,"(",4],["r",23,41,13,1,4],["t",25,35,"1",4],["t",25,56,"x",4],["t",37,46,",",4],["t",46,46,"x",4],["t",55,46,",",4],["t",64,46,"-",4],["t",73,46,"1",4],["t",82,46,",",4],["t",91,46,"1",4],["t",100,46,")",4],["t",267,77,"u",6],["t",276,77,"n",6],["t",285,77,"d",6],["t",294,77,"e",6],["t",303,77,"f",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Factorial limit","i":"limit(n!/2^n,n,inf)","r":"\u221e","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"l",4],["t",15,204,"i",4],["t",24,204,"m",4],["t",33,204,"i",4],["t",42,204,"t",4],["t",51,204,"(",4],["t",60,204,"n",4],["t",69,204,"!",4],["t",78,204,"/",4],["t",87,204,"2",4],["t",97,196,"n",4],["t",107,204,",",4],["t",116,204,"n",4],["t",125,204,",",4],["t",134,204,"i",4],["t",143,204,"n",4],["t",152,204,"f",4],["t",161,204,")",4],["r",175,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,46,"l",4],["t",13,46,"i",4],["t",22,46,"m",4],["t",31,46,"i",4],["t",40,46,"t",4],["t",49,46,"(",4],["r",59,41,24,1,4],["t",62,35,"n",4],["t",71,35,"!",4],["t",61,64,"2",4],["t",71,56,"n",4],["t",84,46,",",4],["t",93,46,"n",4],["t",102,46,",",4],["t",111,46,"\u221e",4],["t",120,46,")",4],["t",303,85,"\u221e",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Absolute values","i":"solve(abs(x)+abs(x-2)=2,x)","r":"0\u2264x\u22642","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,188,318,24,2],["r",0,187,318,1,3],["t",6,204,"s",4],["t",15,204,"o",4],["t",24,204,"l",4],["t",33,204,"v",4],["t",42,204,"e",4],["t",51,204,"(",4],["t",60,204,"a",4],["t",69,204,"b",4],["t",78,204,"s",4],["t",87,204,"(",4],["t",96,204,"x",4],["t",105,204,")",4],["t",114,204,"+",4],["t",123,204,"a",4],["t",132,204,"b",4],["t",141,204,"s",4],["t",150,204,"(",4],["t",159,204,"x",4],["t",168,204,"-",4],["t",177,204,"2",4],["t",186,204,")",4],["t",195,204,"=",4],["t",204,204,"2",4],["t",213,204,",",4],["t",222,204,"x",4],["t",231,204,")",4],["r",245,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,35,"s",4],["t",13,35,"o",4],["t",22,35,"l",4],["t",31,35,"v",4],["t",40,35,"e",4],["t",49,35,"(",4],["r",59,22,1,17,4],["r",72,22,1,17,4],["t",61,35,"x",4],["t",74,35,"+",4],["r",84,22,1,17,4],["r",115,22,1,17,4],["t",86,35,"x",4],["t",95,35,"-",4],["t",104,35,"2",4],["t",117,35,"=",4],["t",126,35,"2",4],["t",135,35,",",4],["t",144,35,"x",4],["t",153,35,")",4],["t",213,56,"0",6],["t",222,56,"\u2264",6],["t",231,56,"x",6],["t",240,56," ",6],["t",249,56,"a",6],["t",258,56,"n",6],["t",267,56,"d",6],["t",276,56," ",6],["t",285,56,"x",6],["t",294,56,"\u2264",6],["t",303,56,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Implicit derivative","i":"impDif(y^3-x*y=2,x,y)","r":"y/(-x+3*y^2)","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"i",4],["t",15,204,"m",4],["t",24,204,"p",4],["t",33,204,"D",4],["t",42,204,"i",4],["t",51,204,"f",4],["t",60,204,"(",4],["t",69,204,"y",4],["t",79,196,"3",4],["t",89,204,"-",4],["t",98,204,"x",4],["t",107,204,"*",4],["t",116,204,"y",4],["t",125,204,"=",4],["t",134,204,"2",4],["t",143,204,",",4],["t",152,204,"x",4],["t",161,204,",",4],["t",170,204,"y",4],["t",179,204,")",4],["r",193,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,43,"i",4],["t",13,43,"m",4],["t",22,43,"p",4],["t",31,43,"D",4],["t",40,43,"i",4],["t",49,43,"f",4],["t",58,43,"(",4],["t",67,43,"y",4],["t",77,35,"3",4],["t",87,43,"-",4],["t",96,43,"x",4],["t",105,43,"\u00b7",4],["t",114,43,"y",4],["t",123,43,"=",4],["t",132,43,"2",4],["t",141,43,",",4],["t",150,43,"x",4],["t",159,43,",",4],["t",168,43,"y",4],["t",177,43,")",4],["r",242,70,69,1,6],["t",272,64,"y",6],["t",244,93,"-",6],["t",253,93,"x",6],["t",262,93,"+",6],["t",271,93,"3",6],["t",280,93,"\u00b7",6],["t",289,93,"y",6],["t",299,85,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]},{"c":"beyond","l":"Trig substitution","i":"integral(x^2/sqrt(9-x^2),x,-3,3)","r":"9*\u03c0/2","a":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["r",0,180,318,32,2],["r",0,179,318,1,3],["t",6,204,"i",4],["t",15,204,"n",4],["t",24,204,"t",4],["t",33,204,"e",4],["t",42,204,"g",4],["t",51,204,"r",4],["t",60,204,"a",4],["t",69,204,"l",4],["t",78,204,"(",4],["t",87,204,"x",4],["t",97,196,"2",4],["t",107,204,"/",4],["t",116,204,"s",4],["t",125,204,"q",4],["t",134,204,"r",4],["t",143,204,"t",4],["t",152,204,"(",4],["t",161,204,"9",4],["t",170,204,"-",4],["t",179,204,"x",4],["t",189,196,"2",4],["t",199,204,")",4],["t",208,204,",",4],["t",217,204,"x",4],["t",226,204,",",4],["t",235,204,"-",4],["t",244,204,"3",4],["t",253,204,",",4],["t",262,204,"3",4],["t",271,204,")",4],["r",285,192,2,16,5]],"b":[["r",0,0,318,212,0],["r",0,0,318,18,1],["t",4,14,"nCAS  RAD AUTO REAL   menu: commands",0],["t",4,54,"\u222b",4],["t",13,54,"(",4],["r",23,49,53,1,4],["t",39,43,"x",4],["t",49,35,"2",4],["l",25,71,27,70,4],["l",27,70,29,78,4],["l",29,78,33,52,4],["l",33,52,73,52,4],["t",34,75,"9",4],["t",43,75,"-",4],["t",52,75,"x",4],["t",62,67,"2",4],["t",77,54,",",4],["t",86,54,"x",4],["t",95,54,",",4],["t",104,54,"-",4],["t",113,54,"3",4],["t",122,54,",",4],["t",131,54,"3",4],["t",140,54,")",4],["r",280,102,31,1,6],["t",282,96,"9",6],["t",291,96,"\u00b7",6],["t",300,96,"\u03c0",6],["t",291,117,"2",6],["r",0,188,318,24,2],["r",0,187,318,1,3],["r",7,194,7,1,3],["r",7,207,7,1,3],["r",7,194,1,14,3],["r",13,194,1,14,3],["r",13,192,2,16,5]]}]};
+const CATS = [
+  ['algebra', 'Algebra'], ['calculus', 'Calculus'], ['matrix', 'Matrices'], ['beyond', 'Beyond the CAS']
+];
+const svg = document.getElementById('screen');
+const tabsEl = document.getElementById('tabs');
+const chipsEl = document.getElementById('chips');
+const capIn = document.getElementById('cap-in');
+const capOut = document.getElementById('cap-out');
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const C = DATA.colors;
+let cat = 'algebra';
+let timers = [];
+let auto = true;
+
+function esc(s) { return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function opsSvg(ops) {
+  let out = '';
+  for (const o of ops) {
+    if (o[0] === 'r') out += `<rect x="${o[1]}" y="${o[2]}" width="${o[3]}" height="${o[4]}" fill="${C[o[5]]}"/>`;
+    else if (o[0] === 'l') out += `<line x1="${o[1]}" y1="${o[2]}" x2="${o[3]}" y2="${o[4]}" stroke="${C[o[5]]}" stroke-width="1"/>`;
+    else out += `<text x="${o[1]}" y="${o[2]}" fill="${C[o[4]]}">${esc(o[3])}</text>`;
+  }
+  return out;
+}
+
+function entryTop(ops) {
+  // the grey entry box spans the full width near the bottom
+  for (const o of ops) if (o[0] === 'r' && o[1] === 0 && o[3] === 318 && C[o[5]] === 'rgb(240,240,240)') return o[2];
+  return 180;
+}
+
+const FONT = 'font-family="JetBrains Mono, Menlo, Consolas, monospace" font-size="12"';
+
+function drawStatic(ops) {
+  svg.innerHTML = `<title id="screen-title">nCAS screen</title><g ${FONT}>${opsSvg(ops)}</g>`;
+}
+
+function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+function play(ex) {
+  clearTimers();
+  capIn.textContent = ex.i;
+  capOut.textContent = '';
+  if (reduce) { drawStatic(ex.b); capOut.textContent = ex.r; return; }
+  // frame A: the input on the entry line, revealed left to right as if typed
+  const top = entryTop(ex.a);
+  const base = ex.a.filter(o => !(o[2] >= top && !(o[0] === 'r' && o[1] === 0 && o[3] === 318)));
+  const line = ex.a.filter(o => o[2] >= top && !(o[0] === 'r' && o[1] === 0 && o[3] === 318));
+  svg.innerHTML = `<title id="screen-title">nCAS screen</title><defs><clipPath id="type"><rect id="typer" x="0" y="0" width="0" height="212"/></clipPath></defs>` +
+    `<g ${FONT}>${opsSvg(base)}<g clip-path="url(#type)">${opsSvg(line)}</g></g>`;
+  const typer = svg.querySelector('#typer');
+  const steps = Math.min(Math.max(ex.i.length, 8), 40);
+  for (let k = 1; k <= steps; k++) {
+    timers.push(setTimeout(() => typer.setAttribute('width', String(Math.round(318 * k / steps))), 38 * k));
+  }
+  timers.push(setTimeout(() => {
+    drawStatic(ex.b);
+    svg.style.opacity = .55;
+    requestAnimationFrame(() => { svg.style.transition = 'opacity .25s'; svg.style.opacity = 1; });
+    capOut.textContent = ex.r;
+  }, 38 * steps + 380));
+}
+
+function select(i, user) {
+  if (user) auto = false;
+  const ex = DATA.ex[i];
+  if (ex.c !== cat) { cat = ex.c; renderTabs(); renderChips(); }
+  document.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.i) === i)));
+  play(ex);
+}
+
+function renderTabs() {
+  tabsEl.innerHTML = '';
+  for (const [k, name] of CATS) {
+    const b = document.createElement('button');
+    b.className = 'tab'; b.type = 'button'; b.setAttribute('role', 'tab'); b.id = 'tab-' + k;
+    b.setAttribute('aria-selected', String(k === cat));
+    b.innerHTML = (k === 'beyond' ? '<span class="dot" aria-hidden="true"></span>' : '') + name;
+    b.addEventListener('click', () => { cat = k; auto = false; renderTabs(); renderChips(); try { localStorage.setItem('ncas-tab', k); } catch (e) {} });
+    tabsEl.appendChild(b);
+  }
+}
+
+function renderChips() {
+  chipsEl.innerHTML = '';
+  DATA.ex.forEach((ex, i) => {
+    if (ex.c !== cat) return;
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.dataset.i = i; b.id = 'ex-' + i;
+    b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = `<span class="lbl">${esc(ex.l)}</span><span class="in">${esc(ex.i)}</span>`;
+    b.addEventListener('click', () => select(i, true));
+    chipsEl.appendChild(b);
+  });
+}
+
+try { const t = localStorage.getItem('ncas-tab'); if (t && CATS.some(c => c[0] === t)) cat = t; } catch (e) {}
+renderTabs();
+renderChips();
+drawStatic(DATA.ex[0].b);
+
+// a short tour until the visitor picks something
+const tour = [0, 16, 6, 13, 18, 10, 21, 2, 19, 7];
+let ti = 0;
+function tourStep() {
+  if (!auto) return;
+  select(tour[ti % tour.length], false);
+  ti++;
+  timers.push(setTimeout(tourStep, 4200));
+}
+if (!reduce) setTimeout(tourStep, 600); else { capIn.textContent = DATA.ex[0].i; capOut.textContent = DATA.ex[0].r; }
+
+document.getElementById('copybtn').addEventListener('click', async (ev) => {
+  const t = document.getElementById('cmd').textContent;
+  try { await navigator.clipboard.writeText(t); ev.target.textContent = 'Copied'; }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents(document.getElementById('cmd'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); ev.target.textContent = 'Selected';
+  }
+  setTimeout(() => { ev.target.textContent = 'Copy'; }, 1600);
+});
+</script>
+</body>
+</html>

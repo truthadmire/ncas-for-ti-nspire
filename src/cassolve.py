@@ -64,7 +64,23 @@ def solve_eq(f, x, cplx=False, depth=0):
     nu = numer_of(f)
     if freeof(nu, x):
         return [] if nu != 0 else 'all'
+    if not cplx and firstabs(nu, x) is not None and depth < 4:
+        r = abs_cases(nu, x, [], depth)
+        if r is not None and r != 'interval':
+            return [q for q in r if valid(f, x, q, cplx)]
     sols = solve_num(nu, x, cplx, depth)
+    numeric = sols is None or (sols != 'all' and any([hasfloat(q) for q in sols]))
+    if numeric and hastrigx(nu, x) and depth < 3:
+        # products and powers of sin/cos: product-to-sum first
+        from cascalc import tcollect
+        try:
+            g = tcollect(nu)
+        except Exception:
+            g = nu
+        if g != nu:
+            s2 = solve_eq(g, x, cplx, depth + 2)
+            if s2 is not None and s2 != 'all' and not any([hasfloat(q) for q in s2]):
+                sols = s2
     if sols is None or sols == 'all':
         return sols
     # exclude zeros of the original denominators / undefined points
@@ -843,58 +859,54 @@ def numeric_solve(f, x, cplx, lo=None, hi=None, maxn=12):
         if v != v:
             return None
         return v
-    pts = []
-    if lo is not None and hi is not None:
-        N = 400
-        for i in range(N + 1):
-            pts.append(lo + (hi - lo) * i / N)
-    else:
-        for i in range(-400, 401):
-            pts.append(i * 0.05)
-        for k in range(-40, 61):
-            v = 10 ** (k / 10.0)
+    def points():
+        # scanned one at a time (a list of ~900 floats fragments the
+        # calculator's heap)
+        if lo is not None and hi is not None:
+            for i in range(401):
+                yield lo + (hi - lo) * i / 400
+            return
+        big = [10 ** (k / 10.0) for k in range(60, -41, -1)]
+        for v in big:
             if v > 20:
-                pts.append(v)
-                pts.append(-v)
-        pts.sort()
+                yield -v
+        for i in range(-400, 401):
+            yield i * 0.05
+        for v in reversed(big):
+            if v > 20:
+                yield v
     roots = []
-    prev = None
-    pv = None
-    vals0 = [F(t) for t in pts]
-    for k in range(len(pts)):
-        t = pts[k]
-        v = vals0[k]
-        if v is not None and v == 0:
-            a = vals0[k - 1] if k > 0 else None
-            b = vals0[k + 1] if k + 1 < len(pts) else None
-            if (a is not None and a != 0) or (b is not None and b != 0):
-                roots.append(t)
-        elif v is not None and pv is not None and v != 0 and pv != 0 and (v < 0) != (pv < 0):
-            r = bisect(F, prev, t, pv, v)
+    t0 = a = None
+    t1 = b = None
+    for t2 in points():
+        c = F(t2)
+        if b is not None and b == 0:
+            if (a is not None and a != 0) or (c is not None and c != 0):
+                roots.append(t1)
+        if b is not None and c is not None and b != 0 and c != 0 and (b < 0) != (c < 0):
+            r = bisect(F, t1, t2, b, c)
             if r is not None:
                 roots.append(r)
-        prev = t
-        pv = v
-        if len(roots) > 40:
-            break
-    # local minima of |f| touching zero
-    vals = [(pts[k], vals0[k]) for k in range(len(pts))]
-    for i in range(1, len(vals) - 1):
-        t0, a = vals[i - 1]
-        t1, b = vals[i]
-        t2, c = vals[i + 1]
-        if a is None or b is None or c is None:
-            continue
-        if b != 0 and abs(b) < abs(a) and abs(b) < abs(c) and (a > 0) == (b > 0) == (c > 0) and abs(b) < 1e-2:
+        # local minimum of |f| touching zero
+        if (a is not None and b is not None and c is not None and b != 0
+                and abs(b) < abs(a) and abs(b) < abs(c) and (a > 0) == (b > 0) == (c > 0) and abs(b) < 1e-2):
             r = newton(F, t1)
             if r is not None and t0 <= r <= t2:
                 roots.append(r)
+        t0, a = t1, b
+        t1, b = t2, c
+        if len(roots) > 200:
+            break
+    if b is not None and b == 0 and a is not None and a != 0:
+        roots.append(t1)
     out = []
     for r in sorted(roots):
         if not out or abs(r - out[-1]) > 1e-9 * (1 + abs(r)):
             out.append(r)
     if len(out) > maxn and lo is None:
-        out = out[:maxn]
+        # many roots (periodic): keep the ones nearest 0
+        out.sort(key=abs)
+        out = sorted(out[:maxn])
     return [snap(r) for r in out]
 
 def snap(r):
@@ -992,30 +1004,63 @@ def solve_ineq(rel, f, x):
         r = ineq_param(rel, f, x)
         if r is not None:
             return r
-    pts = []
-    rs = solve_eq(f, x, False)
-    if rs is None:
-        return None
-    if rs == 'all':
-        rs = []
-    for r in rs:
-        if not isrealc(r):
-            return None
-        pts.append(r)
-    dens = []
-    domainpts(f, x, dens)
-    for d in dens:
-        r2 = solve_eq(d, x, False)
-        if r2 is None or r2 == 'all':
-            continue
-        for r in r2:
-            if isrealc(r):
-                pts.append(r)
-            else:
+    return solve_rels([(rel, f)], x)
+
+def rel_pairs(cs, x):
+    # relations (and 'and' of them) in x as [(rel, lhs-rhs)], or None
+    out = []
+    for c in cs:
+        h = head(c)
+        if h == 'and':
+            r = rel_pairs(c[1:], x)
+            if r is None:
                 return None
-    pts = dedup(pts)
-    pts = sortsols(pts)
-    def test(t):
+            out += r
+        elif h in ('<', '>', '<=', '>=', '/=', '='):
+            out.append((h, autocancel(sub(c[1], c[2]))))
+        else:
+            return None
+    for rel, f in out:
+        if not freeof(f, x) and fvars(f, x):
+            return None
+    return out
+
+def fvars(f, x):
+    # True if f has a variable other than x
+    return any(w != x and w not in ('pi', 'e', 'i', 'inf') for w in symbols(f))
+
+def solve_rels(pairs, x, anyof=False):
+    # all of [(rel, f)] (f rel 0) at once (any of them with anyof), by a
+    # sign chart over the critical points of every f; returns a boolean
+    # expression or None
+    pts = []
+    for rel, f in pairs:
+        if freeof(f, x):
+            continue
+        rs = solve_eq(f, x, False)
+        if rs is None:
+            return None
+        if rs == 'all':
+            rs = []
+        for r in rs:
+            if not isrealc(r):
+                if isconst(r):
+                    continue
+                return None
+            pts.append(r)
+        dens = []
+        domainpts(f, x, dens)
+        for d in dens:
+            r2 = solve_eq(d, x, False)
+            if r2 is None or r2 == 'all':
+                continue
+            for r in r2:
+                if isrealc(r):
+                    pts.append(r)
+                elif not isconst(r):
+                    return None
+    pts = sortsols(dedup(pts))
+    def ok1(rel, f, t):
         try:
             v = nval(f, {x: t})
         except Exception:
@@ -1027,34 +1072,46 @@ def solve_ineq(rel, f, x):
         if v != v:
             return False
         return relok(rel, v)
-    vals = [fv(p) for p in pts]
-    segs = []
-    if not vals:
-        ok = test(0.5)
-        return 'true' if ok else 'false'
-    first = vals[0] - max(1.0, abs(vals[0]))
-    segs.append(('I', None, pts[0], test(first)))
-    for i in range(len(pts)):
-        p = pts[i]
-        okp = False
-        try:
-            v = subs(f, x, p)
-            if v != 'undef' and not has(v, 'undef') and not has(v, 'inf'):
+    def test(t):
+        for rel, f in pairs:
+            if ok1(rel, f, t) == anyof:
+                return anyof
+        return not anyof
+    def testp(p):
+        if anyof:
+            for q in pairs:
+                if testp1([q], p):
+                    return True
+            return False
+        return testp1(pairs, p)
+    def testp1(pairs, p):
+        for rel, f in pairs:
+            try:
+                v = subs(f, x, p)
+                if v == 'undef' or has(v, 'undef') or has(v, 'inf'):
+                    return False
                 vv = nval(v)
                 if type(vv) is complex:
-                    vv = vv.real if abs(vv.imag) < 1e-9 else None
-                if vv is not None:
-                    if abs(vv) < 1e-10:
-                        vv = 0.0
-                    okp = relok(rel, vv)
-        except Exception:
-            okp = False
-        segs.append(('P', p, p, okp))
+                    if abs(vv.imag) >= 1e-9:
+                        return False
+                    vv = vv.real
+                if abs(vv) < 1e-10:
+                    vv = 0.0
+                if not relok(rel, vv):
+                    return False
+            except Exception:
+                return False
+        return True
+    vals = [fv(p) for p in pts]
+    if not vals:
+        return 'true' if test(0.5) else 'false'
+    segs = [('I', None, pts[0], test(vals[0] - max(1.0, abs(vals[0]))))]
+    for i in range(len(pts)):
+        p = pts[i]
+        segs.append(('P', p, p, testp(p)))
         if i + 1 < len(pts):
-            m = 0.5 * (vals[i] + vals[i + 1])
-            segs.append(('I', p, pts[i + 1], test(m)))
-    last = vals[-1] + max(1.0, abs(vals[-1]))
-    segs.append(('I', pts[-1], None, test(last)))
+            segs.append(('I', p, pts[i + 1], test(0.5 * (vals[i] + vals[i + 1]))))
+    segs.append(('I', pts[-1], None, test(vals[-1] + max(1.0, abs(vals[-1])))))
     return segs_to_bool(segs, x)
 
 def sgn(e):
@@ -1598,6 +1655,8 @@ def satisfies(s, x, cons):
                 return False
             if h == '/=' and abs(a - b) <= eps:
                 return False
+            if h == '=' and abs(a - b) > 1e-9 * (1 + abs(a) + abs(b)):
+                return False
         elif h == 'and':
             if not satisfies(s, x, list(c[1:])):
                 return False
@@ -1611,17 +1670,30 @@ def solve(eq, x, cplx=False, cons=None):
     h = head(eq)
     if h in ('<', '>', '<=', '>=', '/='):
         f = sub(eq[1], eq[2])
+        cp = rel_pairs(cons, x) if cons else None
+        if cp:
+            return solve_rels([(h, autocancel(f))] + cp, x)
         r = solve_ineq(h, f, x)
         return r
     if h == '=':
         f = sub(eq[1], eq[2])
     elif h == 'or':
+        if not cplx and any([head(q) in ('<', '>', '<=', '>=', '/=') for q in eq[1:]]):
+            ps = rel_pairs(eq[1:], x) if all([head(q) != 'and' for q in eq[1:]]) else None
+            if ps:
+                r = solve_rels(ps, x, True)
+                if r is not None:
+                    return r
         parts = []
         for e in eq[1:]:
             r = solve(e, x, cplx, cons)
             if r is None:
                 return None
-            if r != 'false':
+            if r == 'true':
+                return 'true'
+            if isnode(r, 'or'):
+                parts.extend([q for q in r[1:] if q not in parts])
+            elif r != 'false' and r not in parts:
                 parts.append(r)
         if not parts:
             return 'false'
@@ -1630,6 +1702,15 @@ def solve(eq, x, cplx=False, cons=None):
         return 'true'
     else:
         f = eq
+    w = firstwhen(f, x)
+    if w is not None:
+        r = solve_when(f, w, x, cplx, cons)
+        if r is not None:
+            return r
+    if not cplx and firstabs(f, x) is not None and abs_cases(numer_of(f), x, [], 0) == 'interval':
+        r = abs_region(f, x, cons)
+        if r is not None:
+            return r
     sols = solve_eq(f, x, cplx)
     if sols is None:
         return None
@@ -1643,6 +1724,137 @@ def solve(eq, x, cplx=False, cons=None):
         sols = apply_constraints(sols, x, cons)
     return sols_to_bool(x, sols)
 
+def firstabs(f, x):
+    if type(f) is not tuple or f[0] == 'Q':
+        return None
+    if f[0] == 'abs' and not freeof(f[1], x):
+        return f
+    for a in f[1:]:
+        w = firstabs(a, x)
+        if w is not None:
+            return w
+    return None
+
+def abs_cases(f, x, conds, depth):
+    # roots of f (with abs()) by sign cases: a list, or 'interval' when f
+    # vanishes on a whole interval, or None
+    w = firstabs(f, x)
+    if w is None:
+        rs = solve_eq(f, x, False, depth + 1)
+        if rs == 'all':
+            # f = 0 wherever the conditions hold
+            ps = rel_pairs(conds, x)
+            r = solve_rels(ps, x) if ps is not None else None
+            if r == 'false':
+                return []
+            if r is None or isnode(r, 'and') or head(r) in ('<', '>', '<=', '>=', '/=', 'or') or r == 'true':
+                return 'interval'
+            return [r[2]] if isnode(r, '=') else 'interval'
+        if rs is None:
+            return None
+        out = []
+        for q in rs:
+            ns = [w for w in symbols(q) if w[0] == 'n' and w[1:].isdigit()]
+            q0 = subs(q, ns[0], 0) if len(ns) == 1 else q
+            if isrealc(q0) and satisfies(q0, x, conds):
+                out.append(q)
+        return out
+    u = w[1]
+    out = []
+    for g, c in ((replnode(f, w, u), ('>=', u, 0)), (replnode(f, w, neg(u)), ('<', u, 0))):
+        r = abs_cases(g, x, conds + [c], depth)
+        if r is None or r == 'interval':
+            return r
+        for q in r:
+            if q not in out:
+                out.append(q)
+    return sortsols(out)
+
+def abs_region(f, x, cons):
+    # f = 0 when f vanishes on intervals: sign chart of |f| < tiny over the
+    # breakpoints (abs arguments and isolated roots)
+    pts = []
+    def walk(e):
+        if type(e) is not tuple or e[0] == 'Q':
+            return
+        if e[0] == 'abs' and not freeof(e[1], x):
+            rs = solve_eq(e[1], x, False)
+            if rs and rs != 'all':
+                pts.extend([q for q in rs if isrealc(q)])
+        for b in e[1:]:
+            walk(b)
+    walk(f)
+    def ok(t):
+        try:
+            v = fv(subs(f, x, t)) if not type(t) is float else nval(f, {x: t})
+            if type(v) is complex:
+                v = v.real
+            return abs(v) < 1e-9 and satisfies(t, x, cons or [])
+        except Exception:
+            return False
+    pts = sortsols(dedup(pts))
+    if not pts:
+        return None
+    vals = [fv(p) for p in pts]
+    segs = [('I', None, pts[0], ok(vals[0] - 1.0))]
+    for i in range(len(pts)):
+        segs.append(('P', pts[i], pts[i], ok(pts[i])))
+        if i + 1 < len(pts):
+            segs.append(('I', pts[i], pts[i + 1], ok(0.5 * (vals[i] + vals[i + 1]))))
+    segs.append(('I', pts[-1], None, ok(vals[-1] + 1.0)))
+    return segs_to_bool(segs, x)
+
+NOTREL = {'<': '>=', '>': '<=', '<=': '>', '>=': '<', '=': '/=', '/=': '='}
+
+def firstwhen(f, x):
+    if type(f) is not tuple or f[0] == 'Q':
+        return None
+    if f[0] == 'when' and not freeof(f[1], x):
+        return f
+    for a in f[1:]:
+        w = firstwhen(a, x)
+        if w is not None:
+            return w
+    return None
+
+def replnode(f, w, r):
+    if f == w:
+        return r
+    if type(f) is not tuple or f[0] == 'Q':
+        return f
+    return simp((f[0],) + tuple(replnode(a, w, r) for a in f[1:]))
+
+def solve_when(f, w, x, cplx, cons):
+    # f = 0 where f holds when(c, a, b): solve with a under c, with b
+    # under not c
+    c = w[1]
+    cs = list(c[1:]) if head(c) == 'and' else [c]
+    if not all([head(q) in NOTREL for q in cs]):
+        return None
+    parts = []
+    r = solve(('=', replnode(f, w, w[2]), 0), x, cplx, (cons or []) + cs)
+    if r is None:
+        return None
+    parts.append(r)
+    if len(w) > 3:
+        for k in range(len(cs)):
+            # not (c1 and c2 ...) = (not c1) or (c1 and not c2) ...
+            nc = cs[:k] + [(NOTREL[cs[k][0]], cs[k][1], cs[k][2])]
+            r = solve(('=', replnode(f, w, w[3]), 0), x, cplx, (cons or []) + nc)
+            if r is None:
+                return None
+            parts.append(r)
+    out = []
+    for r in parts:
+        for q in (r[1:] if isnode(r, 'or') else (r,)):
+            if q != 'false' and q not in out:
+                out.append(q)
+    if 'true' in out:
+        return None
+    if not out:
+        return 'false'
+    return out[0] if len(out) == 1 else ('or',) + tuple(out)
+
 def realpart(s):
     if isconst(s) and has(s, 'i'):
         r, i = reim(s)
@@ -1654,6 +1866,11 @@ def zeros(e, x, cplx=False, cons=None):
     NC[0] = 0
     if isnode(e, '='):
         e = sub(e[1], e[2])
+    if firstwhen(e, x) is not None:
+        r = solve(('=', e, 0), x, cplx, cons)
+        qs = r[1:] if isnode(r, 'or') else (r,)
+        if r is not None and all([r == 'false' or (isnode(q, '=') and q[1] == x) for q in qs]):
+            return ('list',) + tuple([q[2] for q in qs if r != 'false'])
     sols = solve_eq(e, x, cplx)
     if sols is None:
         return None
@@ -2047,7 +2264,10 @@ def fextreme(f, x, kind, lo=None, hi=None):
         return None
     pts.sort(key=lambda p: p[0])
     m = pts[0][0]
-    win = [p[1] for p in pts if abs(p[0] - m) <= 1e-10 * (1 + abs(m)) or p[0] == m]
+    if m == float('-inf'):
+        win = [p[1] for p in pts if p[0] == m]
+    else:
+        win = [p[1] for p in pts if abs(p[0] - m) <= 1e-10 * (1 + abs(m))]
     win = sortsols(dedup(win))
     eqs = [('=', x, w) for w in win]
     return eqs[0] if len(eqs) == 1 else ('or',) + tuple(eqs)
@@ -2091,6 +2311,12 @@ def nfextreme(f, x, kind, lo=None, hi=None):
         if abs(r - l) < 1e-12 * (1 + abs(l)):
             break
     t = 0.5 * (l + r)
+    # an unbounded side beats any finite point
+    for side, bound in ((1.0, hi), (-1.0, lo)):
+        if bound is None:
+            vs = [F(side * 10.0 ** k) for k in (3, 5, 7)]
+            if vs[0] <= bv and vs[1] <= vs[0] and vs[2] <= vs[1] and vs[2] < bv:
+                return 'inf' if side > 0 else ('*', -1, 'inf')
     try:
         d = diff(f, x)
         def G(u):

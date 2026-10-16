@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="477" height="318" viewBox="0 0 318 212">
+<rect width="318" height="212" fill="#fff"/>
+<rect x="0" y="0" width="318" height="212" fill="rgb(255,255,255)"/>
+<rect x="0" y="0" width="318" height="18" fill="rgb(30,60,130)"/>
+<text x="4" y="14" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">nCAS  RAD AUTO REAL   menu: commands</text>
+<text x="250" y="46" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<text x="259" y="46" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">·</text>
+<line x1="268" y1="42" x2="270" y2="41" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="270" y1="41" x2="272" y2="49" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="272" y1="49" x2="276" y2="31" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="276" y1="31" x2="287" y2="31" stroke="rgb(0,70,170)" stroke-width="1"/>
+<text x="277" y="46" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<text x="288" y="46" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">+</text>
+<rect x="298" y="41" width="13" height="1" fill="rgb(0,70,170)"/>
+<text x="300" y="35" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">1</text>
+<text x="300" y="56" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<rect x="2" y="61" width="314" height="1" fill="rgb(215,215,215)"/>
+<text x="4" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">∫</text>
+<text x="13" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">(</text>
+<text x="22" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">s</text>
+<text x="31" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">e</text>
+<text x="40" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">c</text>
+<text x="49" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">(</text>
+<text x="58" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">x</text>
+<text x="67" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">)</text>
+<text x="77" y="80" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">3</text>
+<text x="87" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">,</text>
+<text x="96" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">x</text>
+<text x="105" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">,</text>
+<text x="114" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">0</text>
+<text x="123" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">,</text>
+<rect x="133" y="83" width="13" height="1" fill="rgb(0,0,0)"/>
+<text x="135" y="77" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">π</text>
+<text x="135" y="98" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">4</text>
+<text x="147" y="88" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">)</text>
+<rect x="198" y="128" width="24" height="1" fill="rgb(0,70,170)"/>
+<line x1="200" y1="118" x2="202" y2="117" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="202" y1="117" x2="204" y2="125" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="204" y1="125" x2="208" y2="107" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="208" y1="107" x2="219" y2="107" stroke="rgb(0,70,170)" stroke-width="1"/>
+<text x="209" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<text x="205" y="143" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<text x="223" y="133" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">+</text>
+<rect x="233" y="128" width="78" height="1" fill="rgb(0,70,170)"/>
+<text x="235" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">l</text>
+<text x="244" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">n</text>
+<text x="253" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">(</text>
+<line x1="262" y1="118" x2="264" y2="117" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="264" y1="117" x2="266" y2="125" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="266" y1="125" x2="270" y2="107" stroke="rgb(0,70,170)" stroke-width="1"/>
+<line x1="270" y1="107" x2="281" y2="107" stroke="rgb(0,70,170)" stroke-width="1"/>
+<text x="271" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<text x="282" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">+</text>
+<text x="291" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">1</text>
+<text x="300" y="122" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">)</text>
+<text x="267" y="143" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">2</text>
+<rect x="0" y="188" width="318" height="24" fill="rgb(240,240,240)"/>
+<rect x="0" y="187" width="318" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="194" width="7" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="207" width="7" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="194" width="1" height="14" fill="rgb(110,110,110)"/>
+<rect x="13" y="194" width="1" height="14" fill="rgb(110,110,110)"/>
+<rect x="13" y="192" width="2" height="16" fill="rgb(220,0,0)"/>
+</svg>

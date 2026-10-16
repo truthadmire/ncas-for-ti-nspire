@@ -22,7 +22,7 @@ def result(line):
     try:
         return cas.run(line).replace('\n', ' | ')
     except CASError as ex:
-        return 'Error: ' + str(ex)
+        return ('Error: ' + str(ex)).replace('\n', ' | ')
     except ZeroDivisionError:
         return 'Error: Division by zero'
     except Exception as ex:
@@ -52,3 +52,5 @@ for name in ('run_cases', 'edge_cases'):
         if '!!PYEXC' in got[i]:
             print('PYTHON EXCEPTION: ' + got[i])
 print(('updated golden files' if update else '%d/%d match' % (total - bad, total)))
+if bad and not update:
+    sys.exit(1)

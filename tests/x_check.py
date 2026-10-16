@@ -27,3 +27,5 @@ for q, want in CASES:
         bad += 1
         print('FAIL %s -> %r (want %r)' % (q, got, want))
 print('x check: %d/%d' % (len(CASES) - bad, len(CASES)))
+if bad:
+    sys.exit(1)

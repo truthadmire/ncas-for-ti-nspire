@@ -1,0 +1,71 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cpython:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: dist/ and onefile/ match src/
+        run: |
+          python3 tools/build.py
+          python3 tools/onefile.py
+          git diff --stat --exit-code -- dist onefile
+      - name: golden results (src, single file)
+        run: |
+          python3 tests/check.py src
+          python3 tests/check.py onefile --one < /dev/null
+      - name: menus
+        run: |
+          python3 tests/menu_items.py
+          python3 tests/menu_check.py python3 dist
+          python3 tests/menu_check.py python3 onefile
+      - name: full-screen mode
+        run: |
+          python3 tests/gui_check.py
+          python3 tests/layout_check.py
+          python3 tests/gui_fuzz.py 200
+      - name: exact calculator, eigenvectors, properties
+        run: |
+          python3 tests/x_check.py
+          python3 tests/eig_check.py
+          python3 tests/verify.py
+
+  micropython:
+    runs-on: ubuntu-latest
+    env:
+      MPY: v1.29.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: mpbin
+          key: micropython-unix-${{ env.MPY }}
+      - name: build MicroPython (unix port)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential libffi-dev pkg-config
+          git clone --depth 1 --branch "$MPY" https://github.com/micropython/micropython.git mpsrc
+          make -C mpsrc/mpy-cross -j4
+          make -C mpsrc/ports/unix submodules
+          make -C mpsrc/ports/unix -j4
+          mkdir -p mpbin && cp mpsrc/ports/unix/build-standard/micropython mpbin/
+      - name: tests with a 2 MB heap, as on the calculator
+        run: |
+          export PATH="$PWD/mpbin:$PATH"
+          micropython -X heapsize=2000000 tests/check.py dist
+          micropython -X heapsize=2000000 tests/x_check.py
+          micropython -X heapsize=2000000 tests/gui_fuzz.py 40 150 dist
+          python3 tests/menu_check.py micropython onefile
+      - name: self-test fits in 1 MB
+        run: |
+          export PATH="$PWD/mpbin:$PATH"
+          printf ':test\nq\n' | micropython -X heapsize=1000000 onefile/ncastext.py | tee out.txt
+          grep -q '18/18 tests passed' out.txt

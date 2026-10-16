@@ -1,0 +1,54 @@
+name: Report from a calculator
+description: Something wrong or odd on a TI-Nspire CX II (wrong answer, key not working, freeze, memory error)
+labels: [device]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing nCAS on a real calculator. The details below make the problem reproducible.
+  - type: input
+    id: os
+    attributes:
+      label: Calculator and OS version
+      description: Home ▸ Settings ▸ Status shows the OS version.
+      placeholder: TI-Nspire CX II, OS 6.2.0.333
+    validations:
+      required: true
+  - type: dropdown
+    id: program
+    attributes:
+      label: Program
+      options:
+        - ncasgui (full screen)
+        - ncastext (text mode)
+        - ncasx (exact calculator)
+        - module install (dist/ files + ncas launcher)
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What you typed and what happened
+      description: The exact input, the result you got, and the result you expected.
+      placeholder: |
+        Input: integral(1/x,x,-1,1)
+        Got: 0
+        Expected: undef
+    validations:
+      required: true
+  - type: input
+    id: selftest
+    attributes:
+      label: Self-test and memory
+      description: Type :test and :mem (in ncasgui, menu ▸ 8 Settings ▸ Self-test / Memory).
+      placeholder: 18/18 tests passed, Memory: 900 KB free, 600 KB used
+  - type: textarea
+    id: keys
+    attributes:
+      label: Keys (if a key does nothing or the wrong thing)
+      description: Run :keys (menu ▸ 8 Settings ▸ Key test) and copy the names it prints for those keys.
+  - type: textarea
+    id: launcher
+    attributes:
+      label: Module install only
+      description: The ok / MISSING / WRONG CONTENTS lines the ncas launcher prints.

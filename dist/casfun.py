@@ -116,10 +116,26 @@ def rel(op,a,b):
     err("Non-real comparison")
    if d==0 or abs(v)<1e-300:
     v=0.0
+   else:
+    try:
+     sc=abs(nval(a))+abs(nval(b))
+    except Exception:
+     sc=0.0
+    if abs(v)<1e-12*(1+sc):
+     v=0.0
    r={'=':v==0,'/=':v!=0,'<':v<0,'>':v>0,'<=':v<=0,'>=':v>=0}[op]
    return 'true' if r else 'false'
+ if d is not None and op in('=','/=')and not isconst(d):
+  try:
+   z=PO.expand_full(d)if hasattr(PO,'expand_full')else expand(d)
+  except Exception:
+   z=d
+  if z==0:
+   d=0
  if op=='=' and d==0:
   return 'true'
+ if op=='/=' and d==0:
+  return 'false'
  return(op,a,b)
 def cmpstr(op,a,b):
  if op=='=':
@@ -355,6 +371,8 @@ def cmpv(x,y):
   return 1 if d>0 else(-1 if d<0 else 0)
  err("Cannot compare")
 def when_(c,a,b=None,u=None):
+ if b=='undef':
+  b=None
  t=tobool(c)
  if t is True:
   return a
@@ -367,11 +385,13 @@ def when_(c,a,b=None,u=None):
  return u
 def piecewise_(*a):
  a=list(a)
+ if len(a)<2:
+  err('Wrong number of arguments')
  if len(a)%2==1:
   r=a[-1]
   a=a[:-1]
  else:
-  r='undef'
+  r=None
  for i in range(len(a)-2,-1,-2):
   r=when_(a[i+1],a[i],r)
  return r
@@ -545,9 +565,12 @@ ALIAS={'asin':'arcsin','acos':'arccos','atan':'arctan','asinh':'arcsinh',
  'stddevsamp':'stddev','varsamp':'variance','cumsum':'cumulativesum',
  'nsolve':'nsolve','arg':'angle','inv':'inverse','mat2list':'matlist',
  'list2mat':'listmat','explist':'explist','tran':'transpose',
- 'log10':'log10','sqr':'sqrt'}
+ 'log10':'log10','sqr':'sqrt','diff':'d','deriv':'d',
+ 'differentiate':'d','integrate':'integral','avg':'mean',
+ 'average':'mean'}
 F['sqrt']=lambda u:lmap(sqrt,u)
 F['root']=lambda u,n=2:lmap(lambda v:fn('root',v,n),u)
+F['cbrt']=lambda u:lmap(lambda v:fn('root',v,3),u)
 F['log']=lambda u,b=None:lmap(lambda v:fn('ln',v)if b is None else fn('log',v,b),u)
 F['atan2']=lambda y,x:lmap2(lambda b,a:fromang(fn('angle',add(a,mul('i',b)))),y,x)
 F['log10']=lambda u:lmap(lambda v:fn('log',v,10),u)

@@ -175,3 +175,5 @@ for k in range(N):
 
 for k in stats:
     print(k, stats[k])
+if any([k not in (True, 'skip') for st in stats.values() for k in st]):
+    sys.exit(1)

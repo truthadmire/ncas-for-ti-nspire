@@ -11,7 +11,8 @@ except Exception as ex:
     for m, n in (('cascore', 'simp'), ('casout', 'fmt'), ('casparse', 'parse'),
                  ('caspoly', 'factor_expr'), ('cascalc', 'integrate'),
                  ('cassolve', 'solve'), ('casmat', 'm_inv'), ('casfun', 'conv'),
-                 ('cashelp', 'selftest'), ('casmenu', 'menu'), ('cas', 'run')):
+                 ('cashelp', 'selftest'), ('casmenu', 'runmenu'), ('casgui', 'rungui'),
+                 ('cas', 'run')):
         try:
             if hasattr(__import__(m), n):
                 msg = 'ok'

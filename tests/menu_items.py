@@ -21,7 +21,8 @@ for title, items in M.MAIN:
         vals = []
         for p in it[2]:
             q = p[0]
-            v = p[1] if p[1] else SAMPLE.get(q, 'x^2-1')
+            # None = required (sample answer); '' = optional, left blank
+            v = p[1] if p[1] is not None else SAMPLE.get(q, 'x^2-1')
             if title == 'Calculus' and q == 'f':
                 v = 'x^2*e^x' if it[0] not in ('fMin', 'fMax') else 'x^2-4x'
             if title == 'Solve' and it[0] in ('Solve', 'cSolve', 'nSolve') and q != 'Var' and 'Cond' not in q and 'Var' not in q and 'Lower' not in q and 'Upper' not in q:
@@ -41,3 +42,5 @@ for title, items in M.MAIN:
             bad += 1
             print('PYEXC %-14s %s -> %s %s' % (it[0], cmd, type(ex).__name__, ex))
 print('menu items ok: %d, errors: %d' % (ok, bad))
+if bad:
+    sys.exit(1)

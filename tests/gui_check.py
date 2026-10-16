@@ -157,3 +157,5 @@ if verbose:
 for w in bad:
     print('MISSING: ' + repr(w))
 print('gui check: %d/%d, %d frames' % (len(want) + 1 - len(bad), len(want) + 1, len(frames)))
+if bad:
+    sys.exit(1)

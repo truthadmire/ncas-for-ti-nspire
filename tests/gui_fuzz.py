@@ -1,7 +1,19 @@
 # Random key presses into the graphical mode (stand-in ti_draw/ti_system):
 # any Python exception that escapes, or a key that takes too long, is a bug.
 #   python3 tests/gui_fuzz.py [runs] [keys per run] [src|dist]
-import random, signal, sys, time, traceback
+#   micropython -X heapsize=2000000 tests/gui_fuzz.py 100 150 dist
+import sys
+try:
+    import signal, traceback
+except ImportError:
+    # MicroPython: stand-ins without time limits
+    sys.path.insert(0, 'tests/mpstub')
+    import signal, traceback
+import random, time
+try:
+    RecursionError
+except NameError:
+    RecursionError = RuntimeError
 runs = int(sys.argv[1]) if len(sys.argv) > 1 else 200
 nkeys = int(sys.argv[2]) if len(sys.argv) > 2 else 150
 where = sys.argv[3] if len(sys.argv) > 3 else 'src'
@@ -102,7 +114,11 @@ def checked(line):
 cas.run = checked
 t0 = time.time()
 for run in range(runs):
-    rnd = random.Random(run)
+    if hasattr(random, 'Random'):
+        rnd = random.Random(run)
+    else:
+        random.seed(run)
+        rnd = random
     keys = actions(rnd, nkeys)
     total += len(keys)
     ti_system.KEYS[:] = keys
@@ -134,3 +150,5 @@ for k, v in sorted(raw.items()):
 bad += len(raw)
 print('gui fuzz: %d runs, %d keys, %d evaluations, %d errors, %d slow, %.0f s'
       % (runs, total, evals[0], bad, slow, time.time() - t0))
+if bad or slow:
+    sys.exit(1)

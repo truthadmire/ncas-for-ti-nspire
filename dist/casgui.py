@@ -35,7 +35,7 @@ TRIG=('sin(','cos(','tan(','arcsin(','arccos(','arctan(',
 NEEDANS='+*/^'
 KEYS='123456789abcdefghijklmnop'
 G={}
-def gui(run):
+def rungui(run):
  G.setdefault('hist',[])
  key=findkey()
  try:
@@ -161,10 +161,41 @@ def selected():
 def status():
  if G['msg']:
   return G['msg']
+ n=callname()
+ if n:
+  import cashelp
+  sy=cashelp.SYN.get(n.lower())
+  if sy:
+   return sy.split('\n')[0][:(G['w']-8)//CW]
  a=SET['angle'].upper()
  m=SET['mode'].upper()
  c='REAL' if SET['cplx']=='real' else 'CPLX'
  return 'nCAS  '+a+' '+m+' '+c+('   menu: commands' if G.get('gui')else '')
+def callname():
+ chain=[]
+ r=G['row']
+ for i,sl in G['path']:
+  chain.append((r,i))
+  r=r[i][sl]
+ chain.append((r,G['pos']))
+ for r,p in reversed(chain):
+  depth=0
+  j=min(p,len(r))-1
+  while j>=0:
+   c=r[j]
+   if c==')':
+    depth+=1
+   elif c=='(':
+    if depth:
+     depth-=1
+    else:
+     k=j
+     while k>0 and type(r[k-1])is str and(r[k-1].isalpha()or r[k-1].isdigit()):
+      k-=1
+     if k<j:
+      return ''.join(r[k:j])
+   j-=1
+ return None
 def draw():
  d=G['d']
  w=G['w']
@@ -186,14 +217,25 @@ def draw():
    idx=[i for i in range(len(bl))if(bl[i][3],bl[i][4])==sel]
    a=idx[0]
    b=idx[-1]
-   end=min(G.get('hend',len(bl)-1),len(bl)-1)
-   start=startfor(bl,end,avail)
-   if b>end:
-    end=b
-    start=startfor(bl,end,avail)
-   if a<start:
-    start=a
+   G['tall']=None
+   if sum([bl[i][2]for i in idx])>avail:
+    n=fitfrom(bl,a,avail)-a+1
+    st=G.get('stop',0)
+    if st=='end' or st>len(idx)-n:
+     st=len(idx)-n
+    G['stop']=max(0,st)
+    start=a+G['stop']
     end=fitfrom(bl,start,avail)
+    G['tall']=(G['stop'],len(idx)-n)
+   else:
+    end=min(G.get('hend',len(bl)-1),len(bl)-1)
+    start=startfor(bl,end,avail)
+    if b>end:
+     end=b
+     start=startfor(bl,end,avail)
+    if a<start:
+     start=a
+     end=fitfrom(bl,start,avail)
   G['hend']=end
   y=LH+2
   last=None
@@ -319,13 +361,21 @@ def key(run,k):
    special(run,s)
  elif k in('up','down')and G['sel']is None and ed_vert(1 if k=='down' else-1):
   pass
+ elif k=='up' and G['sel']is not None and G.get('tall')and G['tall'][0]>0:
+  G['stop']=G['tall'][0]-1
+ elif k=='down' and G['sel']is not None and G.get('tall')and G['tall'][0]<G['tall'][1]:
+  G['stop']=G['tall'][0]+1
  elif k=='up':
   n=2*len(G['hist'])
   if n:
    G['sel']=0 if G['sel']is None else min(G['sel']+1,n-1)
+   G['stop']='end'
+   G['tall']=None
  elif k=='down':
   if G['sel']is not None:
    G['sel']=None if G['sel']==0 else G['sel']-1
+   G['stop']=0
+   G['tall']=None
  elif k=='left':
   G['sel']=None
   ed_left()
@@ -468,10 +518,10 @@ def keytest():
   if k=='esc' and last=='esc':
    return
   last=k
-def choose(title,labels,jump=False):
+def choose(title,labels,jump=False,hint=None):
  n=len(labels)
  i=0
- rows=G['rows']-1
+ rows=G['rows']-1-(1 if hint else 0)
  top=0
  w=G['w']
  while True:
@@ -493,6 +543,9 @@ def choose(title,labels,jump=False):
    y+=LH
   if top+rows<n:
    text(w-30,y-LH,'v',C_DIM)
+  if hint:
+   box(12,y,w-24,LH,C_BAR)
+   text(16,y,(hint(i)or '')[:(w-32)//CW],C_BART)
   show()
   k=G['key'](1)
   if k=='up':
@@ -1163,7 +1216,10 @@ def catalog():
    if wd[0].isalpha()and wd not in names and okname(wd):
     names.append(wd)
  names.sort(key=lambda t:t.lower())
- j=choose('Catalog: type a letter',names,True)
+ def hint(i):
+  sy=cashelp.SYN.get(names[i].lower())
+  return sy.split('\n')[0]if sy else names[i]+'(...)'
+ j=choose('Catalog: type a letter',names,True,hint)
  if j is not None:
   insert(names[j]+'()',1)
 def okname(wd):
@@ -1373,7 +1429,7 @@ def blocks():
    lt=None if bad else tolayout(s)
    if lt is not None:
     r,rw,ra,rd=lt
-    if rw<=w-10:
+    if rw<=w-10 and ra+rd+4<=G['h']-3*LH-8:
      out.append(('2d',(r,rw,ra,rd,col),ra+rd+4,k,part))
      continue
    pre='  ' if part=='out' else ''

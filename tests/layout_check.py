@@ -55,3 +55,5 @@ for r in outs:
         differ += 1
         print('DIFF %r\n     2D as text: %r\n     %s | %s' % (plain, t, a, b))
 print('layout check: %d results, %d drawn in 2D, %d same, %d differ' % (len(outs), laid, same, differ))
+if differ:
+    sys.exit(1)

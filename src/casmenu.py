@@ -238,7 +238,7 @@ def fill(tpl, vals):
             i += 1
     return res
 
-def menu(run):
+def runmenu(run):
     print('Menus: pick a number or letter.')
     print("Type ans for the last result.")
     try:

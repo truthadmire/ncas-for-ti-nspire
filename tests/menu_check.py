@@ -34,3 +34,5 @@ for w in bad:
 print('menu check: %d/%d expected outputs found' % (len(want) - len(bad), len(want)))
 if r.returncode:
     print(r.stderr[-800:])
+if bad or r.returncode:
+    sys.exit(1)

@@ -78,3 +78,5 @@ for k in range(N):
         slow.append(q)
         print('SLOW %.1fs: %s' % (dt, q))
 print('done', N, 'bad', bad, 'slow', len(slow))
+if bad or slow:
+    sys.exit(1)

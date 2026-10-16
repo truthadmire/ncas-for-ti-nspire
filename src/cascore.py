@@ -525,6 +525,8 @@ def radical(n, q):
 
 def ipow_root(n, p, q):
     # n^(p/q) for positive int n, 0<p/q<1, returns canonical expr
+    if ibits(n) * p > 2000 or q > 60:
+        return ('^', n, Q(p, q))
     a, m = radical(n ** p, q) if p > 1 else radical(n, q)
     if m == 1:
         return a
@@ -532,7 +534,7 @@ def ipow_root(n, p, q):
     ex = Q(1, q)
     k = 2
     best = None
-    while (1 << k) <= m:
+    while (1 << k) <= m and k <= 64:
         r = iroot(m, k)
         if r ** k == m:
             best = (r, k)
@@ -1080,7 +1082,7 @@ FSIMP = {}
 def fn(name, *args):
     if len(args) == 1 and type(args[0]) is list:
         args = tuple(args[0])
-    for a in args:
+    for a in (args[:1] if name == 'when' else args):
         if a == 'undef':
             return 'undef'
     f = FSIMP.get(name)
@@ -1219,6 +1221,8 @@ def sin_(u):
             return 0
         if type(u) is float:
             return math.sin(u)
+        if nsign(u) < 0:
+            return neg(fn('sin', neg(u)))
         return None
     if u == 'inf' or u == ('*', -1, 'inf'):
         return 'undef'
@@ -1258,6 +1262,8 @@ def cos_(u):
             return 1
         if type(u) is float:
             return math.cos(u)
+        if nsign(u) < 0:
+            return fn('cos', neg(u))
         return None
     if u == 'inf' or u == ('*', -1, 'inf'):
         return 'undef'
@@ -1297,6 +1303,8 @@ def tan_(u):
             return 0
         if type(u) is float:
             return math.tan(u)
+        if nsign(u) < 0:
+            return neg(fn('tan', neg(u)))
         return None
     c = pi_coef(u)
     if c is not None:
@@ -1841,7 +1849,7 @@ def nfun_call(name, vals):
         d = int(vals[1]) if len(vals) > 1 else 0
         return round(vals[0], d)
     if name == 'when':
-        return vals[1] if vals[0] else vals[2]
+        return vals[1] if vals[0] else (vals[2] if len(vals) > 2 else float('nan'))
     if name == 'max':
         return max(vals)
     if name == 'min':
@@ -1928,7 +1936,9 @@ def nval(e, env=None):
         err("Not numeric")
     if h == 'when':
         c = nbool(e[1], env)
-        return nval(e[2] if c else e[3], env) if len(e) > 3 or c else nval(e[2], env)
+        if c:
+            return nval(e[2], env)
+        return nval(e[3], env) if len(e) > 3 else float('nan')
     vals = [nval(a, env) for a in e[1:]]
     return nfun_call(h, vals)
 

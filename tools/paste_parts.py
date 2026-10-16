@@ -12,6 +12,22 @@ path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'onefile', 'ncas
 size = int(sys.argv[2]) if len(sys.argv) > 2 else 40000
 first = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 
+def copy(part):
+    # the clipboard: pbcopy (macOS), clip (Windows), wl-copy / xclip /
+    # xsel (Linux); without any of them each part is written to a file
+    for cmd in (['pbcopy'], ['clip'], ['wl-copy'], ['xclip', '-selection', 'clipboard'],
+                ['xsel', '--clipboard', '--input']):
+        try:
+            subprocess.run(cmd, input=part.encode('ascii'), check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
+        except (OSError, subprocess.CalledProcessError):
+            continue
+    name = '%s.part%d.txt' % (path[:-3], i)
+    with open(name, 'w', newline='\n') as f:
+        f.write(part)
+    print('(no clipboard tool found: open %s, select all and copy it)' % name)
+
 text = open(path).read().rstrip('\n')
 parts = []
 a = 0
@@ -35,7 +51,7 @@ for i, p in enumerate(parts, 1):
     if i < first:
         done += len(p)
         continue
-    subprocess.run(['pbcopy'], input=p.encode('ascii'), check=True)
+    copy(p)
     done += len(p)
     last = p[p.rfind('\n') + 1:]
     print()

@@ -6,6 +6,8 @@ has and the plain CX II lacks: exact arithmetic, `solve`, `factor`, `expand`,
 derivatives, integrals, limits, series, `deSolve`, symbolic matrices, and more.
 Command names and syntax follow the TI-Nspire CAS Reference Guide.
 
+![nCAS full-screen mode (simulated screen)](docs/img/history.svg)
+
 ```
 > solve(x^2-5x+6=0,x)
 x=2 or x=3
@@ -23,13 +25,15 @@ e
 
 | Folder | Contents |
 |---|---|
-| `onefile/ncastext.py` | **Text version**: one file (~210 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
+| `onefile/ncastext.py` | **Text version**: one file (~236 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
-| `onefile/ncasgui.py` | **Full-screen version**: one file (~240 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
-| `dist/` | The module install: 11 modules plus the `ncas` launcher. |
+| `onefile/ncasgui.py` | **Full-screen version**: one file (~267 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
+| `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and is not needed). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
 | `tools/build.py`, `tools/onefile.py` | Rebuild `dist/` and `onefile/` from `src/`. |
+| `tools/paste_parts.py` | Copies a program to the clipboard in parts, for the TI editor. |
+| `tools/shots.py` | Draws the pictures in `docs/img/` (simulated screens). |
 
 | Module | Role |
 |---|---|
@@ -43,12 +47,18 @@ e
 | `casfun` | built-in function table, conversions (►) |
 | `cashelp` | on-calculator help and self-test (loaded only when used) |
 | `casmenu` | menu mode (loaded only when used) |
+| `casgui` | full-screen mode (loaded only when used) |
 | `cas` | evaluator and command loop |
 | `ncas` | launcher: starts nCAS; if a module is missing or has the wrong contents, it says which one |
 
 ## Installing on the calculator (single file, recommended)
 
-There are two separate programs; install either or both, each in its own
+**Easiest:** download the ready `.tns` documents from the
+[latest release](https://github.com/truthadmire/ncas-for-ti-nspire/releases/latest),
+send them to the handheld with the TI-Nspire computer software, open one and run
+it with **Ctrl+R**. The steps below build the documents yourself.
+
+There are three separate programs; install either or both, each in its own
 document. You need TI-Nspire CX Student/Teacher Software and handheld OS 5.2+, in
 normal mode (not Press-to-Test).
 
@@ -56,6 +66,7 @@ normal mode (not Press-to-Test).
 |---|---|---|
 | `ncastext` | `onefile/ncastext.py` | the text mode (`>` prompt) |
 | `ncasgui` | `onefile/ncasgui.py` | the full-screen mode |
+| `ncasx` | `onefile/ncasx.py` | the exact calculator (see below) |
 
 1. In the TI-Nspire computer software: **File ▸ New TI-Nspire Document**, then
    **Insert ▸ Python ▸ New…**, name the program (`ncastext` or `ncasgui`) and
@@ -63,8 +74,10 @@ normal mode (not Press-to-Test).
 2. The editor refuses a paste this large ("data too large to paste"), so copy the
    file in parts: in Terminal, run for example
    `python3 tools/paste_parts.py onefile/ncastext.py 20000`, paste each part at the
-   end of the program and press Enter in Terminal for the next one. It prints the
-   line count the editor should show after each part. (The editor adds an empty
+   end of the program and press Enter in Terminal for the next one (12 parts for
+   ncastext, 14 for ncasgui). It prints the line count the editor should show
+   after each part. On Windows and Linux it uses `clip`, `wl-copy`, `xclip` or
+   `xsel`; without any of them it writes each part to a file to copy from. (The editor adds an empty
    line after each paste below the cursor; that is harmless.) Then use
    **Check Syntax & Save** (cmd+B).
 3. Save the document (`ncastext.tns` / `ncasgui.tns`) and send it to the
@@ -87,8 +100,8 @@ menus are compiled only when you first use them. Measured on a 64-bit computer
 
 | | Memory in use after loading | Smallest heap that passes `:test` |
 |---|---|---|
-| `onefile/ncastext.py` / `ncasgui.py` | about 500 KB (about 300 KB after a restart, see below) | 1.3 MB |
-| module install (`dist/`) | 280 KB | 1.1 MB |
+| `onefile/ncastext.py` / `ncasgui.py` | about 550 KB (about 350 KB after a restart, see below) | 0.7 MB / 0.9 MB |
+| module install (`dist/`) | 310 KB | 0.6 MB |
 
 The calculator has about 2 MB. Type `:mem` to see free memory. If you run short,
 leave nCAS, then type `cas()` (ncastext) or `gui()` (ncasgui) in the Shell: the stored text is freed once the program has
@@ -96,7 +109,9 @@ ended, which gives back about 190 KB.
 
 ### Module install (alternative)
 
-For each of the 11 module files in `dist/` (`cascore.py` … `casmenu.py`, `cas.py`):
+For each of the 12 module files in `dist/` (`cascore.py`, `casout.py`, `casparse.py`,
+`caspoly.py`, `cascalc.py`, `cassolve.py`, `casmat.py`, `casfun.py`, `cashelp.py`,
+`casmenu.py`, `casgui.py`, `cas.py`; `casgui` is needed only for the full-screen mode):
 
 1. Make a new document with a Python program named exactly like the file (for
    example `cascore`), paste the file, and use **Check Syntax & Save**.
@@ -105,11 +120,12 @@ For each of the 11 module files in `dist/` (`cascore.py` … `casmenu.py`, `cas.
    The file moves to the `PyLib` folder. The module name is the `.tns` file name.
 
 Then make a document with a program named `ncas` holding `dist/ncas.py` (the
-launcher, 27 lines), keep it in My Documents and run it with **Ctrl+R**.
-`cas.tns` must hold `dist/cas.py` (about 950 lines, starting `from cascore import*`),
+launcher, 28 lines), keep it in My Documents and run it with **Ctrl+R**.
+`cas.tns` must hold `dist/cas.py` (about 1060 lines, starting `from cascore import*`),
 not the launcher. If nCAS can't start, the launcher lists each module as `ok`,
-`MISSING` or `WRONG CONTENTS`. `cashelp` and `casmenu` are loaded only when you
-open help or the menu.
+`MISSING` or `WRONG CONTENTS`. `cashelp`, `casmenu` and `casgui` are loaded only
+when you open help, the menu or the full-screen mode; without `casgui` the
+launcher starts the text mode.
 
 ### Check the installation
 
@@ -156,10 +172,10 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 |---|---|
 | typing, **enter** | type on the entry line at the bottom; enter evaluates |
 | **◄ ►**, **del**, **clear** | move the cursor, delete to the left, clear the line |
-| **▲ ▼** | select an earlier input or result; **enter** copies it to the entry line |
+| **▲ ▼** | select an earlier input or result; **enter** copies it to the entry line. A result taller than the screen scrolls line by line before the selection moves on |
 | **menu** | command menus: arrows + enter, or the number/letter shown (**ctrl tab** too) |
 | **tab** / **shift tab** | next / previous field: template slots and command arguments after commas (`integral(\|,x,,)`) |
-| **catalog** | every command A–Z; type a letter to jump, enter puts `name()` on the line |
+| **catalog** | every command A–Z with its syntax under the list; type a letter to jump, enter puts `name()` on the line |
 | **trig** | sin, cos, tan, arcsin, … |
 | **ctrl** + key | the blue keypad functions: ( → `[ ]`, ) → `{ }`, ^ → root, x² → √, e^x → ln, 10^x → log10, = → ≠ ≤ ≥ list, (−) → ans, × → " ", ÷ → fraction, var → `->`, enter → ≈ decimal, del → clear, esc → undo, catalog → Symbols, trig → help. **doc** works as ctrl too. |
 | **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter inserts `[1,2;3,4]`); fraction, power, square root, n-th root, \|x\| and e^x templates |
@@ -171,10 +187,14 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 - A menu command is put on the entry line with the cursor where the first value
   goes: Calculus ▸ Derivative gives `d(|,x)`, Matrix ▸ det gives `det([|])`.
   Settings items (Degree, Self-test, Memory, …) run at once.
+- While you type a command's arguments, the status bar shows its syntax, for
+  example `integral(expr,var) antiderivative`.
 - An operator typed on an empty line starts with `ans`, as on the CAS.
 - Results are blue, errors red. The last 30 entries are kept.
 - After quitting, type `gui()` in the Shell to come back, or `cas()` for the
   text mode. In the text mode, `g` opens the full-screen mode.
+
+![Command menu](docs/img/menu.svg) ![Catalog with syntax](docs/img/catalog.svg)
 - A key nCAS does not use is named in the status bar. **Settings ▸ Key test**
   shows the name of every key you press; send those names if a key does not do
   what you expect.
@@ -256,6 +276,19 @@ Type a command at the `>` prompt and press **enter**. Type `m` for menus, `?` fo
 Results are exact unless the input contains a decimal, as in the CAS's Auto mode.
 `approx(expr)` or `expr>>Decimal` gives a decimal.
 
+**Kept between runs.** Settings (angle, mode, digits, …), variables and
+functions are saved in the document, in the list variable `ncasmem`, after each
+change, and come back the next time the program runs (also after reopening the
+document, if it was saved). `:clear` and `delvar` remove them there too. The
+text prompt shows modes that differ from the defaults, for example `deg approx> `.
+
+**Errors.** A command with the wrong number of arguments shows its syntax
+(`Wrong number of arguments for integral` / `integral(expr,var) antiderivative`).
+A name one letter away from a command gets a hint: `factr(x^2-1)` is shown
+unevaluated, with `(factr is not a command; did you mean factor?)`. `diff`,
+`deriv`, `integrate`, `avg` and `cbrt` are accepted as other names for `d`,
+`integral`, `mean` and `root(x,3)`.
+
 ### Settings and commands
 
 | Command | Effect |
@@ -282,6 +315,10 @@ Results are exact unless the input contains a decimal, as in the CAS's Auto mode
 
 ```
 solve(x^2-4>0,x)                 x<-2 or x>2
+solve(1<2x+1<7,x)                0<x<3
+solve(x^2<9,x)|x>0               0<x<3
+solve(abs(x)+abs(x-2)=2,x)       0≤x≤2
+solve(a*x<5,x)                   x<5/a and a>0 or x>5/a and a<0 or a=0
 solve(sin(x)=1/2,x)              x=2*π*n1+π/6 or x=2*π*n1+5*π/6   (n1 = any integer)
 solve(sin(x)=1/2,x)|0<=x<=2pi    x=π/6 or x=5*π/6
 solve({x^2+y^2=25,y=x+1},{x,y})  x=3 and y=4 or x=-4 and y=-3
@@ -300,9 +337,14 @@ completeSquare(x^2+6x+5,x)       (x+3)^2-4
 ```
 d(x^2,x)|x=3                     6
 integral(1/(1+x^2),x,-inf,inf)   π
+integral(x^2/sqrt(9-x^2),x,-3,3) 9*π/2
+integral(1/(2+cos(x)),x,0,2pi)   2*π*√3/3
+integral(1/x,x,-1,1)             undef    (diverges)
 limit(1/x,x,0,1)                 ∞        (direction: 1 right, -1 left)
 sumSeq(k^2,k,1,n)                n*(n+1)*(2*n+1)/6
 Σ(1/k^2,k,1,inf)                 π^2/6
+limit(n!/2^n,n,inf)              ∞
+limit(x*sin(1/x),x,0)            0
 taylor(sin(x),x,5)               x^5/120-x^3/6+x
 deSolve(y'=x*y and y(0)=1,x,y)   y=e^(x^2/2)
 impDif(x^2+y^2=1,x,y)            -x/y
@@ -347,8 +389,16 @@ print(calc("factor(x^3-1)"))       # (x-1)*(x^2+x+1)
   integrate (and their definite integrals are exact), `impDif(y^3-x y=2,x,y)` gives
   `y/(-x+3*y^2)`, inequalities with a letter coefficient such as `solve(a*x<5,x)`
   give one answer per sign of the coefficient, and `eigVl([a,1;0,a])` gives `{a,a}`.
+- More such cases: compound and chained inequalities (`solve(1<2x+1<7,x)`),
+  `|` conditions on inequalities, the two-condition `piecewise(…)` template,
+  divergent integrals (`undef`/`∞` instead of a number), factorial and squeeze
+  limits, divergent and slowly converging series, trig-product equations
+  (`solve(sin(x)*cos(x)=1/4,x)`), absolute-value equations with interval
+  solutions, and `ln(8)/ln(2)=3` (`true`). The full list is in `CHANGELOG.md`.
 - Indefinite integrals with no elementary antiderivative, such as `integral(e^(-x^2),x)`,
-  are returned unevaluated. Definite ones are computed numerically.
+  are returned unevaluated. Definite ones are computed numerically. A numeric
+  integral or series that does not settle gives "Questionable accuracy" instead of
+  a number that may be wrong.
 - Polynomial equations of degree 3 or more with no nice roots, and non-algebraic
   equations it cannot isolate, are solved numerically, which is what the CAS does in
   Auto mode. Nonlinear systems use substitution and resultants, not Gröbner bases.
@@ -368,6 +418,10 @@ print(calc("factor(x^3-1)"))       # (x-1)*(x^2+x+1)
 
 ## Testing on a computer
 
+Run from the repository root. Every test script exits with status 1 when
+something fails; GitHub Actions runs them on every push (`.github/workflows/ci.yml`),
+on CPython and on MicroPython with the calculator's 2 MB heap.
+
 ```bash
 python3 tests/check.py src
 ```
@@ -377,7 +431,7 @@ micropython -X heapsize=2000000 tests/check.py dist
 ```
 
 ```bash
-micropython -X heapsize=2000000 tests/check.py onefile --one < /dev/null
+python3 tests/check.py onefile --one < /dev/null
 ```
 
 ```bash
@@ -385,11 +439,11 @@ python3 tests/menu_check.py micropython onefile
 ```
 
 ```bash
-micropython tests/gui_check.py onefile
+python3 tests/menu_items.py
 ```
 
 ```bash
-micropython tests/x_check.py onefile < /dev/null
+python3 tests/gui_check.py
 ```
 
 ```bash
@@ -397,7 +451,11 @@ python3 tests/gui_fuzz.py 1000 250
 ```
 
 ```bash
-micropython tests/eig_check.py
+micropython -X heapsize=2000000 tests/gui_fuzz.py 100 150 dist
+```
+
+```bash
+python3 tests/eig_check.py
 ```
 
 ```bash
@@ -405,7 +463,7 @@ python3 tests/layout_check.py
 ```
 
 ```bash
-python3 tests/verify.py 7 200
+python3 tests/verify.py
 ```
 
 `check.py` compares 324 commands with the golden files in `tests/*.expected`.
@@ -413,7 +471,7 @@ python3 tests/verify.py 7 200
 re-expands factorizations, substitutes solutions, multiplies a matrix by its inverse
 and plugs ODE solutions back in. `fuzz.py` runs random input to find crashes. Run
 `python3 tools/build.py` and `python3 tools/onefile.py` after changing `src/`, to
-regenerate `dist/` and `onefile/`.
+regenerate `dist/` and `onefile/`; CI checks that they match. See `CONTRIBUTING.md`.
 
 ## License and trademarks
 

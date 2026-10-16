@@ -12,7 +12,7 @@ import casmat as MA
 import casfun as FN
 from casfun import SET, lmap, vadd, vsub, vneg, vmul, vdiv, vpow, rel
 
-VERSION = '1.0'
+VERSION = '1.1'
 ENV = {}
 UFUN = {}
 ASSUME = []
@@ -305,15 +305,75 @@ def builtin(name, f, args):
     # (det(2), sum(x), cos()) become a clear message
     try:
         return f(*args)
+    except CASError as ex:
+        if str(ex).startswith('Wrong number of arguments'):
+            argerr(name)
+        raise
     except TypeError as ex:
         msg = str(ex)
         if 'positional' in msg or 'takes' in msg or 'required' in msg or 'missing' in msg:
-            err('Wrong number of arguments for ' + name)
+            argerr(name)
         err('Invalid argument for ' + name)
     except (IndexError, ValueError, AttributeError, KeyError):
         err('Invalid argument for ' + name)
     except OverflowError:
         err('Number too large in ' + name)
+
+def tinames():
+    c = STATE.get('tinames')
+    if c is None:
+        import cashelp
+        c = {}
+        for key, title, words in cashelp.CATS:
+            for wd in words.split():
+                if wd[0].isalpha():
+                    c[wd.lower()] = wd
+        STATE['tinames'] = c
+    return c
+
+def argerr(name):
+    # wrong number of arguments: name the command and show its syntax
+    import cashelp
+    n = tinames().get(name, name)
+    sy = cashelp.SYN.get(name)
+    err('Wrong number of arguments for ' + n + ('\n' + sy.split('\n')[0] if sy else ''))
+
+def suggest(name):
+    # a known command spelled almost like name (one letter off), or None
+    if len(name) < 4:
+        return None
+    best = None
+    for k in tinames():
+        if abs(len(k) - len(name)) > 1:
+            continue
+        if close(k, name.lower()):
+            best = tinames()[k]
+            break
+    return best
+
+def close(a, b):
+    # one insertion, deletion, substitution or swap apart
+    if a == b:
+        return False
+    if len(a) == len(b):
+        d = [i for i in range(len(a)) if a[i] != b[i]]
+        if len(d) == 2 and d[1] == d[0] + 1 and a[d[0]] == b[d[1]] and a[d[1]] == b[d[0]]:
+            return True
+        return len(d) == 1
+    if len(a) > len(b):
+        a, b = b, a
+    for i in range(len(b)):
+        if b[:i] + b[i + 1:] == a:
+            return True
+    return False
+
+def unknown_calls(e, out):
+    if type(e) is not tuple or not e or e[0] == 'Q':
+        return
+    if e[0] == 'call' and e[1] not in UFUN and e[1] not in STATE['tmpf'] and e[1] not in out:
+        out.append(e[1])
+    for a in e[1:]:
+        unknown_calls(a, out)
 
 def var_of(raw):
     if type(raw) is str:
@@ -494,6 +554,10 @@ def sf_solve(a, cplx=False):
             else:
                 return ('solve', eq, v)
         return finish_sol(r)
+    if len(eqs) > 1 and any([head(q) in ('<', '>', '<=', '>=', '/=') for q in eqs]):
+        if len(vs) > 1:
+            return ('solve', e) + tuple(vs)
+        return finish_sol(solve_and(eqs, vs[0], cplx))
     sols = SO.solve_system(eqs, vs, cplx, gs if any([g is not None for g in gs]) else None)
     if sols is None:
         return ('solve', e) + tuple(vs)
@@ -505,8 +569,38 @@ def sf_solve(a, cplx=False):
         out.append(conj[0] if len(conj) == 1 else ('and',) + tuple(conj))
     return finish_sol(out[0] if len(out) == 1 else ('or',) + tuple(out))
 
-def finish_sol(r):
+def solve_and(eqs, v, cplx):
+    # one variable, equations and inequalities joined by 'and'
+    cons = cons_for(v)
+    for i in range(len(eqs)):
+        if head(eqs[i]) == '=':
+            rest = eqs[:i] + eqs[i + 1:]
+            r = SO.solve(eqs[i], v, cplx, rest + cons)
+            if r is None:
+                return ('solve', ('and',) + tuple(eqs), v)
+            return r
+    ps = SO.rel_pairs(eqs + cons, v)
+    r = SO.solve_rels(ps, v) if ps is not None else None
+    if r is None:
+        return ('solve', ('and',) + tuple(eqs), v)
     return r
+
+def finish_sol(r):
+    # number the integer parameters of general solutions n1, n2, ... in
+    # order of appearance
+    ns = []
+    def walk(e):
+        if type(e) is str and e[0] == 'n' and e[1:].isdigit() and e not in ns:
+            ns.append(e)
+        elif type(e) is tuple and e and e[0] != 'Q':
+            for a in e[1:]:
+                walk(a)
+    walk(r)
+    if not ns or ns == ['n%d' % (i + 1) for i in range(len(ns))]:
+        return r
+    tmp = dict([(ns[i], 'N%d_' % i) for i in range(len(ns))])
+    r = subsd(r, tmp)
+    return subsd(r, dict([('N%d_' % i, 'n%d' % (i + 1)) for i in range(len(ns))]))
 
 def sf_csolve(a):
     return sf_solve(a, True)
@@ -625,7 +719,7 @@ def sf_nint(a):
     nargs(a, 4, 4)
     e, v, val = onevar_expr(a)
     lo, hi = bounds(a, 2)
-    return CA.nint(e, v, lo, hi)
+    return CA.nint_split(e, v, lo, hi)
 
 def sf_arclen(a):
     nargs(a, 4, 4)
@@ -925,6 +1019,11 @@ def pre_register(s):
                 STATE['tmpf'].append(nm)
 
 def command(c):
+    r = command0(c)
+    keep()
+    return r
+
+def command0(c):
     p = c.split()
     if not p:
         return ''
@@ -1028,6 +1127,7 @@ def run(s):
         for n in low[6:].replace(',', ' ').split():
             ENV.pop(n, None)
             UFUN.pop(n, None)
+        keep()
         return 'Done'
     if low in ('clearaz', 'clear'):
         return command('clear')
@@ -1038,12 +1138,97 @@ def run(s):
     r = finalize(r)
     if not (isnode(t, 'define') or (isnode(r, 'str') and r[1] == 'Done')):
         STATE['ans'] = unhold(r) if not isnode(r, 'str') else r
-    return fmt_top(r)
+    keep()
+    out = fmt_top(r)
+    un = []
+    unknown_calls(r, un)
+    for n in un:
+        g = suggest(n)
+        if g:
+            out += '\n(' + n + ' is not a command; did you mean ' + g + '?)'
+    return out
+
+# ------------------------------------------------------------ keeping state
+# Settings, variables and functions are kept in the document's list
+# variable ncasmem (6 ASCII characters per number), so they come back after
+# Ctrl+R or when the document is opened again.
+KEEP = 'ncasmem'
+
+def memtext():
+    u = OPT['uni']
+    OPT['uni'] = False
+    try:
+        out = [':' + SET['angle'], ':' + SET['mode'],
+               ':' + ('real' if SET['cplx'] == 'real' else 'complex'),
+               ':digits ' + str(OPT['digits'])]
+        if not u:
+            out.append(':ascii')
+        for n in sorted(ENV):
+            out.append(n + ':=' + fmt(ENV[n]))
+        for n in sorted(UFUN):
+            ps, b = UFUN[n]
+            out.append(n + '(' + ','.join(ps) + '):=' + fmt(b))
+    finally:
+        OPT['uni'] = u
+    return '\n'.join([l for l in out if len(l) < 2000 and all([0 < ord(c) < 128 for c in l])])
+
+def pack(t):
+    out = []
+    for i in range(0, len(t), 6):
+        n = 0
+        for c in reversed(t[i:i + 6]):
+            n = n * 128 + ord(c)
+        out.append(n)
+    return out
+
+def unpack(xs):
+    cs = []
+    for v in xs:
+        n = int(round(v))
+        while n:
+            cs.append(chr(n % 128))
+            n //= 128
+    return ''.join(cs)
+
+def keep():
+    if STATE.get('kept') is None or STATE.get('restoring'):
+        return
+    t = memtext()
+    if t == STATE['kept']:
+        return
+    STATE['kept'] = t
+    try:
+        from ti_system import store_list
+        store_list(KEEP, pack(t) or [0])
+    except Exception:
+        pass
+
+def restore():
+    # once per run of the program: the kept settings and definitions
+    if STATE.get('kept') is not None:
+        return
+    STATE['kept'] = memtext()
+    try:
+        from ti_system import recall_list
+        t = unpack(recall_list(KEEP))
+    except Exception:
+        return
+    STATE['restoring'] = True
+    try:
+        for line in t.split('\n'):
+            try:
+                run(line)
+            except Exception:
+                pass
+    finally:
+        STATE['restoring'] = False
+    STATE['ans'] = 0
+    STATE['kept'] = memtext()
 
 def menu():
     # keypad-friendly menus (module casmenu is loaded only when needed)
     import casmenu
-    casmenu.menu(run)
+    casmenu.runmenu(run)
 
 GUI = True      # False in the text-only program ncastext
 
@@ -1051,8 +1236,14 @@ def gui():
     # full-screen graphical mode (module casgui is loaded only when needed)
     if not GUI:
         return 'The full-screen mode is the separate program ncasgui.'
-    import casgui
-    return casgui.gui(run)
+    try:
+        import casgui
+    except ImportError as ex:
+        if 'casgui' not in str(ex):
+            raise
+        return 'casgui is not installed (needed for the full-screen mode); using text mode.'
+    restore()
+    return casgui.rungui(run)
 
 def startgui():
     # the full-screen program ncasgui
@@ -1083,13 +1274,25 @@ def calc(s):
     except CASError as ex:
         return 'Error: ' + str(ex)
 
+def prompt():
+    # the settings that differ from the defaults: 'deg approx> '
+    p = []
+    if SET['angle'] != 'rad':
+        p.append(SET['angle'])
+    if SET['mode'] != 'auto':
+        p.append(SET['mode'])
+    if SET['cplx'] != 'real':
+        p.append('cplx')
+    return ' '.join(p) + '> '
+
 def cas():
+    restore()
     print('nCAS ' + VERSION + ' for TI-Nspire CX II')
     print(('? help, m menu, g full screen, q quit') if GUI else '? help, m menu, q quit')
     blank = 0
     while True:
         try:
-            s = input('> ')
+            s = input(prompt())
         except (EOFError, KeyboardInterrupt):
             break
         s = s.strip()

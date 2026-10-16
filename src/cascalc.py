@@ -137,6 +137,11 @@ BUDGET = [0]
 def integrate(f, x, depth=0):
     BUDGET[0] = 0
     r = integ(f, x, depth)
+    if r is None and hasdenom(f):
+        g = autocancel(f)
+        if g != f:
+            BUDGET[0] = 0
+            r = integ(g, x, depth)
     if r is None:
         return ('integral', f, x)
     return r
@@ -170,6 +175,12 @@ def integ(f, x, depth=0):
             if r is None:
                 return None
             return mul(mul_list(c), r)
+    if h == 'when':
+        a = integ(f[2], x, depth + 1)
+        b = integ(f[3], x, depth + 1) if len(f) > 3 else None
+        if a is None or (len(f) > 3 and b is None):
+            return None
+        return ('when', f[1], a, b) if b is not None else ('when', f[1], a)
     r = itable(f, x)
     if r is not None:
         return r
@@ -197,6 +208,10 @@ def integ_whole(f, x, depth):
     r = isubst(f, x, depth)
     if r is not None:
         return r
+    # trigonometric substitution for sqrt(a^2-x^2), sqrt(x^2+a^2)
+    r = itrigsub(f, x, depth)
+    if r is not None:
+        return r
     # products of trig functions
     if hastrig(f):
         g = tcollect(f)
@@ -213,7 +228,125 @@ def integ_whole(f, x, depth):
         r = integ(g, x, depth + 1)
         if r is not None:
             return r
+    if depth < 4:
+        # last resorts: tan/cot as sin/cos, sinh/cosh as exponentials,
+        # tan(x/2) substitution for rational functions of sin and cos
+        g = untan(f)
+        if g != f:
+            r = integ(g, x, depth + 2)
+            if r is not None:
+                return r
+        g = unhyp(f)
+        if g != f:
+            r = integ(expand(g), x, depth + 2)
+            if r is not None:
+                return r
+        r = iweier(f, x, depth)
+        if r is not None:
+            return r
+        r = iquartic(f, x, depth)
+        if r is not None:
+            return r
     return None
+
+def qfrac(A, B, p, q, x):
+    # integral of (A*x+B)/(x^2+p*x+q) when 4q-p^2 > 0
+    w = sqrt(sub(mul(4, q), pw(p, 2)))
+    P = add(pw(x, 2), mul(p, x), q)
+    return add(mul(A, HALF, fn('ln', P)),
+               mul(sub(B, mul(A, p, HALF)), div(2, w), fn("arctan", expand(div(add(mul(2, x), p), w)))))
+
+def iquartic(f, x, depth):
+    # N/(a*x^4+b*x^2+c) with no real roots: split the denominator into
+    # two real quadratics x^2 +- s*x + q, then partial fractions
+    n, d = numer_denom(f)
+    cd = coeffs(d, x)
+    cn = coeffs(n, x)
+    if cd is None or cn is None or len(cd) != 5 or len(cn) > 4:
+        return None
+    if cd[1] != 0 or cd[3] != 0 or not all([isconst(q) for q in cd + cn]):
+        return None
+    a, b, c = cd[4], cd[2], cd[0]
+    try:
+        if fv_(c) / fv_(a) <= 0:
+            return None
+        q = sqrt(div(c, a))
+        s2 = sub(mul(2, q), div(b, a))
+        if fv_(s2) <= 0:
+            return None
+    except Exception:
+        return None
+    sr = sqrt(s2)
+    cn = [div(v, a) for v in cn] + [0] * (4 - len(cn))
+    n0, n1, n2, n3 = cn
+    BE = div(n0, q)
+    EmB = div(sub(n1, mul(q, n3)), sr)
+    B = mul(HALF, sub(BE, EmB))
+    E = mul(HALF, add(BE, EmB))
+    CmA = div(sub(n2, BE), sr)
+    A = mul(HALF, sub(n3, CmA))
+    C = mul(HALF, add(n3, CmA))
+    P1 = add(pw(x, 2), mul(sr, x), q)
+    P2 = add(sub(pw(x, 2), mul(sr, x)), q)
+    R = add(qfrac(A, B, sr, q, x), qfrac(C, E, neg(sr), q, x))
+    return R if antiok(R, f, x) else None
+
+def unhyp(e):
+    if type(e) is not tuple or e[0] == 'Q':
+        return e
+    a = [unhyp(b) for b in e[1:]]
+    if len(a) == 1 and e[0] in ('sinh', 'cosh', 'tanh'):
+        p = pw('e', a[0])
+        m = pw('e', neg(a[0]))
+        if e[0] == 'sinh':
+            return mul(HALF, sub(p, m))
+        if e[0] == 'cosh':
+            return mul(HALF, add(p, m))
+        return div(sub(p, m), add(p, m))
+    return simp((e[0],) + tuple(a))
+
+def trigargs_x(f, x, out):
+    if type(f) is not tuple or f[0] == 'Q':
+        return
+    if f[0] in ('sin', 'cos', 'tan') and not freeof(f[1], x):
+        if f[1] not in out:
+            out.append(f[1])
+        return
+    for b in f[1:]:
+        trigargs_x(b, x, out)
+
+def iweier(f, x, depth):
+    # t = tan(u/2) for a rational function of sin(u), cos(u), u = a*x+b
+    us = []
+    trigargs_x(f, x, us)
+    if len(us) != 1:
+        return None
+    u = us[0]
+    lu = linear(u, x)
+    if lu is None:
+        return None
+    t = 'W%d_' % depth
+    q = add(1, pw(t, 2))
+    def rep(e):
+        if type(e) is not tuple or e[0] == 'Q':
+            return e
+        if len(e) == 2 and e[1] == u:
+            if e[0] == 'sin':
+                return div(mul(2, t), q)
+            if e[0] == 'cos':
+                return div(sub(1, pw(t, 2)), q)
+            if e[0] == 'tan':
+                return div(mul(2, t), sub(1, pw(t, 2)))
+        return simp((e[0],) + tuple(rep(b) for b in e[1:]))
+    g = rep(f)
+    if not freeof(g, x):
+        return None
+    g = autocancel(div(mul(2, g), mul(lu[0], q)))
+    R = integ(g, t, depth + 2)
+    if R is None:
+        return None
+    R = subs(R, t, fn('tan', mul(HALF, u)))
+    return R if antiok(R, f, x) else None
 
 def itable(f, x):
     h = head(f)
@@ -364,7 +497,13 @@ def irational(f, x):
                 return None
             out.append(r)
         else:
-            return None
+            # an irreducible higher factor: substitution or quartic split
+            r = isubst(t, x, 3) if k == 1 else None
+            if r is None and k == 1:
+                r = iquartic(t, x, 3)
+            if r is None:
+                return None
+            out.append(r)
     return add_list(out)
 
 def iquadfrac(N, Qd, k, x):
@@ -546,7 +685,9 @@ def isubst(f, x, depth):
         if freeof(q2, x) and (fracf or not hasfracpow(q2, VV)) and len(okey(q2)) < 800:
             r = integ(q2, VV, depth + 2)
             if r is not None:
-                return subs(r, VV, u)
+                r = subs(r, VV, u)
+                if antiok(r, f, x):
+                    return r
     # linear substitution inside radicals
     for u in cs:
         if isnode(u, '+'):
@@ -558,6 +699,139 @@ def isubst(f, x, depth):
                 if r is not None:
                     return subs(r, VV, u)
     return None
+
+TPTS = (-2.3, -1.7, -0.8, -0.35, 0.3, 0.75, 1.6, 2.4)
+
+def antiok(F, f, x):
+    # does F' = f where both are real (central differences at a few
+    # points)? False only on a clear mismatch
+    if len(symbols(f)) > 1 or len(symbols(F)) > 1:
+        return True
+    def v(e, t):
+        try:
+            z = nval(e, {x: t})
+        except Exception:
+            return None
+        if type(z) is complex:
+            if abs(z.imag) > 1e-9 * (1 + abs(z.real)):
+                return None
+            z = z.real
+        if z != z or abs(z) > 1e12:
+            return None
+        return z
+    for t in TPTS:
+        y = v(f, t)
+        if y is None:
+            continue
+        h = 1e-5 * (1 + abs(t))
+        a = v(F, t + h)
+        b = v(F, t - h)
+        if a is None or b is None:
+            continue
+        if abs((a - b) / (2 * h) - y) > 1e-4 * (1 + abs(y)):
+            return False
+    return True
+
+def itrigsub(f, x, depth):
+    # (c0 + c2*x^2)^(k/2): x = r*sin(T) when c2 < 0, x = r*tan(T) when
+    # c2 > 0 (c0 > 0); after integrating in T, back to x
+    rad = []
+    radicals(f, x, rad)
+    if not rad:
+        return None
+    B = rad[0]
+    cs = coeffs(B, x)
+    if cs is None or len(cs) != 3 or cs[1] != 0 or not isconst(cs[0]) or not isconst(cs[2]):
+        return None
+    if any([q != B for q in rad]):
+        return None
+    c0, c2 = cs[0], cs[2]
+    T = 'T%d_' % depth
+    if fv_(c0) < 0 and fv_(c2) > 0:
+        # x = r/cos(T): sqrt(B) = sqrt(c2)*r*tan(T)
+        r = sqrt(div(neg(c0), c2))
+        xs = div(r, fn('cos', T))
+        rt = mul(sqrt(c2), r, fn('tan', T))
+        dx = mul(r, fn('tan', T), pw(fn('cos', T), -1))
+        g = mul(subrad(f, B, rt, x, xs), dx)
+        R = None
+        for h in (pyth_to(g, 'cos'), pyth_to(g, 'sin'), pyth(g)):
+            R = integ(h, T, depth + 2)
+            if R is not None:
+                break
+        if R is None:
+            return None
+        R = backtrig(texpand(R), T, div(pw(B, HALF), mul(sqrt(c2), x)), div(r, x))
+        R = subs(R, T, fn('arccos', div(r, x)))
+        if not freeof(R, T) or not antiok(R, f, x):
+            return None
+        return R
+    if fv_(c0) <= 0:
+        return None
+    sc0 = sqrt(c0)
+    if fv_(c2) < 0:
+        r = sqrt(div(c0, neg(c2)))
+        xs = mul(r, fn('sin', T))
+        rt = mul(sc0, fn('cos', T))
+        dx = mul(r, fn('cos', T))
+    else:
+        r = sqrt(div(c0, c2))
+        xs = mul(r, fn('tan', T))
+        rt = div(sc0, fn('cos', T))
+        dx = div(r, pw(fn('cos', T), 2))
+    g = mul(subrad(f, B, rt, x, xs), dx)
+    R = None
+    for h in (pyth(g), pyth_to(g, 'cos'), pyth_to(g, 'sin')):
+        R = integ(h, T, depth + 2)
+        if R is not None:
+            break
+    if R is None:
+        return None
+    R = texpand(R)
+    sq = pw(B, HALF)
+    if fv_(c2) < 0:
+        sinT = div(x, r)
+        cosT = div(sq, sc0)
+        Tx = fn('arcsin', div(x, r))
+    else:
+        cosT = div(sc0, sq)
+        sinT = mul(div(x, r), cosT)
+        Tx = fn('arctan', div(x, r))
+    R = backtrig(R, T, sinT, cosT)
+    R = subs(R, T, Tx)
+    if not freeof(R, T) or not antiok(R, f, x):
+        return None
+    return R
+
+def radicals(f, x, out):
+    if type(f) is not tuple or f[0] == 'Q':
+        return
+    if f[0] == '^' and isq(f[2]) and f[2][2] == 2 and not freeof(f[1], x):
+        out.append(f[1])
+    for a in f[1:]:
+        radicals(a, x, out)
+
+def subrad(f, B, rt, x, xs):
+    # f with B^(k/2) -> rt^k and x -> xs
+    if f == x:
+        return xs
+    if type(f) is not tuple or f[0] == 'Q':
+        return f
+    if f[0] == '^' and f[1] == B and isq(f[2]) and f[2][2] == 2:
+        return pw(rt, f[2][1])
+    return simp((f[0],) + tuple(subrad(a, B, rt, x, xs) for a in f[1:]))
+
+def backtrig(R, T, sinT, cosT):
+    if type(R) is not tuple or R[0] == 'Q':
+        return R
+    if len(R) == 2 and R[1] == T:
+        if R[0] == 'sin':
+            return sinT
+        if R[0] == 'cos':
+            return cosT
+        if R[0] == 'tan':
+            return div(sinT, cosT)
+    return simp((R[0],) + tuple(backtrig(a, T, sinT, cosT) for a in R[1:]))
 
 def hasfracpow(e, x):
     # does e contain a non-integer power of an expression in x
@@ -655,14 +929,40 @@ def iparts(f, x, depth):
 def defint(f, x, a, b):
     if a == b:
         return 0
+    if isconst(a) and isconst(b):
+        try:
+            if numpt(a) > numpt(b):
+                r = defint(f, x, b, a)
+                return neg(r) if not isnode(r, 'integral') else ('integral', f, x, a, b)
+        except Exception:
+            pass
+    if haswhen(f, x) and isconst(a) and isconst(b):
+        ps = whensplit(f, x, a, b)
+        if ps is not None:
+            total = 0
+            for p, q, g in ps:
+                if g == 'undef' or has(g, 'undef'):
+                    return 'undef'
+                total = add(total, defint(g, x, p, q))
+            return total
     BUDGET[0] = 0
     F = integ(f, x)
+    if F is None and hasdenom(f):
+        BUDGET[0] = 0
+        F = integ(autocancel(f), x)
+    sing = singular_points(f, x, a, b) or []
     if F is not None and not hasfloat(f):
-        sing = singular_points(f, x, a, b)
-        if sing is None:
-            sing = []
+        # jumps of the antiderivative too (tan(x/2) from the tan(x/2)
+        # substitution jumps at x = pi)
+        for p in singular_points(F, x, a, b) or []:
+            if all([abs(fv_(p) - fv_(q)) > 1e-9 for q in sing]):
+                sing.append(p)
+        sing.sort(key=fv_)
+        if isconst(a) and isconst(b) and fv_(a) > fv_(b):
+            sing.reverse()
         pts = [a] + sing + [b]
         total = 0
+        infs = []
         for i in range(len(pts) - 1):
             lo = pts[i]
             hi = pts[i + 1]
@@ -671,15 +971,177 @@ def defint(f, x, a, b):
             if isnode(vb, 'limit') or isnode(va, 'limit'):
                 total = None
                 break
-            total = add(total, sub(vb, va))
+            d = sub(vb, va)
+            if va == 'undef' or vb == 'undef':
+                # the antiderivative has no limit there (it oscillates)
+                return 'undef'
+            if has(va, 'inf') or has(vb, 'inf'):
+                # F is unbounded at an end: the piece diverges
+                if d not in ('inf', ('*', -1, 'inf')):
+                    return 'undef'
+            if d == 'undef' or has(d, 'undef'):
+                total = None
+                break
+            if has(d, 'inf'):
+                infs.append(d)
+            total = add(total, d)
+        if total is not None and infs:
+            # a non-integrable singularity: the integral diverges
+            if all([q == infs[0] for q in infs]) and infs[0] in ('inf', ('*', -1, 'inf')):
+                return infs[0]
+            return 'undef'
         if total is not None and total != 'undef':
             return total
     if isconst(a) and isconst(b) and freeofall(f, [s for s in symbols(f) if s != x]):
         try:
-            return nint(f, x, a, b)
+            return nint_split(f, x, a, b)
         except Exception:
             pass
     return ('integral', f, x, a, b)
+
+# ===================================================== piecewise (when)
+def haswhen(f, x):
+    if type(f) is not tuple or f[0] == 'Q':
+        return False
+    if f[0] in ('when', 'abs') and not freeof(f[1], x):
+        return True
+    for a in f[1:]:
+        if haswhen(a, x):
+            return True
+    return False
+
+def gensol(r):
+    # the integer parameter (n1, n2, ...) of a general solution, or None
+    ns = [w for w in symbols(r) if w[0] == 'n' and w[1:].isdigit()]
+    if len(ns) == 1 and isconst(subs(r, ns[0], 0)):
+        return ns[0]
+    return None
+
+def firstwhen_(f, x):
+    if type(f) is not tuple or f[0] == 'Q':
+        return False
+    if f[0] == 'when' and not freeof(f[1], x):
+        return True
+    return any([firstwhen_(a, x) for a in f[1:]])
+
+def whenpts(f, x, out):
+    # real zeros of the conditions of when() nodes in f
+    if type(f) is not tuple or f[0] == 'Q':
+        return
+    if f[0] == 'abs' and not freeof(f[1], x):
+        from cassolve import solve_eq, isrealc
+        rs = solve_eq(f[1], x, False)
+        if rs and rs != 'all':
+            for r in rs:
+                if (isrealc(r) or gensol(r)) and r not in out:
+                    out.append(r)
+    if f[0] == 'when' and not freeof(f[1], x):
+        from cassolve import solve_eq, isrealc
+        cs = [f[1]]
+        while cs:
+            c = cs.pop()
+            if head(c) in ('and', 'or', 'not'):
+                cs.extend(c[1:])
+            elif head(c) in ('<', '>', '<=', '>=', '=', '/='):
+                rs = solve_eq(sub(c[1], c[2]), x, False)
+                if rs and rs != 'all':
+                    for r in rs:
+                        if (isrealc(r) or gensol(r)) and r not in out:
+                            out.append(r)
+    for a in f[1:]:
+        whenpts(a, x, out)
+
+def pickwhen(f, x, t):
+    # f with every when() on x replaced by its branch at x=t (a float)
+    if type(f) is not tuple or f[0] == 'Q':
+        return f
+    if f[0] == 'when' and not freeof(f[1], x):
+        try:
+            c = nbool(f[1], {x: t})
+        except Exception:
+            return 'undef'
+        if c:
+            return pickwhen(f[2], x, t)
+        return pickwhen(f[3], x, t) if len(f) > 3 else 'undef'
+    if f[0] == 'abs' and not freeof(f[1], x):
+        u = pickwhen(f[1], x, t)
+        try:
+            return u if fv_(subs(u, x, t)) >= 0 else neg(u)
+        except Exception:
+            return f
+    return simp((f[0],) + tuple(pickwhen(a, x, t) for a in f[1:]))
+
+def numpt(v):
+    if v == 'inf':
+        return 1e300
+    if v == ('*', -1, 'inf'):
+        return -1e300
+    return fv_(v)
+
+def fv_(v):
+    z = nval(v)
+    return z.real if type(z) is complex else z
+
+def whensplit(f, x, a, b):
+    # [(lo, hi, piece)] for a when()-expression on [a, b]
+    pts = []
+    whenpts(f, x, pts)
+    lo = numpt(a)
+    hi = numpt(b)
+    if lo > hi:
+        return None
+    ex = []
+    for p in pts:
+        n = gensol(p)
+        if n is None:
+            ex.append(p)
+        elif hi - lo < 1e4:
+            for k in range(-300, 301):
+                q = subs(p, n, k)
+                if lo < fv_(q) < hi and q not in ex:
+                    ex.append(q)
+    ins = [p for p in ex if lo < fv_(p) < hi]
+    ins.sort(key=fv_)
+    ends = [a] + ins + [b]
+    out = []
+    for i in range(len(ends) - 1):
+        p, q = ends[i], ends[i + 1]
+        pv, qv = numpt(p), numpt(q)
+        if pv < -1e299:
+            t = qv - 1.0
+        elif qv > 1e299:
+            t = pv + 1.0
+        else:
+            t = 0.5 * (pv + qv)
+        out.append((p, q, pickwhen(f, x, t)))
+    return out
+
+def whenlimit(f, x, a, dirn):
+    pts = []
+    whenpts(f, x, pts)
+    if isinf(a):
+        t = 1e6 if a == 'inf' else -1e6
+        return limit(pickwhen(f, x, t), x, a, dirn)
+    av = fv_(a)
+    d = 1e-6
+    for p in pts:
+        q = abs(fv_(p) - av)
+        if q > 1e-12:
+            d = min(d, q / 2)
+    r = limit(pickwhen(f, x, av + d), x, a, 1) if dirn >= 0 else None
+    l = limit(pickwhen(f, x, av - d), x, a, -1) if dirn <= 0 else None
+    if dirn == 1:
+        return r
+    if dirn == -1:
+        return l
+    if r == l:
+        return r
+    try:
+        if isconst(r) and isconst(l) and abs(nval(r) - nval(l)) < 1e-12:
+            return r
+    except Exception:
+        pass
+    return 'undef'
 
 def isinf(v):
     return v == 'inf' or v == ('*', -1, 'inf')
@@ -699,13 +1161,19 @@ def singular_points(f, x, a, b):
     collect_dens(f, x, dens)
     for d in dens:
         u = u_from_expr(d, x)
-        if u is None or len(u) < 2:
+        if u is not None and len(u) < 2:
+            continue
+        if u is None:
+            if hi - lo < 1e6:
+                for r in scanzeros(d, x, lo, hi):
+                    if all([abs(fv_(q) - r) > 1e-9 for q in pts]):
+                        pts.append(snapzero(d, x, r))
             continue
         for r in aberth(u):
             if abs(r.imag) < 1e-9 and lo < r.real < hi:
                 rr = exactify(r.real) if abs(r.real - round(r.real)) < 1e-12 else r.real
                 pts.append(rr)
-    pts.sort(key=lambda p: tofl(p))
+    pts.sort(key=fv_)
     if av > bv:
         pts.reverse()
     return pts
@@ -715,13 +1183,99 @@ def collect_dens(f, x, out):
         return
     if f[0] == '^' and isnum(f[2]) and nsign(f[2]) < 0 and not freeof(f[1], x):
         out.append(f[1])
-    if f[0] == 'ln' or f[0] == 'tan':
-        pass
+    if f[0] == 'tan' and not freeof(f[1], x):
+        out.append(fn('cos', f[1]))
+    if f[0] in ('ln', 'log') and not freeof(f[1], x):
+        out.append(f[1])
     for a in f[1:]:
         collect_dens(a, x, out)
 
+def scanzeros(d, x, lo, hi, n=400):
+    # zeros of d in (lo, hi) found by sampling and bisection; poles of d
+    # (sign changes through infinity) are skipped
+    out = []
+    def g(t):
+        try:
+            v = nval(d, {x: t})
+            return v.real if type(v) is complex else v
+        except Exception:
+            return None
+    h = (hi - lo) / n
+    t0 = lo + h * 1e-3
+    v0 = g(t0)
+    for k in range(1, n + 1):
+        t1 = lo + h * k - (h * 1e-3 if k == n else 0)
+        v1 = g(t1)
+        if v0 is not None and v1 is not None and v0 * v1 <= 0:
+            a, b, fa = t0, t1, v0
+            for it in range(60):
+                m = 0.5 * (a + b)
+                fm = g(m)
+                if fm is None:
+                    break
+                if (fm <= 0) == (fa <= 0):
+                    a, fa = m, fm
+                else:
+                    b = m
+            m = 0.5 * (a + b)
+            fm = g(m)
+            if fm is not None and abs(fm) < 1e-6 and lo < m < hi:
+                out.append(m)
+        t0, v0 = t1, v1
+    return out
+
+def snapzero(d, x, r):
+    # exact form of a numeric zero when an obvious one fits (k*pi/n, n/m)
+    for c in (exactify_guess(r / math.pi), exactify_guess(r)):
+        if type(c) is float:
+            continue
+        v = mul(c, 'pi') if c is not exactify_guess(r) else c
+        try:
+            if abs(fv_(subs(d, x, v))) < 1e-9:
+                return v
+        except Exception:
+            pass
+    return r
+
+NERR = [0.0]
+NBUD = [0]      # Gauss-Kronrod steps left for one numeric integral
+
 def nint(f, x, a, b, tol=1e-10):
-    r = nint0(f, x, a, b, tol)
+    NERR[0] = 0.0
+    NBUD[0] = 1500
+    r = None
+    if (isinf(a) or isinf(b)) and not (isinf(a) and isinf(b)):
+        r = nint_osc(f, x, a, b, tol)
+    if r is None:
+        r = nint0(f, x, a, b, tol)
+        if NERR[0] > 1e-7 * max(1.0, abs(r)) and not isinf(a) and not isinf(b):
+            # endpoint singularity: x = a + (b-a)*(3u^2-2u^3) smooths it
+            NERR[0] = 0.0
+            a0 = nreal(a)
+            w = nreal(b) - a0
+            g = lambda u: _nv(f, x, a0 + w * u)
+            for k in range(3):
+                g = smooth(g)
+                NERR[0] = 0.0
+                r = w * _gk_adapt(g, 0.0, 1.0, tol, 0)
+                if NERR[0] <= 1e-7 * max(1.0, abs(r)):
+                    break
+        if NERR[0] > 1e-7 * max(1.0, abs(r)) and (isinf(a) != isinf(b)):
+            # slowly decaying tail: smooth the mapped integrand at t = 1
+            if isinf(a):
+                f, a, b = subs(f, x, neg(x)), neg(b), 'inf'
+            a0 = nreal(a)
+            g = lambda t: _nv(f, x, a0 + t / (1 - t)) / (1 - t) ** 2 if t < 1 else 0.0
+            for j in range(3):
+                g = smooth(g)
+                NERR[0] = 0.0
+                r = _gk_adapt(g, 0.0, 1.0, tol, 0)
+                if NERR[0] <= 1e-7 * max(1.0, abs(r)):
+                    break
+        if NERR[0] > 1e-7 * max(1.0, abs(r)):
+            err('Questionable accuracy: the integral may diverge')
+    if r != r or abs(r) == float('inf'):
+        err('Questionable accuracy: the integral may diverge')
     if type(r) is complex:
         if abs(r.imag) < 1e-12 * (1 + abs(r.real)):
             return r.real
@@ -751,6 +1305,88 @@ def nint0(f, x, a, b, tol=1e-10):
     b0 = nreal(b)
     g = lambda t: _nv(f, x, t)
     return _gk_adapt(g, a0, b0, tol, 0)
+
+def smooth(g):
+    # u = 3t^2-2t^3: the integrand near both ends gets flatter
+    return lambda t: g(t * t * (3 - 2 * t)) * 6 * t * (1 - t)
+
+def nint_split(f, x, a, b):
+    # numeric integral, split at the poles inside (a, b)
+    pts = [a] + (singular_points(f, x, a, b) or []) + [b]
+    r = 0
+    for i in range(len(pts) - 1):
+        r = add(r, nint(f, x, pts[i], pts[i + 1]))
+    return r
+
+def trigk(f, x, out):
+    # angular frequencies k of sin/cos(k*x+c) in f
+    if type(f) is not tuple or f[0] == 'Q':
+        return
+    if f[0] in ('sin', 'cos') and not freeof(f[1], x):
+        lu = linear(f[1], x)
+        out.append(lu[0] if lu is not None and isconst(lu[0]) else None)
+    for a in f[1:]:
+        trigk(a, x, out)
+
+def nint_osc(f, x, a, b, tol):
+    # oscillatory integrand on [a, inf): integrate one half period at a
+    # time and extrapolate the partial sums (Wynn epsilon); None if f is
+    # not of that kind
+    ks = []
+    trigk(f, x, ks)
+    if not ks or None in ks:
+        return None
+    k = max([abs(tofl(nval(q))) for q in ks])
+    if k == 0:
+        return None
+    sgn_ = 1.0
+    if isinf(a):
+        # (-inf, b]: x -> -x
+        f = subs(f, x, neg(x))
+        a, b = neg(b), 'inf'
+        if a == ('*', -1, ('*', -1, 'inf')):
+            a = 'inf'
+    a0 = tofl(nval(a))
+    h = math.pi / k
+    g = lambda t: _nv(f, x, t)
+    sums = []
+    terms = []
+    s_ = 0.0
+    t = a0
+    for i in range(40):
+        c = _gk_adapt(g, t, t + h, tol, 6)
+        s_ += c
+        terms.append(abs(c))
+        t += h
+        sums.append(s_)
+    if max(terms[-4:]) > 0.25 * max(terms[:4]) and max(terms[-4:]) > 1e-12:
+        # the half-period pieces do not shrink: it does not converge
+        err('Questionable accuracy: the integral may diverge')
+    est = wynn(sums)
+    est2 = wynn(sums[:-6])
+    if est is None or est2 is None or abs(est - est2) > 1e-7 * max(1.0, abs(est)):
+        err('Questionable accuracy: the integral may diverge')
+    return sgn_ * est
+
+def wynn(S):
+    # Wynn epsilon extrapolation of the partial sums S
+    n = len(S)
+    e0 = [0.0] * (n + 1)
+    e1 = list(S)
+    best = S[-1]
+    for k in range(1, n):
+        e2 = []
+        for j in range(len(e1) - 1):
+            d = e1[j + 1] - e1[j]
+            if d == 0:
+                return e1[j + 1]
+            e2.append(e0[j + 1] + 1.0 / d)
+        if k % 2 == 0 and e2:
+            best = e2[-1]
+        e0, e1 = e1, e2
+        if len(e1) < 2:
+            break
+    return best
 
 def _nv(f, x, t):
     try:
@@ -795,7 +1431,15 @@ def _gk(g, a, b):
 
 def _gk_adapt(g, a, b, tol, depth):
     r, e = _gk(g, a, b)
-    if e <= tol * max(1.0, abs(r)) or depth > 18:
+    NBUD[0] -= 1
+    if NBUD[0] < 0:
+        # out of steps (the calculator is slow): report it as inaccurate
+        NERR[0] += e + 1e-6 * (1 + abs(r))
+        return r
+    if e <= tol * max(1.0, abs(r)):
+        return r
+    if depth > 18:
+        NERR[0] += e
         return r
     m = 0.5 * (a + b)
     return _gk_adapt(g, a, m, tol / 2, depth + 1) + _gk_adapt(g, m, b, tol / 2, depth + 1)
@@ -1065,6 +1709,24 @@ def lead_t(e):
     return None
 
 # ===================================================== limits
+def lnt_lim(c):
+    # limit of c as LNT -> -inf, c a rational function of LNT
+    n, d = numer_denom(c)
+    cn = coeffs(n, LNT)
+    cd = coeffs(d, LNT)
+    if cn is None or cd is None:
+        raise NoSeries()
+    p = len(cn) - 1
+    q = len(cd) - 1
+    if p < q:
+        return 0
+    if p == q:
+        return div(cn[p], cd[q])
+    v = lnt_sign(c)
+    if type(v) is complex:
+        return 'undef'
+    return 'inf' if v > 0 else ('*', -1, 'inf')
+
 def lnt_sign(c):
     # sign of c as LNT -> -inf, c polynomial in LNT
     cc = coeffs(c, LNT)
@@ -1081,10 +1743,35 @@ def lnt_sign(c):
     return v
 
 def limit(f, x, a, dirn=0):
+    return infnorm(limit0(f, x, a, dirn))
+
+def infnorm(r):
+    # c*inf -> inf or -inf for a nonzero constant c
+    if isnode(r, '*') and ('inf' in r[1:]):
+        c = mul_list([b for b in r[1:] if b != 'inf'])
+        if isconst(c):
+            try:
+                v = fv_(c)
+                return 'inf' if v > 0 else (('*', -1, 'inf') if v < 0 else 'undef')
+            except Exception:
+                pass
+    return r
+
+def limit0(f, x, a, dirn=0):
     if isnode(f, 'list') or isnode(f, 'mat'):
         return mapexpr(lambda g: limit(g, x, a, dirn), f)
     if freeof(f, x):
         return f
+    if haswhen(f, x) and isconst(a) and firstwhen_(f, x):
+        return whenlimit(f, x, a, dirn)
+    if hashead(f, 'fact') and isinf(a):
+        g = stirling(factnorm(f, x), x)
+        if g != f:
+            return limit(g, x, a, dirn)
+    if isconst(a):
+        r = lim_bounded(f, x, a, dirn)
+        if r is not None:
+            return r
     if a == 'inf' or a == ('*', -1, 'inf'):
         sub_ = pw(TV, -1) if a == 'inf' else neg(pw(TV, -1))
         return lim_side(f, x, sub_, a)
@@ -1118,6 +1805,134 @@ def limit(f, x, a, dirn=0):
         pass
     return 'undef'
 
+def hashead(f, h):
+    if type(f) is not tuple or f[0] == 'Q':
+        return False
+    return f[0] == h or any([hashead(b, h) for b in f[1:]])
+
+STEPF = ('floor', 'ceiling', 'fpart', 'ipart', 'int', 'round')
+
+def factnorm(f, x):
+    # (u+k)! -> (u+k)*...*(u+1)*u! for the smallest u in f, so factorial
+    # ratios cancel
+    fs = []
+    def walk(e):
+        if type(e) is not tuple or e[0] == 'Q':
+            return
+        if e[0] == 'fact' and not freeof(e[1], x):
+            fs.append(e[1])
+        for b in e[1:]:
+            walk(b)
+    walk(f)
+    if not fs:
+        return f
+    base = fs[0]
+    for u in fs:
+        d = sub(base, u)
+        if isint(d) and d > 0:
+            base = u
+    def rep(e):
+        if type(e) is not tuple or e[0] == 'Q':
+            return e
+        if e[0] == 'fact' and not freeof(e[1], x):
+            k = sub(e[1], base)
+            if isint(k) and 0 < k <= 50:
+                return mul_list([add(base, j) for j in range(1, k + 1)] + [fn('fact', base)])
+            return e
+        return simp((e[0],) + tuple(rep(b) for b in e[1:]))
+    return autocancel(rep(f))
+
+def stirling(f, x):
+    # u! -> sqrt(2*pi*u)*(u/e)^u: same limit at infinity of any ratio
+    if type(f) is not tuple or f[0] == 'Q':
+        return f
+    if f[0] == 'fact' and not freeof(f[1], x):
+        u = stirling(f[1], x)
+        return mul(sqrt(mul(2, 'pi', u)), pw(div(u, 'e'), u))
+    return simp((f[0],) + tuple(stirling(b, x) for b in f[1:]))
+
+def bounded_nodes(f, x, a, dirn, out):
+    # floor-like and sin/cos nodes whose argument has no finite limit
+    if type(f) is not tuple or f[0] == 'Q':
+        return
+    for b in f[1:]:
+        bounded_nodes(b, x, a, dirn, out)
+    if len(f) == 2 and not freeof(f[1], x) and f[0] in STEPF + ('sin', 'cos'):
+        try:
+            L = limit(f[1], x, a, dirn)
+        except Exception:
+            return
+        if L in ('inf', ('*', -1, 'inf')) or L == 'undef' or isnode(L, 'limit'):
+            if (f, 1) not in out:
+                out.append((f, 1))
+        elif f[0] in STEPF and not isinf(a):
+            if (f, 0) not in out:
+                out.append((f, 0))
+
+def lim_bounded(f, x, a, dirn):
+    # squeeze: replace bounded oscillating parts by their bounds; when the
+    # limit is the same for every bound, that is the limit
+    ns = []
+    bounded_nodes(f, x, a, dirn, ns)
+    if not ns:
+        return None
+    if not isinf(a):
+        # step functions at a finite point: their value just beside a
+        if dirn == 0:
+            r = lim_bounded(f, x, a, 1)
+            l = lim_bounded(f, x, a, -1)
+            if r is None or l is None:
+                return None
+            return r if r == l else 'undef'
+        stp = [n for n, k in ns if k == 0]
+        ns = [n for n, k in ns if k == 1]
+        if stp:
+            t = fv_(a) + dirn * 1e-7 * (1 + abs(fv_(a)))
+            g = f
+            for n in stp:
+                try:
+                    g = replnode_(g, n, exactify(nval(n, {x: t})))
+                except Exception:
+                    return None
+            return limit(g, x, a, dirn)
+    else:
+        ns = [n for n, k in ns]
+    if not ns:
+        return None
+    C = 'C_'
+    reps = []
+    for n in ns:
+        if n[0] in ('sin', 'cos'):
+            reps.append((n, C, (-1, 0, 1)))
+        elif n[0] in ('floor', 'int', 'ipart'):
+            reps.append((n, sub(n[1], C), (0, Q(1, 2), 1)))
+        elif n[0] == 'ceiling':
+            reps.append((n, add(n[1], C), (0, Q(1, 2), 1)))
+        elif n[0] == 'round':
+            reps.append((n, add(n[1], C), (Q(-1, 2), 0, Q(1, 2))))
+        else:
+            reps.append((n, C, (0, Q(1, 2), 1)))
+    if len(reps) > 1:
+        return None
+    n, r, cs = reps[0]
+    g = replnode_(f, n, r)
+    vals = []
+    for c in cs:
+        v = limit(subs(g, C, c), x, a, dirn)
+        if isnode(v, 'limit'):
+            return None
+        vals.append(v)
+    if vals[0] == vals[1] == vals[2] and vals[0] != 'undef':
+        return vals[0]
+    return 'undef'
+
+def replnode_(f, w, r):
+    if f == w:
+        return r
+    if type(f) is not tuple or f[0] == 'Q':
+        return f
+    return simp((f[0],) + tuple(replnode_(b, w, r) for b in f[1:]))
+
 def has_disc(f):
     if type(f) is not tuple or f[0] == 'Q':
         return False
@@ -1139,6 +1954,8 @@ def lim_side(f, x, sub_, a):
             raise NoSeries()
         if ncmp(al, 0) > 0:
             return 0
+        if has(c, LNT) and al == 0:
+            return lnt_lim(c)
         if has(c, LNT):
             v = lnt_sign(c)
             if type(v) is complex:
@@ -1159,7 +1976,50 @@ def lim_side(f, x, sub_, a):
     r = lim_lh(g, 0)
     if r is not None:
         return r
+    r = lim_log(g)
+    if r is not None:
+        return r
     return lim_num(g, a)
+
+def lnexp(g):
+    # ln(g) with products and powers split up (g > 0 assumed)
+    h = head(g)
+    if h == '*':
+        return add_list([lnexp(b) for b in g[1:]])
+    if h == '^':
+        if g[1] == 'e':
+            return g[2]
+        return mul(g[2], lnexp(g[1]))
+    if isnum(g) and nsign(g) > 0:
+        return fn('ln', g)
+    return fn('ln', g)
+
+def lim_log(g, depth=0):
+    # limit of a product of powers and exponentials through its logarithm
+    if head(g) not in ('*', '^'):
+        return None
+    v = None
+    for t in (1e-3, 1e-2, 1e-1):
+        try:
+            v = nval(g, {TV: t})
+        except Exception:
+            v = None
+        if v is not None and type(v) is not complex and v == v and v != 0 and abs(v) != float('inf'):
+            break
+        v = None
+    if v is None:
+        return None
+    sg = 1 if v > 0 else -1
+    L = lim_val(autocancel(lnexp(mul(sg, g))), depth)
+    if L is None or isnode(L, 'limit') or L == 'undef':
+        return None
+    if L == 'inf':
+        return 'inf' if sg > 0 else ('*', -1, 'inf')
+    if L == ('*', -1, 'inf'):
+        return 0
+    if isconst(L):
+        return mul(sg, pw('e', L))
+    return None
 
 def lim_val(g, depth):
     # limit of g (in TV -> 0+) by series, then L'Hopital
@@ -1172,6 +2032,8 @@ def lim_val(g, depth):
             raise NoSeries()
         if ncmp(al, 0) > 0:
             return 0
+        if has(c, LNT) and al == 0:
+            return lnt_lim(c)
         if has(c, LNT):
             v = lnt_sign(c)
             return 'inf' if v > 0 else ('*', -1, 'inf')
@@ -1181,7 +2043,10 @@ def lim_val(g, depth):
         return 'inf' if v > 0 else ('*', -1, 'inf')
     except (NoSeries, CASError, ZeroDivisionError, ValueError, TypeError, OverflowError):
         pass
-    return lim_lh(g, depth + 1)
+    r = lim_lh(g, depth + 1)
+    if r is None and depth < 3:
+        r = lim_log(g, depth + 1)
+    return r
 
 def lim_lh(g, depth):
     if depth > 4:
@@ -1222,6 +2087,9 @@ def lim_lh(g, depth):
         zero = [i for i in range(len(ls)) if ls[i] == 0]
         infs = [i for i in range(len(ls)) if isinfv(ls[i])]
         if zero and infs:
+            r = lim_log(g, depth + 1)
+            if r is not None:
+                return r
             i = zero[0]
             j = infs[0]
             rest = mul_list([g[k + 1] for k in range(len(ls)) if k != i and k != j])
@@ -1242,13 +2110,14 @@ def lim_lh(g, depth):
         ii = [k for k in range(len(ls)) if isinfv(ls[k])]
         if not ii:
             return None
-        i = ii[0]
-        A = g[i + 1]
-        rest = add_list([g[k + 1] for k in range(len(ls)) if k != i])
-        q = lim_val(autocancel(div(rest, A)), depth)
-        if q is None or q == 'undef':
-            return None
-        return mul(ls[i], add(1, q)) if q != -1 else None
+        for i in ii:
+            A = g[i + 1]
+            rest = add_list([g[k + 1] for k in range(len(ls)) if k != i])
+            q = lim_val(autocancel(div(rest, A)), depth)
+            if q is None or q == 'undef' or isinfv(q) or q == -1:
+                continue
+            return mul(ls[i], add(1, q))
+        return None
     if type(g) is tuple and len(g) == 2:
         L = lim_val(g[1], depth)
         if L is None:
@@ -1271,6 +2140,8 @@ def lim_num(g, a):
             return ('limit', g)
         if abs(v1) > 1e12 and abs(v1) > abs(v2):
             return 'inf' if v1 > 0 else ('*', -1, 'inf')
+        if abs(v1) < 1e-6 and abs(v1) < abs(vals[-3]) and abs(v2) < abs(vals[-3]):
+            return 0
         if abs(v1 - v2) < 1e-6 * (1 + abs(v1)):
             return exactify_guess(v1)
     except Exception:
@@ -1562,25 +2433,74 @@ def telesum(f, k, a, b):
 def nsum(f, k, a, b):
     av = int(nreal(a))
     if b == 'inf':
-        s = 0.0
-        prev = None
-        n = av
-        chk = 0
-        while n < av + 200000:
-            v = nval(f, {k: float(n)})
-            s += v
-            n += 1
-            if n - av > 50 and abs(v) < 1e-15 * (1 + abs(s)):
-                chk += 1
-                if chk > 20:
-                    break
-            else:
-                chk = 0
-        return s
+        return nsum_inf(f, k, av)
     s = 0.0
     for n in range(av, int(b) + 1):
         s += nval(f, {k: float(n)})
     return s
+
+def nsum_inf(f, k, av):
+    # sum of f(k) for k = av, av+1, ...: divergence test, alternating
+    # series by extrapolation, positive terms by Euler-Maclaurin with the
+    # tail integral
+    L = limit(f, k, 'inf')
+    if L != 0 and not isnode(L, 'limit'):
+        if L == 'undef' or not isconst(L):
+            return 'undef'
+        try:
+            v = fv_(L)
+        except Exception:
+            return 'undef'
+        return 'inf' if v > 0 else ('*', -1, 'inf')
+    def t(n):
+        z = nval(f, {k: float(n)})
+        if type(z) is complex:
+            if abs(z.imag) > 1e-12 * (1 + abs(z.real)):
+                raise ValueError
+            z = z.real
+        return z
+    first = [t(n) for n in range(av, av + 40)]
+    tail = first[10:]
+    if all([tail[i] * tail[i + 1] < 0 for i in range(len(tail) - 1)]):
+        S = []
+        s_ = 0.0
+        for n in range(av, av + 60):
+            s_ += t(n)
+            S.append(s_)
+        e1 = wynn(S)
+        e2 = wynn(S[:-10])
+        if abs(e1 - e2) > 1e-8 * max(1.0, abs(e1)):
+            err('Questionable accuracy: the series may diverge')
+        return e1
+    N = av + 200
+    tn = [t(n) for n in range(N, N + 20)]
+    if all([v > 0 for v in tn]) or all([v < 0 for v in tn]):
+        try:
+            fe = exactify(f)
+        except Exception:
+            fe = f
+        I = defint(fe, k, N, 'inf')
+        if I in ('inf', ('*', -1, 'inf')):
+            return I
+        if not isconst(I) or has(I, 'undef'):
+            I = nint(f, k, N, 'inf')
+        s_ = 0.0
+        for n in range(av, N):
+            s_ += t(n)
+        d1 = diff(f, k)
+        d3 = diff(diff(d1, k), k)
+        s_ += fv_(I) + t(N) / 2 - fv_(subs(d1, k, N)) / 12 + fv_(subs(d3, k, N)) / 720
+        return s_
+    # other terms: add until they are negligible
+    s_ = 0.0
+    prev = None
+    for n in range(av, av + 20000):
+        s_ += t(n)
+        if n - av in (9999, 19999):
+            if prev is not None and abs(s_ - prev) > 1e-9 * max(1.0, abs(s_)):
+                err('Questionable accuracy: the series may diverge')
+            prev = s_
+    return s_
 
 def prodseq(f, k, a, b):
     if isint(a) and isint(b):

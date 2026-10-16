@@ -33,3 +33,5 @@ for t in range(160):
         bad += 1
         print('EXC', m, type(ex).__name__, ex)
 print('eig check: ok %d bad %d skipped %d' % (ok, bad, skip))
+if bad:
+    sys.exit(1)

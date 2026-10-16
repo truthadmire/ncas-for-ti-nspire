@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="477" height="318" viewBox="0 0 318 212">
+<rect width="318" height="212" fill="#fff"/>
+<rect x="0" y="0" width="318" height="212" fill="rgb(255,255,255)"/>
+<rect x="0" y="0" width="318" height="18" fill="rgb(30,60,130)"/>
+<text x="4" y="14" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">nCAS  RAD AUTO REAL   menu: commands</text>
+<text x="4" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">l</text>
+<text x="13" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">i</text>
+<text x="22" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">m</text>
+<text x="31" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">i</text>
+<text x="40" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">t</text>
+<text x="49" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">(</text>
+<text x="58" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">(</text>
+<text x="67" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">1</text>
+<text x="76" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">+</text>
+<rect x="86" y="41" width="13" height="1" fill="rgb(0,0,0)"/>
+<text x="88" y="35" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">1</text>
+<text x="88" y="56" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">n</text>
+<text x="100" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">)</text>
+<text x="110" y="38" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">n</text>
+<text x="120" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">,</text>
+<text x="129" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">n</text>
+<text x="138" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">,</text>
+<text x="147" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">∞</text>
+<text x="156" y="46" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">)</text>
+<text x="303" y="77" fill="rgb(0,70,170)" font-family="Menlo,Consolas,monospace" font-size="12">e</text>
+<rect x="0" y="188" width="318" height="24" fill="rgb(240,240,240)"/>
+<rect x="0" y="187" width="318" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="194" width="7" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="207" width="7" height="1" fill="rgb(110,110,110)"/>
+<rect x="7" y="194" width="1" height="14" fill="rgb(110,110,110)"/>
+<rect x="13" y="194" width="1" height="14" fill="rgb(110,110,110)"/>
+<rect x="13" y="192" width="2" height="16" fill="rgb(220,0,0)"/>
+<rect x="10" y="22" width="298" height="150" fill="rgb(110,110,110)"/>
+<rect x="11" y="23" width="296" height="148" fill="rgb(255,255,255)"/>
+<rect x="11" y="23" width="296" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="37" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">Catalog: type a letter</text>
+<rect x="12" y="43" width="294" height="18" fill="rgb(205,225,255)"/>
+<text x="16" y="57" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="57" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">abs</text>
+<text x="16" y="75" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="75" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">angle</text>
+<text x="16" y="93" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="93" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">approx</text>
+<text x="16" y="111" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="111" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">arcLen</text>
+<text x="16" y="129" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="129" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">augment</text>
+<text x="16" y="147" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="147" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">avgRC</text>
+<text x="16" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="165" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">binomCdf</text>
+<text x="288" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12">v</text>
+<rect x="12" y="169" width="294" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="183" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">abs(...)</text>
+<rect x="10" y="22" width="298" height="150" fill="rgb(110,110,110)"/>
+<rect x="11" y="23" width="296" height="148" fill="rgb(255,255,255)"/>
+<rect x="11" y="23" width="296" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="37" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">Catalog: type a letter</text>
+<text x="16" y="57" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="57" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">det</text>
+<text x="16" y="75" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="75" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">diag</text>
+<text x="16" y="93" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="93" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dim</text>
+<text x="16" y="111" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="111" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">domain</text>
+<text x="16" y="129" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="129" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dominantTerm</text>
+<text x="16" y="147" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="147" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dotP</text>
+<rect x="12" y="151" width="294" height="18" fill="rgb(205,225,255)"/>
+<text x="16" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="165" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">eigVc</text>
+<text x="288" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12">v</text>
+<rect x="12" y="169" width="294" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="183" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">eigVc(M) unit eigenvectors (col</text>
+<rect x="10" y="22" width="298" height="150" fill="rgb(110,110,110)"/>
+<rect x="11" y="23" width="296" height="148" fill="rgb(255,255,255)"/>
+<rect x="11" y="23" width="296" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="37" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">Catalog: type a letter</text>
+<text x="16" y="57" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="57" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">diag</text>
+<text x="16" y="75" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="75" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dim</text>
+<text x="16" y="93" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="93" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">domain</text>
+<text x="16" y="111" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="111" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dominantTerm</text>
+<text x="16" y="129" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="129" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">dotP</text>
+<text x="16" y="147" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="147" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">eigVc</text>
+<rect x="12" y="151" width="294" height="18" fill="rgb(205,225,255)"/>
+<text x="16" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12"> </text>
+<text x="34" y="165" fill="rgb(0,0,0)" font-family="Menlo,Consolas,monospace" font-size="12">eigVl</text>
+<text x="288" y="165" fill="rgb(110,110,110)" font-family="Menlo,Consolas,monospace" font-size="12">v</text>
+<rect x="12" y="169" width="294" height="18" fill="rgb(30,60,130)"/>
+<text x="16" y="183" fill="rgb(255,255,255)" font-family="Menlo,Consolas,monospace" font-size="12">eigVl(M) eigenvalues</text>
+</svg>
