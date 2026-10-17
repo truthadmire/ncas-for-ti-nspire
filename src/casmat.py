@@ -63,6 +63,7 @@ def m_mul(A, B):
     return mk([[ac(add_list([mul(a[i][k], b[k][j]) for k in range(n)])) for j in range(len(b[0]))] for i in range(len(a))])
 
 def ident(n):
+    cells(n, n)
     return mk([[1 if i == j else 0 for j in range(n)] for i in range(n)])
 
 def m_pow(A, k):
@@ -102,8 +103,8 @@ def det(A):
             minor = sub(mul(a[1][(j + 1) % 3], a[2][(j + 2) % 3]), mul(a[1][(j + 2) % 3], a[2][(j + 1) % 3]))
             t.append(mul(a[0][j], minor))
         return ac(add_list(t))
-    # fraction-free Bareiss
-    M = [list(r) for r in a]
+    # fraction-free Bareiss (a is already a working copy from rows())
+    M = a
     sign = 1
     prev = 1
     for k in range(n - 1):
@@ -132,7 +133,7 @@ def iszero(v):
     return False
 
 def rref(A, full=True):
-    M = [list(r) for r in rows(A)]
+    M = rows(A)
     m = len(M)
     n = len(M[0])
     r = 0
@@ -470,7 +471,7 @@ def esize(e):
     return k
 
 def lu(A):
-    a = [list(r) for r in rows(A)]
+    a = rows(A)
     m = len(a)
     n = len(a[0])
     L = [[1 if i == j else 0 for j in range(m)] for i in range(m)]

@@ -6,7 +6,7 @@ CATS = (
     ('num', 'Numbers', 'gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign abs real imag conj angle'),
     ('list', 'Lists/stats', 'seq sum product mean median stdDev stdDevPop variance varPop max min sortA sortD cumulativeSum deltaList augment left right mid count normPdf normCdf invNorm binomPdf binomCdf poissPdf poissCdf geomPdf geomCdf'),
     ('conv', 'Conversions (expr>>name)', '>>Decimal >>approxFraction() >>DMS >>DD >>Rad >>Grad >>Polar >>Rect >>Cylind >>Sphere >>exp >>ln >>logbase() >>sin >>cos >>Base2 >>Base10 >>Base16 exp>list()'),
-    ('cmd', 'Commands', ':deg :rad :grad :auto :exact :approx :real :complex :digits n :ascii :unicode :vars :clear :mode :mem  delvar a  q=quit'),
+    ('cmd', 'Commands', ':deg :rad :grad :auto :exact :approx :real :complex :digits n :ascii :unicode :vars :clear :clearans :clearhist :free :mode :mem  delvar a  q=quit'),
 )
 
 SYN = {

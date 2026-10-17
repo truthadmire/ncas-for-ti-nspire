@@ -251,6 +251,7 @@ except NameError:
  print('exec() is missing: use the module install (dist/)')
  raise SystemExit
 _L = {}
+_P = {}     # parts of a lazy module already compiled (a failed load can be retried)
 # the helpers are compiled from text too, so that nothing compiled from this
 # file itself keeps the text parts in memory once the program has ended
 exec(\"\"\"def _u(s):
@@ -261,8 +262,18 @@ def _x(s):
  if gc:
   gc.collect()
 def _load(m):
- for s in _L.pop(m, ()):
-  exec(_u(s), globals())\"\"\")
+ ps = _L.get(m)
+ if ps is None:
+  return
+ i = _P.get(m, 0)
+ while i < len(ps):
+  if gc:
+   gc.collect()
+  exec(_u(ps[i]), globals())
+  i += 1
+  _P[m] = i
+ del _L[m]
+ _P.pop(m, None)\"\"\")
 print('Loading nCAS...')'''
 
 # characters that may follow '$' in a code (no quotes or backslash, so the

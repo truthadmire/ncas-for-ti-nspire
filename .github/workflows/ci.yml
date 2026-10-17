@@ -31,6 +31,8 @@ jobs:
           python3 tests/gui_check.py
           python3 tests/layout_check.py
           python3 tests/gui_fuzz.py 200
+          python3 tests/oom_check.py
+          python3 tests/mem_soak.py src
       - name: exact calculator, eigenvectors, properties
         run: |
           python3 tests/x_check.py
@@ -63,6 +65,9 @@ jobs:
           micropython -X heapsize=2000000 tests/check.py dist
           micropython -X heapsize=2000000 tests/x_check.py
           micropython -X heapsize=2000000 tests/gui_fuzz.py 40 150 dist
+          micropython -X heapsize=2000000 tests/oom_check.py dist
+          micropython -X heapsize=2000000 tests/mem_soak.py dist
+          micropython -X heapsize=1000000 tests/mem_soak.py dist
           python3 tests/menu_check.py micropython onefile
       - name: self-test fits in 1 MB
         run: |

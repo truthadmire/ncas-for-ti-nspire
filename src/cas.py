@@ -277,6 +277,10 @@ def explist(e, v):
 # ------------------------------------------------------------ calls
 def call(name, raw):
     name = FN.ALIAS.get(name, name)
+    if name == 'approx' and len(raw) == 1:
+        v = fastnum(raw[0])
+        if v is not None:
+            return v
     if name in UFUN:
         params, body = UFUN[name]
         args = [ev(a) for a in raw]
@@ -299,6 +303,106 @@ def call(name, raw):
         return ev(parse(s[1], isfunc))
     args = [ev(a) for a in raw]
     return ('call', name) + tuple(args)
+
+# ------------------------------------------------------------ decimal path
+# approx() of a plain numeric expression whose exact value would be large
+# (big powers, factorials, binomials) is computed with decimals directly,
+# without building the exact number first. Anything else, or a result that
+# loses digits to cancellation, goes the exact way.
+
+class NoNum(Exception):
+    pass
+
+NUMF = {'sin': math.sin, 'cos': math.cos, 'tan': math.tan, 'arcsin': math.asin,
+        'arccos': math.acos, 'arctan': math.atan, 'ln': math.log, 'log': math.log,
+        'log10': math.log10, 'sqrt': math.sqrt, 'exp': math.exp, 'abs': abs,
+        'sinh': math.sinh, 'cosh': math.cosh, 'tanh': math.tanh}
+TRIGF = ('sin', 'cos', 'tan')
+ATRIGF = ('arcsin', 'arccos', 'arctan')
+NUMST = {'big': 0.0, 'cost': 0.0}
+
+def lfact(n):
+    # ln(n!)
+    return math.lgamma(n + 1.0)
+
+def fastnum(t):
+    NUMST['big'] = 0.0
+    NUMST['cost'] = 0.0
+    try:
+        v = numev(t)
+    except (NoNum, ValueError, OverflowError, ZeroDivisionError, TypeError):
+        return None
+    if NUMST['cost'] < 2000 or v != v:
+        return None             # cheap enough exactly, or not a number
+    if v != 0 and abs(v) != float('inf') and abs(v) < 1e-8 * NUMST['big']:
+        return None             # digits lost to cancellation
+    if v == 0 and NUMST['big'] > 0:
+        return None
+    return v
+
+def numev(t):
+    tt = type(t)
+    if tt is int:
+        return float(t)
+    if tt is float:
+        return t
+    if tt is str:
+        if t == 'pi':
+            return math.pi
+        if t == 'e':
+            return math.e
+        v = ENV.get(t)
+        if type(v) in (int, float) or isq(v):
+            return tofl(v)
+        raise NoNum()
+    h = t[0]
+    if h in ('+', '-'):
+        a = numev(t[1])
+        b = numev(t[2])
+        NUMST['big'] = max(NUMST['big'], abs(a), abs(b))
+        return a + b if h == '+' else a - b
+    if h == '*':
+        return numev(t[1]) * numev(t[2])
+    if h == '/':
+        return numev(t[1]) / numev(t[2])
+    if h == 'neg':
+        return -numev(t[1])
+    if h == '^':
+        b = numev(t[1])
+        x = numev(t[2])
+        if b < 0 and x != int(x):
+            raise NoNum()
+        if abs(b) > 1:
+            NUMST['cost'] += abs(x) * math.log(abs(b), 2)
+        return b ** x if abs(x * math.log(abs(b) or 1.0)) < 709 else (float('inf') if b > 0 or x % 2 == 0 else -float('inf'))
+    if h == '!':
+        n = numev(t[1])
+        if n < 0 or n != int(n):
+            raise NoNum()
+        lf = lfact(n)
+        NUMST['cost'] += lf / math.log(2)
+        return math.exp(lf) if lf < 709 else float('inf')
+    if h == 'call':
+        name = FN.ALIAS.get(t[1], t[1])
+        args = [numev(a) for a in t[2:]]
+        if name in ('ncr', 'npr') and len(args) == 2:
+            n, k = args
+            if n != int(n) or k != int(k) or k < 0 or k > n:
+                raise NoNum()
+            lv = lfact(n) - lfact(n - k) - (lfact(k) if name == 'ncr' else 0)
+            NUMST['cost'] += lv / math.log(2)
+            return float(round(math.exp(lv))) if lv < 36 else (math.exp(lv) if lv < 709 else float('inf'))
+        f = NUMF.get(name)
+        if f is None or len(args) != 1:
+            raise NoNum()
+        x = args[0]
+        if name in TRIGF and SET['angle'] != 'rad':
+            x = x * (math.pi / 180 if SET['angle'] == 'deg' else math.pi / 200)
+        r = f(x)
+        if name in ATRIGF and SET['angle'] != 'rad':
+            r = r * (180 / math.pi if SET['angle'] == 'deg' else 200 / math.pi)
+        return r
+    raise NoNum()
 
 def builtin(name, f, args):
     # run a built-in command; Python errors caused by unsuitable arguments
@@ -476,8 +580,8 @@ def sf_seq(a):
         out.append(subs(e, v, k))
         k = nadd(k, st)
         cnt += 1
-        if cnt > 5000:
-            err('Too many elements')
+        if cnt > MAXLEN:
+            toobig('seq would make more than %d elements' % MAXLEN)
     return ('list',) + tuple(out)
 
 def sf_taylor(a):
@@ -922,6 +1026,7 @@ def sf_constructmat(a):
     e = evw(a[0], [i, j])
     r = ev(a[3])
     c = ev(a[4])
+    cells(r, c)
     return MA.mk([[subsd(e, {i: ii, j: jj}) for jj in range(1, c + 1)] for ii in range(1, r + 1)])
 
 def sf_charpoly(a):
@@ -1066,7 +1171,22 @@ def command0(c):
     if k in ('clear', 'clearaz', 'reset'):
         ENV.clear()
         UFUN.clear()
-        return 'Cleared'
+        return 'Cleared variables and functions'
+    if k == 'clearans':
+        STATE['ans'] = 0
+        return 'ans cleared'
+    if k in ('clearhist', 'clearhistory'):
+        return 'The history is kept only in the full-screen mode'
+    if k == 'free':
+        # memory that can be given back without losing variables
+        STATE['ans'] = 0
+        STATE['tinames'] = None
+        try:
+            import gc
+            gc.collect()
+            return 'ans cleared, %d KB free' % (gc.mem_free() // 1024)
+        except Exception:
+            return 'ans cleared'
     if k in ('mem', 'memory'):
         # heap use (the calculator's Python has about 2 MB in all)
         try:
@@ -1134,7 +1254,9 @@ def run(s):
     pre_register(s)
     t = parse(s, isfunc)
     STATE['cplx'] = (SET['cplx'] != 'real')
-    r = ev(t)
+    r = fastnum(t) if SET['mode'] == 'approx' else None
+    if r is None:
+        r = ev(t)
     r = finalize(r)
     if not (isnode(t, 'define') or (isnode(r, 'str') and r[1] == 'Done')):
         STATE['ans'] = unhold(r) if not isnode(r, 'str') else r

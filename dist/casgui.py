@@ -7,6 +7,9 @@ CW=9
 AW=7
 BASE=14
 MAXH=30
+HISTCH=6000
+UNDON=30
+UNDOCH=3000
 C_BAR=(30,60,130)
 C_BART=(255,255,255)
 C_TXT=(0,0,0)
@@ -207,8 +210,18 @@ def draw():
  wq,aq,dq=meas(G['row'])
  etop=h-(max(LH,aq+dq+2)+2)-2
  avail=etop-LH-4
- bl=blocks()
  sel=selected()
+ if sel is None:
+  bl=[]
+  k=len(G['hist'])
+  hh=0
+  while k>0 and hh<avail:
+   k-=1
+   eb=entry_blocks(k)
+   hh+=sum([b[2]for b in eb])
+   bl=eb+bl
+ else:
+  bl=blocks(max(0,min(sel[0],G.get('hendk',sel[0]))-8))
  if bl:
   if sel is None:
    end=len(bl)-1
@@ -228,7 +241,11 @@ def draw():
     end=fitfrom(bl,start,avail)
     G['tall']=(G['stop'],len(idx)-n)
    else:
-    end=min(G.get('hend',len(bl)-1),len(bl)-1)
+    end=len(bl)-1
+    hk=G.get('hend')
+    for j in range(len(bl)):
+     if(bl[j][3],bl[j][4])==hk:
+      end=j
     start=startfor(bl,end,avail)
     if b>end:
      end=b
@@ -236,7 +253,8 @@ def draw():
     if a<start:
      start=a
      end=fitfrom(bl,start,avail)
-  G['hend']=end
+  G['hend']=(bl[end][3],bl[end][4])
+  G['hendk']=bl[end][3]
   y=LH+2
   last=None
   for i in range(start,end+1):
@@ -294,7 +312,10 @@ def insert(s,back=0):
 def evaluate(run,s):
  G['msg']='Working...'
  if G.get('gui'):
-  draw()
+  try:
+   draw()
+  except MemoryError:
+   freemem(5)
  bad=False
  try:
   out=run(s)
@@ -305,7 +326,8 @@ def evaluate(run,s):
   out='Error: Division by zero'
   bad=True
  except MemoryError:
-  out='Error: Out of memory'
+  freemem(5)
+  out='Error: Out of memory (history shortened, undo cleared; variables kept)'
   bad=True
  except RuntimeError:
   out='Error: Too complex'
@@ -320,27 +342,58 @@ def evaluate(run,s):
  if out is None:
   out=''
  G['hist'].append((s,out,bad))
- if len(G['hist'])>MAXH:
-  G['hist'].pop(0)
+ trimhist(MAXH,HISTCH)
+def freemem(keep):
+ G['lay']={}
+ G['undo']=[]
+ G['tinames']=None
+ G['typing']=False
+ trimhist(keep,500*keep)
+ G['sel']=None
+ try:
+  import gc
+  gc.collect()
+ except ImportError:
+  pass
+def trimhist(n,chars):
+ h=G['hist']
+ tot=sum([len(e[0])+len(e[1])for e in h])
+ c=G.get('lay',{})
+ while h and(len(h)>n or(tot>chars and len(h)>1)):
+  e=h.pop(0)
+  tot-=len(e[0])+len(e[1])
+  c.pop(e[0],None)
+  c.pop(e[1],None)
 def loop(run):
  while True:
-  draw()
-  k=G['key'](1)
-  G['msg']=''
-  if not k:
-   continue
-  before=ed_snap()
-  a=ctrlaction(k)
-  if a=='wait':
-   G['msg']='ctrl  (next key: blue label)'
-   continue
-  if a is not None:
-   doaction(run,a,k)
-  else:
-   key(run,k)
-  if ed_text()!=before[3]and a!=('undo',):
-   G.setdefault('undo',[]).append(before)
-   del G['undo'][:-30]
+  try:
+   step(run)
+  except MemoryError:
+   freemem(3)
+   G['msg']='Out of memory: history shortened, undo cleared'
+def step(run):
+ draw()
+ k=G['key'](1)
+ G['msg']=''
+ if not k:
+  return
+ typing=len(k)==1 and k not in ENTER
+ before=None if typing and G.get('typing')else ed_snap()
+ G['typing']=typing
+ a=ctrlaction(k)
+ if a=='wait':
+  G['msg']='ctrl  (next key: blue label)'
+  return
+ if a is not None:
+  doaction(run,a,k)
+ else:
+  key(run,k)
+ if before is not None and a!=('undo',)and ed_text()!=before[3]:
+  u=G.setdefault('undo',[])
+  u.append(before)
+  tot=sum([len(x[3])for x in u])
+  while u and(len(u)>UNDON or tot>UNDOCH):
+   tot-=len(u.pop(0)[3])
 def key(run,k):
  if k=='esc':
   if G['sel']is not None:
@@ -499,6 +552,15 @@ def special(run,s):
  low=s.strip().lower()
  if low in(':keys','keys'):
   keytest()
+ elif low in(':clearhist',':clearhistory'):
+  G['hist']=[]
+  G['undo']=[]
+  G['lay']={}
+  G['msg']='History and undo cleared'
+ elif low==':free':
+  freemem(0)
+  G['msg']='Freed: history, undo, ans (variables kept)'
+  run(':clearans')
  elif low in('q','quit',':q'):
   raise KeyboardInterrupt
  else:
@@ -1383,8 +1445,14 @@ def tolayout(s):
    r=(r,w,a,d)
   except Exception:
    r=None
- if len(c)>80:
+ if len(c)>60:
+  keep={}
+  for e in G.get('hist',[])[-10:]:
+   for t2 in e[:2]:
+    if t2 in c:
+     keep[t2]=c[t2]
   c.clear()
+  c.update(keep)
  c[s]=r
  return r
 def prec(t):
@@ -1522,23 +1590,27 @@ def matsize(rows):
  W=sum(cw)+8*(nc-1)+10
  H=sum(ra)+sum(rd)+7*(len(rows)-1)
  return cw,ra,rd,W,H
-def blocks():
+def blocks(first=0):
+ out=[]
+ for k in range(first,len(G['hist'])):
+  out+=entry_blocks(k)
+ return out
+def entry_blocks(k):
  out=[]
  n=G['wrap']
  w=G['w']
- for k in range(len(G['hist'])):
-  inp,res,bad=G['hist'][k]
-  for part,s,col in(('in',inp,C_TXT),('out',res,C_ERR if bad else C_RES)):
-   lt=None if bad else tolayout(s)
-   if lt is not None:
-    r,rw,ra,rd=lt
-    if rw<=w-10 and ra+rd+4<=G['h']-3*LH-8:
-     out.append(('2d',(r,rw,ra,rd,col),ra+rd+4,k,part))
-     continue
-   pre='  ' if part=='out' else ''
-   for line in s.split('\n'):
-    for t in wrap(line,n-len(pre)):
-     out.append(('txt',(pre+t,col),LH,k,part))
+ inp,res,bad=G['hist'][k]
+ for part,s,col in(('in',inp,C_TXT),('out',res,C_ERR if bad else C_RES)):
+  lt=None if bad else tolayout(s)
+  if lt is not None:
+   r,rw,ra,rd=lt
+   if rw<=w-10 and ra+rd+4<=G['h']-3*LH-8:
+    out.append(('2d',(r,rw,ra,rd,col),ra+rd+4,k,part))
+    continue
+  pre='  ' if part=='out' else ''
+  for line in s.split('\n'):
+   for t in wrap(line,n-len(pre)):
+    out.append(('txt',(pre+t,col),LH,k,part))
  return out
 def startfor(bl,end,avail):
  hh=0

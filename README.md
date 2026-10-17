@@ -25,9 +25,9 @@ e
 
 | Folder | Contents |
 |---|---|
-| `onefile/ncastext.py` | **Text version**: one file (~236 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
+| `onefile/ncastext.py` | **Text version**: one file (~240 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
-| `onefile/ncasgui.py` | **Full-screen version**: one file (~269 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
+| `onefile/ncasgui.py` | **Full-screen version**: one file (~274 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
 | `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and is not needed). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
@@ -106,6 +106,26 @@ menus are compiled only when you first use them. Measured on a 64-bit computer
 The calculator has about 2 MB. Type `:mem` to see free memory. If you run short,
 leave nCAS, then type `cas()` (ncastext) or `gui()` (ncasgui) in the Shell: the stored text is freed once the program has
 ended, which gives back about 190 KB.
+
+**Staying within memory.**
+- **Size limits.** A calculation whose result would be too big for the
+  calculator stops before it starts, with an error that begins `Resource limit:`
+  (an expansion of more than 2000 terms such as `expand((a+b+c+d+z)^30)`, a matrix
+  of more than 2500 entries, a list of more than 5000 elements). These are
+  separate from mathematical errors such as `Non-real result`.
+- **Full-screen mode limits.** The history keeps at most 30 entries and about 6000
+  characters; undo keeps at most 30 steps and 3000 characters, and a run of typing
+  is one undo step. Only the visible entries are laid out.
+- **Running out anyway.** If memory still runs out, the full-screen mode shortens the history, clears undo
+  and keeps going. Your variables and functions are kept. `:free` clears history,
+  undo and `ans`; `:clearhist` clears the history and undo; `:clearans` resets `ans`.
+- **Decimals directly.** `approx()` of a numeric expression with large exact parts (big
+  powers, factorials, binomials) is computed in decimals without building the exact
+  number, unless that would lose digits to cancellation.
+
+`tests/mem_soak.py` runs a long full-screen session on MicroPython with the
+calculator's heap: memory in use after collection levels off at about 470 KB once
+the history is full (64-bit computer; the handheld has not been measured yet).
 
 ### Module install (alternative)
 
@@ -299,6 +319,7 @@ unevaluated, with `(factr is not a command; did you mean factor?)`. `diff`,
 | `:digits n` | significant digits shown for decimals (1–15) |
 | `:ascii` `:unicode` | `sqrt( pi inf` or `√ π ∞` in output |
 | `:vars`, `:clear`, `delvar a` | list, clear and delete variables and functions |
+| `:clearans`, `:clearhist`, `:free` | reset `ans`; clear the full-screen history and undo; both (variables are kept) |
 | `:mode` | show the current settings |
 | `:mem` | show free and used memory |
 | `?`, `?topic`, `?command` | help, for example `?calc` or `?solve` |
@@ -464,6 +485,14 @@ python3 tests/layout_check.py
 
 ```bash
 python3 tests/verify.py
+```
+
+```bash
+micropython -X heapsize=2000000 tests/mem_soak.py dist
+```
+
+```bash
+python3 tests/oom_check.py
 ```
 
 `check.py` compares 324 commands with the golden files in `tests/*.expected`.

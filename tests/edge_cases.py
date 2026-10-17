@@ -143,6 +143,20 @@ eigVc([[a,b],[b,a]])
 eigVl([[1,1],[0,1]])
 eigVl([[1.5,0],[0,1.5]])
 eigVc([[1.5,0],[0,1.5]])
+expand((a+b+c+d+z)^30)
+expand((x+y)^3000)
+newMat(500,500)
+seq(k,k,1,100000)
+randPoly(x,5000)
+expand((a+b+c)^4)
+2+3
+:clearans
+ans+1
+approx(3^5000+1-3^5000)
+approx(nCr(1000,500))
+approx(800!/798!)
+1/6+1/10
+(2/15)*(45/8)
 """.strip().split('\n')
 for line in CASES:
     try:

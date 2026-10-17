@@ -478,17 +478,27 @@ def polyeval(L, x):
     return expand(r)
 
 def randpoly(v, n):
+    if not isint(n) or n < 0:
+        err('Degree must be a nonnegative integer')
+    if n >= MAXTERMS:
+        toobig('a polynomial of degree %d has more than %d terms' % (n, MAXTERMS))
     import random
     return add_list([mul(random.randint(-9, 9), pw(v, k)) for k in range(n + 1)])
 
 def randmat(r, c):
+    cells(r, c)
     import random
     return MA.mk([[random.randint(-9, 9) for _ in range(c)] for _ in range(r)])
 
 def newmat(r, c):
+    cells(r, c)
     return MA.mk([[0] * c for _ in range(r)])
 
 def newlist(n):
+    if not isint(n) or n < 0:
+        err('Length must be a nonnegative integer')
+    if n > MAXLEN:
+        toobig('a list of %d elements is longer than %d' % (n, MAXLEN))
     return ('list',) + (0,) * n
 
 def rand_(n=None):

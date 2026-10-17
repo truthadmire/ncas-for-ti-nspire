@@ -8,6 +8,28 @@
   with ∫, limits and d/dx.
 - Website (`site/`) with live demos of the templates.
 
+Memory:
+- Size budgets checked before the work: expansions over 2000 terms, matrices
+  over 2500 entries, lists over 5000 elements and polynomials of degree 2000+
+  stop at once with "Resource limit: ..." instead of exhausting memory.
+- Full-screen mode: history limited by size (30 entries, about 6000
+  characters) as well as count; undo limited to 30 steps and 3000 characters,
+  with a run of typing as one step; layouts of dropped entries are evicted;
+  only the visible history is laid out.
+- Running out of memory while calculating, drawing or editing is recovered:
+  history shortened, undo and layouts cleared, variables kept, nCAS keeps
+  running. New commands `:clearans`, `:clearhist`, `:free`.
+- Fractions are cross-cancelled before multiplying (and added over the least
+  common denominator), keeping intermediate integers small; matrix routines
+  no longer copy their rows twice.
+- The single-file programs resume a lazily loaded part (help, menus,
+  full-screen mode) where it stopped if loading ran out of memory.
+- `approx()` and Approx mode compute numeric expressions with large exact
+  parts in decimals directly, falling back to exact arithmetic when digits
+  would cancel.
+- New tests: `tests/mem_soak.py` (long session on MicroPython's heap) and
+  `tests/oom_check.py` (recovery), both in CI.
+
 ## 1.1
 
 Wrong answers fixed:

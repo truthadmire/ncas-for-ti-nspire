@@ -1,8 +1,20 @@
 import math
 class CASError(Exception):
  pass
+class ResourceLimit(CASError):
+ pass
 def err(msg):
  raise CASError(msg)
+MAXTERMS=2000
+MAXCELLS=2500
+MAXLEN=5000
+def toobig(what):
+ raise ResourceLimit('Resource limit: '+what)
+def cells(r,c):
+ if not(isint(r)and isint(c))or r<1 or c<1:
+  err('Dimensions must be positive integers')
+ if r*c>MAXCELLS:
+  toobig('a %dx%d matrix has more than %d entries'%(r,c,MAXCELLS))
 CONSTS=('pi','e','i')
 SPECIAL=('pi','e','i','inf','undef','true','false')
 def igcd(a,b):
@@ -63,6 +75,12 @@ def nadd(a,b):
   return tofl(a)+tofl(b)
  an,ad=nd(a)
  bn,bd=nd(b)
+ if ad==bd:
+  return Q(an+bn,ad)
+ g=igcd(ad,bd)
+ if g>1:
+  ad//=g
+  return Q(an*(bd//g)+bn*ad,ad*bd)
  return Q(an*bd+bn*ad,ad*bd)
 def nmul(a,b):
  ta=type(a)
@@ -73,6 +91,14 @@ def nmul(a,b):
   return tofl(a)*tofl(b)
  an,ad=nd(a)
  bn,bd=nd(b)
+ g=igcd(an,bd)
+ if g>1:
+  an//=g
+  bd//=g
+ g=igcd(bn,ad)
+ if g>1:
+  bn//=g
+  ad//=g
  return Q(an*bn,ad*bd)
 def nneg(a):
  if type(a)is tuple:
@@ -791,12 +817,21 @@ def denest(b):
 def expand_mul(a,b):
  ta=a[1:]if isnode(a,'+')else(a,)
  tb=b[1:]if isnode(b,'+')else(b,)
+ if len(ta)*len(tb)>4*MAXTERMS:
+  toobig('the expansion would have more than %d terms'%MAXTERMS)
  out=[]
  for u in ta:
   for v in tb:
    out.append(mul(u,v))
  return add_list(out)
 def expand_pow(b,n):
+ t=len(b)-1 if isnode(b,'+')else 1
+ if t>1 and not isconst(b):
+  c=1
+  for k in range(1,t):
+   c=c*(n+k)//k
+   if c>MAXTERMS:
+    toobig('the expansion would have more than %d terms'%MAXTERMS)
  r=1
  p=b
  while n>0:

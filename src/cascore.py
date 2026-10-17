@@ -17,8 +17,27 @@ import math
 class CASError(Exception):
     pass
 
+class ResourceLimit(CASError):
+    # the calculation would need more memory than the calculator has
+    pass
+
 def err(msg):
     raise CASError(msg)
+
+# Size budgets, checked before the work is done: the calculator has about
+# 2 MB for everything, and a term of an expansion costs a few hundred bytes.
+MAXTERMS = 2000     # terms of one expansion or polynomial
+MAXCELLS = 2500     # entries of one matrix (50x50)
+MAXLEN = 5000       # elements of one list
+
+def toobig(what):
+    raise ResourceLimit('Resource limit: ' + what)
+
+def cells(r, c):
+    if not (isint(r) and isint(c)) or r < 1 or c < 1:
+        err('Dimensions must be positive integers')
+    if r * c > MAXCELLS:
+        toobig('a %dx%d matrix has more than %d entries' % (r, c, MAXCELLS))
 
 CONSTS = ('pi', 'e', 'i')
 SPECIAL = ('pi', 'e', 'i', 'inf', 'undef', 'true', 'false')
@@ -93,6 +112,13 @@ def nadd(a, b):
         return tofl(a) + tofl(b)
     an, ad = nd(a)
     bn, bd = nd(b)
+    if ad == bd:
+        return Q(an + bn, ad)
+    # over the least common denominator: smaller intermediate integers
+    g = igcd(ad, bd)
+    if g > 1:
+        ad //= g
+        return Q(an * (bd // g) + bn * ad, ad * bd)
     return Q(an * bd + bn * ad, ad * bd)
 
 def nmul(a, b):
@@ -104,6 +130,15 @@ def nmul(a, b):
         return tofl(a) * tofl(b)
     an, ad = nd(a)
     bn, bd = nd(b)
+    # cancel across first, so the products stay as small as possible
+    g = igcd(an, bd)
+    if g > 1:
+        an //= g
+        bd //= g
+    g = igcd(bn, ad)
+    if g > 1:
+        bn //= g
+        ad //= g
     return Q(an * bn, ad * bd)
 
 def nneg(a):
@@ -901,6 +936,8 @@ def denest(b):
 def expand_mul(a, b):
     ta = a[1:] if isnode(a, '+') else (a,)
     tb = b[1:] if isnode(b, '+') else (b,)
+    if len(ta) * len(tb) > 4 * MAXTERMS:
+        toobig('the expansion would have more than %d terms' % MAXTERMS)
     out = []
     for u in ta:
         for v in tb:
@@ -908,6 +945,14 @@ def expand_mul(a, b):
     return add_list(out)
 
 def expand_pow(b, n):
+    # (t terms)^n has up to C(n+t-1, t-1) terms: refuse before computing
+    t = len(b) - 1 if isnode(b, '+') else 1
+    if t > 1 and not isconst(b):
+        c = 1
+        for k in range(1, t):
+            c = c * (n + k) // k
+            if c > MAXTERMS:
+                toobig('the expansion would have more than %d terms' % MAXTERMS)
     r = 1
     p = b
     while n > 0:
