@@ -15,6 +15,7 @@
 #   onefile/ncastext.py   text mode only (no casgui)
 #   onefile/ncasgui.py    full-screen mode (ti_draw + ti_system.get_key)
 #   onefile/navcalc.py    aviation calculator (src/navcalc.py, no CAS)
+#   onefile/unitconv.py   unit converter (src/unitconv.py, no CAS)
 import ast
 import io
 import os
@@ -208,6 +209,8 @@ VARIANTS = (
      'ncasgui - nCAS full-screen version for TI-Nspire CX II. Run it (ctrl+R): tab menus, esc quits.'),
     ('navcalc', ['navcalc'], 'navcalc()',
      'navcalc - aviation (E6B) calculator for TI-Nspire CX II. Run it (ctrl+R): pick a tool, esc quits.'),
+    ('unitconv', ['unitconv'], 'unitconv()',
+     'unitconv - unit converter for TI-Nspire CX II. Run it (ctrl+R): pick a category, esc quits.'),
 )
 
 

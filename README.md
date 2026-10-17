@@ -28,8 +28,9 @@ e
 | `onefile/ncastext.py` | **Text version**: one file (~240 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
 | `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~19 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
+| `onefile/unitconv.py` | **Unit converter**: one small file (~13 KB), program name `unitconv`. 16 categories, about 150 units; type in any unit and all the others convert. Independent of the CAS. |
 | `onefile/ncasgui.py` | **Full-screen version**: one file (~274 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
-| `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and `navcalc.py` is the aviation calculator; neither is needed by nCAS). |
+| `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx, `navcalc.py` is the aviation calculator and `unitconv.py` the unit converter; none is needed by nCAS). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
 | `tools/build.py`, `tools/onefile.py` | Rebuild `dist/` and `onefile/` from `src/`. |
@@ -59,7 +60,7 @@ e
 send them to the handheld with the TI-Nspire computer software, open one and run
 it with **Ctrl+R**. The steps below build the documents yourself.
 
-There are four separate programs; install any of them, each in its own
+There are five separate programs; install any of them, each in its own
 document. You need TI-Nspire CX Student/Teacher Software and handheld OS 5.2+, in
 normal mode (not Press-to-Test).
 
@@ -69,6 +70,7 @@ normal mode (not Press-to-Test).
 | `ncasgui` | `onefile/ncasgui.py` | the full-screen mode |
 | `ncasx` | `onefile/ncasx.py` | the exact calculator (see below) |
 | `navcalc` | `onefile/navcalc.py` | the aviation calculator (see below) |
+| `unitconv` | `onefile/unitconv.py` | the unit converter (see below) |
 
 1. In the TI-Nspire computer software: **File ▸ New TI-Nspire Document**, then
    **Insert ▸ Python ▸ New…**, name the program (`ncastext` or `ncasgui`) and
@@ -229,6 +231,48 @@ so IAS is taken as CAS without position error); true altitude assumes ISA lapse
 rate below the aircraft; cloud base 400 ft per °C of spread. Avgas 6.0 lb/US
 gal, Jet-A 6.7 lb/US gal. For planning and training; it is not a certified
 navigation instrument.
+
+## Unit converter (`unitconv`)
+
+A separate program for converting units. It does not use the CAS: one file of
+about 13 KB (3 text parts, one paste: `tools/paste_parts.py onefile/unitconv.py 20000`)
+that loads in a moment and runs in about 200 KB of memory. Install it like the
+others (program name `unitconv`). It needs `ti_draw` and `ti_system.get_key`,
+like `ncasgui`; without them it works in the Shell (category number, then
+`unit-number value`, e.g. `3 12.5`).
+
+Pick a category (arrows + enter, or its key). **Every unit of the category is
+listed; type a value in any row and all the other rows convert as you type.**
+The typed row is black with the red cursor, converted values are blue, and the
+status bar shows the selected row's value to 12 digits (the rows show 8).
+
+| Category | Units |
+|---|---|
+| Length | nm, µm, mm, cm, m, km, thou, in, ft, yd, mi, nmi, au, light-year, parsec |
+| Area | mm², cm², m², ha, km², in², ft², yd², acre, mi² |
+| Volume | mL, L, m³, in³, ft³, yd³, US tsp/tbsp/fl oz/cup/pint/quart/gallon, Imperial fl oz/pint/gallon, oil barrel |
+| Mass | mg, g, kg, tonne, carat, grain, oz, troy oz, lb, stone, short ton, long ton |
+| Temperature | °C, °F, K, °R |
+| Time | ns, µs, ms, s, min, h, day, week, month (average), year (365.25 days) |
+| Speed | m/s, km/h, mph, knot, ft/s, Mach (sea level), speed of light |
+| Pressure | Pa, hPa, kPa, MPa, mbar, bar, atm, psi, mmHg, Torr, inHg, inH2O |
+| Energy | J, kJ, MJ, cal, kcal, Wh, kWh, eV, BTU, ft·lbf, therm |
+| Power | W, kW, MW, hp, metric hp (PS), BTU/h, ft·lbf/s, kcal/h |
+| Force | N, kN, dyn, kgf, lbf, ozf |
+| Angle | degree, radian, milliradian, gradian, arcminute, arcsecond, turn |
+| Data size | bit, kbit, Mbit, Gbit, B, kB, MB, GB, TB, KiB, MiB, GiB, TiB |
+| Fuel economy | km/L, L/100 km, mpg (US), mpg (UK) |
+| Density | kg/m³, g/cm³ (kg/L), lb/ft³, lb/in³, lb/US gal |
+| Frequency | Hz, kHz, MHz, GHz, rpm, rad/s |
+
+Keys: **digits . EE (−)** type in the selected row (it becomes the typed row),
+**del** deletes (on a converted row it first copies that value so you can edit
+it), **clear** empties the row, **up/down/tab/enter** move, **left/right** page
+up/down, **esc** or **menu** back to the categories (esc there quits), **?** help.
+Each category keeps its value while the program runs. The status bar warns
+"below absolute zero" and "not a number". Factors are the exact definitions
+(international inch, foot, pound; US customary and Imperial volumes;
+thermochemical calorie, IT BTU).
 
 ## Full-screen mode (on the calculator)
 

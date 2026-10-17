@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- New separate program **unitconv**, a unit converter with a full-screen
+  form: 16 categories (length, area, volume, mass, temperature, time, speed,
+  pressure, energy, power, force, angle, data size, fuel economy, density,
+  frequency), about 150 units with exact factors. Type a value in any unit and
+  every other unit converts as you type. `onefile/unitconv.py` (~13 KB),
+  `src/unitconv.py`, tests in `tests/unit_check.py`.
 - New separate program **navcalc**, an aviation (E6B) calculator with
   full-screen forms: wind triangle (any two blanks, also finds the wind),
   crosswind, time-speed-distance, fuel, pressure/density altitude, CAS/TAS/Mach,
