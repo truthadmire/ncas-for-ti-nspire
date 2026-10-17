@@ -14,6 +14,7 @@
 # cashelp, casmenu and casgui are compiled on first use:
 #   onefile/ncastext.py   text mode only (no casgui)
 #   onefile/ncasgui.py    full-screen mode (ti_draw + ti_system.get_key)
+#   onefile/navcalc.py    aviation calculator (src/navcalc.py, no CAS)
 import ast
 import io
 import os
@@ -205,6 +206,8 @@ VARIANTS = (
      'ncasx - nCAS exact calculator for TI-Nspire CX II. Run it (ctrl+R), type an expression; q quits.'),
     ('ncasgui', ALL, 'startgui()',
      'ncasgui - nCAS full-screen version for TI-Nspire CX II. Run it (ctrl+R): tab menus, esc quits.'),
+    ('navcalc', ['navcalc'], 'navcalc()',
+     'navcalc - aviation (E6B) calculator for TI-Nspire CX II. Run it (ctrl+R): pick a tool, esc quits.'),
 )
 
 
@@ -220,7 +223,11 @@ def build(name, out_parts, tail, title):
     # (see dictionary()) and decoded by _u() before exec
     parts = [(m, chunks(build_mod.minify(body))) for m, body in out_parts]
     words = dictionary([c for _, cs in parts for c in cs])
-    lines = ['# ' + title, LOADER, '_W=' + repr(words)]
+    loader = LOADER
+    if not name.startswith('ncas'):
+        loader = LOADER.replace('nCAS', name).replace(
+            'use the module install (dist/)', 'paste src/%s.py instead' % name)
+    lines = ['# ' + title, loader, '_W=' + repr(words)]
     lazy = []
     nparts = 0
     for m, cs in parts:

@@ -27,8 +27,9 @@ e
 |---|---|
 | `onefile/ncastext.py` | **Text version**: one file (~240 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
+| `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~19 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
 | `onefile/ncasgui.py` | **Full-screen version**: one file (~274 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
-| `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and is not needed). |
+| `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx and `navcalc.py` is the aviation calculator; neither is needed by nCAS). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
 | `tools/build.py`, `tools/onefile.py` | Rebuild `dist/` and `onefile/` from `src/`. |
@@ -58,7 +59,7 @@ e
 send them to the handheld with the TI-Nspire computer software, open one and run
 it with **Ctrl+R**. The steps below build the documents yourself.
 
-There are three separate programs; install either or both, each in its own
+There are four separate programs; install any of them, each in its own
 document. You need TI-Nspire CX Student/Teacher Software and handheld OS 5.2+, in
 normal mode (not Press-to-Test).
 
@@ -67,6 +68,7 @@ normal mode (not Press-to-Test).
 | `ncastext` | `onefile/ncastext.py` | the text mode (`>` prompt) |
 | `ncasgui` | `onefile/ncasgui.py` | the full-screen mode |
 | `ncasx` | `onefile/ncasx.py` | the exact calculator (see below) |
+| `navcalc` | `onefile/navcalc.py` | the aviation calculator (see below) |
 
 1. In the TI-Nspire computer software: **File ▸ New TI-Nspire Document**, then
    **Insert ▸ Python ▸ New…**, name the program (`ncastext` or `ncasgui`) and
@@ -182,6 +184,51 @@ parts with `tools/paste_parts.py onefile/ncasx.py 20000`).
 - `deg` / `rad` switch the angle unit (the prompt shows `deg>`), `digits 6`
   sets the decimals, `clear` forgets variables, `q` quits.
 - Solving, calculus and matrices are in `ncastext` / `ncasgui`.
+
+## Aviation calculator (`navcalc`)
+
+A separate program for flight planning, like an E6B flight computer. It does
+not use the CAS: one file of about 19 KB that loads in a moment and needs
+well under 300 KB of memory. Install it like the others (program name
+`navcalc`; it fits in one paste: `tools/paste_parts.py onefile/navcalc.py 20000`).
+It needs `ti_draw` and `ti_system.get_key`, like `ncasgui`; without them it
+asks for the values in the Shell instead.
+
+Pick a tool from the list (arrows + enter, or its number). Each tool is a
+form: **type the values you know and leave the others blank. The blank
+fields (`?`) are solved as you type**, drawn in blue. Any field can be the
+blank one: the wind triangle gives heading and ground speed, or the wind
+from heading and ground speed, or the course; time-speed-distance solves
+whichever of the three is missing.
+
+| Tool | Fields | Also shows |
+|---|---|---|
+| Wind triangle | true course, TAS, wind from/speed, true heading, ground speed, variation (E+ W−, optional) | wind correction angle, magnetic heading, head/tailwind |
+| Crosswind | runway (`27` = 270°), wind from/speed, crosswind (+ = from the right), headwind | side, tailwind warning |
+| Time speed distance | ground speed, distance, time | distance per minute |
+| Fuel | fuel flow, time, fuel | fuel with a 45-minute reserve |
+| Altitudes / DA | indicated altitude, altimeter setting, OAT, pressure altitude, density altitude | ISA temperature and deviation |
+| Airspeed / TAS | CAS (IAS), pressure altitude, OAT, TAS, Mach | ISA deviation, speed of sound |
+| True altitude | indicated altitude, OAT at altitude, station elevation | ISA deviation, correction |
+| Cloud base | temperature, dew point, base AGL, field elevation | base MSL, spread |
+| Units | speed, distance, altitude, temperature, pressure, fuel (volume and Avgas/Jet-A weight), fuel flow | |
+
+Keys: **up/down/tab/enter** move between fields, **left/right** change the
+field's unit (kt/mph/km/h, nm/sm/km, ft/m, °C/°F, inHg/hPa, USG/L/Imp gal/lb/kg,
+h:mm/min/h), **del** deletes, **clear** blanks the field, **(−)** changes the
+sign, **esc** or **menu** goes back to the list (esc there quits). Times are
+typed as `1:30` (if your keypad gives `:`) or as minutes (`90`). The status bar
+says what is missing: "enter 1 more value", "too many values: clear 1", "no
+solution" (e.g. a wind stronger than the airspeed), or "these blanks need more
+info" (two blanks that only enter through one combination, such as runway and
+wind direction). Each tool keeps its values while the program runs.
+
+Formulas: ICAO standard atmosphere (pressure altitude from the altimeter
+setting; density altitude from the air density; CAS → Mach → TAS compressible,
+so IAS is taken as CAS without position error); true altitude assumes ISA lapse
+rate below the aircraft; cloud base 400 ft per °C of spread. Avgas 6.0 lb/US
+gal, Jet-A 6.7 lb/US gal. For planning and training; it is not a certified
+navigation instrument.
 
 ## Full-screen mode (on the calculator)
 

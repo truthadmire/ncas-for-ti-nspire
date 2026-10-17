@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- New separate program **navcalc**, an aviation (E6B) calculator with
+  full-screen forms: wind triangle (any two blanks, also finds the wind),
+  crosswind, time-speed-distance, fuel, pressure/density altitude, CAS/TAS/Mach,
+  true altitude, cloud base and unit conversions. Blank fields are solved as
+  you type (closed forms where possible, otherwise Newton's method); left/right
+  change a field's unit. `onefile/navcalc.py` (~19 KB), `src/navcalc.py`,
+  tests in `tests/nav_check.py`.
 - Full-screen mode: calculus templates in menu ▸ 9 Templates: **a** ∫ f dx,
   **b** ∫ with lower and upper limits (▲ / ▼ move between them), **c** d/dx.
   Integrals and derivatives in the history (typed or as results) are drawn
