@@ -10306,7 +10306,7 @@ $, tologbase(e,b):
   $!(t[0],)+$0(walk(a)$) a in t[1:])
  $!('hold',walk(e))
 ''')
-_x(r'''VERSION='1.1'
+_x(r'''VERSION='1.2'
 ENV={}
 UFUN={}
 ASSUME=[]

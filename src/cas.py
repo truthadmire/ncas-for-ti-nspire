@@ -12,7 +12,7 @@ import casmat as MA
 import casfun as FN
 from casfun import SET, lmap, vadd, vsub, vneg, vmul, vdiv, vpow, rel
 
-VERSION = '1.1'
+VERSION = '1.2'
 ENV = {}
 UFUN = {}
 ASSUME = []

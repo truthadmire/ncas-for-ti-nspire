@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2
 
 - New separate program **unitconv**, a unit converter with a full-screen
   form: 16 categories (length, area, volume, mass, temperature, time, speed,
