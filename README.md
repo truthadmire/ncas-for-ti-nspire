@@ -586,6 +586,10 @@ micropython -X heapsize=2000000 tests/mem_soak.py dist
 python3 tests/oom_check.py
 ```
 
+```bash
+python3 tests/cursor_check.py
+```
+
 `check.py` compares 324 commands with the golden files in `tests/*.expected`.
 `verify.py` checks random problems by property: it differentiates integrals back,
 re-expands factorizations, substitutes solutions, multiplies a matrix by its inverse

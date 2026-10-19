@@ -360,7 +360,11 @@ def draw():
     if cx - hoff < 0:
         hoff = max(0, cx - 20)
     G['hoff'] = hoff
+    # the cursor keeps the place measured above (from x = 0); drawing the
+    # row again must not move it, or it shows one character too far right
+    cxy = G['cxy']
     rowdraw(G['row'], 6 - hoff, base, True)
+    G['cxy'] = cxy
     if hoff > 0:
         box(0, top, 5, hgt, C_BOX)
         text(0, base - BASE, '<', C_DIM)

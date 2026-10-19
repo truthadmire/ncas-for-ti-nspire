@@ -26,6 +26,7 @@ program, the exact input and output, and the `:test` / `:mem` results.
   micropython -X heapsize=2000000 tests/check.py dist
   python3 tests/menu_items.py
   python3 tests/gui_check.py
+  python3 tests/cursor_check.py
   python3 tests/verify.py
   ```
 

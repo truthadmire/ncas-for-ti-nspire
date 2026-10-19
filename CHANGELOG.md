@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Full-screen mode: the red cursor on the entry line was drawn about one
+  character to the right of where typing goes (since the 2D entry line in
+  1.0), so `eigVc([|])` looked like `eigVc([]|)`, and reaching the inside of
+  brackets meant putting the cursor after the closing one. The cursor is now
+  drawn exactly where the next character goes, in plain text and inside
+  templates. New test `tests/cursor_check.py` compares the cursor with where a
+  typed character actually lands, after every key.
+
 ## 1.2
 
 - New separate program **unitconv**, a unit converter with a full-screen

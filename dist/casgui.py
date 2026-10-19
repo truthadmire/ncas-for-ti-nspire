@@ -288,7 +288,9 @@ def draw():
  if cx-hoff<0:
   hoff=max(0,cx-20)
  G['hoff']=hoff
+ cxy=G['cxy']
  rowdraw(G['row'],6-hoff,base,True)
+ G['cxy']=cxy
  if hoff>0:
   box(0,top,5,hgt,C_BOX)
   text(0,base-BASE,'<',C_DIM)
