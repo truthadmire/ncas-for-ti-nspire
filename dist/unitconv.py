@@ -18,8 +18,8 @@ ENTER=('enter','ret','return','center','\r','\n')
 MENU=('menu',)
 BACKTAB=('shift+tab','shift tab','shifttab','backtab','btab')
 DELKEYS=('del','backspace','bksp')
-NEG=('-','neg','(-)','\u2212','\u207b')
 KEYS='123456789abcdefghijklmnop'
+MAXT=24
 CATS=(
  ('Length','Nanometre|nm|1E-9;Micrometre|\u00b5m|1E-6;Millimetre|mm|0.001;'
  'Centimetre|cm|0.01;*Metre|m|1;Kilometre|km|1000;Thou (mil)|thou|0.0000254;'
@@ -140,12 +140,102 @@ def fmt(x,sig=8):
   s='0'
  return s
 def parse(s):
- t=s
- while t[-1:]in('E','-'):
+ return evalnum(s)
+KEYCH={'.':'.','point':'.','decimal':'.','dot':'.','period':'.',
+ '-':'-','\u2212':'-','minus':'-','+':'+','plus':'+',
+ '*':'*','\u00d7':'*','times':'*','multiply':'*',
+ '/':'/','\u00f7':'/','divide':'/','^':'^','power':'^',
+ '(':'(',')':')','pi':'\u03c0','\u03c0':'\u03c0','E':'E','e':'E',
+ 'ee':'E','EE':'E','\u1d07':'E','square':'^2','\u00b2':'^2','x\u00b2':'^2'}
+def keych(k):
+ if len(k)==1 and '0'<=k<='9':
+  return k
+ return KEYCH.get(k)
+def evalnum(s):
+ t=s.replace(' ','')
+ while t and t[-1]in '+-*/^(E':
   t=t[:-1]
- if t in('','.','-.'):
+ if t in('','.'):
   return None
- return float(t)
+ t+=')'*max(0,t.count('(')-t.count(')'))
+ p=[0]
+ try:
+  v=ev_sum(t,p)
+ except(ZeroDivisionError,OverflowError,TypeError):
+  raise ValueError
+ if p[0]!=len(t)or v!=v or abs(v)>1e300:
+  raise ValueError
+ return v
+def ev_sum(t,p):
+ v=ev_prod(t,p)
+ while p[0]<len(t)and t[p[0]]in '+-':
+  op=t[p[0]]
+  p[0]+=1
+  w=ev_prod(t,p)
+  v=v+w if op=='+' else v-w
+ return v
+def ev_prod(t,p):
+ v=ev_unary(t,p)
+ while p[0]<len(t)and t[p[0]]in '*/(\u03c0':
+  op=t[p[0]]
+  if op in '*/':
+   p[0]+=1
+  w=ev_unary(t,p)
+  v=v/w if op=='/' else v*w
+ return v
+def ev_unary(t,p):
+ if p[0]<len(t)and t[p[0]]in '+-':
+  neg=t[p[0]]=='-'
+  p[0]+=1
+  v=ev_unary(t,p)
+  return-v if neg else v
+ v=ev_atom(t,p)
+ if p[0]<len(t)and t[p[0]]=='^':
+  p[0]+=1
+  e=ev_unary(t,p)
+  if v<0 and e!=int(e):
+   raise ValueError
+  v=float(v)**e
+ return v
+def ev_atom(t,p):
+ i=p[0]
+ if i<len(t)and t[i]=='(':
+  p[0]+=1
+  v=ev_sum(t,p)
+  if p[0]>=len(t)or t[p[0]]!=')':
+   raise ValueError
+  p[0]+=1
+  return v
+ if i<len(t)and t[i]=='\u03c0':
+  p[0]+=1
+  return math.pi
+ j=i
+ while j<len(t)and(t[j].isdigit()or t[j]=='.'):
+  j+=1
+ if i<j<len(t)and t[j]=='E':
+  k=j+1
+  if k<len(t)and t[k]in '+-':
+   k+=1
+  if k<len(t)and t[k].isdigit():
+   j=k
+   while j<len(t)and t[j].isdigit():
+    j+=1
+ if j==i:
+  raise ValueError
+ p[0]=j
+ return float(t[i:j])
+NEGKEYS=('neg','(-)','\u207b','negative')
+def negkey(s):
+ if s=='' or s[-1]in '+-*/^(E':
+  return s+'-'
+ if s[:2]=='-(' and s[-1]==')':
+  return s[2:-1]
+ if s[:1]=='-' and evalnum(s[1:])is not None and not[c for c in s[1:]if c in '+-*/^(']:
+  return s[1:]
+ for c in s:
+  if c in '+-*/^(':
+   return '-('+s+')'
+ return '-'+s
 def convert(us,src,txt):
  try:
   x=parse(txt)
@@ -349,21 +439,16 @@ def formkey(us,st,k,vals):
  elif k=='clear':
   st['src']=i
   st['txt']=''
- elif k in NEG:
+ elif k in NEGKEYS:
   s=st['txt']if i==st['src']else ''
   st['src']=i
-  if s[-1:]=='E':
-   st['txt']=s+'-'
-  elif s[:1]=='-':
-   st['txt']=s[1:]
-  else:
-   st['txt']='-'+s
- elif k=='.' or(len(k)==1 and '0'<=k<='9')or k in('E','ee','EE'):
+  st['txt']=negkey(s)
+ elif keych(k)is not None:
   if i!=st['src']:
    st['src']=i
    st['txt']=''
-  if len(st['txt'])<14:
-   st['txt']+='E' if k in('ee','EE')else k
+  if len(st['txt'])<MAXT:
+   st['txt']+=keych(k)
  elif k in('?','help','cat','catalog'):
   helpscreen()
  else:
@@ -412,8 +497,8 @@ HELP=(
  'up/down/tab/enter   move',
  'left/right   page up/down',
  'del  backspace (edits a result)',
- 'clear  empty row    (-)  sign',
- 'EE  exponent: 1.5E6 = 1500000',
+ 'clear  empty row    EE  1.5E6',
+ 'Sums work: 5+3, 3/4, 2^10, 2(1+pi)',
  'esc/menu  back to the categories',
  'Black = typed, blue = converted.',
  'Status bar: the value, 12 digits.',

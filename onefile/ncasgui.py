@@ -12018,7 +12018,9 @@ TEXT={'space':' ','$O':'$O(','\u221a':'$O(','pi':'\u03c0',
  '\u2192':'->','ans':'ans','theta':'\u03b8','$H':'$H(',
  'sin':'sin(','cos':'cos(','tan':'tan(','sin\u207b\u00b9':'$x(',
  'cos\u207b\u00b9':'arccos(','tan\u207b\u00b9':'$s(','$Q':'$Q',
- 'i':'i','e':'e'}
+ 'i':'i','e':'e','point':'.','decimal':'.','dot':'.','period':'.',
+ 'minus':'-','plus':'+','times':'*','multiply':'*','divide':'/',
+ 'power':'^'}
 gu_TRIG=('sin(','cos(','tan(','$x(','arccos(','$s(',
  'sinh(','cosh(','tanh(','sec(','csc(','cot(')
 NEEDANS='+*/^'

@@ -47,7 +47,9 @@ TEXT = {'space': ' ', 'sqrt': 'sqrt(', '√': 'sqrt(', 'pi': 'π',
         '→': '->', 'ans': 'ans', 'theta': 'θ', 'abs': 'abs(',
         'sin': 'sin(', 'cos': 'cos(', 'tan': 'tan(', 'sin⁻¹': 'arcsin(',
         'cos⁻¹': 'arccos(', 'tan⁻¹': 'arctan(', 'inf': 'inf',
-        'i': 'i', 'e': 'e'}
+        'i': 'i', 'e': 'e', 'point': '.', 'decimal': '.', 'dot': '.', 'period': '.',
+        'minus': '-', 'plus': '+', 'times': '*', 'multiply': '*', 'divide': '/',
+        'power': '^'}
 TRIG = ('sin(', 'cos(', 'tan(', 'arcsin(', 'arccos(', 'arctan(',
         'sinh(', 'cosh(', 'tanh(', 'sec(', 'csc(', 'cot(')
 NEEDANS = '+*/^'

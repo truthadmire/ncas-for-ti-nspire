@@ -9,6 +9,14 @@
   drawn exactly where the next character goes, in plain text and inside
   templates. New test `tests/cursor_check.py` compares the cursor with where a
   typed character actually lands, after every key.
+- navcalc and unitconv: a value is no longer limited to digits, `.`, `E` and
+  the sign. Fields take sums with `+ − × ÷ ^ ( )` and π (`120+15`, `3/4`,
+  `2^10`, `2(1+π)`); an unfinished end such as `12+` is left out until it is
+  finished; **(−)** still changes the sign of the whole value. Keys are also
+  recognised under other names a system may report (`decimal`, `point`,
+  `minus`, `times`, `divide`, ...), in ncasgui too. navcalc is now about 21 KB
+  (two 20,000-character pastes); unitconv about 15 KB (one).
+- Website: the live demos were redrawn with the corrected cursor.
 
 ## 1.2
 

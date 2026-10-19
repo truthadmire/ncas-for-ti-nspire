@@ -27,8 +27,8 @@ e
 |---|---|
 | `onefile/ncastext.py` | **Text version**: one file (~240 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
-| `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~19 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
-| `onefile/unitconv.py` | **Unit converter**: one small file (~13 KB), program name `unitconv`. 16 categories, about 150 units; type in any unit and all the others convert. Independent of the CAS. |
+| `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~21 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
+| `onefile/unitconv.py` | **Unit converter**: one small file (~15 KB), program name `unitconv`. 16 categories, about 150 units; type in any unit and all the others convert. Independent of the CAS. |
 | `onefile/ncasgui.py` | **Full-screen version**: one file (~274 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
 | `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx, `navcalc.py` is the aviation calculator and `unitconv.py` the unit converter; none is needed by nCAS). |
 | `src/` | Readable source, the same program. |
@@ -190,9 +190,9 @@ parts with `tools/paste_parts.py onefile/ncasx.py 20000`).
 ## Aviation calculator (`navcalc`)
 
 A separate program for flight planning, like an E6B flight computer. It does
-not use the CAS: one file of about 19 KB that loads in a moment and needs
+not use the CAS: one file of about 21 KB that loads in a moment and needs
 well under 300 KB of memory. Install it like the others (program name
-`navcalc`; it fits in one paste: `tools/paste_parts.py onefile/navcalc.py 20000`).
+`navcalc`; two pastes: `tools/paste_parts.py onefile/navcalc.py 20000`).
 It needs `ti_draw` and `ti_system.get_key`, like `ncasgui`; without them it
 asks for the values in the Shell instead.
 
@@ -219,7 +219,9 @@ Keys: **up/down/tab/enter** move between fields, **left/right** change the
 field's unit (kt/mph/km/h, nm/sm/km, ft/m, °C/°F, inHg/hPa, USG/L/Imp gal/lb/kg,
 h:mm/min/h), **del** deletes, **clear** blanks the field, **(−)** changes the
 sign, **esc** or **menu** goes back to the list (esc there quits). Times are
-typed as `1:30` (if your keypad gives `:`) or as minutes (`90`). The status bar
+typed as `1:30` (if your keypad gives `:`) or as minutes (`90`). A value can
+be a sum: `+ − × ÷ ^ ( )` and π work, as in `120+15`, `3/4`, `2^10` or
+`(5+3)*1.2`; an unfinished end such as `12+` is left out until you finish it. The status bar
 says what is missing: "enter 1 more value", "too many values: clear 1", "no
 solution" (e.g. a wind stronger than the airspeed), or "these blanks need more
 info" (two blanks that only enter through one combination, such as runway and
@@ -235,7 +237,7 @@ navigation instrument.
 ## Unit converter (`unitconv`)
 
 A separate program for converting units. It does not use the CAS: one file of
-about 13 KB (3 text parts, one paste: `tools/paste_parts.py onefile/unitconv.py 20000`)
+about 15 KB (3 text parts, one paste: `tools/paste_parts.py onefile/unitconv.py 20000`)
 that loads in a moment and runs in about 200 KB of memory. Install it like the
 others (program name `unitconv`). It needs `ti_draw` and `ti_system.get_key`,
 like `ncasgui`; without them it works in the Shell (category number, then
@@ -265,7 +267,9 @@ status bar shows the selected row's value to 12 digits (the rows show 8).
 | Density | kg/m³, g/cm³ (kg/L), lb/ft³, lb/in³, lb/US gal |
 | Frequency | Hz, kHz, MHz, GHz, rpm, rad/s |
 
-Keys: **digits . EE (−)** type in the selected row (it becomes the typed row),
+Keys: **digits . EE** and **+ − × ÷ ^ ( ) π** type in the selected row (it
+becomes the typed row), so a value can be a sum such as `5+3`, `3/4` or
+`2(1+π)`; **(−)** changes the sign of the value,
 **del** deletes (on a converted row it first copies that value so you can edit
 it), **clear** empties the row, **up/down/tab/enter** move, **left/right** page
 up/down, **esc** or **menu** back to the categories (esc there quits), **?** help.

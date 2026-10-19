@@ -42,6 +42,14 @@ K += ['clear'] + word('1.5') + ['EE', '(-)', '3']   # 1.5E-3 nmi
 SHOT_EE = len(K)
 K += ['right', 'right', 'left', 'foo']
 SHOT_FOO = len(K)
+K += ['clear'] + word('(1+2)*2')                # sums: 6
+SHOT_SUM = len(K)
+K += ['clear', 'decimal', '5']                  # other names of the keys: .5
+SHOT_ALIAS = len(K)
+K += ['clear'] + word('2+3') + ['(-)']          # (-) changes the sign: -(2+3)
+SHOT_NEGSUM = len(K)
+K += ['clear'] + word('2^10/4-')                # an unfinished end is left out
+SHOT_OPEN = len(K)
 K += ['esc', 'h', 'any', 'i', 'x', 'esc', 'esc', '1', '?', 'any', 'esc', 'esc']
 
 ti_system.KEYS[:] = K
@@ -121,9 +129,32 @@ shot('bad number', SHOT_BAD, 'not a number')
 shot('exponent', SHOT_EE, '2.778', '0.002778')
 typed('exponent', SHOT_EE, '1.5E-3')
 shot('unknown key', SHOT_FOO, 'not used')
+typed('sum', SHOT_SUM, '(1+2)*2')
+shot('sum', SHOT_SUM, '= 6 ')
+shot('decimal key', SHOT_ALIAS, '= 0.5 ')
+typed('sign of a sum', SHOT_NEGSUM, '-(2+3)')
+shot('sign of a sum', SHOT_NEGSUM, '= -5 ')
+shot('unfinished sum', SHOT_OPEN, '= 256 ')
 check('session used every key', not ti_system.KEYS, ti_system.KEYS)
 check('help screen drawn', [f for k, f in frames if 'unitconv help' in f])
 check('key test drawn', [f for k, f in frames if 'Key test' in f and "'x'" in f])
+
+
+# typed values: sums, unfinished ends, errors
+for s_, want in (('12', 12), ('-3', -3), ('120+15', 135), ('3/4', 0.75), ('2^10', 1024),
+                 ('2(3+1)', 8), ('-2^2', -4), ('2^-1', 0.5), ('1.5E-3', 0.0015), ('12+', 12),
+                 ('2*(3', 6), ('1.5E-', 1.5), ('-', None), ('', None)):
+    got = U.evalnum(s_)
+    check('value ' + s_, got == want if want is None else got is not None and abs(got - want) < 1e-12, got)
+check('value 2pi', abs(U.evalnum('2\u03c0') - 6.283185307179586) < 1e-12)
+for s_ in ('1..2', '1/0', '2)', '(-8)^0.5', 'abc', '1+*2'):
+    try:
+        U.evalnum(s_)
+        check('value ' + s_ + ' refused', False)
+    except ValueError:
+        check('value ' + s_ + ' refused', True)
+for s_, want in (('500', '-500'), ('-500', '500'), ('2+3', '-(2+3)'), ('-(2+3)', '2+3'), ('', '-'), ('4*', '4*-')):
+    check('(-) on ' + s_, U.negkey(s_) == want, U.negkey(s_))
 
 
 # conversions

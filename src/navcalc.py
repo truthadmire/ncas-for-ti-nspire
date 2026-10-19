@@ -33,8 +33,8 @@ ENTER = ('enter', 'ret', 'return', 'center', '\r', '\n')
 MENU = ('menu',)
 BACKTAB = ('shift+tab', 'shift tab', 'shifttab', 'backtab', 'btab')
 DELKEYS = ('del', 'backspace', 'bksp')
-NEG = ('-', 'neg', '(-)', '−', '⁻')
 KEYS = '123456789abcdefghijklmnop'
+MAXT = 24          # characters in a typed value
 
 # ---------------------------------------------------------------- units
 # kind -> units (name, factor, offset, decimals); shown = base*factor+offset.
@@ -122,11 +122,135 @@ def parse(s, kind, u):
         a, b = s.split(':', 1)
         m = abs(float(a or '0')) * 60 + float(b or '0')
         return -m if s[:1] == '-' else m
-    x = float(s)
-    if kind == 'rwy' and '.' not in s and 'E' not in s and 0 < x <= 36:
+    x = evalnum(s)
+    if x is None:
+        raise ValueError
+    if kind == 'rwy' and s.isdigit() and 0 < x <= 36:
         x *= 10
     un = UNITS[kind][u]
     return (x - un[2]) / un[1]
+
+
+# Typed values may be sums: + - * / ^ ( ) and pi, as in 120+15, 3/4,
+# 2(1.5+3), 1.5E-3. Keys arrive under different names on different systems;
+# KEYCH maps the names to the character they type.
+KEYCH = {'.': '.', 'point': '.', 'decimal': '.', 'dot': '.', 'period': '.',
+         '-': '-', '\u2212': '-', 'minus': '-', '+': '+', 'plus': '+',
+         '*': '*', '\u00d7': '*', 'times': '*', 'multiply': '*',
+         '/': '/', '\u00f7': '/', 'divide': '/', '^': '^', 'power': '^',
+         '(': '(', ')': ')', 'pi': '\u03c0', '\u03c0': '\u03c0', 'E': 'E', 'e': 'E',
+         'ee': 'E', 'EE': 'E', '\u1d07': 'E', 'square': '^2', '\u00b2': '^2', 'x\u00b2': '^2'}
+
+
+def keych(k):
+    # the text a key types into a value, or None
+    if len(k) == 1 and '0' <= k <= '9':
+        return k
+    return KEYCH.get(k)
+
+
+def evalnum(s):
+    # typed text -> number, None while nothing is typed yet; an unfinished
+    # end is left out (12+ is 12, 2*(3 is 6). ValueError if not a number.
+    t = s.replace(' ', '')
+    while t and t[-1] in '+-*/^(E':
+        t = t[:-1]
+    if t in ('', '.'):
+        return None
+    t += ')' * max(0, t.count('(') - t.count(')'))
+    p = [0]
+    try:
+        v = ev_sum(t, p)
+    except (ZeroDivisionError, OverflowError, TypeError):
+        raise ValueError
+    if p[0] != len(t) or v != v or abs(v) > 1e300:
+        raise ValueError
+    return v
+
+
+def ev_sum(t, p):
+    v = ev_prod(t, p)
+    while p[0] < len(t) and t[p[0]] in '+-':
+        op = t[p[0]]
+        p[0] += 1
+        w = ev_prod(t, p)
+        v = v + w if op == '+' else v - w
+    return v
+
+
+def ev_prod(t, p):
+    # * and /, and a product without a sign: 2(3+1), 2pi
+    v = ev_unary(t, p)
+    while p[0] < len(t) and t[p[0]] in '*/(π':
+        op = t[p[0]]
+        if op in '*/':
+            p[0] += 1
+        w = ev_unary(t, p)
+        v = v / w if op == '/' else v * w
+    return v
+
+
+def ev_unary(t, p):
+    if p[0] < len(t) and t[p[0]] in '+-':
+        neg = t[p[0]] == '-'
+        p[0] += 1
+        v = ev_unary(t, p)
+        return -v if neg else v
+    v = ev_atom(t, p)
+    if p[0] < len(t) and t[p[0]] == '^':
+        p[0] += 1
+        e = ev_unary(t, p)
+        if v < 0 and e != int(e):
+            raise ValueError
+        v = float(v) ** e
+    return v
+
+
+def ev_atom(t, p):
+    i = p[0]
+    if i < len(t) and t[i] == '(':
+        p[0] += 1
+        v = ev_sum(t, p)
+        if p[0] >= len(t) or t[p[0]] != ')':
+            raise ValueError
+        p[0] += 1
+        return v
+    if i < len(t) and t[i] == 'π':
+        p[0] += 1
+        return math.pi
+    j = i
+    while j < len(t) and (t[j].isdigit() or t[j] == '.'):
+        j += 1
+    if i < j < len(t) and t[j] == 'E':
+        k = j + 1
+        if k < len(t) and t[k] in '+-':
+            k += 1
+        if k < len(t) and t[k].isdigit():
+            j = k
+            while j < len(t) and t[j].isdigit():
+                j += 1
+    if j == i:
+        raise ValueError
+    p[0] = j
+    return float(t[i:j])
+
+
+NEGKEYS = ('neg', '(-)', '\u207b', 'negative')
+
+
+def negkey(s):
+    # the (-) key: a minus where a value starts, otherwise it changes the
+    # sign of the whole value (500 -> -500, 2+3 -> -(2+3) and back)
+    if s == '' or s[-1] in '+-*/^(E':
+        return s + '-'
+    if s[:2] == '-(' and s[-1] == ')':
+        return s[2:-1]
+    if s[:1] == '-' and evalnum(s[1:]) is not None and not [c for c in s[1:] if c in '+-*/^(']:
+        return s[1:]
+    for c in s:
+        if c in '+-*/^(':
+            return '-(' + s + ')'
+    return '-' + s
 
 
 def norm180(a):
@@ -855,22 +979,17 @@ def formkey(t, st, k, v, done):
         st['txt'][i] = s[:-1]
     elif k == 'clear':
         st['txt'][i] = ''
-    elif k in NEG:
-        if s[-1:] == 'E':
-            st['txt'][i] = s + '-'
-        elif s[:1] == '-':
-            st['txt'][i] = s[1:]
-        else:
-            st['txt'][i] = '-' + s
-    elif k in ('.', ':') or (len(k) == 1 and '0' <= k <= '9') or k in ('E', 'ee', 'EE'):
-        c = 'E' if k in ('ee', 'EE') else k
+    elif k in NEGKEYS:
+        st['txt'][i] = negkey(s)
+    elif k == ':' or keych(k) is not None:
+        c = keych(k) or k
         if c == ':' and fs[i][1] != 'time':
             return ': is only for times (h:mm)'
         if t['one']:
             for j in range(n):
                 if j != i:
                     st['txt'][j] = ''
-        if len(s) < 12:
+        if len(s) < MAXT:
             st['txt'][i] = s + c
     elif k in ('?', 'help', 'cat', 'catalog'):
         helpscreen()
@@ -915,6 +1034,9 @@ def drawform(t, st, v, done, ex, status, err):
                 else:
                     s = show(v[j], f[1], st['u'][j])
                     c = C_RES if j in done else C_DIM
+            room = (xv - 14) // AW - len(f[0])
+            if len(s) > room:
+                s = '<' + s[len(s) - room + 1:]     # a long sum: its end
             text(xv - AW * len(s), y, s, c)
             if j == sel:
                 box(xv + 1, y + 2, 2, RH - 4, C_CUR)
@@ -935,11 +1057,11 @@ HELP = (
     'up/down/tab/enter   next field',
     'left/right   change the unit',
     'del  backspace    clear  blank field',
-    '(-)  sign    esc/menu  tool list',
+    'Sums work: 120+15, 3/4, 2^10, 2(1+pi)',
+    'esc/menu  tool list.  IAS = CAS.',
     'Blue = solved. Grey = default.',
     'Runway 27 = 270. Time 1:30 or 90.',
     'Variation: East +, West -.',
-    'IAS is taken as CAS.',
 )
 
 

@@ -32,7 +32,9 @@ TEXT={'space':' ','sqrt':'sqrt(','\u221a':'sqrt(','pi':'\u03c0',
  '\u2192':'->','ans':'ans','theta':'\u03b8','abs':'abs(',
  'sin':'sin(','cos':'cos(','tan':'tan(','sin\u207b\u00b9':'arcsin(',
  'cos\u207b\u00b9':'arccos(','tan\u207b\u00b9':'arctan(','inf':'inf',
- 'i':'i','e':'e'}
+ 'i':'i','e':'e','point':'.','decimal':'.','dot':'.','period':'.',
+ 'minus':'-','plus':'+','times':'*','multiply':'*','divide':'/',
+ 'power':'^'}
 TRIG=('sin(','cos(','tan(','arcsin(','arccos(','arctan(',
  'sinh(','cosh(','tanh(','sec(','csc(','cot(')
 NEEDANS='+*/^'

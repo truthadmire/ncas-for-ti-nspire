@@ -39,6 +39,8 @@ K += ['esc', 'esc', '5'] + word('1..')
 SHOT_BAD = len(K)
 K += ['clear'] + word('5000') + ['enter'] + word('29.92') + ['enter'] + word('30')
 SHOT_DA = len(K)
+K += ['clear'] + word('25+5')                   # a sum gives the same as 30
+SHOT_SUM = len(K)
 K += ['foo']
 SHOT_FOO = len(K)
 K += ['esc', 'a', 'x', 'b', 'q', 'esc', 'esc', 'esc']
@@ -101,6 +103,7 @@ shot('unit', SHOT_UNIT, '100.0', '212')
 shot('unit2', SHOT_UNIT2, '-40.0', '-40')
 shot('bad number', SHOT_BAD, 'not a number')
 shot('density alt', SHOT_DA, '7802', '5001')
+shot('sum', SHOT_SUM, '7802', '25+5')
 shot('unknown key', SHOT_FOO, 'not used')
 check('session used every key', not ti_system.KEYS, ti_system.KEYS)
 
