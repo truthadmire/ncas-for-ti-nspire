@@ -11610,8 +11610,8 @@ $, cas():
    print('Error: '+$|(ex))
 ''')
 _L['cashelp']=(r'''CATS=(
- ('alg','Algebra','solve csolve zeros czeros nsolve linsolve factor cfactor $> comdenom propfrac getnum getdenom completesquare polycoeffs polydegree polyquotient polyremainder polygcd polyroots cpolyroots polyeval tExpand tCollect simplify exact approx domain'),
- ('calc','Calculus','d $[ $w sumseq prodseq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
+ ('alg','Algebra','solve cSolve zeros cZeros nSolve linSolve factor cFactor $> comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval tExpand tCollect simplify exact approx domain'),
+ ('calc','Calculus','d $[ $w sumSeq prodSeq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
  ('mat','Matrix/vector','det identity transpose rref ref inverse eigVl eigVc charPoly LU QR trace norm rowNorm colNorm diag augment colAugment subMat rowSwap rowAdd mRow mRowAdd crossP dotP unitV simult constructMat newMat randMat dim rowDim colDim mat>$J $J>mat'),
  ('num','Numbers','gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign $H $P imag conj $l'),
  ('$J','Lists/stats','seq sum product mean median stdDev stdDevPop variance varPop max min sortA sortD cumulativeSum deltaList augment left right mid count normPdf normCdf invNorm binomPdf binomCdf poissPdf poissCdf geomPdf geomCdf'),

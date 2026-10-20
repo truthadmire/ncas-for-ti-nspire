@@ -12,11 +12,12 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: dist/ and onefile/ match src/
+      - name: dist/, onefile/ and the website guide match src/
         run: |
           python3 tools/build.py
           python3 tools/onefile.py
-          git diff --stat --exit-code -- dist onefile
+          python3 tools/guide.py
+          git diff --stat --exit-code -- dist onefile site/guide.html
       - name: golden results (src, single file)
         run: |
           python3 tests/check.py src

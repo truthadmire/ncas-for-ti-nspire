@@ -1,7 +1,7 @@
 # cashelp.py - on-line help for nCAS
 CATS = (
-    ('alg', 'Algebra', 'solve csolve zeros czeros nsolve linsolve factor cfactor expand comdenom propfrac getnum getdenom completesquare polycoeffs polydegree polyquotient polyremainder polygcd polyroots cpolyroots polyeval tExpand tCollect simplify exact approx domain'),
-    ('calc', 'Calculus', 'd integral limit sumseq prodseq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
+    ('alg', 'Algebra', 'solve cSolve zeros cZeros nSolve linSolve factor cFactor expand comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval tExpand tCollect simplify exact approx domain'),
+    ('calc', 'Calculus', 'd integral limit sumSeq prodSeq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
     ('mat', 'Matrix/vector', 'det identity transpose rref ref inverse eigVl eigVc charPoly LU QR trace norm rowNorm colNorm diag augment colAugment subMat rowSwap rowAdd mRow mRowAdd crossP dotP unitV simult constructMat newMat randMat dim rowDim colDim mat>list list>mat'),
     ('num', 'Numbers', 'gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign abs real imag conj angle'),
     ('list', 'Lists/stats', 'seq sum product mean median stdDev stdDevPop variance varPop max min sortA sortD cumulativeSum deltaList augment left right mid count normPdf normCdf invNorm binomPdf binomCdf poissPdf poissCdf geomPdf geomCdf'),
