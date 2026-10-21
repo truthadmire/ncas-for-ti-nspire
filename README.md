@@ -33,7 +33,7 @@ e
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
 | `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~21 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
 | `onefile/unitconv.py` | **Unit converter**: one small file (~15 KB), program name `unitconv`. 16 categories, about 150 units; type in any unit and all the others convert. Independent of the CAS. |
-| `onefile/ncasgui.py` | **Full-screen version**: one file (~274 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
+| `onefile/ncasgui.py` | **Full-screen version**: one file (~277 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
 | `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx, `navcalc.py` is the aviation calculator and `unitconv.py` the unit converter; none is needed by nCAS). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
@@ -82,7 +82,7 @@ normal mode (not Press-to-Test).
 2. The editor refuses a paste this large ("data too large to paste"), so copy the
    file in parts: in Terminal, run for example
    `python3 tools/paste_parts.py onefile/ncastext.py 20000`, paste each part at the
-   end of the program and press Enter in Terminal for the next one (12 parts for
+   end of the program and press Enter in Terminal for the next one (13 parts for
    ncastext, 14 for ncasgui). It prints the line count the editor should show
    after each part. On Windows and Linux it uses `clip`, `wl-copy`, `xclip` or
    `xsel`; without any of them it writes each part to a file to copy from. (The editor adds an empty
@@ -291,6 +291,10 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 |---|---|
 | typing, **enter** | type on the entry line at the bottom; enter evaluates |
 | **◄ ►**, **del**, **clear** | move the cursor, delete to the left, clear the line |
+| **ctrl ◄ / ctrl ►** | jump to the start / end of the line (also from inside a template) |
+| **shift ◄ / shift ►** | move over a whole name, number or template (`sin(` is one step) |
+| **) ] }** | where the same bracket already follows the cursor, step over it instead of adding another; `)` at the end of √, \|x\|, an n-th root or d/dx leaves it. Brackets left open are closed at **enter**, as on the CAS (also in ncastext and ncasx) |
+| **var** | list `ans` and your variables and functions with their values; enter types the name (`f(` with the cursor inside) |
 | **▲ ▼** | select an earlier input or result; **enter** copies it to the entry line. A result taller than the screen scrolls line by line before the selection moves on |
 | **menu** | command menus: arrows + enter, or the number/letter shown (**ctrl tab** too) |
 | **tab** / **shift tab** | next / previous field: template slots and command arguments after commas (`integral(\|,x,,)`) |

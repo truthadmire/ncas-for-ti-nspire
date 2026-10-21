@@ -1,7 +1,7 @@
 from cascore import CASError
 from casfun import SET
 from casout import fmt,OPT,TINAME
-from casparse import parse
+from casparse import parse,closeup
 LH=18
 CW=9
 AW=7
@@ -314,6 +314,7 @@ def insert(s,back=0):
  ed_chars(s)
  G['pos']=max(0,G['pos']-back)
 def evaluate(run,s):
+ s=closeup(s)
  G['msg']='Working...'
  if G.get('gui'):
   try:
@@ -384,6 +385,14 @@ def step(run):
  typing=len(k)==1 and k not in ENTER
  before=None if typing and G.get('typing')else ed_snap()
  G['typing']=typing
+ k=shiftkey(k)
+ if k is None:
+  G['msg']='shift  (next key: \u25c4 \u25ba jump, tab back)'
+  return
+ if k in JUMP:
+  G['sel']=None
+  ed_word(JUMP[k])
+  return
  a=ctrlaction(k)
  if a=='wait':
   G['msg']='ctrl  (next key: blue label)'
@@ -474,10 +483,14 @@ def key(run,k):
    insert(t+')',1)
   else:
    insert(t)
+ elif k in VARKEYS:
+  G['sel']=None
+  varlist(run)
  elif len(k)==1:
   G['sel']=None
   ed_autoexit(k)
-  insert(k)
+  if not(k in CLOSERS and ed_close(k)):
+   insert(k)
  else:
   G['msg']='key '+repr(k)+' not used'
 CTRLKEYS=('ctrl','doc')
@@ -488,7 +501,8 @@ CTRL={'(':('ins','[]',1),')':('ins','{}',1),'^':('ins','root(,)',2),
  'enter':('approx',),'var':('ins','->',0),'esc':('undo',),
  'cat':('symbols',),'catalog':('symbols',),'book':('symbols',),
  'template':('ins',':=',0),'templates':('ins',':=',0),'templ':('ins',':=',0),
- 'tmpl':('ins',':=',0),'tab':('menu',),'menu':('symbols',)}
+ 'tmpl':('ins',':=',0),'tab':('menu',),'menu':('symbols',),
+ 'left':('home',),'right':('end',)}
 DIRECT={'[]':('ins','[]',1),'{}':('ins','{}',1),'""':('ins','""',1),
  '()':('ins','()',1),'\u2248':('approx',),'approx':('approx',),
  'undo':('undo',),'sto':('ins','->',0),'sto\u2192':('ins','->',0),
@@ -497,11 +511,15 @@ DIRECT={'[]':('ins','[]',1),'{}':('ins','{}',1),'""':('ins','""',1),
  '10^x':('ins','10^',0),'pow10':('ins','10^',0),'10^':('ins','10^',0)}
 RELS=(('=','='),('\u2260  not equal','/='),('<','<'),('>','>'),
  ('\u2264','<='),('\u2265','>='),('|  with','|'),('>>  convert','>>'))
-CTRLHELP=('ctrl ( = [ ]      ctrl ) = { }','ctrl ^ = root      ctrl x\u00b2 = \u221a',
- 'ctrl e^x = ln      ctrl 10^x = log10','ctrl = = \u2260 \u2264 \u2265 | >>',
- 'ctrl (-) = ans     ctrl \u00d7 = " "','ctrl \u00f7 = fraction  ctrl var = \u2192',
- 'ctrl enter = \u2248 decimal','ctrl del = clear   ctrl esc = undo',
- 'ctrl catalog = Symbols','doc works as ctrl too')
+CTRLHELP=('ctrl ( [ ]   ctrl ) { }   ctrl \u00d7 " "',
+ 'ctrl ^ root   ctrl x\u00b2 \u221a   ctrl \u00f7 fraction',
+ 'ctrl e^x ln   ctrl 10^x log10',
+ 'ctrl = \u2260 \u2264 \u2265 | >>   ctrl var \u2192',
+ 'ctrl (-) ans   ctrl enter \u2248 decimal',
+ 'ctrl del clear   ctrl esc undo',
+ 'ctrl \u25c4 \u25ba line start / end',
+ 'shift \u25c4 \u25ba a word   var your variables',
+ 'ctrl catalog Symbols   doc = ctrl')
 def ctrlbase(k):
  t=TEXT.get(k,k)
  return '10^' if k in('10^x','pow10','10^')else t
@@ -523,6 +541,9 @@ def doaction(run,a,k):
   insert(a[1],a[2])
  elif kind=='clear':
   ed_reset()
+ elif kind in('home','end'):
+  G['path']=[]
+  G['pos']=0 if kind=='home' else len(G['row'])
  elif kind=='undo':
   u=G.get('undo')
   if u:
@@ -1114,6 +1135,99 @@ def ed_autoexit(c):
    depth-=1
  if depth<=0:
   G['pos']=G['path'].pop()[0]+1
+CLOSERS={')':'(',']':'[','}':'{'}
+CLOSEWRAP=('sqrt','abs','root','der')
+def ed_close(c):
+ r=ed_row()
+ p=G['pos']
+ o=CLOSERS[c]
+ depth=0
+ for it in r:
+  if it==o:
+   depth+=1
+  elif it==c:
+   depth-=1
+ if depth>0:
+  return False
+ if p<len(r)and r[p]==c:
+  G['pos']=p+1
+  return True
+ if c==')' and G['path']and p==len(r):
+  par,node=ed_parent()
+  i,sl=G['path'][-1]
+  if node[0]in CLOSEWRAP and sl==len(node)-1:
+   G['path'].pop()
+   G['pos']=i+1
+   return True
+ return False
+def ed_wch(it):
+ return type(it)is str and(it.isalpha()or it.isdigit()or it in '._')
+def ed_word(d):
+ r=ed_row()
+ p=G['pos']
+ if d>0:
+  if p>=len(r):
+   ed_right()
+   return
+  q=p+1
+  if ed_wch(r[p]):
+   while q<len(r)and ed_wch(r[q]):
+    q+=1
+   if q<len(r)and r[q]=='(':
+    q+=1
+  G['pos']=q
+ else:
+  if p==0:
+   ed_left()
+   return
+  q=p-1
+  if r[q]=='(' and q>0 and ed_wch(r[q-1]):
+   q-=1
+  if ed_wch(r[q]):
+   while q>0 and ed_wch(r[q-1]):
+    q-=1
+  G['pos']=q
+SHIFTKEYS=('shift',)
+JUMP={'shift+left':-1,'shift+right':1}
+def shiftkey(k):
+ if G.get('shift'):
+  G['shift']=False
+  if k in('left','right'):
+   return 'shift+'+k
+  if k=='tab':
+   return 'shift+tab'
+  return k.upper()if len(k)==1 else k
+ if k in SHIFTKEYS:
+  G['shift']=True
+  return None
+ low=k.lower()
+ if low[:5]=='shift' and len(low)>5:
+  rest=low[5:].lstrip('+-_ ')
+  if rest in('left','right','tab'):
+   return 'shift+'+rest
+ return k
+VARKEYS=('var','vars')
+def varlist(run):
+ items=[]
+ if G['hist']and not G['hist'][-1][2]and G['hist'][-1][1]not in('Done',''):
+  items.append(('ans = '+G['hist'][-1][1].replace('\n',' '),'ans',0))
+ try:
+  txt=run(':vars')
+ except Exception:
+  txt=''
+ for ln in txt.split('\n'):
+  j=ln.find(' = ')
+  if j>0:
+   name=ln[:j]
+   f=name.find('(')
+   items.append((ln,name[:f]+'()' if f>0 else name,1 if f>0 else 0))
+ if not items:
+  G['msg']='No variables yet: a:=5 or 5\u2192a stores one'
+  return
+ wmax=(G['w']-50)//AW
+ j=choose('Variables',[t[0]if len(t[0])<=wmax else t[0][:wmax-1]+'\u2026' for t in items])
+ if j is not None:
+  insert(items[j][1],items[j][2])
 def ed_text(row=None):
  if row is None:
   row=G['row']

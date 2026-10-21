@@ -157,6 +157,13 @@ approx(nCr(1000,500))
 approx(800!/798!)
 1/6+1/10
 (2/15)*(45/8)
+factor(x^2-1
+abs(sin(pi/2
+{1,2,3
+[1,2;3,4
+d(sin(x),x
+f((x]
+"(abc
 """.strip().split('\n')
 for line in CASES:
     try:

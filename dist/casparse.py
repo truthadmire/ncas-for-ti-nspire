@@ -1,4 +1,22 @@
 from cascore import CASError
+BRACKETS={'(':')','[':']','{':'}'}
+def closeup(s):
+ st=[]
+ q=False
+ for c in s:
+  if c=='"':
+   q=not q
+  elif q:
+   continue
+  elif c in BRACKETS:
+   st.append(BRACKETS[c])
+  elif c in ')]}':
+   if not st or st[-1]!=c:
+    return s
+   st.pop()
+ if q or not st:
+  return s
+ return s+''.join(reversed(st))
 REPL=(
  ('**','^'),('==','='),('!=','/='),
  ('sin\u207b\u00b9','arcsin'),('cos\u207b\u00b9','arccos'),('tan\u207b\u00b9','arctan'),

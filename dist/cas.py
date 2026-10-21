@@ -1,6 +1,6 @@
 from cascore import*
 from casout import fmt,fmt_top,OPT
-from casparse import parse
+from casparse import parse,closeup
 import caspoly as PO
 import cascalc as CA
 import cassolve as SO
@@ -1124,6 +1124,7 @@ def run(s):
   return 'Done'
  if low in('clearaz','clear'):
   return command('clear')
+ s=closeup(s)
  pre_register(s)
  t=parse(s,isfunc)
  STATE['cplx']=(SET['cplx']!='real')

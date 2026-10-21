@@ -45,7 +45,7 @@ nCr(50,25)  =>  126410606437752
 √2*1.0  =>  1.414213562
 solve(x^2=2.0,x)  =>  x=-1.414213562 or x=1.414213562
 x+  =>  Error: Incomplete expression
-sin(  =>  Error: Incomplete expression
+sin(  =>  Error: Wrong number of arguments for sin
 foo(3)  =>  foo(3)
 f(x):=x+1  =>  Done
 f(f(2))  =>  4
@@ -152,3 +152,10 @@ approx(nCr(1000,500))  =>  2.702882409E299
 approx(800!/798!)  =>  639200.
 1/6+1/10  =>  4/15
 (2/15)*(45/8)  =>  3/4
+factor(x^2-1  =>  (x-1)*(x+1)
+abs(sin(pi/2  =>  1
+{1,2,3  =>  {1,2,3}
+[1,2;3,4  =>  [[1,2][3,4]]
+d(sin(x),x  =>  cos(x)
+f((x]  =>  Error: Missing )
+"(abc  =>  Error: Missing "

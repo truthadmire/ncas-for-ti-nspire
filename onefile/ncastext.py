@@ -35,7 +35,7 @@ def _load(m):
  del _L[m]
  _P.pop(m, None)""")
 print('Loading nCAS...')
-_W={'!': 'return', '#': 'None', '%': 'append', '&': 'isnode', '(': 'else', ')': 'for', '*': 'and', '+': 'range', ',': 'def', '-': 'not', '.': 'autocancel', '/': 'type', '0': 'tuple', '1': 'isconst', '2': 'complex', '3': 'False', '4': 'freeof', '5': 'len', '6': 'Exception', '7': 'lambda', '8': 'continue', '9': 'except', ':': 'mul', ';': 'add_list', '<': 'depth', '=': 'self', '>': 'expand', '?': 'out', '@': 'float', 'A': 'cplx', 'B': 'name', 'C': 'ZeroDivisionError', 'D': 'isnum', 'E': 'True', 'F': 'undef', 'G': 'mul_list', 'H': 'abs', 'I': 'math', 'J': 'list', 'K': 'while', 'L': 'elif', 'M': 'terms', 'N': 'inf', 'O': 'CASError', 'P': 'real', 'Q': 'ValueError', 'R': 'div', 'S': 'p_divexact', 'T': 'subs', 'U': 'nval', 'V': 'sqrt', 'W': 'break', 'X': 'args', 'Y': 'coeffs', 'Z': 'OverflowError', '[': 'integral', ']': 'sub', '^': 'add', '_': 'hasfloat', '`': 'nsign', 'a': 'coef_rest', 'b': 'Expression', 'c': 'islist', 'd': 'rest', 'e': 'vals', 'f': 'raise', 'g': 'isint', 'h': 'sols', 'i': 'linear', 'j': 'onevar_expr', 'k': 'NoSeries', 'l': 'angle', 'm': 'neg', 'n': 'solve_eq', 'o': 'rows', 'p': 'FSIMP', 'q': 'symbols', 'r': 'israt', 's': 'HALF', 't': 'arctan', 'u': 'int', 'v': 'isrealc', 'w': 'limit', 'x': 'startswith', 'y': 'arcsin', 'z': 'parts', '{': 'best', '|': 'str', '}': 'integ', '~': 'nargs'}
+_W={'!': 'return', '#': 'None', '%': 'append', '&': 'isnode', '(': 'else', ')': 'for', '*': 'and', '+': 'range', ',': 'def', '-': 'not', '.': 'autocancel', '/': 'type', '0': 'tuple', '1': 'isconst', '2': 'complex', '3': 'False', '4': 'freeof', '5': 'len', '6': 'Exception', '7': 'continue', '8': 'lambda', '9': 'except', ':': 'mul', ';': 'add_list', '<': 'depth', '=': 'self', '>': 'expand', '?': 'out', '@': 'float', 'A': 'cplx', 'B': 'name', 'C': 'ZeroDivisionError', 'D': 'isnum', 'E': 'True', 'F': 'undef', 'G': 'mul_list', 'H': 'abs', 'I': 'math', 'J': 'list', 'K': 'while', 'L': 'elif', 'M': 'terms', 'N': 'inf', 'O': 'CASError', 'P': 'real', 'Q': 'ValueError', 'R': 'div', 'S': 'p_divexact', 'T': 'subs', 'U': 'nval', 'V': 'sqrt', 'W': 'break', 'X': 'args', 'Y': 'coeffs', 'Z': 'OverflowError', '[': 'integral', ']': 'sub', '^': 'add', '_': 'hasfloat', '`': 'nsign', 'a': 'coef_rest', 'b': 'Expression', 'c': 'islist', 'd': 'rest', 'e': 'vals', 'f': 'raise', 'g': 'isint', 'h': 'sols', 'i': 'linear', 'j': 'onevar_expr', 'k': 'NoSeries', 'l': 'angle', 'm': 'neg', 'n': 'solve_eq', 'o': 'rows', 'p': 'FSIMP', 'q': 'symbols', 'r': 'israt', 's': 'HALF', 't': 'arctan', 'u': 'int', 'v': 'isrealc', 'w': 'limit', 'x': 'startswith', 'y': 'arcsin', 'z': 'parts', '{': 'best', '|': 'str', '}': 'integ', '~': 'nargs'}
 _x(r'''import $I
 class $O($6):
  pass
@@ -300,15 +300,15 @@ $, $;($X):
   t=$/(a)
   if t is $u or t is $@:
    num=nadd(num,a)
-   $8
+   $7
   if t is $0:
    h=a[0]
    if h=='Q':
     num=nadd(num,a)
-    $8
+    $7
    if h=='+':
     st.extend(a[1:])
-    $8
+    $7
    if h=='*' $* $D(a[1]):
     c=a[1]
     r=a[2]if $5(a)==3 $(('*',)+a[2:]
@@ -323,11 +323,11 @@ $, $;($X):
   if r=='$N':
    s=$`(c)
    if s==0:
-    $8
+    $7
    if infs $* infs!=s:
     $! '$F'
    infs=s
-   $8
+   $7
   if r in $M:
    $M[r]=nadd($M[r],c)
   $(:
@@ -339,7 +339,7 @@ $, $;($X):
  $) r in order:
   c=$M[r]
   if c==0:
-   $8
+   $7
   $?.$%(cmul(c,r))
  if num!=0 or $- $?:
   if $? $* num==0:
@@ -365,15 +365,15 @@ _x(r'''$, $G($X):
   t=$/(a)
   if t is $u or t is $@:
    coef=nmul(coef,a)
-   $8
+   $7
   if t is $0:
    h=a[0]
    if h=='Q':
     coef=nmul(coef,a)
-    $8
+    $7
    if h=='*':
     st.extend(a[1:])
-    $8
+    $7
    if h=='^':
     b=a[1]
     x=a[2]
@@ -799,7 +799,7 @@ $, leadneg(b):
  bk=$#
  $) t in b[1:]:
   if $D(t):
-   $8
+   $7
   c,r=$a(t)
   k=(-tdeg(r),okey(r))
   if bk is $# or k<bk:
@@ -828,7 +828,7 @@ $, denest(b):
  $) t in b[1:]:
   if $r(t):
    a=nadd(a,t)
-   $8
+   $7
   cc,r=$a(t)
   if isrrad(r)$* r[2]==$s $* $r(cc)$*(n is $# or n==r[1]):
    n=r[1]
@@ -1597,26 +1597,26 @@ $p['cosh']=cosh_
 $p['tanh']=tanh_
 $p['arcsinh']=odd0('arcsinh')
 $p['arctanh']=odd0('arctanh')
-$p['arccosh']=$7 u:0 if u==1 $( $#
+$p['arccosh']=$8 u:0 if u==1 $( $#
 $p['fact']=fact_
 $p['$P']=real_
 $p['imag']=imag_
 $p['conj']=conj_
 $p['$l']=angle_
-$p['exp']=$7 u:pw('e',u)
-$p['$V']=$7 u:pw(u,$s)
-$p['sec']=$7 u:pw(fn('cos',u),-1)
-$p['csc']=$7 u:pw(fn('sin',u),-1)
-$p['cot']=$7 u:pw(fn('tan',u),-1)
-$p['sech']=$7 u:pw(fn('cosh',u),-1)
-$p['csch']=$7 u:pw(fn('sinh',u),-1)
-$p['coth']=$7 u:pw(fn('tanh',u),-1)
-$p['arcsec']=$7 u:fn('arccos',pw(u,-1))
-$p['arccsc']=$7 u:fn('$y',pw(u,-1))
-$p['arccot']=$7 u:$]($:($s,'pi'),fn('$t',u))
-$p['arcsech']=$7 u:fn('arccosh',pw(u,-1))
-$p['arccsch']=$7 u:fn('arcsinh',pw(u,-1))
-$p['arccoth']=$7 u:fn('arctanh',pw(u,-1))
+$p['exp']=$8 u:pw('e',u)
+$p['$V']=$8 u:pw(u,$s)
+$p['sec']=$8 u:pw(fn('cos',u),-1)
+$p['csc']=$8 u:pw(fn('sin',u),-1)
+$p['cot']=$8 u:pw(fn('tan',u),-1)
+$p['sech']=$8 u:pw(fn('cosh',u),-1)
+$p['csch']=$8 u:pw(fn('sinh',u),-1)
+$p['coth']=$8 u:pw(fn('tanh',u),-1)
+$p['arcsec']=$8 u:fn('arccos',pw(u,-1))
+$p['arccsc']=$8 u:fn('$y',pw(u,-1))
+$p['arccot']=$8 u:$]($:($s,'pi'),fn('$t',u))
+$p['arcsech']=$8 u:fn('arccosh',pw(u,-1))
+$p['arccsch']=$8 u:fn('arcsinh',pw(u,-1))
+$p['arccoth']=$8 u:fn('arctanh',pw(u,-1))
 $, root_(u,n=2):
  $! pw(u,pw(n,-1))
 $p['root']=root_
@@ -1707,11 +1707,11 @@ $, _fact(x):
  $! gamma(x+1.0)
 NUMF={
  'sin':_c(($I.sin,cmath.sin)),'cos':_c(($I.cos,cmath.cos)),
- 'tan':_c(($I.tan,$7 z:cmath.sin(z)/cmath.cos(z))),
+ 'tan':_c(($I.tan,$8 z:cmath.sin(z)/cmath.cos(z))),
  '$y':_c((_asinr,_casin)),'arccos':_c((_acosr,_cacos)),
  '$t':_c(($I.atan,_catan)),
  'ln':_ln,'exp':_c(($I.exp,cmath.exp)),
- '$V':_c(($7 x:$I.$V(x)if x>=0 $( cmath.$V(x),cmath.$V)),
+ '$V':_c(($8 x:$I.$V(x)if x>=0 $( cmath.$V(x),cmath.$V)),
  '$H':$H,'sign':_sign,'floor':_floor,'ceiling':_ceil,
  'sinh':_sinh,'cosh':_cosh,'tanh':_tanh,
  'arcsinh':_asinh,'arccosh':_acosh,'arctanh':_atanh,
@@ -2295,7 +2295,7 @@ $, pr_sum(e,keep):
  if $- keep:
   ks=sumkeys($M)
   idx=$J($+($5($M)))
-  idx.sort(key=$7 i:ks[i])
+  idx.sort(key=$8 i:ks[i])
   $M=[$M[i]$) i in idx]
  $?=''
  first=$E
@@ -2448,7 +2448,25 @@ $, fmt_top(e):
   $! e[1]
  $! fmt(e)
 ''')
-_x(r'''REPL=(
+_x(r'''BRACKETS={'(':')','[':']','{':'}'}
+$, closeup(s):
+ st=[]
+ q=$3
+ $) c in s:
+  if c=='"':
+   q=$- q
+  $L q:
+   $7
+  $L c in BRACKETS:
+   st.$%(BRACKETS[c])
+  $L c in ')]}':
+   if $- st or st[-1]!=c:
+    $! s
+   st.pop()
+ if q or $- st:
+  $! s
+ $! s+''.join(reversed(st))
+REPL=(
  ('**','^'),('==','='),('!=','/='),
  ('sin\u207b\u00b9','$y'),('cos\u207b\u00b9','arccos'),('tan\u207b\u00b9','$t'),
  ('\u2212','-'),('\u2013','-'),('\u00d7','*'),('\u00b7','*'),
@@ -2462,7 +2480,7 @@ _x(r'''REPL=(
  ('\u2032',"'"),('\u2033',"''"),('@i',' i '),('@e',' e '),
  ('@>','\u25ba'),('@d','\u00b0'),('@t','\u1d40'),('\u2044','/'),
  ('infinity','$N'),('\u03b1','alpha'),('\u03b2','beta'),
- ('\u03bb','$7'),('\u03bc','mu'),('\u03c3','sigma'),
+ ('\u03bb','$8'),('\u03bc','mu'),('\u03c3','sigma'),
  ('\u0394','delta'),
  )
 OPS=('<=>','=>','->','=:',':=','<=','>=','/=','<>','.^','.*',
@@ -2494,7 +2512,7 @@ $, tokenize(s):
   c=s[i]
   if c==' ' or c=='\t':
    i+=1
-   $8
+   $7
   if c=='0' $* i+2<n $* s[i+1]in 'bBhH':
    base=2 if s[i+1]in 'bB' $( 16
    j=i+2
@@ -2504,7 +2522,7 @@ $, tokenize(s):
    if j>i+2:
     toks.$%(('num',$u(s[i+2:j],base)))
     i=j
-    $8
+    $7
   if isdig(c)or(c=='.' $* i+1<n $* isdig(s[i+1])):
    j=i
    $K j<n $* isdig(s[j]):
@@ -2530,7 +2548,7 @@ $, tokenize(s):
    $(:
     toks.$%(('num',$u(txt)))
    i=j
-   $8
+   $7
   if isletter(c):
    j=i
    $K j<n $*(isletter(s[j])or isdig(s[j])):
@@ -2544,14 +2562,14 @@ $, tokenize(s):
     i+=1
    if k:
     toks.$%(('prime',k))
-   $8
+   $7
   if c=='"':
    j=s.find('"',i+1)
    if j<0:
     $f $O('Missing "')
    toks.$%(('$|',s[i+1:j]))
    i=j+1
-   $8
+   $7
   $) op in OPS:
    if s.$x(op,i):
     i+=$5(op)
@@ -2764,7 +2782,7 @@ _x(r'''class Parser:
    $?.$%($=.store_in())
    if $=.isop(','):
     $=.nxt()
-    $8
+    $7
    $=.expect(close)
    $! $?
  $, store_in($=):
@@ -2838,7 +2856,7 @@ _x(r'''class Parser:
      $o.$%(('$J',)+$0(row))
      row=[]
     $L $=.isop(']'):
-     $8
+     $7
     $(:
      $f $O('Missing ]')
    $o.$%(('$J',)+$0(row))
@@ -3168,7 +3186,7 @@ $, kernels(e,ks):
  if e $- in ks:
   ks.$%(e)
 $, sortkernels(ks):
- ks.sort(key=$7 k:varprio(k)if $/(k)is $| $((200,okey(k)))
+ ks.sort(key=$8 k:varprio(k)if $/(k)is $| $((200,okey(k)))
  $! ks
 ''')
 _x(r'''$, ratform(e,ks):
@@ -3367,7 +3385,7 @@ $, u_mul(a,b):
  r=[0]*($5(a)+$5(b)-1)
  $) i in $+($5(a)):
   if a[i]==0:
-   $8
+   $7
   $) j in $+($5(b)):
    r[i+j]=nadd(r[i+j],nmul(a[i],b[j]))
  $! u_trim(r)
@@ -3486,7 +3504,7 @@ _x(r'''$, aberth(c):
     dp=dp*zk+p
     p=p*zk+a[j]
    if p==0:
-    $8
+    $7
    ratio=p/dp if dp!=0 $( 1e-3
    s=0j
    $) j in $+(n):
@@ -3566,10 +3584,10 @@ $, ifactor_sqf(f):
    $) q in lcd:
     p=$u(round(r.$P*q))
     if p==0 $* $H(r.$P)>0.5/q:
-     $8
+     $7
     g=[-p,q]
     if igcd(p,q)!=1:
-     $8
+     $7
     qq=i_divexact(f,g)
     if qq is $- $#:
      res.$%(g)
@@ -3604,7 +3622,7 @@ $, ifactor_sqf(f):
      ok=$3
      $W
    if $- ok:
-    $8
+    $7
    $) q in lcd:
     g=[]
     good=$E
@@ -3616,7 +3634,7 @@ $, ifactor_sqf(f):
       $W
      g.$%(ix)
     if $- good:
-     $8
+     $7
     qq=i_divexact(f,g)
     if qq is $- $#:
      res.$%(g)
@@ -3690,7 +3708,7 @@ $, mfac_rec(P,nv,res,mult):
   $) g,i in fs:
    res.$%((i2p(g,nv,k),i*mult))
   $! cc**mult if $/(cc)is $u $( nipow(cc,mult)
- vs.sort(key=$7 k:p_deg(P,k))
+ vs.sort(key=$8 k:p_deg(P,k))
  k=vs[0]
  cst=1
  C=p_cont(P,k,nv)
@@ -3773,13 +3791,13 @@ _x(r'''$, msplit(F,nv,$<):
      $! msplit(G1,nv,$<+1)+msplit(G2,nv,$<+1)
  $) k in vs:
   if p_deg(F,k)<2:
-   $8
+   $7
   lc=p_lc(F,k)
   tc=p_coeff(F,k,0)
   da=pdivisors(lc,nv)
   db=pdivisors(tc,nv)
   if da is $# or db is $# or $5(da)*$5(db)>3000:
-   $8
+   $7
   x={p_mono(nv,k,1):1}
   $) a in da:
    ax=p_mul(a,x)
@@ -3815,17 +3833,17 @@ $, factor_int_full(n):
  $K st:
   m=st.pop()
   if m==1:
-   $8
+   $7
   small,m=factor_int_small(m)
   $) p,k in small:
    fs[p]=fs.get(p,0)+k
   if m==1:
-   $8
+   $7
   if m>>1024:
    err('Number too large to factor')
   if isprime(m):
    fs[m]=fs.get(m,0)+1
-   $8
+   $7
   d=rho(m)
   st.$%(d)
   st.$%(m//d)
@@ -3854,7 +3872,7 @@ $, isprime(n):
  $) a in(2,3,5,7,11,13,17,19,23,29,31,37):
   x=powmod(a,d,n)
   if x==1 or x==n-1:
-   $8
+   $7
   $) _ in $+(s-1):
    x=x*x%n
    if x==n-1:
@@ -3909,7 +3927,7 @@ $, factor_expr(e,var=$#,$A=$3):
  if $r(e):
   $! factor_rat_held(e)
  if $&(e,'$J')or $&(e,'mat'):
-  $! mapexpr($7 a:factor_expr(a,var,$A),e)
+  $! mapexpr($8 a:factor_expr(a,var,$A),e)
  if isrel(e):
   $!(e[0],factor_expr(e[1],var,$A),factor_expr(e[2],var,$A))
  if $_(e):
@@ -3946,8 +3964,8 @@ $, factor_expr(e,var=$#,$A=$3):
    const=ndiv(const,nipow(f,m))
   $(:
    ditems.$%((f,m))
- items.sort(key=$7 fm:fsortkey(fm[0]))
- ditems.sort(key=$7 fm:fsortkey(fm[0]))
+ items.sort(key=$8 fm:fsortkey(fm[0]))
+ ditems.sort(key=$8 fm:fsortkey(fm[0]))
  $?=[]
  if const!=1 or($- items $* $- ditems):
   $?.$%(const)
@@ -4119,7 +4137,7 @@ $, poly_gcd_expr(a,b):
  $! p2e(g,ks)
 $, expand_full(e,var=$#):
  if $&(e,'$J')or $&(e,'mat'):
-  $! mapexpr($7 a:expand_full(a,var),e)
+  $! mapexpr($8 a:expand_full(a,var),e)
  if isrel(e):
   $!(e[0],expand_full(e[1],var),expand_full(e[2],var))
  x=$>(e)
@@ -4186,7 +4204,7 @@ $, diff(e,x,n=1):
  $! e
 $, diff1(e,x):
  if $&(e,'$J')or $&(e,'mat'):
-  $! mapexpr($7 a:diff1(a,x),e)
+  $! mapexpr($8 a:diff1(a,x),e)
  if $&(e,'=')or $&(e,'<')or $&(e,'>'):
   $!(e[0],diff1(e[1],x),diff1(e[2],x))
  if $4(e,x):
@@ -4569,7 +4587,7 @@ $, irational(f,x):
    if r is $#:
     $! $#
    $?.$%(r)
-   $8
+   $7
   fs=t[1:]if $&(t,'*')$((t,)
   num=[]
   den=$#
@@ -4761,10 +4779,10 @@ $, isubst(f,x,$<):
  big=$5(okey(f))>500
  $) u in cs[:14]:
   if u==x:
-   $8
+   $7
   du=diff(u,x)
   if du==0:
-   $8
+   $7
   q=$R(f,du)
   if $- big:
    q=$.(q)
@@ -4804,12 +4822,12 @@ $, antiok(F,f,x):
  $) t in TPTS:
   y=v(f,t)
   if y is $#:
-   $8
+   $7
   h=1e-5*(1+$H(t))
   a=v(F,t+h)
   b=v(F,t-h)
   if a is $# or b is $#:
-   $8
+   $7
   if $H((a-b)/(2*h)-y)>1e-4*(1+$H(y)):
    $! $3
  $! $E
@@ -5206,13 +5224,13 @@ $, singular_points(f,x,a,b):
  $) d in dens:
   u=u_from_expr(d,x)
   if u is $- $# $* $5(u)<2:
-   $8
+   $7
   if u is $#:
    if hi-lo<1e6:
     $) r in scanzeros(d,x,lo,hi):
      if all([$H(fv_(q)-r)>1e-9 $) q in pts]):
       pts.$%(snapzero(d,x,r))
-   $8
+   $7
   $) r in aberth(u):
    if $H(r.imag)<1e-9 $* lo<r.$P<hi:
     rr=exactify(r.$P)if $H(r.$P-round(r.$P))<1e-12 $( r.$P
@@ -5266,7 +5284,7 @@ $, scanzeros(d,x,lo,hi,n=400):
 $, snapzero(d,x,r):
  $) c in(exactify_guess(r/$I.pi),exactify_guess(r)):
   if $/(c)is $@:
-   $8
+   $7
   v=$:(c,'pi')if c is $- exactify_guess(r)$( c
   try:
    if $H(fv_($T(d,x,v)))<1e-9:
@@ -5288,7 +5306,7 @@ $, nint(f,x,a,b,tol=1e-10):
    NERR[0]=0.0
    a0=nreal(a)
    w=nreal(b)-a0
-   g=$7 u:_nv(f,x,a0+w*u)
+   g=$8 u:_nv(f,x,a0+w*u)
    $) k in $+(3):
     g=smooth(g)
     NERR[0]=0.0
@@ -5299,7 +5317,7 @@ $, nint(f,x,a,b,tol=1e-10):
    if isinf(a):
     f,a,b=$T(f,x,$m(x)),$m(b),'$N'
    a0=nreal(a)
-   g=$7 t:_nv(f,x,a0+t/(1-t))/(1-t)**2 if t<1 $( 0.0
+   g=$8 t:_nv(f,x,a0+t/(1-t))/(1-t)**2 if t<1 $( 0.0
    $) j in $+(3):
     g=smooth(g)
     NERR[0]=0.0
@@ -5323,21 +5341,21 @@ $, nint0(f,x,a,b,tol=1e-10):
   if a=='$N' or b==('*',-1,'$N'):
    $!-nint0(f,x,b,a,tol)
   if isinf(a)$* isinf(b):
-   g=$7 t:_nv(f,x,t/(1-t*t))*(1+t*t)/(1-t*t)**2
+   g=$8 t:_nv(f,x,t/(1-t*t))*(1+t*t)/(1-t*t)**2
    $! _gk_adapt(g,-1.0,1.0,tol,0)
   if isinf(b):
    a0=nreal(a)
-   g=$7 t:_nv(f,x,a0+t/(1-t))/(1-t)**2
+   g=$8 t:_nv(f,x,a0+t/(1-t))/(1-t)**2
    $! _gk_adapt(g,0.0,1.0,tol,0)
   b0=nreal(b)
-  g=$7 t:_nv(f,x,b0-(1-t)/t)/(t*t)
+  g=$8 t:_nv(f,x,b0-(1-t)/t)/(t*t)
   $! _gk_adapt(g,0.0,1.0,tol,0)
  a0=nreal(a)
  b0=nreal(b)
- g=$7 t:_nv(f,x,t)
+ g=$8 t:_nv(f,x,t)
  $! _gk_adapt(g,a0,b0,tol,0)
 $, smooth(g):
- $! $7 t:g(t*t*(3-2*t))*6*t*(1-t)
+ $! $8 t:g(t*t*(3-2*t))*6*t*(1-t)
 $, nint_split(f,x,a,b):
  pts=[a]+(singular_points(f,x,a,b)or[])+[b]
  r=0
@@ -5368,7 +5386,7 @@ $, nint_osc(f,x,a,b,tol):
    a='$N'
  a0=tofl($U(a))
  h=$I.pi/k
- g=$7 t:_nv(f,x,t)
+ g=$8 t:_nv(f,x,t)
  sums=[]
  $M=[]
  s_=0.0
@@ -5739,7 +5757,7 @@ $, infnorm(r):
  $! r
 $, limit0(f,x,a,dirn=0):
  if $&(f,'$J')or $&(f,'mat'):
-  $! mapexpr($7 g:$w(g,x,a,dirn),f)
+  $! mapexpr($8 g:$w(g,x,a,dirn),f)
  if $4(f,x):
   $! f
  if haswhen(f,x)$* $1(a)$* firstwhen_(f,x):
@@ -6071,7 +6089,7 @@ $, lim_lh(g,$<):
    $d=$;([g[k+1]$) k in $+($5(ls))if k!=i])
    q=lim_val($.($R($d,A)),$<)
    if q is $# or q=='$F' or isinfv(q)or q==-1:
-    $8
+    $7
    $! $:(ls[i],$^(1,q))
   $! $#
  if $/(g)is $0 $* $5(g)==2:
@@ -6125,7 +6143,7 @@ $, taylor(f,x,n,a=0):
  $M=[]
  $) k in S[0]:
   if ncmp(k,n)>0:
-   $8
+   $7
   if $-($/(k)is $u $* k>=0)or has(S[0][k],LNT):
    $!('taylor',f,x,n,a)
   $M.$%($:(S[0][k],pw(back,k)))
@@ -6152,7 +6170,7 @@ $, series_cmd(f,x,n,a=0):
  lnback=fn('ln',back)if $-(a=='$N' or a==('*',-1,'$N'))$( $m(fn('ln',fn('$H',x)))
  $) k in S[0]:
   if ncmp(k,n)>0:
-   $8
+   $7
   c=$T(S[0][k],LNT,lnback)
   $M.$%($:(c,pw(back,k)))
  $! $;($M)
@@ -6285,7 +6303,7 @@ $, geomsum(f,k,a,b):
       C.$%(pw(base,lb[1]))
       base=$:(base,g[1])
       ex=k
-      $8
+      $7
     $! $#
    base=g[1]
    ex=g[2]
@@ -6520,9 +6538,9 @@ $, tcollect_term(t):
    if ftf is $# or $5(ftf)!=1:
     if freeof_trig(r):
      $?.$%($:(term,fn(tf[0],tf[1])))
-     $8
+     $7
     $?.$%($:(term,fn(tf[0],tf[1])))
-    $8
+    $7
    $?.$%($:(c,tmul(ftf[0],tf)))
   acc=$>($;($?))
  $! $>($:($G(other),acc))
@@ -6716,7 +6734,7 @@ $, solve_num(nu,x,$A,$<):
    if $&(g,'^')$* $D(g[2])$* $`(g[2])>0:
     g=g[1]
    if $4(g,x):
-    $8
+    $7
    r=$n(g,x,$A,$<+1)
    if r is $#:
     $! numeric_solve(nu,x,$A)
@@ -6953,7 +6971,7 @@ $, solve_poly(p,x,$A):
    if $&(g,'^')$* $D(g[2]):
     g=g[1]
    if $4(g,x):
-    $8
+    $7
    dg=degree(g,x)
    if dg is $- $# $* dg<n:
     r=solve_poly(g,x,$A)
@@ -7496,9 +7514,9 @@ $, nsolve(f,x,guess=$#,lo=$#,hi=$#):
    rs=[r $) r in rs if r<=hi]
  if rs:
   if guess is $- $#:
-   rs.sort(key=$7 r:$H(r-guess))
+   rs.sort(key=$8 r:$H(r-guess))
   $(:
-   rs.sort(key=$7 r:$H(r))
+   rs.sort(key=$8 r:$H(r))
   $! rs[0]
  $! $#
 $, secant(F,g,lo,hi):
@@ -7539,7 +7557,7 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
  pts=[]
  $) rel,f in pairs:
   if $4(f,x):
-   $8
+   $7
   rs=$n(f,x,$3)
   if rs is $#:
    $! $#
@@ -7548,7 +7566,7 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
   $) r in rs:
    if $- $v(r):
     if $1(r):
-     $8
+     $7
     $! $#
    pts.$%(r)
   dens=[]
@@ -7556,7 +7574,7 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
   $) d in dens:
    r2=$n(d,x,$3)
    if r2 is $# or r2=='all':
-    $8
+    $7
    $) r in r2:
     if $v(r):
      pts.$%(r)
@@ -7791,7 +7809,7 @@ _x(r'''$, linsys(fs,vs):
     p=i
     $W
   if p is $#:
-   $8
+   $7
   A[r],A[p]=A[p],A[r]
   pv=A[r][c]
   A[r]=[$.($R(a,pv))$) a in A[r]]
@@ -7933,7 +7951,7 @@ $, elim(fs,vs,$A,$<):
     gs.$%($.($>(h)))
    ys=elim(gs,[y],$A,$<+1)
    if ys is $#:
-    $8
+    $7
    $) t in ys:
     s2=dict(s)
     s2.update(t)
@@ -8038,7 +8056,7 @@ $, linsolve_float(A,b):
  n=$5(A)
  M=[$J(A[i])+[b[i]]$) i in $+(n)]
  $) c in $+(n):
-  p=max($+(c,n),key=$7 i:$H(M[i][c]))
+  p=max($+(c,n),key=$8 i:$H(M[i][c]))
   if $H(M[p][c])<1e-300:
    $! $#
   M[c],M[p]=M[p],M[c]
@@ -8073,7 +8091,7 @@ _x(r'''$, apply_constraints($h,x,cons):
    b=bounds(cons,x)
    if b is $#:
     expanded.$%(s)
-    $8
+    $7
    n=ns[0]
    $) k in $+(-60,61):
     v=$T(s,n,k)
@@ -8110,7 +8128,7 @@ $, satisfies(s,x,cons):
     b=fv($T(c[2],x,s))
    $9 $6:
     if $- $1(s):
-     $8
+     $7
     $! $3
    eps=1e-12*(1+$H(a)+$H(b))
    if h=='<' $* $- a<b-eps*0:
@@ -8647,13 +8665,13 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
   ns=[w $) w in $q(r)if w[0]=='n' $* w[1:].isdigit()]
   if ns:
    cands.$%(r)
-   $8
+   $7
   if $- $v(r):
-   $8
+   $7
   if lo is $- $# $* fv(r)<fv(lo)-1e-12:
-   $8
+   $7
   if hi is $- $# $* fv(r)>fv(hi)+1e-12:
-   $8
+   $7
   cands.$%(r)
  ends=[]
  ends.$%(lo if lo is $- $# $(('*',-1,'$N'))
@@ -8671,7 +8689,7 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
      cz=$T(cz,w,0)
    v=$T(f,x,cz)
    if has(v,'$F'):
-    $8
+    $7
   try:
    if v=='$N':
     vv=$@('$N')
@@ -8680,13 +8698,13 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
    $(:
     vv=fv(v)
   $9 $6:
-   $8
+   $7
   if kind=='max':
    vv=-vv
   pts.$%((vv,c))
  if $- pts:
   $! $#
- pts.sort(key=$7 p:p[0])
+ pts.sort(key=$8 p:p[0])
  m=pts[0][0]
  if m==$@('-$N'):
   win=[p[1]$) p in pts if p[0]==m]
@@ -8764,7 +8782,7 @@ $, domain(f,x):
   if rs is $#:
    $! $#
   if rs=='all':
-   $8
+   $7
   $) r in rs:
    if $v(r):
     pts.$%(r)
@@ -8952,7 +8970,7 @@ $, rref(A,full=$E):
      p=i
      $W
   if p is $#:
-   $8
+   $7
   M[r],M[p]=M[p],M[r]
   pv=M[r][c]
   if full:
@@ -9047,7 +9065,7 @@ $, eigvl(A):
   if $&(g,'^')$* $g(g[2])$* g[2]>0:
    g,k=g[1],g[2]
   if $4(g,lam):
-   $8
+   $7
   z=zeros(g,lam,$E)
   if z is $#:
    err("Cannot compute eigenvalues")
@@ -9118,13 +9136,13 @@ _x(r'''$, eigvc(A):
  seen=[]
  $) lv in $e[1:]:
   if lv in seen:
-   $8
+   $7
   seen.$%(lv)
   if $_(lv)or hasfloat_m($o(A)):
    cols.$%(numeigvec(A,lv))
-   $8
+   $7
   B=m_add(A,m_scale(ident(n),lv),-1)
-  B=m_map(B,$7 v:ac(v))
+  B=m_map(B,$8 v:ac(v))
   ns=nullspace(B)
   $) v in ns:
    cols.$%(unitvec(v))
@@ -9252,7 +9270,7 @@ $, lu(A):
      p=i
      $W
   if p is $#:
-   $8
+   $7
   if p!=k:
    U[k],U[p]=U[p],U[k]
    P[k],P[p]=P[p],P[k]
@@ -9590,7 +9608,7 @@ $, dotop(op,a,b):
  $! lmap2(pw,a,b)
 $, rel(op,a,b):
  if $c(a)or $c(b):
-  $! lmap2($7 x,y:rel(op,x,y),a,b)
+  $! lmap2($8 x,y:rel(op,x,y),a,b)
  if isstr(a)$* isstr(b):
   r=cmpstr(op,a[1],b[1])
   if r is $- $#:
@@ -9810,7 +9828,7 @@ $, exact_(e,tol=$#):
  $! exactify(e,tol)
 $, approxfraction(e,tol=$#):
  t=tofl(tol)if tol is $- $# $( 5e-14
- $! lmap($7 v:float2rat(tofl(evalf(v)),t)if $1(v)$( exactify(v,t),e)
+ $! lmap($8 v:float2rat(tofl(evalf(v)),t)if $1(v)$( exactify(v,t),e)
 $, left_(e,n=$#):
  if isrel(e):
   $! e[1]
@@ -9846,7 +9864,7 @@ $, max_(a,b=$#):
  if b is $#:
   xs=$J(a[1:])if $c(a)$([a]
   $! maxexpr(xs)
- $! lmap2($7 x,y:x if cmpv(x,y)>=0 $( y,a,b)
+ $! lmap2($8 x,y:x if cmpv(x,y)>=0 $( y,a,b)
 $, min_(a,b=$#):
  if b is $#:
   xs=$J(a[1:])if $c(a)$([a]
@@ -9858,7 +9876,7 @@ $, min_(a,b=$#):
     ${=x
     bv=v
   $! ${
- $! lmap2($7 x,y:x if cmpv(x,y)<=0 $( y,a,b)
+ $! lmap2($8 x,y:x if cmpv(x,y)<=0 $( y,a,b)
 $, cmpv(x,y):
  if $1(x)$* $1(y):
   d=$U($](x,y))
@@ -10047,15 +10065,15 @@ ITRIG=('$y','arccos','$t','arcsec','arccsc','arccot')
 $, mathfn($B):
  $, f(*a):
   if $B in TRIG $* SET['$l']!='rad':
-   $! lmap($7 u:fn($B,toang(u)),a[0])
+   $! lmap($8 u:fn($B,toang(u)),a[0])
   if $B in ITRIG $* SET['$l']!='rad':
-   $! lmap($7 u:fromang(fn($B,u)),a[0])
+   $! lmap($8 u:fromang(fn($B,u)),a[0])
   if $5(a)==1:
-   $! lmap($7 u:fn($B,u),a[0])
+   $! lmap($8 u:fn($B,u),a[0])
   $! fn($B,*a)
  $! f
 $, angle_fn(z):
- $! lmap($7 u:fromang(fn('$l',u)),z)
+ $! lmap($8 u:fromang(fn('$l',u)),z)
 F={}
 $) _n in('sin','cos','tan','sec','csc','cot','$y','arccos',
  '$t','arcsec','arccsc','arccot','sinh','cosh','tanh',
@@ -10074,35 +10092,35 @@ ALIAS={'asin':'$y','acos':'arccos','atan':'$t','asinh':'arcsinh',
  'log10':'log10','sqr':'$V','diff':'d','deriv':'d',
  'differentiate':'d','integrate':'$[','avg':'mean',
  'average':'mean'}
-F['$V']=$7 u:lmap($V,u)
-F['root']=$7 u,n=2:lmap($7 v:fn('root',v,n),u)
-F['cbrt']=$7 u:lmap($7 v:fn('root',v,3),u)
-F['log']=$7 u,b=$#:lmap($7 v:fn('ln',v)if b is $# $( fn('log',v,b),u)
-F['atan2']=$7 y,x:lmap2($7 b,a:fromang(fn('$l',$^(a,$:('i',b)))),y,x)
-F['log10']=$7 u:lmap($7 v:fn('log',v,10),u)
+F['$V']=$8 u:lmap($V,u)
+F['root']=$8 u,n=2:lmap($8 v:fn('root',v,n),u)
+F['cbrt']=$8 u:lmap($8 v:fn('root',v,3),u)
+F['log']=$8 u,b=$#:lmap($8 v:fn('ln',v)if b is $# $( fn('log',v,b),u)
+F['atan2']=$8 y,x:lmap2($8 b,a:fromang(fn('$l',$^(a,$:('i',b)))),y,x)
+F['log10']=$8 u:lmap($8 v:fn('log',v,10),u)
 F['$l']=angle_fn
-F['round']=$7 x,d=0:lmap($7 v:round_(v,d),x)
-F['ipart']=$7 x:lmap(ipart_,x)
-F['$u']=$7 x:lmap($7 v:fn('floor',v),x)
-F['fpart']=$7 x:lmap(fpart_,x)
-F['gcd']=$7 a,b:lmap2(gcd_,a,b)
-F['lcm']=$7 a,b:lmap2(lcm_,a,b)
-F['mod']=$7 a,b:lmap2(mod_,a,b)
-F['remain']=$7 a,b:lmap2(remain_,a,b)
-F['intdiv']=$7 a,b:lmap2(intdiv_,a,b)
-F['ncr']=$7 a,b:lmap2(ncr_,a,b)
-F['npr']=$7 a,b:lmap2(npr_,a,b)
+F['round']=$8 x,d=0:lmap($8 v:round_(v,d),x)
+F['ipart']=$8 x:lmap(ipart_,x)
+F['$u']=$8 x:lmap($8 v:fn('floor',v),x)
+F['fpart']=$8 x:lmap(fpart_,x)
+F['gcd']=$8 a,b:lmap2(gcd_,a,b)
+F['lcm']=$8 a,b:lmap2(lcm_,a,b)
+F['mod']=$8 a,b:lmap2(mod_,a,b)
+F['remain']=$8 a,b:lmap2(remain_,a,b)
+F['intdiv']=$8 a,b:lmap2(intdiv_,a,b)
+F['ncr']=$8 a,b:lmap2(ncr_,a,b)
+F['npr']=$8 a,b:lmap2(npr_,a,b)
 F['isprime']=isprime_
 F['approx']=approx_
 F['exact']=exact_
 F['approxrational']=approxfraction
-F['getnum']=$7 e:lmap(getnum,e)
-F['getdenom']=$7 e:lmap(getden,e)
+F['getnum']=$8 e:lmap(getnum,e)
+F['getdenom']=$8 e:lmap(getden,e)
 F['polyeval']=polyeval
-F['polygcd']=$7 a,b:poly_gcd_expr(a,b)
+F['polygcd']=$8 a,b:poly_gcd_expr(a,b)
 F['randpoly']=randpoly
-F['texpand']=$7 e:lmap($7 v:texpand(v),e)
-F['tcollect']=$7 e:lmap($7 v:tcollect(v),e)
+F['texpand']=$8 e:lmap($8 v:texpand(v),e)
+F['tcollect']=$8 e:lmap($8 v:tcollect(v),e)
 F['left']=left_
 F['right']=right_
 F['mid']=mid_
@@ -10118,11 +10136,11 @@ F['instring']=instring_
 F['det']=det
 F['identity']=ident
 F['transpose']=transpose
-F['rref']=$7 A,tol=$#:rref(A,$E)
-F['ref']=$7 A,tol=$#:ref_(A)
+F['rref']=$8 A,tol=$#:rref(A,$E)
+F['ref']=$8 A,tol=$#:ref_(A)
 F['inverse']=m_inv
-F['rowdim']=$7 A:dims(A)[0]
-F['coldim']=$7 A:dims(A)[1]
+F['rowdim']=$8 A:dims(A)[0]
+F['coldim']=$8 A:dims(A)[1]
 F['rownorm']=rownorm
 F['colnorm']=colnorm
 F['norm']=norm
@@ -10140,8 +10158,8 @@ F['dotp']=dotp
 F['unitv']=unitv
 F['eigvl']=eigvl
 F['eigvc']=eigvc
-F['lu']=$7 A,tol=$#:('$J',)+lu(A)
-F['qr']=$7 A,tol=$#:('$J',)+qr(A)
+F['lu']=$8 A,tol=$#:('$J',)+lu(A)
+F['qr']=$8 A,tol=$#:('$J',)+qr(A)
 F['newmat']=newmat
 F['newlist']=newlist
 F['randmat']=randmat
@@ -10149,14 +10167,14 @@ F['matlist']=matlist
 F['listmat']=listmat
 F['simult']=simult
 F['cumulativesum']=cumsum
-F['sum']=$7 L,a=1,b=$#:lsum(L,a,b)if $c(L)$( colwise(L,lsum)
-F['product']=$7 L,a=1,b=$#:lprod(L,a,b)if $c(L)$( colwise(L,lprod)
-F['mean']=$7 L,f=$#:mean(L,f)if $c(L)$( colwise(L,mean)
+F['sum']=$8 L,a=1,b=$#:lsum(L,a,b)if $c(L)$( colwise(L,lsum)
+F['product']=$8 L,a=1,b=$#:lprod(L,a,b)if $c(L)$( colwise(L,lprod)
+F['mean']=$8 L,f=$#:mean(L,f)if $c(L)$( colwise(L,mean)
 F['median']=median
-F['stddev']=$7 L:stddev(L)
-F['stddevpop']=$7 L:stddev(L,$E)
-F['variance']=$7 L:variance(L)
-F['varpop']=$7 L:variance(L,$E)
+F['stddev']=$8 L:stddev(L)
+F['stddevpop']=$8 L:stddev(L,$E)
+F['variance']=$8 L:variance(L)
+F['varpop']=$8 L:variance(L,$E)
 F['sorta']=sorta
 F['sortd']=sortd
 F['deltalist']=deltalist
@@ -10172,7 +10190,7 @@ F['poisspdf']=poisspdf
 F['poisscdf']=poisscdf
 F['geompdf']=geompdf
 F['geomcdf']=geomcdf
-F['getmode']=$7*a:('$|','$l='+SET['$l']+' mode='+SET['mode']+' $A='+SET['$A'])
+F['getmode']=$8*a:('$|','$l='+SET['$l']+' mode='+SET['mode']+' $A='+SET['$A'])
 $, colwise(M,f):
  cols=$o(transpose(M))
  $! mk([[f(('$J',)+$0(c))$) c in cols]])
@@ -10348,15 +10366,15 @@ $, ev(t):
  if h in('.*','./','.^'):
   $! dotop(h,ev(t[1]),ev(t[2]))
  if h=='!':
-  $! lmap($7 a:fn('fact',a),ev(t[1]))
+  $! lmap($8 a:fn('fact',a),ev(t[1]))
  if h=='%':
-  $! lmap($7 a:$R(a,100),ev(t[1]))
+  $! lmap($8 a:$R(a,100),ev(t[1]))
  if h=='deg':
   v=ev(t[1])
   if SET['$l']=='rad':
-   $! lmap($7 a:$:(a,$R('pi',180)),v)
+   $! lmap($8 a:$:(a,$R('pi',180)),v)
   if SET['$l']=='grad':
-   $! lmap($7 a:$:(a,Q(10,9)),v)
+   $! lmap($8 a:$:(a,Q(10,9)),v)
   $! v
  if h in('=','<','>','<=','>=','/='):
   $! rel(h,ev(t[1]),ev(t[2]))
@@ -10700,7 +10718,7 @@ $, suggest($B):
  ${=$#
  $) k in tinames():
   if $H($5(k)-$5($B))>1:
-   $8
+   $7
   if close(k,$B.lower()):
    ${=tinames()[k]
    $W
@@ -10753,19 +10771,19 @@ $, sf_d(a):
  n=ev(a[2])if $5(a)>2 $( 1
  if $- $g(n):
   err('Order must be an integer')
- r=lmap($7 u:nice(diff(u,v,n)),e)
+ r=lmap($8 u:nice(diff(u,v,n)),e)
  $! post_subst(r,v,val)
 $, sf_int(a):
  $~(a,2,4)
  e,v,val=$j(a)
  if $5(a)==2:
-  $! lmap($7 u:nice(integrate(u,v)),e)
+  $! lmap($8 u:nice(integrate(u,v)),e)
  if $5(a)==3:
   c=ev(a[2])
-  $! lmap($7 u:$^(nice(integrate(u,v)),c),e)
+  $! lmap($8 u:$^(nice(integrate(u,v)),c),e)
  lo=ev(a[2])
  hi=ev(a[3])
- $! lmap($7 u:nice(defint(u,v,lo,hi)),e)
+ $! lmap($8 u:nice(defint(u,v,lo,hi)),e)
 $, sf_limit(a):
  $~(a,3,4)
  e,v,val=$j(a)
@@ -10825,18 +10843,18 @@ $, sf_taylor(a):
  e,v,val=$j(a)
  n=ev(a[2])
  pt=ev(a[3])if $5(a)>3 $( 0
- $! lmap($7 u:taylor(u,v,n,pt),e)
+ $! lmap($8 u:taylor(u,v,n,pt),e)
 $, sf_series(a):
  $~(a,3,4)
  e,v,val=$j(a)
  n=ev(a[2])
  pt=ev(a[3])if $5(a)>3 $( 0
- $! lmap($7 u:series_cmd(u,v,n,pt),e)
+ $! lmap($8 u:series_cmd(u,v,n,pt),e)
 $, sf_dominant(a):
  $~(a,2,3)
  e,v,val=$j(a)
  pt=ev(a[2])if $5(a)>2 $( 0
- $! lmap($7 u:dominant(u,v,pt),e)
+ $! lmap($8 u:dominant(u,v,pt),e)
 $, solvevars(rawvs):
  vs=[]
  gs=[]
@@ -11075,11 +11093,11 @@ $, rc_args(a):
 $, sf_avgrc(a):
  $~(a,2,3)
  e,v,val,h=rc_args(a)
- $! lmap($7 u:$>(avgrc(u,v,val,h)),e)
+ $! lmap($8 u:$>(avgrc(u,v,val,h)),e)
 $, sf_central(a):
  $~(a,2,3)
  e,v,val,h=rc_args(a)
- $! lmap($7 u:$>(centraldiff(u,v,val,h)),e)
+ $! lmap($8 u:$>(centraldiff(u,v,val,h)),e)
 $, sf_nderiv(a):
  $~(a,2,3)
  v,val=var_of(a[1])
@@ -11113,7 +11131,7 @@ $, sf_comdenom(a):
 $, sf_propfrac(a):
  $~(a,1,2)
  v=opt_var(a,1)
- $! lmap($7 u:propfrac(u,v),unhold(ev(a[0])))
+ $! lmap($8 u:propfrac(u,v),unhold(ev(a[0])))
 $, polyvar(e,a,i):
  v=opt_var(a,i)
  if v is $#:
@@ -11423,6 +11441,7 @@ $, run(s):
   $! 'Done'
  if low in('clearaz','clear'):
   $! command('clear')
+ s=closeup(s)
  pre_register(s)
  t=parse(s,isfunc)
  STATE['$A']=(SET['$A']!='$P')
@@ -11571,14 +11590,14 @@ $, cas():
    if blank>=2:
     print('($/ q $* enter to quit)')
     blank=0
-   $8
+   $7
   blank=0
   if s.lower()in('m','menu'):
    try:
     menu()
    $9 $6 as ex:
     print('Error: '+$|(ex))
-   $8
+   $7
   if s.lower()in('g','gui'):
    try:
     r=gui()
@@ -11586,7 +11605,7 @@ $, cas():
     r='Error: '+$|(ex)
    if r:
     print(r)
-   $8
+   $7
   try:
    $?=run(s)
    if $?:
@@ -11936,7 +11955,7 @@ $, fill(tpl,$e):
     if('@'+$|(i+1))in seg $* $- $e[i]:
      blank=$E
    if blank:
-    $8
+    $7
   $?+=seg
  res=''
  i=0
@@ -11964,7 +11983,7 @@ $, runmenu(run):
      $W
     cmd=build(items[j])
     if cmd is $#:
-     $8
+     $7
     print('> '+cmd)
     try:
      $?=run(cmd)

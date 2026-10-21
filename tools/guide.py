@@ -66,8 +66,8 @@ section('start', 'Getting started', 'Install, run, and check that it works.',
         'document. Install the ones you want; none of them needs the others.')
 html('''<div class="table-wrap"><table class="plain">
 <thead><tr><th>Program</th><th>What it is</th><th>Size</th><th>Needs</th></tr></thead><tbody>
-<tr><td class="in">ncasgui</td><td>The full-screen CAS: 2D entry with templates, menus, catalog, results drawn as math.</td><td>274 KB · 14 parts</td><td>OS with <code>ti_draw</code> and <code>get_key</code></td></tr>
-<tr><td class="in">ncastext</td><td>The same CAS at a <code>&gt;</code> prompt in the Python Shell, with numbered menus.</td><td>240 KB · 12 parts</td><td>any OS with Python</td></tr>
+<tr><td class="in">ncasgui</td><td>The full-screen CAS: 2D entry with templates, menus, catalog, results drawn as math.</td><td>277 KB · 14 parts</td><td>OS with <code>ti_draw</code> and <code>get_key</code></td></tr>
+<tr><td class="in">ncastext</td><td>The same CAS at a <code>&gt;</code> prompt in the Python Shell, with numbered menus.</td><td>240 KB · 13 parts</td><td>any OS with Python</td></tr>
 <tr><td class="in">ncasx</td><td>A small, fast exact calculator: exact value plus decimal, no menus.</td><td>59 KB · 3 parts</td><td>any OS with Python</td></tr>
 <tr><td class="in">navcalc</td><td>Aviation (E6B) calculator: wind, crosswind, time-speed-distance, fuel, altitudes, airspeed.</td><td>21 KB · 2 parts</td><td><code>ti_draw</code> (else Shell)</td></tr>
 <tr><td class="in">unitconv</td><td>Unit converter: 16 categories, about 150 units, all converting as you type.</td><td>15 KB · 1 part</td><td><code>ti_draw</code> (else Shell)</td></tr>
@@ -109,6 +109,10 @@ card('Trig functions', 'The trig key lists sin, cos, tan, their inverses, hyperb
      '[trig] [1] pi/6 [enter]')
 card('Decimal answer', 'ctrl enter gives the decimal value of the line (or of the last answer).',
      'pi/7 [ctrl] [enter]')
+card('Your variables', 'var lists ans and every variable and function you stored, with its value. Pick one to type its name.',
+     '[var]', pre=['a:=5', 'm:=[1,2;3,4]', 'f(x):=x^2+1'])
+card('ctrl keys at a glance', 'ctrl trig shows what each blue ctrl label does in nCAS.',
+     '[ctrl] [trig]')
 card('Settings', 'Degree/radian, Auto/Exact/Approx, real/complex, digits, variables, self-test, memory and the key test.',
      '[menu] [8]')
 
@@ -128,6 +132,14 @@ card('Definite integral', 'Limits in their own slots: ▲ moves from the lower l
      '[menu] [9] [b] 0 [▲] pi [►] sin(x) [enter]')
 card('Derivative d/dx', 'menu ▸ 9 Templates ▸ c. The cursor starts in the function; the variable is x.',
      '[menu] [9] [c] x [^] 3 [►] *sin(x) [enter]')
+card('Brackets step over', 'A function key types both brackets. Typing ) where one already is steps over it, so typing out sin(x) never leaves an extra one.',
+     '[sin] x ) +1 [enter]')
+card('Brackets close at enter', 'Brackets you leave open are closed when you press enter, as on the CAS.',
+     'factor(x [^] 2 -1 [enter]')
+card('Start or end of the line', 'ctrl ◄ jumps to the start of the line and ctrl ► to the end, from anywhere, even inside a template.',
+     '2+3 [ctrl] [◄] 1 [ctrl] [►] 0 [enter]')
+card('A word at a time', 'shift ◄ ► move over a whole name, number or template: sin( is one step.',
+     'sin(x)+cos(y) [shift] [◄] [shift] [◄] [shift] [◄] 2*')
 card('Matrix grid', 'Templates ▸ Matrix m×n: choose the size, type in the cells, tab or arrows to move, enter to insert.',
      '[menu] [9] [1] [enter] 8 [tab] 5 [tab] 7 [tab] 9')
 card('Matrix commands', 'A matrix item puts the brackets on the line; the matrix template then fills them.',
@@ -145,6 +157,10 @@ html('''<h3 class="sub">Keys in the full-screen mode</h3>
 <thead><tr><th>Key</th><th>Action</th></tr></thead><tbody>
 <tr><td><span class="kc">enter</span></td><td>evaluate the line; on a selected history item, copy it to the line</td></tr>
 <tr><td><span class="kc">◄</span> <span class="kc">►</span></td><td>move the cursor (through template slots too)</td></tr>
+<tr><td><span class="kc">ctrl</span> <span class="kc">◄</span> <span class="kc">►</span></td><td>start · end of the line</td></tr>
+<tr><td><span class="kc">shift</span> <span class="kc">◄</span> <span class="kc">►</span></td><td>a whole name, number or template at a time</td></tr>
+<tr><td><span class="kc">)</span> <span class="kc">]</span> <span class="kc">}</span></td><td>step over a closing bracket that is already there; open brackets close at enter</td></tr>
+<tr><td><span class="kc">var</span></td><td>list ans, your variables and functions; enter types the name</td></tr>
 <tr><td><span class="kc">▲</span> <span class="kc">▼</span></td><td>between template slots; otherwise select earlier inputs and results (a tall result scrolls first)</td></tr>
 <tr><td><span class="kc">del</span> · <span class="kc">clear</span></td><td>delete to the left · clear the line</td></tr>
 <tr><td><span class="kc">tab</span> · <span class="kc">shift</span> <span class="kc">tab</span></td><td>next · previous field (template slots, arguments after commas)</td></tr>
@@ -163,6 +179,7 @@ html('''<h3 class="sub">Keys in the full-screen mode</h3>
 <tr><td><span class="kc">×</span></td><td><code>" "</code></td><td><span class="kc">÷</span></td><td>fraction</td></tr>
 <tr><td><span class="kc">var</span></td><td><code>-&gt;</code> store</td><td><span class="kc">enter</span></td><td>≈ decimal</td></tr>
 <tr><td><span class="kc">del</span></td><td>clear the line</td><td><span class="kc">esc</span></td><td>undo</td></tr>
+<tr><td><span class="kc">◄</span></td><td>start of the line</td><td><span class="kc">►</span></td><td>end of the line</td></tr>
 <tr><td><span class="kc">catalog</span></td><td>Symbols page</td><td><span class="kc">trig</span></td><td>this help</td></tr>
 </tbody></table></div>
 <p class="fine">If the calculator reports ctrl as its own key, press ctrl then the key; <b>doc</b> also works as ctrl. A key nCAS does not use is named in the status bar.</p>''')
@@ -392,7 +409,7 @@ def svg(ops, label):
         elif o[0] == 'text':
             out.append('<text x="%d" y="%d" fill="%s">%s</text>' % (o[1], o[2], rgb(o[4]), esc(o[3])))
     body = ''.join(out)
-    return ('<svg class="mini" viewBox="0 0 318 212" role="img" aria-label="%s"><g class="scr">%s</g></svg>'
+    return ('<svg class="mini" viewBox="0 0 318 212" role="img" aria-label="%s"><g class="scr" xml:space="preserve">%s</g></svg>'
             % (esc(label), body))
 
 

@@ -1,6 +1,30 @@
 # casparse.py - tokenizer and parser for TI-Nspire style input
 from cascore import CASError
 
+BRACKETS = {'(': ')', '[': ']', '{': '}'}
+
+
+def closeup(s):
+    # brackets left open at the end are closed, as on the CAS: sin(x -> sin(x);
+    # a real mismatch such as (] is left for the parser to report
+    st = []
+    q = False
+    for c in s:
+        if c == '"':
+            q = not q
+        elif q:
+            continue
+        elif c in BRACKETS:
+            st.append(BRACKETS[c])
+        elif c in ')]}':
+            if not st or st[-1] != c:
+                return s
+            st.pop()
+    if q or not st:
+        return s
+    return s + ''.join(reversed(st))
+
+
 REPL = (
     ('**', '^'), ('==', '='), ('!=', '/='),
     ('sin⁻¹', 'arcsin'), ('cos⁻¹', 'arccos'), ('tan⁻¹', 'arctan'),

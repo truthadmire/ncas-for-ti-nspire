@@ -6,7 +6,7 @@
 #   (x+1)^2|x=2   a:=5   f(x):=x^2+1   ans   deg / rad   q = quit
 from cascore import *
 from casout import fmt, OPT
-from casparse import parse
+from casparse import parse, closeup
 
 ENV = {}
 UFUN = {}
@@ -327,6 +327,7 @@ def run(s):
         ENV.clear()
         UFUN.clear()
         return 'Cleared'
+    s = closeup(s)
     register(s)
     r = ev(parse(s, isfunc))
     if isnode(r, 'str'):

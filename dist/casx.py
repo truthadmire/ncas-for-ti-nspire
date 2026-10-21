@@ -1,6 +1,6 @@
 from cascore import*
 from casout import fmt,OPT
-from casparse import parse
+from casparse import parse,closeup
 ENV={}
 UFUN={}
 ST={'ans':0,'deg':False,'tmp':[]}
@@ -263,6 +263,7 @@ def run(s):
   ENV.clear()
   UFUN.clear()
   return 'Cleared'
+ s=closeup(s)
  register(s)
  r=ev(parse(s,isfunc))
  if isnode(r,'str'):

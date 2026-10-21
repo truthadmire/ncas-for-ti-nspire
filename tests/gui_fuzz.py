@@ -27,7 +27,7 @@ NAV = ['up', 'down', 'left', 'right', 'enter', 'tab', 'menu', 'del', 'clear', 't
        'foo', 'home', 'doc', 'ctrl', 'ctrl', 'ctrl', 'shift', 'ctrl+(', 'ctrl+^', '\u2248',
        '[]', 'var', '10^x', 'undo', 'symbols', 'template', 'exp', 'abs', 'ctrl+/', 'ctrl+^',
        'ctrl+square', '^', '^', 'left', 'right', 'up', 'down', 'del', 'tab', 'tab', 'shift+tab',
-       'catalog', 'cat']
+       'catalog', 'cat', 'var', 'var', 'shift', 'shift+left', 'shift+right', 'ctrl+left', 'ctrl+right', ')', ')', ']', '}']
 CHARS = list('0123456789xyzabcn+-*/^().,=<>!|;[]{}:') + ['π', '√', '²']
 SNIPS = ['sin(', 'cos(', 'solve(', 'factor(', 'expand(', 'd(', 'integral(', 'limit(',
          'det(', '[1,2;3,4]', 'x^2', 'sqrt(2)', '1/3', 'e^x', ':deg', ':rad', 'ans',
