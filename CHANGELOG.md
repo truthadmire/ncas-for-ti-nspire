@@ -34,6 +34,13 @@
   - **var** lists `ans` and your variables and functions with their values;
     enter types the name.
   - The ctrl help page (ctrl trig) lists the new keys and fits the screen.
+  - A matrix from Templates ▸ Matrix stays a 2D grid on the entry line
+    instead of becoming a long line of text that filled the entry and hid
+    the rest of the input (5×5 and larger). Its cells can be edited in place:
+    ◄ ► through the cells, ▲ ▼ between rows, `,` / `;` at the end of a cell
+    to the next cell / row, `]` or `)` to leave it (`)` then closes what
+    follows, as in `det(...)`). Big matrices use tighter rows so 9×9 fits;
+    the history is hidden while the entry needs the whole screen.
   - Nothing is stored for these: a forced exit loses nothing.
 - Catalog and help: command names use TI's capitalisation everywhere
   (`cSolve`, `comDenom`, `sumSeq`, ...), also in "did you mean" hints.

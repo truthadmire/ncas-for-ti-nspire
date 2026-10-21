@@ -213,7 +213,9 @@ def draw():
  etop=h-(max(LH,aq+dq+2)+2)-2
  avail=etop-LH-4
  sel=selected()
- if sel is None:
+ if avail<LH:
+  bl=[]
+ elif sel is None:
   bl=[]
   k=len(G['hist'])
   hh=0
@@ -489,7 +491,7 @@ def key(run,k):
  elif len(k)==1:
   G['sel']=None
   ed_autoexit(k)
-  if not(k in CLOSERS and ed_close(k)):
+  if not(k in CLOSERS and ed_close(k))and not(k in ',;' and ed_cell(k)):
    insert(k)
  else:
   G['msg']='key '+repr(k)+' not used'
@@ -809,19 +811,24 @@ def templates():
  size=gridsize(3 if fix=='c' else 2,1 if fix=='c' else(3 if fix=='r' else 2),fix)
  if size is None:
   return
- s=grid(size[0],size[1])
- if s is None:
+ cells=grid(size[0],size[1])
+ if cells is None:
   return
- fillpair(s)
-def fillpair(s):
+ fillpair(cells)
+def fillpair(cells):
  r=ed_row()
  p=G['pos']
  for a in(p-1,p,p-2):
   if 0<=a and a+1<len(r)and r[a]=='[' and r[a+1]==']':
-   G['pos']=a+1
-   s=s[1:-1]
+   del r[a:a+2]
+   p=a
    break
- ed_chars(s)
+ node=['mx'+str(len(cells[0]))]
+ for row in cells:
+  for c in row:
+   node.append(list(c))
+ r.insert(p,node)
+ G['pos']=p+1
 def symbols():
  n=len(SYMS)
  rows=(n+SCOLS-1)//SCOLS
@@ -953,7 +960,7 @@ def grid(r,c):
   if k=='esc':
    return None
   if k in ENTER:
-   return '['+';'.join([','.join([v or '0' for v in row])for row in cells])+']'
+   return cells
   if k=='tab' or k=='right':
    j+=1
    if j==c:
@@ -1097,6 +1104,11 @@ def ed_vert(d):
  elif k=='pow' and d>0:
   G['path'].pop()
   G['pos']=i+1
+ elif k[:2]=='mx':
+  t=sl+d*int(k[2:])
+  if 1<=t<len(node):
+   G['path'][-1]=(i,t)
+   G['pos']=min(G['pos'],len(node[t]))
  elif k=='dint':
   t=2 if d<0 else 1
   if t!=sl:
@@ -1152,6 +1164,12 @@ def ed_close(c):
  if p<len(r)and r[p]==c:
   G['pos']=p+1
   return True
+ if G['path']and ed_parent()[1][0][:2]=='mx':
+  if c==']' and p==len(r)or c==')':
+   G['pos']=G['path'].pop()[0]+1
+   if c==')' and not ed_close(c):
+    insert(c)
+   return True
  if c==')' and G['path']and p==len(r):
   par,node=ed_parent()
   i,sl=G['path'][-1]
@@ -1160,6 +1178,30 @@ def ed_close(c):
    G['pos']=i+1
    return True
  return False
+def ed_cell(c):
+ if not G['path']:
+  return False
+ par,node=ed_parent()
+ if node[0][:2]!='mx':
+  return False
+ depth=0
+ for it in ed_row()[:G['pos']]:
+  if it in('(','[','{'):
+   depth+=1
+  elif it in(')',']','}'):
+   depth-=1
+ if depth>0:
+  return False
+ i,sl=G['path'][-1]
+ nc=int(node[0][2:])
+ t=sl+1 if c==',' else((sl-1)//nc+1)*nc+1
+ if t>=len(node):
+  G['path'].pop()
+  G['pos']=i+1
+ else:
+  G['path'][-1]=(i,t)
+  G['pos']=len(node[t])
+ return True
 def ed_wch(it):
  return type(it)is str and(it.isalpha()or it.isdigit()or it in '._')
 def ed_word(d):
@@ -1258,7 +1300,12 @@ def ed_text(row=None):
    out+=(','+lo+','+hi+')')if lo or hi else ')'
   elif k=='der':
    out+='d('+ed_text(it[2])+','+ed_text(it[1])+')'
+  elif k[:2]=='mx':
+   out+='['+';'.join([','.join([ed_text(c)or '0' for c in row])for row in mxrows(it)])+']'
  return out
+def mxrows(it):
+ nc=int(it[0][2:])
+ return[it[1+i:1+i+nc]for i in range(0,len(it)-1,nc)]
 def enclosed(s):
  if len(s)<2 or s[0]!='(' or s[-1]!=')':
   return False
@@ -1319,8 +1366,8 @@ def measi(it):
  if k=='abs':
   w,a,d=meas(it[1])
   return(w+7,a,d)
- if k=='mat':
-  cw,ra,rd,W,H=matsize(it[1])
+ if k=='mat' or k[:2]=='mx':
+  cw,ra,rd,W,H=matsize(it[1]if k=='mat' else mxrows(it))
   asc=H//2+AX
   return(W,asc+1,H-asc+1)
  if k=='root':
@@ -1399,8 +1446,9 @@ def itemdraw(it,x,y,dr):
   return W
  if k=='pow':
   return rowdraw(it[1],x+1,y-RAISE,dr)+2
- if k=='mat':
-  cw,ra,rd,W,H=matsize(it[1])
+ if k=='mat' or k[:2]=='mx':
+  rows=it[1]if k=='mat' else mxrows(it)
+  cw,ra,rd,W,H=matsize(rows)
   top=y-(H//2+AX)
   if dr:
    for bx,tx in((x+1,x+1),(x+W-2,x+W-4)):
@@ -1408,14 +1456,15 @@ def itemdraw(it,x,y,dr):
     box(tx,top,3,1,ink)
     box(tx,top+H-1,3,1,ink)
   cy=top
-  for i in range(len(it[1])):
+  gap=mxgap(rows)
+  for i in range(len(rows)):
    cx=x+5
-   r=it[1][i]
+   r=rows[i]
    for j in range(len(r)):
     w2=meas(r[j])[0]
     rowdraw(r[j],cx+(cw[j]-w2)//2,cy+ra[i],dr)
     cx+=cw[j]+8
-   cy+=ra[i]+rd[i]+7
+   cy+=ra[i]+rd[i]+gap
   return W
  if k in CALC:
   return calcdraw(it,x,y,dr,ink)
@@ -1706,8 +1755,10 @@ def matsize(rows):
   ra.append(a)
   rd.append(d)
  W=sum(cw)+8*(nc-1)+10
- H=sum(ra)+sum(rd)+7*(len(rows)-1)
+ H=sum(ra)+sum(rd)+mxgap(rows)*(len(rows)-1)
  return cw,ra,rd,W,H
+def mxgap(rows):
+ return 7 if len(rows)<=5 else 2
 def blocks(first=0):
  out=[]
  for k in range(first,len(G['hist'])):

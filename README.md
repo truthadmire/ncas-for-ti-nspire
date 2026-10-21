@@ -295,13 +295,14 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 | **shift ◄ / shift ►** | move over a whole name, number or template (`sin(` is one step) |
 | **) ] }** | where the same bracket already follows the cursor, step over it instead of adding another; `)` at the end of √, \|x\|, an n-th root or d/dx leaves it. Brackets left open are closed at **enter**, as on the CAS (also in ncastext and ncasx) |
 | **var** | list `ans` and your variables and functions with their values; enter types the name (`f(` with the cursor inside) |
+| **matrix on the line** | a matrix from Templates ▸ Matrix stays a grid on the entry line (rows closer together for big ones, so 9×9 fits): ◄ ► move through the cells, ▲ ▼ between rows, `,` / `;` at the end of a cell go to the next cell / row, `]` or `)` leave it |
 | **▲ ▼** | select an earlier input or result; **enter** copies it to the entry line. A result taller than the screen scrolls line by line before the selection moves on |
 | **menu** | command menus: arrows + enter, or the number/letter shown (**ctrl tab** too) |
 | **tab** / **shift tab** | next / previous field: template slots and command arguments after commas (`integral(\|,x,,)`) |
 | **catalog** | every command A–Z with its syntax under the list; type a letter to jump, enter puts `name()` on the line |
 | **trig** | sin, cos, tan, arcsin, … |
 | **ctrl** + key | the blue keypad functions: ( → `[ ]`, ) → `{ }`, ^ → root, x² → √, e^x → ln, 10^x → log10, = → ≠ ≤ ≥ list, (−) → ans, × → " ", ÷ → fraction, var → `->`, enter → ≈ decimal, del → clear, esc → undo, catalog → Symbols, trig → help. **doc** works as ctrl too. |
-| **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter inserts `[1,2;3,4]`); fraction, power, square root, n-th root, \|x\| and e^x templates; **a** ∫ f dx, **b** ∫ with limits (▲ upper limit, ▼ lower), **c** d/dx (the variable slot starts as x) |
+| **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter puts the matrix on the line as a grid); fraction, power, square root, n-th root, \|x\| and e^x templates; **a** ∫ f dx, **b** ∫ with limits (▲ upper limit, ▼ lower), **c** d/dx (the variable slot starts as x) |
 | **2D entry** | ctrl ÷ = fraction, ^ = exponent, x² = square, ctrl x² = √, ctrl ^ = n-th root; ◄► move through slots, ▲▼ between numerator and denominator; typing + − × ÷ = < > , ) at the end of an exponent leaves it. Sent to nCAS as text: `3/(x+1)`. |
 | **2D results** | inputs (left) and results (right) in the history are drawn in 2D: stacked fractions, raised powers, √ and n-th roots, integrals with ∫ and limits, derivatives as d/dx, matrices as grids, lists, ≠ ≤ ≥. Messages, DMS, polar form and results too wide for the screen stay as text. |
 | **menu ▸ a Symbols** | a page of 40 symbols that cannot be typed while a program runs (`; [ ] { } \| ' ≠ ≤ ≥ := → √ π ∞ ° >>` …); arrows + enter |

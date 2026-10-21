@@ -1,7 +1,8 @@
 # Editing keys of the full-screen mode: a typed closing bracket steps over
 # one already there (or out of √, |x|, the n-th root and d/dx), brackets
 # left open are closed at enter, ctrl ◄ ► go to the start / end of the line,
-# shift ◄ ► move a word or template at a time, and var lists the variables.
+# shift ◄ ► move a word or template at a time, var lists the variables, and
+# a matrix from the template is a grid on the line whose cells can be edited.
 # Each case types keys and checks the input as the history shows it.
 #   python3 tests/edit_check.py [src|dist|onefile]
 import sys
@@ -29,6 +30,12 @@ CASES = [
     ('shift+right combined', list('ab+cd') + ['ctrl', 'left', 'shift+right', '*', '3'], 'ab*3+cd', None),
     ('shift right over a template', ['ctrl', '/', '1', 'down', '2', 'ctrl', 'left', 'shift+right', '+', '1'], '(1/2)+1', '3/2'),
     ('shift then a letter', ['shift', 'a', '+', 'a'], 'A+a', '2*a'),
+    ('5x5 matrix template in det(', ['d', 'e', 't', '(', 'menu', '9', '1', '5', '5', 'enter', '2', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '2', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '2', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '2', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '0', 'tab', '2', 'enter', ')'], 'det([2,0,0,0,0;0,2,0,0,0;0,0,2,0,0;0,0,0,2,0;0,0,0,0,2])', '32'),
+    ('edit a cell, ) leaves the matrix', list('det(') + ['menu', '9', '1', 'enter', '1', 'tab', '2', 'tab', '3', 'tab', '4', 'enter', 'left', 'del', '5', ')'], 'det([1,2;3,5])', '-1'),
+    (', and ; move between cells', ['menu', '9', '1', 'enter', 'enter', 'left', 'up', 'left'] + list('1,2;3,4,') + ['*', '2'], '[1,2;3,4]*2', '[[2,4][6,8]]'),
+    ('] leaves the matrix', ['menu', '9', '1', 'enter', '1', 'tab', '2', 'tab', '3', 'tab', '4', 'enter', 'left', ']', '^', '2'], '[1,2;3,4]^2', '[[7,10][15,22]]'),
+    ('a comma inside brackets stays in the cell', ['menu', '9', '1', 'enter', '1', 'tab', '2', 'tab', '3', 'tab', '4', 'enter', 'left', 'del'] + list('gcd(4,6)'), '[1,2;3,gcd(4,6)]', '[[1,2][3,2]]'),
+    ('ctrl left leaves a matrix', ['menu', '9', '1', 'enter', '1', 'tab', '2', 'tab', '3', 'tab', '4', 'enter', 'left', 'ctrl', 'left'] + list('det('), 'det([1,2;3,4])', '-2'),
     ('var: pick a function', list('a:=5') + ['enter'] + list('f(x):=x^2+1') + ['enter', 'var', '2', '3'], 'f(3)', '10'),
     ('var: ans comes first', ['var', '1', '+', '1'], 'ans+1', '11'),
     ('var: pick a variable', ['var', '2', '*', '2'], 'a*2', '10'),

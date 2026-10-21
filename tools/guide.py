@@ -140,8 +140,10 @@ card('Start or end of the line', 'ctrl ◄ jumps to the start of the line and ct
      '2+3 [ctrl] [◄] 1 [ctrl] [►] 0 [enter]')
 card('A word at a time', 'shift ◄ ► move over a whole name, number or template: sin( is one step.',
      'sin(x)+cos(y) [shift] [◄] [shift] [◄] [shift] [◄] 2*')
-card('Matrix grid', 'Templates ▸ Matrix m×n: choose the size, type in the cells, tab or arrows to move, enter to insert.',
+card('Matrix grid', 'Templates ▸ Matrix m×n: choose the size (up to 9×9), type in the cells, tab or arrows to move, enter to put it on the line.',
      '[menu] [9] [1] [enter] 8 [tab] 5 [tab] 7 [tab] 9')
+card('Edit a matrix on the line', 'The matrix stays a grid on the entry line. ◄ ► go through the cells, ▲ ▼ up and down; typing , or ; at the end of a cell goes to the next cell or row; ] or ) leaves the matrix.',
+     '[menu] [9] [1] [enter] 1 [tab] 2 [tab] 3 [tab] 4 [enter] [◄] [▲]')
 card('Matrix commands', 'A matrix item puts the brackets on the line; the matrix template then fills them.',
      '[menu] [4] [7] [menu] [9] [1] [enter] 8 [tab] 5 [tab] 7 [tab] 9 [enter] [enter]')
 card('Symbols', 'menu ▸ a Symbols: 40 characters that cannot be typed while a program runs (; [ ] { } | := → ≠ ≤ ≥ ° …).',

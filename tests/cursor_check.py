@@ -27,6 +27,7 @@ K += ['ctrl', '^', '3', 'right', '2', '7', 'left', 'left', 'left', 'clear']
 K += ['x', '^', '2', '+', '1', 'left', 'left', 'left', 'left', 'clear']
 K += ['menu', '9', 'b', '0', 'up', '1', 'right', 'x', 'left', 'left', 'left', 'clear']
 K += ['menu', '9', 'c'] + word('x*sin(x)') + ['left'] * 4 + ['clear']
+K += ['menu', '9', '1', 'enter', '1', 'tab', '22', 'tab', '3', 'tab', '4', 'enter', 'left', 'left', 'up', 'right', 'down', 'left', 'left', 'clear']
 K += word('1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20') + ['left'] * 40
 K += ['right'] * 40 + ['clear']
 K += ['esc']
