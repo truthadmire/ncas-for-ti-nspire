@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.3 (2026-10-22)
+
+Checked on a CX II: the self-test, the cursor, the 5×5 matrix on the entry
+line, brackets, ctrl ◄ ►, shift ◄ ►, the var key and the layout.
+
 
 - Full-screen mode: the red cursor on the entry line was drawn about one
   character to the right of where typing goes (since the 2D entry line in
@@ -45,7 +49,7 @@
 - Catalog and help: command names use TI's capitalisation everywhere
   (`cSolve`, `comDenom`, `sumSeq`, ...), also in "did you mean" hints.
 
-## 1.2
+## 1.2 (2026-10-18)
 
 - New separate program **unitconv**, a unit converter with a full-screen
   form: 16 categories (length, area, volume, mass, temperature, time, speed,
@@ -88,7 +92,7 @@ Memory:
 - New tests: `tests/mem_soak.py` (long session on MicroPython's heap) and
   `tests/oom_check.py` (recovery), both in CI.
 
-## 1.1
+## 1.1 (2026-10-16)
 
 Wrong answers fixed:
 - `solve` with inequalities joined by `and`, chained inequalities (`1<2x+1<7`)
@@ -147,6 +151,20 @@ Fixes:
 - `tools/paste_parts.py` works on Windows and Linux (clip, wl-copy, xclip,
   xsel, or part files) and names the right document.
 
-## 1.0
+## 1.0 (2026-10-15)
 
 First release.
+- A computer algebra system in the CX II's built-in Python, with TI's command
+  names and syntax: exact arithmetic, solve/cSolve/nSolve and systems,
+  factor/expand and polynomial tools, derivatives, integrals, limits, series,
+  sums, deSolve, symbolic matrices (det, inverse, rref, eigenvalues and
+  eigenvectors, LU, QR), number theory, complex numbers, lists and
+  statistics, and conversions.
+- Three programs: **ncasgui** (full screen), **ncastext** (Shell prompt with
+  numbered menus) and **ncasx** (small exact calculator).
+- Full-screen mode: 2D entry line (fractions, powers, roots, |x|), results
+  drawn in 2D (stacked fractions, radicals, matrices as grids), history with
+  ▲ ▼ and enter to reuse, command menus, an A–Z catalog, matrix and vector
+  grids, a Symbols page, the ctrl layer for the blue keypad labels, undo.
+- Self-test (`:test`, 18 problems), Settings for angle, mode, real/complex
+  and digits.
