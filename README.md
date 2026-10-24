@@ -282,6 +282,13 @@ Each category keeps its value while the program runs. The status bar warns
 (international inch, foot, pound; US customary and Imperial volumes;
 thermochemical calorie, IT BTU).
 
+## Games (Lua)
+
+`games/` holds six games in TI-Nspire Lua, separate from nCAS: Snake,
+Blocks (falling blocks), Bricks (brick breaker), Rally (bat and ball against
+the calculator), Sudoku and Jumper (platform game). Each one is a single file
+pasted into a Script Editor page; see [games/README.md](games/README.md).
+
 ## Full-screen mode (on the calculator)
 
 On the calculator nCAS starts in a full-screen mode modelled on the CAS

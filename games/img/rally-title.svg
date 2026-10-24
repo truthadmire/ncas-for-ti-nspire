@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="636" height="424" viewBox="0 0 318 212">
+<rect x="0" y="0" width="318" height="212" fill="rgb(14,30,26)"/>
+<text xml:space="preserve" x="126" y="42.8" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="bold" fill="rgb(250,200,40)">RALLY</text>
+<rect x="60" y="60" width="4" height="30" fill="rgb(120,220,255)"/>
+<rect x="254" y="74" width="4" height="30" fill="rgb(255,140,110)"/>
+<ellipse cx="152" cy="82" rx="2" ry="2" fill="rgb(235,240,235)"/>
+<rect x="84" y="108" width="150" height="20" fill="rgb(90,140,120)"/>
+<text xml:space="preserve" x="83" y="121.4" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="rgb(235,240,235)">Calculator:  &lt; Normal &gt;</text>
+<text xml:space="preserve" x="126" y="147.5" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="rgb(235,240,235)">Games won: 4</text>
+<text xml:space="preserve" x="50" y="176.55" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(150,175,165)">Enter: play    8 2 or up/down: move your bat</text>
+<text xml:space="preserve" x="97" y="192.55" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(150,175,165)">First to 7.    Esc: pause</text>
+</svg>

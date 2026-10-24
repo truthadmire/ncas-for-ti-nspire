@@ -48,6 +48,17 @@ jobs:
           python3 tests/eig_check.py
           python3 tests/verify.py
 
+  lua-games:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: install LuaJIT (Lua 5.1, as on the calculator)
+        run: sudo apt-get update && sudo apt-get install -y luajit
+      - name: games
+        run: |
+          luajit tests/lua/game_check.lua
+          luajit tests/lua/game_fuzz.lua 100
+
   micropython:
     runs-on: ubuntu-24.04
     env:
