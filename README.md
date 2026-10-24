@@ -284,10 +284,9 @@ thermochemical calorie, IT BTU).
 
 ## Games (Lua)
 
-`games/` holds six games in TI-Nspire Lua, separate from nCAS: Snake,
-Blocks (falling blocks), Bricks (brick breaker), Rally (bat and ball against
-the calculator), Sudoku and Jumper (platform game). Each one is a single file
-pasted into a Script Editor page; see [games/README.md](games/README.md).
+Six games in TI-Nspire Lua by the same author (Snake, Blocks, Bricks, Rally,
+Sudoku and Jumper) live in their own repository:
+[ti-nspire-games](https://github.com/truthadmire/ti-nspire-games).
 
 ## Full-screen mode (on the calculator)
 

@@ -2,16 +2,9 @@
 
 ## Unreleased
 
-- New `games/` folder: six games in TI-Nspire Lua, separate from nCAS, each
-  one file to paste into a Script Editor page (see `games/README.md`):
-  Snake (walls or wrap-around, three speeds, timed gold bonus), Blocks
-  (falling-block puzzle with hold, next pieces, landing outline and levels),
-  Bricks (bat and ball with four brick layouts), Rally (bat and ball against
-  the calculator, three levels), Sudoku (puzzles made on the calculator with
-  one solution, pencil notes, clash marking, hints, timer) and Jumper
-  (side-scrolling platform game, three levels, coins, enemies, checkpoints).
-  Best scores are kept in the document. Snake has been tried on a CX II.
-  Tests run the games on a fake TI Lua API in LuaJIT (`tests/lua/`).
+- Games: six TI-Nspire Lua games (Snake, Blocks, Bricks, Rally, Sudoku,
+  Jumper) were added here and then moved to their own repository,
+  [ti-nspire-games](https://github.com/truthadmire/ti-nspire-games).
 
 ## 1.3 (2026-10-22)
 
