@@ -142,6 +142,8 @@ def ev_with(t):
   del ASSUME[n0:]
  if pairs:
   r=subsd(unhold(r),pairs)
+  if head(r)in('=','<','>','<=','>=','/='):
+   r=rel(head(r),r[1],r[2])
  for c in ineq:
   r=assume_sign(r,c)
  return r

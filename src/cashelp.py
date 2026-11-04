@@ -68,10 +68,10 @@ SYN = {
     'ncr': 'nCr(n,k)', 'npr': 'nPr(n,k)', 'gcd': 'gcd(a,b)', 'lcm': 'lcm(a,b)',
     'mod': 'mod(a,b)', 'isprime': 'isPrime(n)',
     'define': 'Define f(x)=expr   or   f(x):=expr\nexpr->a  or  a:=expr   delvar a',
-    'with': 'expr|x=3   expr|x>0   solve(...)|0<=x<=2pi',
+    'with': 'expr|x=3   expr|x>0   solve(...)|0<=x<=2pi\n(eq)|x=4 checks a solution: true/false',
     'menu': 'm or menu: numbered menus build the\ncommand for you; 0 back, q quit.\nMatrices may be typed 1,2;3,4',
     'syntax': 'implicit mult: 2x  3(x+1)  x(x+1)\n^ or ** power, sqrt( or √, pi, e, i, inf\n<= >= /= and or not, ans = last result\nlog(x)=ln(x) ([ln] key); log10(x), log(x,b)',
-    'log': 'log(x) natural log (= ln, the [ln] key)\nlog10(x) base 10, log(x,b) base b',
+    'log': 'log(x) natural log (= ln, the [ln] key)\nlog10(x) base 10, log(x,b) base b\nmenu Logs: change base, check an answer',
 }
 
 def help(name=None):

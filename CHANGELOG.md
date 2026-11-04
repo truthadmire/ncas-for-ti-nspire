@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Log equations:
+  - The full-screen history draws logs with their base: `log(8,2)` as
+    log₂(8), `log10(x)` as log₁₀(x); a typed `log(x)` (natural log in nCAS)
+    shows as ln(x), so the base is always visible. `(eq)|x=4` is drawn in 2D
+    too.
+  - New **Logs** menu group (menu ▸ b in the full-screen mode, 9 in the text
+    menus; existing menu keys are unchanged): log with a base, ln, log10,
+    change of base, solve, check an answer, domain, nSolve.
+  - Checking a solution works: `(log(x,2)+log(x-2,2)=3)|x=4` gives `true`
+    and `|x=-2` gives `false` (substituting into a relation used to leave
+    `3=3`). In the full-screen mode tab also jumps to just after a `|`.
 - Games: six TI-Nspire Lua games (Snake, Blocks, Bricks, Rally, Sudoku,
   Jumper) were added here and then moved to their own repository,
   [ti-nspire-games](https://github.com/truthadmire/ti-nspire-games).

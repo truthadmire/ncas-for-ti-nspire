@@ -164,6 +164,18 @@ abs(sin(pi/2
 d(sin(x),x
 f((x]
 "(abc
+solve(2^x=5,x)
+solve(3^(x+1)=7^x,x)
+log(5,2)+log10(7)
+log(x)
+ln(8)>>logbase(2)
+log(x^2+1,b)/2
+solve(log(x,2)+log(x-2,2)=3,x)
+(log(x,2)+log(x-2,2)=3)|x=4
+(log(x,2)+log(x-2,2)=3)|x=-2
+(x^2=4)|x=2
+(x^2>3)|x=1
+x=y|y=2
 """.strip().split('\n')
 for line in CASES:
     try:

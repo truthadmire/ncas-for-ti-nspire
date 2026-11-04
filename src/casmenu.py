@@ -142,11 +142,26 @@ SETS = (
     ('Key test', ':keys', ()),
 )
 
+# logs and exponentials: log(x,b) is log base b of x; log(x) alone is ln
+LOGS = (
+    ('log base b', 'log(@1,@2)', (('Value x', None), ('Base b', None))),
+    ('ln (base e)', 'ln(@1)', (('Value', None),)),
+    ('log10', 'log10(@1)', (('Value', None),)),
+    ('Change base', '(@1)>>logbase(@2)', (('Expression', None), ('New base', '10'))),
+    ('Solve log/exp', 'solve(@1,@2)', (('Equation', None), ('Var', 'x'))),
+    ('Check answer', '(@1)|@2', (('Equation', None), ('Solution eg x=4', None))),
+    ('Domain', 'domain(@1,@2)', (('Expression', None), ('Var', 'x'))),
+    ('nSolve', 'nSolve(@1,@2)', (('Equation', None), ('Var or x=guess', 'x'))),
+)
+
 MAIN = (
     ('Algebra', ALG), ('Calculus', CALC), ('Solve', SOLV), ('Matrix', MATX),
     ('Number/cplx', NUMB), ('Lists/stats', LIST), ('Convert', CONV),
-    ('Settings', SETS),
+    ('Settings', SETS), ('Logs', LOGS),
 )
+# the full-screen menu keeps 9 Templates and a Symbols; groups after the
+# first NFIX come after them (b Logs)
+NFIX = 8
 
 KEYS = '123456789abcdefghijklmnop'
 

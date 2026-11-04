@@ -27,6 +27,13 @@ for title, items in M.MAIN:
                 v = 'x^2*e^x' if it[0] not in ('fMin', 'fMax') else 'x^2-4x'
             if title == 'Solve' and it[0] in ('Solve', 'cSolve', 'nSolve') and q != 'Var' and 'Cond' not in q and 'Var' not in q and 'Lower' not in q and 'Upper' not in q:
                 v = SAMPLE.get(q, 'x^2-4>0') if it[0] == 'Solve' else 'x^3=8'
+            if title == 'Logs':
+                v = {'Value x': '8', 'Base b': '2', 'Expression': 'ln(8)', 'Solution eg x=4': 'x=4',
+                     'Equation': 'log(x,2)+log(x-2,2)=3'}.get(q, v)
+                if it[0] == 'Domain':
+                    v = 'log(x-2,3)' if q == 'Expression' else v
+                if it[0] == 'nSolve' and q == 'Equation':
+                    v = 'ln(x)=x-2'
             if len(p) > 2 and p[2] == 'm':
                 v = M.matrix_text(v)
             vals.append(v)

@@ -786,15 +786,17 @@ def choose(title, labels, jump=False, hint=None):
 def menus():
     # main menu -> item; returns the item or None
     import casmenu
-    main = casmenu.MAIN
+    n = casmenu.NFIX
+    # 1-8 the command groups, 9 Templates, a Symbols, then the later groups
+    main = list(casmenu.MAIN[:n]) + [None, None] + list(casmenu.MAIN[n:])
     while True:
-        a = choose('Menu', [m[0] for m in main] + ['Templates', 'Symbols'])
+        a = choose('Menu', [m[0] if m else ('Templates', 'Symbols')[i - n] for i, m in enumerate(main)])
         if a is None:
             return None
-        if a == len(main):
+        if a == n:
             templates()
             return None
-        if a == len(main) + 1:
+        if a == n + 1:
             symbols()
             return None
         title, items = main[a]
@@ -1185,6 +1187,7 @@ A_ = 13         # character height above the baseline
 D_ = 4          # below the baseline
 AX = 5          # fraction bar above the baseline
 RAISE = 8       # exponent baseline above the baseline
+LOWER = 6       # log base baseline below the baseline (log\u2082 8)
 
 # texts that become templates: (characters typed first, template, prefill)
 NODETEXT = {'^': ('', 'pow', ''), '^2': ('', 'pow', '2'), '^-1': ('', 'pow', '-1'),
@@ -1559,6 +1562,8 @@ def ed_text(row=None):
             out += (',' + lo + ',' + hi + ')') if lo or hi else ')'
         elif k == 'der':
             out += 'd(' + ed_text(it[2]) + ',' + ed_text(it[1]) + ')'
+        elif k == 'logb':
+            out += 'log(' + ed_text(it[2]) + ',' + ed_text(it[1]) + ')'
         elif k[:2] == 'mx':
             out += '[' + ';'.join([','.join([ed_text(c) or '0' for c in row]) for row in mxrows(it)]) + ']'
     return out
@@ -1655,6 +1660,11 @@ def measi(it):
         w, a, d = meas(it[2])
         wi, ai, di = meas(it[1])
         return (wi + w + 11, max(a + 3, RAISE + ai), d)
+    if k == 'logb':
+        # log, the base lowered, then (x)
+        wb, ab, db = meas(it[1])
+        w, a, d = meas(it[2])
+        return (3 * CW + wb + 1 + 2 * CW + w, max(a, ab - LOWER), max(d, LOWER + db))
     if k in CALC:
         return calcbox(it)[0]
     w, a, d = meas(it[1])
@@ -1759,6 +1769,17 @@ def itemdraw(it, x, y, dr):
         return W
     if k in CALC:
         return calcdraw(it, x, y, dr, ink)
+    if k == 'logb':
+        if dr:
+            for j in range(3):
+                text(x + j * CW, y - BASE, 'log'[j], ink)
+        xa = x + 3 * CW + rowdraw(it[1], x + 3 * CW, y + LOWER, dr) + 1
+        if dr:
+            text(xa, y - BASE, '(', ink)
+        wa = rowdraw(it[2], xa + CW, y, dr)
+        if dr:
+            text(xa + CW + wa, y - BASE, ')', ink)
+        return xa + 2 * CW + wa - x
     xi = x
     if k == 'root':
         xi += rowdraw(it[1], x, y - RAISE, dr)
@@ -1864,12 +1885,12 @@ def okname(wd):
 def ed_stops():
     # every cursor position in reading order: (path, pos, is it a field?)
     # Fields: the end of each template slot, and the place after each comma
-    # (the next argument of a command such as integral(f,x,a,b)).
+    # (the next argument of a command such as integral(f,x,a,b)) or after |.
     out = []
 
     def walk(row, path):
         for i in range(len(row) + 1):
-            out.append((path, i, (i > 0 and row[i - 1] == ',') or (bool(path) and i == len(row))))
+            out.append((path, i, (i > 0 and row[i - 1] in (',', '|')) or (bool(path) and i == len(row))))
             if i < len(row) and type(row[i]) is not str:
                 for sl in range(1, len(row[i])):
                     walk(row[i][sl], path + [(i, sl)])
@@ -1907,7 +1928,7 @@ def ed_tab(d):
 # that is not plainly an expression (messages, DMS, polar form, := , ->) is
 # left as text, so the picture never says something the text does not.
 
-SAFE = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_+-*/^().,;=<>{}[]! \u221a\u03c0\u221e\u2260\u2264\u2265\u03b8\u222b'
+SAFE = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_+-*/^().,;=<>{}[]!| \u221a\u03c0\u221e\u2260\u2264\u2265\u03b8\u222b'
 SHOW = {'pi': '\u03c0', 'inf': '\u221e', 'theta': '\u03b8'}
 SHOWF = {'sumseq': '\u03a3', 'prodseq': '\u03a0', 'integral': '\u222b'}
 REL2 = {'=': '=', '/=': '\u2260', '<': '<', '>': '>', '<=': '\u2264', '>=': '\u2265'}
@@ -1968,6 +1989,8 @@ def prec(t):
         return 0
     if h in ('and', 'or', 'xor', 'not'):
         return -1
+    if h == '|':
+        return -2
     return 5
 
 
@@ -2032,6 +2055,15 @@ def lay(t, out):
             out.append(['dint', sublay(args[2]), sublay(args[3]), sublay(args[0]), sublay(args[1])])
         elif name == 'd' and len(args) == 2:
             out.append(['der', sublay(args[1]), sublay(args[0])])
+        elif name == 'log' and len(args) == 2:
+            out.append(['logb', sublay(args[1]), sublay(args[0])])     # log_b(x)
+        elif name == 'log10' and len(args) == 1:
+            out.append(['logb', list('10'), sublay(args[0])])
+        elif name == 'log' and len(args) == 1:
+            # nCAS reads log(x) as the natural log: show it as ln(x)
+            out.extend(list('ln('))
+            lay(args[0], out)
+            out.append(')')
         else:
             nm = SHOWF.get(name) if OPT['uni'] else None
             out.extend(list(nm or tiname(name)))
@@ -2057,6 +2089,11 @@ def lay(t, out):
     elif h in ('and', 'or', 'xor'):
         lay(t[1], out)
         out.extend(list(' ' + h + ' '))
+        lay(t[2], out)
+    elif h == '|':
+        # "with": (x^2=4)|x=2
+        layp(t[1], out, prec(t[1]) <= 0)
+        out.append('|')
         lay(t[2], out)
     elif h == 'not':
         out.extend(list('not '))

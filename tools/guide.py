@@ -113,6 +113,12 @@ card('Your variables', 'var lists ans and every variable and function you stored
      '[var]', pre=['a:=5', 'm:=[1,2;3,4]', 'f(x):=x^2+1'])
 card('ctrl keys at a glance', 'ctrl trig shows what each blue ctrl label does in nCAS.',
      '[ctrl] [trig]')
+card('Logs menu', 'menu ▸ b Logs: log with a base, ln, log10, change of base, solve, check an answer, domain and nSolve.',
+     '[menu] [b]')
+card('Logs with a base', 'Logs are drawn with their base below: log(8,2) shows as log₂(8). A typed log(x) is the natural log and shows as ln(x).',
+     '[menu] [b] [1] 8 [tab] 2 [enter] solve(2^x=5,x) [enter]')
+card('Check an answer', 'Logs ▸ Check answer puts (equation)|… on the line; tab jumps past the |. An extraneous root gives false.',
+     '[menu] [b] [6] log(x,2)+log(x-2,2)=3 [tab] x=-2 [enter]', pre=['solve(log(x,2)+log(x-2,2)=3,x)'])
 card('Settings', 'Degree/radian, Auto/Exact/Approx, real/complex, digits, variables, self-test, memory and the key test.',
      '[menu] [8]')
 
@@ -196,7 +202,9 @@ html('''<div class="table-wrap"><table class="plain">
 <tr><td class="in">x^2  x**2</td><td>power</td></tr>
 <tr><td class="in">sqrt(x)  √x  root(x,3)</td><td>roots</td></tr>
 <tr><td class="in">pi  e  i  inf</td><td>π, Euler’s e, the imaginary unit, ∞ (<code>e</code> and <code>i</code> are reserved)</td></tr>
-<tr><td class="in">ln(x)  log(x)</td><td>natural log (the ln key types <code>log(</code>)</td></tr>
+<tr><td class="in">ln(x)  log(x)</td><td>natural log (the ln key types <code>log(</code>); shown as ln(x)</td></tr>
+<tr><td class="in">log(x,b)</td><td>log base b, shown as log<sub>b</sub>(x); <code>log10(x)</code> is log<sub>10</sub>(x)</td></tr>
+<tr><td class="in">(eq)|x=4</td><td>check a solution: <code>true</code> or <code>false</code></td></tr>
 <tr><td class="in">log10(x)  log(x,b)</td><td>base-10 and base-b logs</td></tr>
 <tr><td class="in">= /= &lt; &gt; &lt;= &gt;= and or not</td><td>relations and logic</td></tr>
 <tr><td class="in">expr|x=3  expr|x&gt;0</td><td>“with”: substitute or add a condition</td></tr>
@@ -242,6 +250,7 @@ html('''<h3 class="sub">Menu mode</h3>
 3 Solve         4 Matrix
 5 Number/cplx   6 Lists/stats
 7 Convert       8 Settings
+9 Logs
 <span class="p">#:</span> 2
 -- Calculus --
 1 Derivative    2 Deriv at pt

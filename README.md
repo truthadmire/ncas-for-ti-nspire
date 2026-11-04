@@ -311,6 +311,7 @@ Calculator app. The status bar shows the angle unit, the mode and real/complex.
 | **menu ▸ 9 Templates** | matrix m×n, column and row vector grids (enter puts the matrix on the line as a grid); fraction, power, square root, n-th root, \|x\| and e^x templates; **a** ∫ f dx, **b** ∫ with limits (▲ upper limit, ▼ lower), **c** d/dx (the variable slot starts as x) |
 | **2D entry** | ctrl ÷ = fraction, ^ = exponent, x² = square, ctrl x² = √, ctrl ^ = n-th root; ◄► move through slots, ▲▼ between numerator and denominator; typing + − × ÷ = < > , ) at the end of an exponent leaves it. Sent to nCAS as text: `3/(x+1)`. |
 | **2D results** | inputs (left) and results (right) in the history are drawn in 2D: stacked fractions, raised powers, √ and n-th roots, integrals with ∫ and limits, derivatives as d/dx, matrices as grids, lists, ≠ ≤ ≥. Messages, DMS, polar form and results too wide for the screen stay as text. |
+| **menu ▸ b Logs** | log with a base, ln, log10, change of base, solve, **check an answer** (`(equation)\|x=4` gives `true` or `false`; tab jumps past the `\|`), domain, nSolve |
 | **menu ▸ a Symbols** | a page of 40 symbols that cannot be typed while a program runs (`; [ ] { } \| ' ≠ ≤ ≥ := → √ π ∞ ° >>` …); arrows + enter |
 | **esc** | leave the selection, clear the line, or (on an empty line) quit |
 
@@ -359,6 +360,7 @@ default shown in `[brackets]`. Type `0` to go back and `q` to leave the menus.
 3 Solve         4 Matrix
 5 Number/cplx   6 Lists/stats
 7 Convert       8 Settings
+9 Logs
 #: 2
 -- Calculus --
 1 Derivative    2 Deriv at pt
@@ -375,10 +377,11 @@ Upper: inf
 
 - Matrices can be typed as `1,2;3,4` (rows separated by `;`).
 - Answers can use `ans` (the last result) and anything you have defined.
-- The menus cover 99 commands: algebra, calculus, solving and systems,
+- The menus have 117 items: algebra, calculus, solving and systems,
   `deSolve` with conditions, matrices, numbers and complex numbers, lists and
-  statistics, conversions, and settings (including defining functions and the
-  self-test).
+  statistics, conversions, settings (including defining functions and the
+  self-test), and logs (log with a base, ln, log10, change of base, solving,
+  checking an answer, domain, nSolve).
 
 ## Using nCAS
 
@@ -391,9 +394,10 @@ Type a command at the `>` prompt and press **enter**. Type `m` for menus, `?` fo
 | `sqrt(x)` or `√x`, `root(x,3)` | roots |
 | `pi`, `e`, `i`, `inf` | π, Euler's e, imaginary unit, ∞ (`e` and `i` are reserved) |
 | `ln(x)` or `log(x)` | **natural log.** The [ln] key types `log(`, so `log(x)` = ln x |
+| `log(x,b)`, `log10(x)` | log base b and base 10; the full-screen mode draws them as log<sub>b</sub>(x) and log<sub>10</sub>(x), and a typed `log(x)` as ln(x) |
 | `log10(x)`, `log(x,b)` | base-10 and base-b logs |
 | `=  /=  <  >  <=  >=  and  or  not` | relations and logic (`==` and `!=` also work) |
-| `expr|x=3`, `expr|x>0` | the "with" operator: substitute or constrain |
+| `expr|x=3`, `expr|x>0` | the "with" operator: substitute or constrain; an equation with a solution substituted gives `true` or `false`: `(x^2=4)|x=2` |
 | `f(x):=x^2` or `Define f(x)=x^2` | define a function |
 | `5->a` or `a:=5` | store a variable; `delvar a` deletes it |
 | `expr>>Decimal` | conversion operator ► (also `@>`) |

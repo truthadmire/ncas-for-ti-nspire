@@ -159,3 +159,15 @@ abs(sin(pi/2  =>  1
 d(sin(x),x  =>  cos(x)
 f((x]  =>  Error: Missing )
 "(abc  =>  Error: Missing "
+solve(2^x=5,x)  =>  x=log(5,2)
+solve(3^(x+1)=7^x,x)  =>  x=ln(3)/(ln(7)-ln(3))
+log(5,2)+log10(7)  =>  log(5,2)+log10(7)
+log(x)  =>  ln(x)
+ln(8)>>logbase(2)  =>  log(8,2)/log(e,2)
+log(x^2+1,b)/2  =>  log(x^2+1,b)/2
+solve(log(x,2)+log(x-2,2)=3,x)  =>  x=4
+(log(x,2)+log(x-2,2)=3)|x=4  =>  true
+(log(x,2)+log(x-2,2)=3)|x=-2  =>  false
+(x^2=4)|x=2  =>  true
+(x^2>3)|x=1  =>  false
+x=y|y=2  =>  x=2

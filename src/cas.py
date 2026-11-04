@@ -155,6 +155,9 @@ def ev_with(t):
         del ASSUME[n0:]
     if pairs:
         r = subsd(unhold(r), pairs)
+        if head(r) in ('=', '<', '>', '<=', '>=', '/='):
+            # a checked solution: (x^2=4)|x=2 gives true, not 4=4
+            r = rel(head(r), r[1], r[2])
     for c in ineq:
         r = assume_sign(r, c)
     return r
