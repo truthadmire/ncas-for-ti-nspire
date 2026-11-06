@@ -115,6 +115,9 @@ tr:last-child td { border-bottom: 0; }
 thead th { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--surface); }
 td.in { font-family: var(--f-mono); font-size: 13.5px; white-space: nowrap; }
 .keys2 td:first-child, .keys2 td:nth-child(3) { white-space: nowrap; }
+.menus td:nth-child(2) { white-space: nowrap; }
+.menus td:last-child { font-size: 14px; color: var(--muted); }
+.menus td:last-child b { color: var(--ink); font-weight: 600; }
 .fine { font-size: 14px; color: var(--muted); margin-top: 16px; max-width: 62em; }
 
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 30px; }
@@ -168,7 +171,7 @@ footer { padding-block: 28px 48px; border-top: 1px solid var(--line); color: var
 
 <main class="wrap">
   <div class="intro">
-    <p class="eyebrow">Usage guide</p>
+    <p class="eyebrow">Usage guide · nCAS __VERSION__</p>
     <h1>Everything nCAS does, <em>key by key.</em></h1>
     <p class="lede">Each picture is a real screen from the program, made by sending the keys shown under it to nCAS on a simulated calculator. Dark keys are keypad keys; light ones are text you type. The handheld’s own font is a little narrower.</p>
   </div>

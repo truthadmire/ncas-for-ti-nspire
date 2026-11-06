@@ -631,8 +631,9 @@ python3 tests/cursor_check.py
 re-expands factorizations, substitutes solutions, multiplies a matrix by its inverse
 and plugs ODE solutions back in. `fuzz.py` runs random input to find crashes. Run
 `python3 tools/build.py` and `python3 tools/onefile.py` after changing `src/`, to
-regenerate `dist/` and `onefile/`, and `python3 tools/guide.py` to redraw the
-website's usage guide (`site/guide.html`); CI checks that they match. See `CONTRIBUTING.md`.
+regenerate `dist/` and `onefile/`, and `python3 tools/guide.py` and
+`python3 tools/site_demos.py` to redraw the website's usage guide and main-page
+demos (`site/`); CI checks that they match. See `CONTRIBUTING.md`.
 
 ## License and trademarks
 

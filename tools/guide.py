@@ -19,6 +19,10 @@ LABEL = {'▲': 'up', '▼': 'down', '◄': 'left', '►': 'right', '÷': '/', '
          '−': '-', 'EE': 'EE', '√': 'sqrt'}
 
 
+def esc(s):
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+
 def keys(s):
     # the strokes as the program reads them, and as the page shows them
     out = []
@@ -86,6 +90,28 @@ html('''<div class="table-wrap"><table class="plain">
 card('Check the installation', 'Settings ▸ Self-test runs 18 problems (factor, solve, integral, limit, deSolve, matrices…). All of them should pass.',
      '[menu] [8] [d]')
 
+def menu_table():
+    # what is in each menu, from the program's own tables
+    sys.path.insert(0, os.path.join(ROOT, 'src'))
+    import casmenu
+    import casgui
+    n = casmenu.NFIX
+    groups = [(casmenu.KEYS[i], g[0], [it[0] for it in g[1]]) for i, g in enumerate(casmenu.MAIN[:n])]
+    groups.append((casmenu.KEYS[n], 'Templates', list(casgui.TPLS) + [t[0] for t in casgui.MATHTPL]))
+    groups.append((casmenu.KEYS[n + 1], 'Symbols', ['a page of %d symbols' % len(casgui.SYMS)]))
+    for i, g in enumerate(casmenu.MAIN[n:]):
+        groups.append((casmenu.KEYS[n + 2 + i], g[0], [it[0] for it in g[1]]))
+    rows = []
+    for key, title, items in groups:
+        one = len(items) == 1
+        txt = items[0] if one else ' · '.join(['<b>%s</b> %s' % (casmenu.KEYS[i], esc(t)) for i, t in enumerate(items)])
+        rows.append('<tr><td><span class="kc">%s</span></td><td>%s</td><td>%s</td></tr>' % (key, esc(title), txt))
+    return ('<h3 class="sub">What is in each menu</h3><p class="body">Press <span class="kc">menu</span>, the group’s key, '
+            'then the item’s key. ncastext has the same groups, with Logs as group 9.</p>'
+            '<div class="table-wrap"><table class="plain menus"><thead><tr><th>Key</th><th>Group</th><th>Items</th></tr></thead><tbody>'
+            + ''.join(rows) + '</tbody></table></div>')
+
+
 # ---- ncasgui basics
 section('gui', 'ncasgui', 'The full-screen mode.',
         'Modelled on the CAS Calculator app: type on the entry line at the bottom, press enter, '
@@ -113,20 +139,10 @@ card('Your variables', 'var lists ans and every variable and function you stored
      '[var]', pre=['a:=5', 'm:=[1,2;3,4]', 'f(x):=x^2+1'])
 card('ctrl keys at a glance', 'ctrl trig shows what each blue ctrl label does in nCAS.',
      '[ctrl] [trig]')
-card('Logs menu', 'menu ▸ b Logs: log with a base, ln, log10, change of base, solve, check an answer, domain and nSolve.',
-     '[menu] [b]')
-card('Logs with a base', 'Logs are drawn with their base below: log(8,2) shows as log₂(8). A typed log(x) is the natural log and shows as ln(x).',
-     '[menu] [b] [1] 8 [tab] 2 [enter] solve(2^x=5,x) [enter]')
-card('Check an answer', 'Logs ▸ Check answer puts (equation)|… on the line; tab jumps past the |. An extraneous root gives false.',
-     '[menu] [b] [6] log(x,2)+log(x-2,2)=3 [tab] x=-2 [enter]', pre=['solve(log(x,2)+log(x-2,2)=3,x)'])
-card('Vieta’s formulas', 'menu ▸ 3 Solve ▸ a shows the sum and products of the roots without solving: r1+r2=5 and r1·r2=6.',
-     '[menu] [3] [a] x [^] 2 -5x+6 [enter]')
-card('Polynomial from its roots', 'menu ▸ 3 Solve ▸ b: the reverse. Roots can be exact, even complex.',
-     '[menu] [3] [b] 2,3 [enter]')
-card('Expressions of the roots', 'menu ▸ 3 Solve ▸ c: if a and b are the roots, find a²+b², 1/a+1/b, (a−b)² and so on, exactly and without solving. The expression must treat the roots alike.',
-     '[menu] [3] [c] 2x [^] 2 -3x+1 [tab] [tab] a [^] 2 +b [^] 2 [enter]')
 card('Settings', 'Degree/radian, Auto/Exact/Approx, real/complex, digits, variables, self-test, memory and the key test.',
      '[menu] [8]')
+
+html(menu_table())
 
 # ---- 2D entry
 section('entry', 'ncasgui · 2D entry', 'Fractions, powers, roots and calculus, as templates.',
@@ -198,6 +214,37 @@ html('''<h3 class="sub">Keys in the full-screen mode</h3>
 </tbody></table></div>
 <p class="fine">If the calculator reports ctrl as its own key, press ctrl then the key; <b>doc</b> also works as ctrl. A key nCAS does not use is named in the status bar.</p>''')
 
+# ---- logs and roots
+section('roots', 'ncasgui · logs and roots', 'Log equations and Vieta’s formulas.',
+        'Logs are drawn with their base, and a Logs menu keeps the tools for log equations together. '
+        'The <code>vieta</code> command works with the roots of a polynomial without solving it. '
+        'nCAS reads plain <code>log(x)</code> as the natural log, so it shows as ln(x).')
+card('Logs menu', 'menu ▸ b Logs: log with a base, ln, log10, change of base, solve, check an answer, domain and nSolve.',
+     '[menu] [b]')
+card('Logs with a base', 'Logs are drawn with their base below: log(8,2) shows as log₂(8). Answers use the same form.',
+     '[menu] [b] [1] 8 [tab] 2 [enter] solve(2^x=5,x) [enter]')
+card('Solve a log equation', 'Type log(x,b) for a log with a base. Only the roots where every log is defined are given.',
+     'solve(log(x,2)+log(x-2,2)=3,x) [enter]')
+card('Check an answer', 'Logs ▸ Check answer puts (equation)|… on the line; tab jumps past the |. A false root gives false.',
+     '[menu] [b] [6] log(x,2)+log(x-2,2)=3 [tab] x=-2 [enter]', pre=['solve(log(x,2)+log(x-2,2)=3,x)'])
+card('Vieta’s formulas', 'menu ▸ 3 Solve ▸ a shows the sum and products of the roots without solving: r1+r2=5 and r1·r2=6.',
+     '[menu] [3] [a] x [^] 2 -5x+6 [enter]')
+card('Polynomial from its roots', 'menu ▸ 3 Solve ▸ b: the reverse. Roots can be exact, even complex.',
+     '[menu] [3] [b] 2,3 [enter]')
+card('Expressions of the roots', 'menu ▸ 3 Solve ▸ c: if a and b are the roots, find a²+b², 1/a+1/b, (a−b)² and so on, exactly and without solving.',
+     '[menu] [3] [c] 2x [^] 2 -3x+1 [tab] [tab] a [^] 2 +b [^] 2 [enter]')
+card('Letters in the polynomial', 'Coefficients can be letters. Letters that are in the polynomial stay coefficients; the others stand for the roots.',
+     'vieta(x [^] 2 +p*x+q,x,a [^] 2 +b [^] 2 ) [enter]')
+html('''<h3 class="sub">The vieta command</h3>
+<div class="table-wrap"><table class="plain">
+<thead><tr><th>You type</th><th>You get</th></tr></thead><tbody>
+<tr><td class="in">vieta(p,x)</td><td>the formulas for the roots r1, r2, …; from degree 5 written e1=…, e2=…, where e<sub>k</sub> is the sum of the products of k roots</td></tr>
+<tr><td class="in">vieta({2,3},x)</td><td>the polynomial with these roots, with leading coefficient 1</td></tr>
+<tr><td class="in">vieta(p,x,expr)</td><td>the value of an expression of the roots, without solving</td></tr>
+<tr><td class="in">vieta(p,x,expr,{u,v})</td><td>the same, with the letters for the roots named, if a letter is taken</td></tr>
+</tbody></table></div>
+<p class="fine">The polynomial can also be an equation, such as <code>x^2=5x-6</code>. The expression must use every root and treat them alike: <code>a+2b</code> gives “Not symmetric in the roots”. It can be a fraction of polynomials, but not a root such as <code>sqrt(a)</code>. Expressions work up to degree 8, and very high powers stop at once with “Resource limit”.</p>''')
+
 # ---- typing rules
 section('syntax', 'Typing math', 'Syntax and commands, the same in every program.',
         'Command names and arguments follow the TI-Nspire CAS Reference Guide, and names are case-insensitive. '
@@ -211,6 +258,7 @@ html('''<div class="table-wrap"><table class="plain">
 <tr><td class="in">ln(x)  log(x)</td><td>natural log (the ln key types <code>log(</code>); shown as ln(x)</td></tr>
 <tr><td class="in">log(x,b)</td><td>log base b, shown as log<sub>b</sub>(x); <code>log10(x)</code> is log<sub>10</sub>(x)</td></tr>
 <tr><td class="in">(eq)|x=4</td><td>check a solution: <code>true</code> or <code>false</code></td></tr>
+<tr><td class="in">vieta(p,x)</td><td>Vieta’s formulas for the roots of p (see <a href="#roots">Logs and roots</a>)</td></tr>
 <tr><td class="in">log10(x)  log(x,b)</td><td>base-10 and base-b logs</td></tr>
 <tr><td class="in">= /= &lt; &gt; &lt;= &gt;= and or not</td><td>relations and logic</td></tr>
 <tr><td class="in">expr|x=3  expr|x&gt;0</td><td>“with”: substitute or add a condition</td></tr>
@@ -247,6 +295,8 @@ term('Settings and the prompt', 'A setting changes the prompt, so you always see
      [':deg', 'solve(sin(x)=1/2,x)|0<=x<=360', ':rad'])
 term('Variables and functions', 'Definitions are saved in the document and come back the next time you run the program.',
      ['f(x):=x^2+1', 'f(3)', '5->a', 'a^2', 'd(f(x)*a,x)'])
+term('Logs and Vieta', 'Logs print as log(x,b) here; the full-screen mode draws them with the base below.',
+     ['solve(2^x=5,x)', '(log(x,2)+log(x-2,2)=3)|x=4', 'vieta(x^2-5x+6,x)', 'vieta(2x^2-3x+1,x,1/a+1/b)'])
 term('Help', '<code>?</code> lists the help topics; <code>?name</code> shows a command’s syntax.',
      ['?integral', '?with'])
 html('''<h3 class="sub">Menu mode</h3>
@@ -327,6 +377,8 @@ html('''<div class="faq">
 <div><h3>Out of memory</h3><p>nCAS shortens the history and keeps going; your variables stay. <code>:free</code> clears history, undo and ans. Very large requests stop at once with “Resource limit”.</p></div>
 <div><h3>The program does not start</h3><p>Turn Press-to-Test off. If the full-screen mode cannot read keys on an older OS, ncasgui opens a compact screen mode in the Shell instead (type, <code>m</code> for menus, <code>q</code> quits).</p></div>
 <div><h3>Syntax error after pasting</h3><p>A part was pasted twice or missed. Compare the line count with what <code>paste_parts.py</code> printed, or start a new program and paste again.</p></div>
+<div><h3>“Not symmetric in the roots”</h3><p>In <code>vieta</code>, swapping two roots must not change the expression. <code>a+2b</code> depends on which root is which, so it has no single value.</p></div>
+<div><h3>“Name all 2 roots”</h3><p><code>vieta</code> needs one letter per root. A letter used in the polynomial is a coefficient, so pick others or name them: <code>vieta(p,x,u^2+v^2,{u,v})</code>.</p></div>
 <div><h3>A long calculation</h3><p>Exact big-integer work cannot be interrupted on the calculator, so nCAS refuses huge powers and factorials up front instead of freezing.</p></div>
 <div><h3>Report a problem</h3><p>Open an issue on <a href="https://github.com/truthadmire/ncas-for-ti-nspire/issues" target="_blank" rel="noopener">GitHub</a> with the input, what you saw, and a photo if the screen looks wrong.</p></div>
 </div>''')
@@ -406,10 +458,6 @@ def run(code, arg):
         sys.stderr.write(r.stderr)
         raise SystemExit('example failed: %r' % (arg,))
     return json.loads(r.stdout)
-
-
-def esc(s):
-    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
 
 def rgb(c):
@@ -497,7 +545,10 @@ def build():
             b.append(reference())
         b.append('</section>')
         body.append(''.join(b))
+    with open(os.path.join(ROOT, 'src', 'cas.py')) as f:
+        version = f.read().split("VERSION = '")[1].split("'")[0]
     page = TEMPLATE.replace('__TOC__', '\n'.join(toc)).replace('__BODY__', '\n'.join(body))
+    page = page.replace('__VERSION__', version)
     with open(OUT, 'w') as f:
         f.write(page)
     print('\nwrote %s (%d KB)' % (OUT, len(page) // 1024))

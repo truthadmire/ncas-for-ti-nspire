@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Website: the main page now shows all five programs (navcalc and unitconv
+  were missing), a Logs and Vieta section and demo tab, and what is new in
+  1.4. All demo screens are redrawn with the current program by
+  `tools/site_demos.py`, which CI checks.
+- Usage guide: a Logs and roots section, a map of every menu generated from
+  the program's own tables, Vieta in the typing rules, ncastext and
+  troubleshooting, and the version it describes.
+
 ## 1.4 (2026-11-06)
 
 - New command **vieta** for Vieta's formulas, also in menu ▸ 3 Solve (a, b, c):
