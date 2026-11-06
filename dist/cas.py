@@ -7,7 +7,7 @@ import cassolve as SO
 import casmat as MA
 import casfun as FN
 from casfun import SET,lmap,vadd,vsub,vneg,vmul,vdiv,vpow,rel
-VERSION='1.3'
+VERSION='1.4'
 ENV={}
 UFUN={}
 ASSUME=[]

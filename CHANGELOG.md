@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.4 (2026-11-06)
 
 - New command **vieta** for Vieta's formulas, also in menu ▸ 3 Solve (a, b, c):
   - `vieta(x^2-5x+6,x)` gives the formulas, `r1+r2=5 and r1*r2=6`; symbolic
