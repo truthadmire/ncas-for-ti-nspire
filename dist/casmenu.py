@@ -47,6 +47,9 @@ SOLV=(
  ('System 3 eqs','solve(@1 and @2 and @3,{@4})',(('Eq 1',None),('Eq 2',None),('Eq 3',None),('Vars','x,y,z'))),
  ('Poly roots','polyRoots(@1,@2)',(('Polynomial',None),('Var','x'))),
  ('Domain','domain(@1,@2)',(('Expression',None),('Var','x'))),
+ ('Vieta formulas','vieta(@1,@2)',(('Polynomial',None),('Var','x'))),
+ ('Roots to poly','vieta({@1},@2)',(('Roots eg 2,3',None),('Var','x'))),
+ ('Expr of roots','vieta(@1,@2,@3)',(('Polynomial',None),('Var','x'),('Expr eg a^2+b^2',None))),
  )
 MATX=(
  ('det','det(@1)',(('Matrix 1,2;3,4',None,'m'),)),

@@ -872,6 +872,136 @@ def sf_polyroots(a,cplx=False):
  return r if r is not None else('list',)
 def sf_cpolyroots(a):
  return sf_polyroots(a,True)
+def rawnames(t,out):
+ if type(t)is str:
+  if t not in('pi','e','i','inf')and t not in out:
+   out.append(t)
+ elif type(t)is tuple:
+  for u in t[2:]if t[0]=='call' else t[1:]:
+   rawnames(u,out)
+ return out
+def vieta_poly(a):
+ e=unhold(ev(a[0]))
+ if isnode(e,'='):
+  e=sub(e[1],e[2])
+ v=polyvar(e,a,1)
+ cs=coeffs(e,v)
+ if cs is None:
+  err('Polynomial expected')
+ while cs and cs[-1]==0:
+  cs.pop()
+ if len(cs)<2:
+  err('Polynomial of degree 1 or more expected')
+ cs.reverse()
+ es=[]
+ for k in range(1,len(cs)):
+  es.append(div(cs[k],cs[0])if k%2==0 else neg(div(cs[k],cs[0])))
+ return v,cs,es
+def sym_terms(e,vs):
+ if not vs:
+  return{():e}if e!=0 else{}
+ cs=coeffs(e,vs[0])
+ if cs is None:
+  err('Polynomial in the roots expected')
+ out={}
+ for k in range(len(cs)):
+  if cs[k]!=0:
+   for m,w in sym_terms(cs[k],vs[1:]).items():
+    out[(k,)+m]=w
+ return out
+def sym_elem(n):
+ E=[{(0,)*n:1}]+[{}for k in range(n)]
+ for j in range(n):
+  for k in range(j+1,0,-1):
+   for m,w in E[k-1].items():
+    m2=m[:j]+(1,)+m[j+1:]
+    E[k][m2]=E[k].get(m2,0)+w
+ return E
+SYMWORK=[0]
+def sym_mul(p,q):
+ SYMWORK[0]+=len(p)*len(q)
+ if SYMWORK[0]>200000:
+  toobig('symmetric expression too large')
+ out={}
+ for m,w in p.items():
+  for m2,w2 in q.items():
+   t=tuple([m[i]+m2[i]for i in range(len(m))])
+   out[t]=out.get(t,0)+w*w2
+ return out
+def sym_value(e,vs,es):
+ n=len(vs)
+ if n>8:
+  toobig('vieta with an expression works up to degree 8')
+ f=sym_terms(expand(e),vs)
+ E=sym_elem(n)
+ r=0
+ while f:
+  m=max(f)
+  c=f[m]
+  val=c
+  P={(0,)*n:1}
+  for k in range(1,n+1):
+   d=m[k-1]-(m[k]if k<n else 0)
+   if d<0:
+    err('Not symmetric in the roots '+','.join(vs))
+   val=mul(val,pw(es[k-1],d))
+   for j in range(d):
+    P=sym_mul(P,E[k])
+  r=add(r,val)
+  for t,w in P.items():
+   u=expand(sub(f.get(t,0),mul(c,w)))
+   if u==0:
+    f.pop(t,None)
+   else:
+    f[t]=u
+ return r
+def vieta_rel(es):
+ n=len(es)
+ E=sym_elem(n)if n<5 else None
+ r=['and']
+ for k in range(1,n+1):
+  if E:
+   lhs=0
+   for m in E[k]:
+    t=1
+    for j in range(n):
+     if m[j]:
+      t=mul(t,'r'+str(j+1))
+    lhs=add(lhs,t)
+  else:
+   lhs='e'+str(k)
+  r.append(('=',lhs,es[k-1]))
+ return tuple(r)if n>1 else r[1]
+def sf_vieta(a):
+ nargs(a,1,4)
+ L=unhold(ev(a[0]))
+ if isnode(L,'list'):
+  nargs(a,1,2)
+  v=var_of(a[1])[0]if len(a)>1 else 'x'
+  r=1
+  for c in L[1:]:
+   r=expand(mul(r,sub(v,c)))
+  return r
+ v,cs,es=vieta_poly(a)
+ if len(a)<3:
+  return vieta_rel(es)
+ if len(a)==4:
+  vs=[str(n)for n in unhold(a[3])[1:]]if isnode(a[3],'list')else[]
+ else:
+  known=[v]
+  for c in cs:
+   known+=symbols(c)
+  vs=[n for n in rawnames(a[2],[])if n not in known]
+  vs.sort()
+ if len(vs)!=len(es):
+  err('Name all %d roots: for example vieta(p,x,expr,{a,b})'%len(es))
+ e=unhold(evw(a[2],vs))
+ SYMWORK[0]=0
+ num=sym_value(PO.getnum(e),vs,es)
+ den=sym_value(PO.getden(e),vs,es)
+ if den==0:
+  return 'undef'
+ return PO.comdenom(div(num,den))
 def sf_linsolve(a):
  vs,gs=solvevars(a[1:])
  e=evw(a[0],vs)
@@ -941,7 +1071,7 @@ SF={
  'polycoeffs':sf_polycoeffs,'polydegree':sf_polydegree,
  'polyquotient':sf_polyquo,'polyremainder':sf_polyrem,
  'polyroots':sf_polyroots,'cpolyroots':sf_cpolyroots,
- 'linsolve':sf_linsolve,'domain':sf_domain,
+ 'linsolve':sf_linsolve,'domain':sf_domain,'vieta':sf_vieta,
  'completesquare':sf_completesq,'constructmat':sf_constructmat,
  'charpoly':sf_charpoly,'simplify':sf_simplify,
  }

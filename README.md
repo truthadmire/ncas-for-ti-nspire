@@ -29,11 +29,11 @@ e
 
 | Folder | Contents |
 |---|---|
-| `onefile/ncastext.py` | **Text version**: one file (~240 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
+| `onefile/ncastext.py` | **Text version**: one file (~244 KB), program name `ncastext`. Commands at a `>` prompt, plus the text menus. |
 | `onefile/ncasx.py` | **Exact calculator**: one small file (~57 KB), program name `ncasx`. Type an expression, get the exact value and its decimal value. No menus. |
 | `onefile/navcalc.py` | **Aviation calculator** (E6B): one small file (~21 KB), program name `navcalc`. Full-screen forms for wind, fuel, altitudes, airspeed and units. Independent of the CAS. |
 | `onefile/unitconv.py` | **Unit converter**: one small file (~15 KB), program name `unitconv`. 16 categories, about 150 units; type in any unit and all the others convert. Independent of the CAS. |
-| `onefile/ncasgui.py` | **Full-screen version**: one file (~277 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
+| `onefile/ncasgui.py` | **Full-screen version**: one file (~283 KB), program name `ncasgui`. Needs `ti_draw` and `ti_system.get_key`. |
 | `dist/` | The module install: 12 modules plus the `ncas` launcher (`casx.py` is only for ncasx, `navcalc.py` is the aviation calculator and `unitconv.py` the unit converter; none is needed by nCAS). |
 | `src/` | Readable source, the same program. |
 | `tests/` | Regression, edge-case, menu, fuzz and property tests (run on a computer). |
@@ -83,7 +83,7 @@ normal mode (not Press-to-Test).
    file in parts: in Terminal, run for example
    `python3 tools/paste_parts.py onefile/ncastext.py 20000`, paste each part at the
    end of the program and press Enter in Terminal for the next one (13 parts for
-   ncastext, 14 for ncasgui). It prints the line count the editor should show
+   ncastext, 15 for ncasgui). It prints the line count the editor should show
    after each part. On Windows and Linux it uses `clip`, `wl-copy`, `xclip` or
    `xsel`; without any of them it writes each part to a file to copy from. (The editor adds an empty
    line after each paste below the cursor; that is harmless.) Then use
@@ -377,7 +377,7 @@ Upper: inf
 
 - Matrices can be typed as `1,2;3,4` (rows separated by `;`).
 - Answers can use `ans` (the last result) and anything you have defined.
-- The menus have 117 items: algebra, calculus, solving and systems,
+- The menus have 120 items: algebra, calculus, solving and systems,
   `deSolve` with conditions, matrices, numbers and complex numbers, lists and
   statistics, conversions, settings (including defining functions and the
   self-test), and logs (log with a base, ln, log10, change of base, solving,
@@ -445,7 +445,7 @@ unevaluated, with `(factr is not a command; did you mean factor?)`. `diff`,
 **Algebra:** `solve`, `cSolve`, `zeros`, `cZeros`, `nSolve`, `linSolve`, `factor`,
 `cFactor`, `expand`, `comDenom`, `propFrac`, `getNum`, `getDenom`, `completeSquare`,
 `polyCoeffs`, `polyDegree`, `polyQuotient`, `polyRemainder`, `polyGcd`, `polyRoots`,
-`cPolyRoots`, `polyEval`, `randPoly`, `tExpand`, `tCollect`, `exact`, `approx`,
+`cPolyRoots`, `polyEval`, `vieta`, `randPoly`, `tExpand`, `tCollect`, `exact`, `approx`,
 `approxRational`, `domain`, `left`, `right`, `simplify`
 
 ```
@@ -506,6 +506,19 @@ impDif(x^2+y^2=1,x,y)            -x/y
 
 **Other:** `when`, `piecewise`, `string`, `expr`, `char`, `ord`, `inString`,
 `mid`, `&`, `rand`, `randInt`
+
+**Vieta's formulas.** nCAS has its own command `vieta` (the CAS has no such
+command; also in menu ▸ 3 Solve):
+
+| You type | You get |
+|---|---|
+| `vieta(x^2-5x+6,x)` | the formulas: `r1+r2=5 and r1*r2=6` (from degree 5 written `e1=…`, `e2=…`: e_k is the sum of the products of k roots) |
+| `vieta({2,3},x)` | the polynomial with these roots: `x^2-5*x+6` |
+| `vieta(2x^2-3x+1,x,a^2+b^2)` | a symmetric expression of the roots, exact and without solving: `5/4`. Fractions work (`1/a+1/b`); name the roots yourself with `vieta(p,x,u^2+v^2,{u,v})` if a letter is taken |
+
+The expression must use every root and treat them alike; otherwise nCAS says
+"Not symmetric in the roots". It works up to degree 8, and very high powers stop
+with "Resource limit".
 
 ### Using nCAS from your own Python programs
 

@@ -4,6 +4,7 @@ sys.path.insert(0, 'src')
 import cas
 from cascore import *
 from casparse import parse
+from casout import fmt
 import cascalc as CA, caspoly as PO, cassolve as SO, casmat as MA
 
 random.seed(int(sys.argv[1]) if len(sys.argv) > 1 else 7)
@@ -172,6 +173,31 @@ for k in range(N):
             print('TAYLOR FAIL', t, T, T2)
         return ok
     check('taylor', t_tay)
+    # Vieta: known roots -> polynomial -> symmetric values, without solving
+    rs = [random.choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]) for j in range(random.randint(2, 4))]
+    lead = random.choice([1, 1, 2, 3, -2])
+    def t_vieta():
+        n = len(rs)
+        names = 'abcd'[:n]
+        roots = ','.join([str(r) for r in rs])
+        p = E('vieta({%s},x)' % roots)
+        direct = E('expand(' + '*'.join(['(x-(%d))' % r for r in rs]) + ')')
+        if expand(sub(p, direct)) != 0:
+            print('VIETA POLY FAIL', rs, p)
+            return False
+        ps = '(%d)*(%s)' % (lead, fmt(p))
+        sub_ = ' and '.join(['%s=%d' % (names[i], rs[i]) for i in range(n)])
+        for ex in ('+'.join([c + '^3' for c in names]),
+                   '+'.join(['1/' + c for c in names]),
+                   '*'.join(['(%s+2)' % c for c in names]),
+                   '+'.join([names[i] + '*' + names[j] for i in range(n) for j in range(i + 1, n)])):
+            got = E('vieta(%s,x,%s)' % (ps, ex))
+            want = E('(%s)|%s' % (ex, sub_))
+            if expand(sub(got, want)) != 0:
+                print('VIETA FAIL', rs, lead, ex, got, want)
+                return False
+        return True
+    check('vieta', t_vieta)
 
 for k in stats:
     print(k, stats[k])

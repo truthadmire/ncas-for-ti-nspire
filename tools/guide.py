@@ -66,8 +66,8 @@ section('start', 'Getting started', 'Install, run, and check that it works.',
         'document. Install the ones you want; none of them needs the others.')
 html('''<div class="table-wrap"><table class="plain">
 <thead><tr><th>Program</th><th>What it is</th><th>Size</th><th>Needs</th></tr></thead><tbody>
-<tr><td class="in">ncasgui</td><td>The full-screen CAS: 2D entry with templates, menus, catalog, results drawn as math.</td><td>277 KB · 14 parts</td><td>OS with <code>ti_draw</code> and <code>get_key</code></td></tr>
-<tr><td class="in">ncastext</td><td>The same CAS at a <code>&gt;</code> prompt in the Python Shell, with numbered menus.</td><td>240 KB · 13 parts</td><td>any OS with Python</td></tr>
+<tr><td class="in">ncasgui</td><td>The full-screen CAS: 2D entry with templates, menus, catalog, results drawn as math.</td><td>283 KB · 15 parts</td><td>OS with <code>ti_draw</code> and <code>get_key</code></td></tr>
+<tr><td class="in">ncastext</td><td>The same CAS at a <code>&gt;</code> prompt in the Python Shell, with numbered menus.</td><td>244 KB · 13 parts</td><td>any OS with Python</td></tr>
 <tr><td class="in">ncasx</td><td>A small, fast exact calculator: exact value plus decimal, no menus.</td><td>59 KB · 3 parts</td><td>any OS with Python</td></tr>
 <tr><td class="in">navcalc</td><td>Aviation (E6B) calculator: wind, crosswind, time-speed-distance, fuel, altitudes, airspeed.</td><td>21 KB · 2 parts</td><td><code>ti_draw</code> (else Shell)</td></tr>
 <tr><td class="in">unitconv</td><td>Unit converter: 16 categories, about 150 units, all converting as you type.</td><td>15 KB · 1 part</td><td><code>ti_draw</code> (else Shell)</td></tr>
@@ -119,6 +119,12 @@ card('Logs with a base', 'Logs are drawn with their base below: log(8,2) shows a
      '[menu] [b] [1] 8 [tab] 2 [enter] solve(2^x=5,x) [enter]')
 card('Check an answer', 'Logs ▸ Check answer puts (equation)|… on the line; tab jumps past the |. An extraneous root gives false.',
      '[menu] [b] [6] log(x,2)+log(x-2,2)=3 [tab] x=-2 [enter]', pre=['solve(log(x,2)+log(x-2,2)=3,x)'])
+card('Vieta’s formulas', 'menu ▸ 3 Solve ▸ a shows the sum and products of the roots without solving: r1+r2=5 and r1·r2=6.',
+     '[menu] [3] [a] x [^] 2 -5x+6 [enter]')
+card('Polynomial from its roots', 'menu ▸ 3 Solve ▸ b: the reverse. Roots can be exact, even complex.',
+     '[menu] [3] [b] 2,3 [enter]')
+card('Expressions of the roots', 'menu ▸ 3 Solve ▸ c: if a and b are the roots, find a²+b², 1/a+1/b, (a−b)² and so on, exactly and without solving. The expression must treat the roots alike.',
+     '[menu] [3] [c] 2x [^] 2 -3x+1 [tab] [tab] a [^] 2 +b [^] 2 [enter]')
 card('Settings', 'Degree/radian, Auto/Exact/Approx, real/complex, digits, variables, self-test, memory and the key test.',
      '[menu] [8]')
 

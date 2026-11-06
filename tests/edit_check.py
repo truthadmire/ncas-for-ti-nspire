@@ -39,6 +39,8 @@ CASES = [
     ('Logs menu: log base b', ['menu', 'b', '1', '8', 'tab', '2'], 'log(8,2)', '3'),
     ('Logs menu: check an answer', ['menu', 'b', '6'] + list('log(x,2)+log(x-2,2)=3') + ['tab'] + list('x=-2'), '(log(x,2)+log(x-2,2)=3)|x=-2', 'false'),
     ('Logs menu: change base', ['menu', 'b', '4'] + list('log(8,2)'), '(log(8,2))>>logbase(10)', None),
+    ('Vieta from the Solve menu', ['menu', '3', 'a'] + list('x^2-5x+6'), 'vieta(x^2-5x+6,x)', 'r1+r2=5 and r1*r2=6'),
+    ('Vieta: expression of the roots', ['menu', '3', 'c'] + list('x^2-5x+6') + ['tab', 'tab'] + list('a^2+b^2'), 'vieta(x^2-5x+6,x,a^2+b^2)', '13'),
     ('var: pick a function', list('a:=5') + ['enter'] + list('f(x):=x^2+1') + ['enter', 'var', '2', '3'], 'f(3)', '10'),
     ('var: ans comes first', ['var', '1', '+', '1'], 'ans+1', '11'),
     ('var: pick a variable', ['var', '2', '*', '2'], 'a*2', '10'),

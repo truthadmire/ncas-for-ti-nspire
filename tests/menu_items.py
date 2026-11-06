@@ -27,6 +27,10 @@ for title, items in M.MAIN:
                 v = 'x^2*e^x' if it[0] not in ('fMin', 'fMax') else 'x^2-4x'
             if title == 'Solve' and it[0] in ('Solve', 'cSolve', 'nSolve') and q != 'Var' and 'Cond' not in q and 'Var' not in q and 'Lower' not in q and 'Upper' not in q:
                 v = SAMPLE.get(q, 'x^2-4>0') if it[0] == 'Solve' else 'x^3=8'
+            if it[0] == 'Expr of roots':
+                v = {'Polynomial': 'x^2-5x+6', 'Expr eg a^2+b^2': 'a^2+b^2'}.get(q, v)
+            if q == 'Roots eg 2,3':
+                v = '2,3'
             if title == 'Logs':
                 v = {'Value x': '8', 'Base b': '2', 'Expression': 'ln(8)', 'Solution eg x=4': 'x=4',
                      'Equation': 'log(x,2)+log(x-2,2)=3'}.get(q, v)

@@ -171,3 +171,25 @@ solve(log(x,2)+log(x-2,2)=3,x)  =>  x=4
 (x^2=4)|x=2  =>  true
 (x^2>3)|x=1  =>  false
 x=y|y=2  =>  x=2
+vieta(x^2-5x+6,x)  =>  r1+r2=5 and r1*r2=6
+vieta(2x^2-3x+1=0,x)  =>  r1+r2=3/2 and r1*r2=1/2
+vieta(a*x^2+b*x+c,x)  =>  r1+r2=-b/a and r1*r2=c/a
+vieta(x^3-6x^2+11x-6,x)  =>  r1+r2+r3=6 and r1*r2+r1*r3+r2*r3=11 and r1*r2*r3=6
+vieta(x^5-1,x)  =>  e1=0 and e2=0 and e3=0 and e4=0 and e5=1
+vieta(3x+6,x)  =>  r1=-2
+vieta(5,x)  =>  Error: Polynomial of degree 1 or more expected
+vieta(sin(x),x)  =>  Error: Polynomial expected
+vieta({2,3},x)  =>  x^2-5*x+6
+vieta({1,2,3},t)  =>  t^3-6*t^2+11*t-6
+vieta({1+i,1-i},x)  =>  x^2-2*x+2
+vieta({sqrt(2),-sqrt(2)},x)  =>  x^2-2
+vieta(2x^2-3x+1,x,a^2+b^2)  =>  5/4
+vieta(2x^2-3x+1,x,1/a+1/b)  =>  3
+vieta(2x^2-3x+1,x,(a-b)^2)  =>  1/4
+vieta(x^2+p*x+q,x,a^2+b^2)  =>  p^2-2*q
+vieta(x^3-6x^2+11x-6,x,1/a+1/b+1/c)  =>  11/6
+vieta(x^3+x+1,x,a^5+b^5+c^5)  =>  5
+vieta(x^2-x,x,1/a+1/b)  =>  undef
+vieta(x^2-5x+6,x,a+2b)  =>  Error: Not symmetric in the roots a,b
+vieta(x^2-5x+6,x,a^2)  =>  Error: Name all 2 roots: for example vieta(p,x,expr,{a,b})
+vieta(x^2-5x+6,x,u^2+v^2,{u,v})  =>  13

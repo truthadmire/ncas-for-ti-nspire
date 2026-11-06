@@ -1,5 +1,5 @@
 CATS=(
- ('alg','Algebra','solve cSolve zeros cZeros nSolve linSolve factor cFactor expand comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval tExpand tCollect simplify exact approx domain'),
+ ('alg','Algebra','solve cSolve zeros cZeros nSolve linSolve factor cFactor expand comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval vieta tExpand tCollect simplify exact approx domain'),
  ('calc','Calculus','d integral limit sumSeq prodSeq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
  ('mat','Matrix/vector','det identity transpose rref ref inverse eigVl eigVc charPoly LU QR trace norm rowNorm colNorm diag augment colAugment subMat rowSwap rowAdd mRow mRowAdd crossP dotP unitV simult constructMat newMat randMat dim rowDim colDim mat>list list>mat'),
  ('num','Numbers','gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign abs real imag conj angle'),
@@ -30,6 +30,7 @@ SYN={
  'polyroots':'polyRoots(poly,var) polyRoots({coeffs})',
  'cpolyroots':'cPolyRoots(poly,var)',
  'polyeval':'polyEval({coeffs},x)',
+ 'vieta':"vieta(poly,x) Vieta's formulas\nvieta({r1,r2,..},x) polynomial from roots\nvieta(poly,x,a^2+b^2) symmetric value",
  'texpand':'tExpand(expr) expand trig of sums/multiples',
  'tcollect':'tCollect(expr) products -> multiple angles',
  'simplify':'simplify(expr) extra simplification',

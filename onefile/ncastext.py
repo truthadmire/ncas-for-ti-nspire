@@ -35,14 +35,14 @@ def _load(m):
  del _L[m]
  _P.pop(m, None)""")
 print('Loading nCAS...')
-_W={'!': 'return', '#': 'None', '%': 'append', '&': 'isnode', '(': 'else', ')': 'for', '*': 'and', '+': 'range', ',': 'def', '-': 'not', '.': 'autocancel', '/': 'type', '0': 'tuple', '1': 'isconst', '2': 'complex', '3': 'False', '4': 'freeof', '5': 'len', '6': 'Exception', '7': 'continue', '8': 'lambda', '9': 'except', ':': 'mul', ';': 'add_list', '<': 'depth', '=': 'self', '>': 'expand', '?': 'out', '@': 'float', 'A': 'cplx', 'B': 'name', 'C': 'ZeroDivisionError', 'D': 'isnum', 'E': 'True', 'F': 'undef', 'G': 'mul_list', 'H': 'abs', 'I': 'math', 'J': 'list', 'K': 'while', 'L': 'elif', 'M': 'terms', 'N': 'inf', 'O': 'CASError', 'P': 'real', 'Q': 'ValueError', 'R': 'div', 'S': 'p_divexact', 'T': 'subs', 'U': 'nval', 'V': 'sqrt', 'W': 'break', 'X': 'args', 'Y': 'Expression', 'Z': 'coeffs', '[': 'OverflowError', ']': 'integral', '^': 'sub', '_': 'add', '`': 'hasfloat', 'a': 'nsign', 'b': 'coef_rest', 'c': 'islist', 'd': 'rest', 'e': 'vals', 'f': 'raise', 'g': 'isint', 'h': 'sols', 'i': 'linear', 'j': 'onevar_expr', 'k': 'NoSeries', 'l': 'angle', 'm': 'neg', 'n': 'solve_eq', 'o': 'rows', 'p': 'FSIMP', 'q': 'symbols', 'r': 'israt', 's': 'HALF', 't': 'arctan', 'u': 'int', 'v': 'isrealc', 'w': 'limit', 'x': 'startswith', 'y': 'arcsin', 'z': 'parts', '{': 'best', '|': 'str', '}': 'integ', '~': 'nargs'}
+_W={'!': 'return', '#': 'None', '%': 'append', '&': 'else', '(': 'isnode', ')': 'for', '*': 'and', '+': 'range', ',': 'def', '-': 'not', '.': 'autocancel', '/': 'type', '0': 'tuple', '1': 'isconst', '2': 'complex', '3': 'False', '4': 'len', '5': 'freeof', '6': 'Exception', '7': 'continue', '8': 'lambda', '9': 'except', ':': 'mul', ';': 'add_list', '<': 'depth', '=': 'expand', '>': 'self', '?': 'out', '@': 'float', 'A': 'cplx', 'B': 'name', 'C': 'ZeroDivisionError', 'D': 'isnum', 'E': 'True', 'F': 'undef', 'G': 'mul_list', 'H': 'abs', 'I': 'math', 'J': 'list', 'K': 'while', 'L': 'elif', 'M': 'terms', 'N': 'inf', 'O': 'div', 'P': 'CASError', 'Q': 'real', 'R': 'ValueError', 'S': 'p_divexact', 'T': 'subs', 'U': 'nval', 'V': 'sqrt', 'W': 'break', 'X': 'coeffs', 'Y': 'args', 'Z': 'Expression', '[': 'OverflowError', ']': 'sub', '^': 'integral', '_': 'add', '`': 'hasfloat', 'a': 'nsign', 'b': 'coef_rest', 'c': 'islist', 'd': 'rest', 'e': 'vals', 'f': 'raise', 'g': 'isint', 'h': 'sols', 'i': 'linear', 'j': 'onevar_expr', 'k': 'NoSeries', 'l': 'angle', 'm': 'neg', 'n': 'solve_eq', 'o': 'symbols', 'p': 'rows', 'q': 'FSIMP', 'r': 'israt', 's': 'HALF', 't': 'arctan', 'u': 'int', 'v': 'isrealc', 'w': 'limit', 'x': 'startswith', 'y': 'str', 'z': 'arcsin', '{': 'nargs', '|': 'parts', '}': 'best', '~': 'integ'}
 _x(r'''import $I
-class $O($6):
+class $P($6):
  pass
-class ResourceLimit($O):
+class ResourceLimit($P):
  pass
 $, err(msg):
- $f $O(msg)
+ $f $P(msg)
 MAXTERMS=2000
 MAXCELLS=2500
 MAXLEN=5000
@@ -187,7 +187,7 @@ $, nipow(a,k):
 $, iroot(n,k):
  if n<2:
   $! n
- x=$u($I.pow(n,1.0/k))if n<10**300 $( 1<<(($5(bin(n))-2)//k+1)
+ x=$u($I.pow(n,1.0/k))if n<10**300 $& 1<<(($4(bin(n))-2)//k+1)
  if x<1:
   x=1
  $K $E:
@@ -216,7 +216,7 @@ $, smallprimes():
      s[j]=1
   SMALLP=ps
  $! SMALLP
-$, $&(e,h):
+$, $((e,h):
  $! $/(e)is $0 $* e[0]==h
 $, head(e):
  if $/(e)is $0:
@@ -232,30 +232,30 @@ $, has(e,x):
    if has(a,x):
     $! $E
  $! $3
-$, $4(e,x):
+$, $5(e,x):
  $! $- has(e,x)
 $, freeofall(e,xs):
  $) x in xs:
   if has(e,x):
    $! $3
  $! $E
-$, $q(e,$?=$#):
+$, $o(e,$?=$#):
  if $? is $#:
   $?=[]
  t=$/(e)
- if t is $|:
+ if t is $y:
   if e $- in SPECIAL $* e $- in $?:
    $?.$%(e)
- $L t is $0 $* e[0]!='Q' $* e[0]!='$|':
+ $L t is $0 $* e[0]!='Q' $* e[0]!='$y':
   $) a in e[1:]:
-   $q(a,$?)
+   $o(a,$?)
  $! $?
 $, $1(e):
  t=$/(e)
- if t is $|:
+ if t is $y:
   $! e in SPECIAL
  if t is $0 $* e[0]!='Q':
-  if e[0]=='$|':
+  if e[0]=='$y':
    $! $3
   $) a in e[1:]:
    if $- $1(a):
@@ -272,7 +272,7 @@ $, $`(e):
  $! $3
 $, $b(a):
  if $/(a)is $0 $* a[0]=='*' $* $D(a[1]):
-  if $5(a)==3:
+  if $4(a)==3:
    $! a[1],a[2]
   $! a[1],('*',)+a[2:]
  $! 1,a
@@ -283,17 +283,17 @@ $, cmul(c,r):
   if $D(r[1]):
    c=nmul(c,r[1])
    if $/(c)is $u $* c==1:
-    $!('*',)+r[2:]if $5(r)>3 $( r[2]
+    $!('*',)+r[2:]if $4(r)>3 $& r[2]
    $!('*',c)+r[2:]
   $!('*',c)+r[1:]
  $!('*',c,r)
-$, $_(*$X):
- $! $;($X)
-$, $;($X):
+$, $_(*$Y):
+ $! $;($Y)
+$, $;($Y):
  num=0
  $M={}
  order=[]
- st=$J($X)
+ st=$J($Y)
  infs=0
  $K st:
   a=st.pop()
@@ -311,11 +311,11 @@ $, $;($X):
     $7
    if h=='*' $* $D(a[1]):
     c=a[1]
-    r=a[2]if $5(a)==3 $(('*',)+a[2:]
-   $(:
+    r=a[2]if $4(a)==3 $&('*',)+a[2:]
+   $&:
     c=1
     r=a
-  $(:
+  $&:
    if a=='$F':
     $! '$F'
    c=1
@@ -330,11 +330,11 @@ $, $;($X):
    $7
   if r in $M:
    $M[r]=nadd($M[r],c)
-  $(:
+  $&:
    $M[r]=c
    order.$%(r)
  if infs:
-  $! '$N' if infs>0 $(('*',-1,'$N')
+  $! '$N' if infs>0 $&('*',-1,'$N')
  $?=[]
  $) r in order:
   c=$M[r]
@@ -344,22 +344,22 @@ $, $;($X):
  if num!=0 or $- $?:
   if $? $* num==0:
    pass
-  $(:
+  $&:
    $?.$%(num)
- if $5($?)==1:
+ if $4($?)==1:
   $! $?[0]
  $?.sort(key=okey)
  $!('+',)+$0($?)
 $, isrrad(e):
  $! $/(e)is $0 $* e[0]=='^' $* $/(e[1])is $u $* isq(e[2])
-$, $:(*$X):
- $! $G($X)
+$, $:(*$Y):
+ $! $G($Y)
 ''')
-_x(r'''$, $G($X):
+_x(r'''$, $G($Y):
  coef=1
  bases={}
  order=[]
- st=$J($X)
+ st=$J($Y)
  $K st:
   a=st.pop()
   t=$/(a)
@@ -377,17 +377,17 @@ _x(r'''$, $G($X):
    if h=='^':
     b=a[1]
     x=a[2]
-   $(:
+   $&:
     b=a
     x=1
-  $(:
+  $&:
    if a=='$F':
     $! '$F'
    b=a
    x=1
   if b in bases:
    bases[b]=$_(bases[b],x)
-  $(:
+  $&:
    bases[b]=x
    order.$%(b)
  if coef==0:
@@ -407,7 +407,7 @@ _x(r'''$, $G($X):
    $! p
   if t is $0 $* p[0]=='*':
    items=p[1:]
-  $(:
+  $&:
    items=(p,)
   $) f in items:
    if $D(f):
@@ -417,10 +417,10 @@ _x(r'''$, $G($X):
     if ex in rad:
      rad[ex]=rad[ex]*f[1]
      radorder.$%($#)
-    $(:
+    $&:
      rad[ex]=f[1]
      radorder.$%(ex)
-   $(:
+   $&:
     facs.$%(f)
   $! c
  $) b in order:
@@ -429,7 +429,7 @@ _x(r'''$, $G($X):
    $! '$F'
   coef=nmul(coef,collect(p))
  if rad:
-  multi=$5(radorder)!=$5(rad)
+  multi=$4(radorder)!=$4(rad)
   if multi:
    items=[(ex,rad[ex])$) ex in radorder if ex is $- $#]
    rad.clear()
@@ -444,20 +444,20 @@ _x(r'''$, $G($X):
  if coef==0:
   $! 0
  if '$N' in facs:
-  if $5(facs)==1 or $E:
-   coef=$a(coef)if $/(coef)is $- $@ $((1.0 if coef>0 $(-1.0)
+  if $4(facs)==1 or $E:
+   coef=$a(coef)if $/(coef)is $- $@ $&(1.0 if coef>0 $&-1.0)
    if $/(coef)is $@:
     coef=$u(coef)
  if $- facs:
   $! coef
- if $5(facs)>1:
-  algs=[f $) f in facs if $&(f,'+')$* isalg(f)]
+ if $4(facs)>1:
+  algs=[f $) f in facs if $((f,'+')$* isalg(f)]
   if algs $* all([isalg(f)$) f in facs]):
    r=coef
    $) f in facs:
     r=expand_mul(r,f)
    $! r
- if $5(facs)==1:
+ if $4(facs)==1:
   f=facs[0]
   if $/(coef)is $u $* coef==1:
    $! f
@@ -470,9 +470,9 @@ _x(r'''$, $G($X):
  $!('*',coef)+$0(facs)
 $, $m(a):
  $! $:(-1,a)
-$, $^(a,b):
+$, $](a,b):
  $! $_(a,$:(-1,b))
-$, $R(a,b):
+$, $O(a,b):
  $! $:(a,pw(b,-1))
 $, inv(a):
  $! pw(a,-1)
@@ -503,26 +503,26 @@ $, radical(n,q):
   r=iroot($d,q)
   if r**q==$d:
    a*=r
-  $(:
+  $&:
    m*=$d
  $! a,m
 $, ipow_root(n,p,q):
  if ibits(n)*p>2000 or q>60:
   $!('^',n,Q(p,q))
- a,m=radical(n**p,q)if p>1 $( radical(n,q)
+ a,m=radical(n**p,q)if p>1 $& radical(n,q)
  if m==1:
   $! a
  ex=Q(1,q)
  k=2
- ${=$#
+ $}=$#
  $K(1<<k)<=m $* k<=64:
   r=iroot(m,k)
   if r**k==m:
-   ${=(r,k)
+   $}=(r,k)
   k+=1
- if ${ is $- $#:
-  m=${[0]
-  ex=Q(${[1],q)
+ if $} is $- $#:
+  m=$}[0]
+  ex=Q($}[1],q)
  if ex==1:
   $! a*m
  if $g(ex):
@@ -536,12 +536,12 @@ $, ibits(n):
   $! 0
  h='%x'%$H(n)
  v=$u(h[0],16)
- $! 4*$5(h)-(3 if v<2 $( 2 if v<4 $( 1 if v<8 $( 0)
+ $! 4*$4(h)-(3 if v<2 $& 2 if v<4 $& 1 if v<8 $& 0)
 $, bigpow(b,x):
  n,d=nd(b)
  if d==1 $* $H(n)<=1:
   $! $3
- $! $H(x)*(ibits(n)+(ibits(d)if d>1 $( 0))>MAXBITS
+ $! $H(x)*(ibits(n)+(ibits(d)if d>1 $& 0))>MAXBITS
 $, pw_num(b,x):
  if $/(b)is $@ or $/(x)is $@:
   bf=tofl(b)
@@ -557,7 +557,7 @@ $, pw_num(b,x):
   if bf<0 $*(xf in($@('$N'),$@('-$N'))or xf!=$I.floor(xf)):
    if $r(x)$* nd(x)[1]%2==1:
     r=(-bf)**xf
-    $!-r if nd(x)[0]%2 $( r
+    $!-r if nd(x)[0]%2 $& r
    z=$2(bf)**xf
    $! fromcomplex(z)
   try:
@@ -574,7 +574,7 @@ $, pw_num(b,x):
   $! nipow(b,x)
  p,q=nd(x)
  if b==0:
-  $! 0 if p>0 $( '$F'
+  $! 0 if p>0 $& '$F'
  if $a(b)<0:
   if q%2==1:
    r=pw_num(nneg(b),x)
@@ -595,30 +595,30 @@ $, pw_num(b,x):
  if f==0:
   $! res
  fp,fq=nd(f)
- $z=[]
+ $|=[]
  if n>1:
-  $z.$%(ipow_root(n,fp,fq))
+  $|.$%(ipow_root(n,fp,fq))
  if d>1:
-  $z.$%(Q(1,d))
-  $z.$%(ipow_root(d,fq-fp,fq))
+  $|.$%(Q(1,d))
+  $|.$%(ipow_root(d,fq-fp,fq))
  c=res
  facs=[]
- $) pt in $z:
+ $) pt in $|:
   if $D(pt):
    c=nmul(c,pt)
   $L pt[0]=='*':
    c=nmul(c,pt[1])
    facs.$%(pt[2])
-  $(:
+  $&:
    facs.$%(pt)
- if $5(facs)==2:
+ if $4(facs)==2:
   if facs[0][2]==facs[1][2]:
    $! $:(c,pw_num(facs[0][1]*facs[1][1],facs[0][2]))
   facs.sort(key=okey)
  if $- facs:
   $! c
  if c==1:
-  if $5(facs)==1:
+  if $4(facs)==1:
    $! facs[0]
   $!('*',)+$0(facs)
  $!('*',c)+$0(facs)
@@ -629,14 +629,14 @@ $, isposconst(e):
   $! $E
  if isrrad(e):
   $! e[1]>0
- if $&(e,'^')$*(e[1]=='e' or e[1]=='pi')$* isreal_expr(e[2]):
+ if $((e,'^')$*(e[1]=='e' or e[1]=='pi')$* isreal_expr(e[2]):
   $! $E
  $! $3
 $, isalg(e):
  t=$/(e)
  if t is $u or t is $@:
   $! $E
- if t is $|:
+ if t is $y:
   $! e=='i'
  h=e[0]
  if h=='Q':
@@ -667,52 +667,52 @@ _x(r'''$, pw(b,x):
   $! 1
  if b=='$N':
   if xn:
-   $! '$N' if $a(x)>0 $( 0
+   $! '$N' if $a(x)>0 $& 0
   if x=='$N':
    $! '$N'
  if xn $* b==0:
-  $! 0 if $a(x)>0 $( '$F'
+  $! 0 if $a(x)>0 $& '$F'
  if b=='i' $* $/(x)is $u:
   r=x%4
   $!(1,'i',-1,('*',-1,'i'))[r]
  if x=='$N' $* bn:
   if nabs(b)==1:
-   $! '$F' if b==1 $( '$F'
+   $! '$F' if b==1 $& '$F'
   if ncmp(nabs(b),1)>0:
-   $! '$N' if $a(b)>0 $( '$F'
+   $! '$N' if $a(b)>0 $& '$F'
   $! 0
  if b=='e':
   if x=='$N':
    $! '$N'
-  if $&(x,'*')$* $5(x)==3 $* x[1]==-1 $* x[2]=='$N':
+  if $((x,'*')$* $4(x)==3 $* x[1]==-1 $* x[2]=='$N':
    $! 0
   if $/(x)is $@:
    $! $I.exp(x)
-  if $&(x,'ln'):
+  if $((x,'ln'):
    $! x[1]
-  if $&(x,'*'):
+  if $((x,'*'):
    c,r=$b(x)
-   if $&(r,'ln')$* $r(c):
+   if $((r,'ln')$* $r(c):
     $! pw(r[1],c)
-  if $&(x,'+'):
+  if $((x,'+'):
    outs=[]
    $d=[]
    $) t in x[1:]:
     c,r=$b(t)
-    if $&(r,'ln')$* $r(c):
+    if $((r,'ln')$* $r(c):
      outs.$%(pw(r[1],c))
-    $(:
+    $&:
      $d.$%(t)
    if outs:
     $! $G(outs+[pw('e',$;($d))])
-  if $&(x,'*')$* 'i' in x $* 'pi' in x:
+  if $((x,'*')$* 'i' in x $* 'pi' in x:
    c,r=$b(x)
    if r==('*','i','pi')$* $r(c):
     $! $_(cos_($:(c,'pi')),$:('i',sin_($:(c,'pi'))))
  if b!='e' $* $1(b)$* $1(x)$* $- $r(x)$*(has(b,'i')or has(x,'i'))$* $- $`(x):
   L=fn('ln',b)
-  if $- $&(L,'ln')$* $-($&(L,'+')$* any([$&(t,'ln')$) t in L[1:]])):
-   $! pw('e',$>($:(x,L)))
+  if $- $((L,'ln')$* $-($((L,'+')$* any([$((t,'ln')$) t in L[1:]])):
+   $! pw('e',$=($:(x,L)))
  if $/(b)is $0:
   h=b[0]
   if h=='^':
@@ -746,11 +746,11 @@ _x(r'''$, pw(b,x):
      $L f!=-1:
       outs.$%(pw(nneg(f),x))
       $d.$%(-1)
-     $(:
+     $&:
       $d.$%(f)
-    $L isposconst(f)or $&(f,'$H'):
+    $L isposconst(f)or $((f,'$H'):
      outs.$%(pw(f,x))
-    $(:
+    $&:
      $d.$%(f)
    if outs:
     $! $G(outs+[pw($G($d),x)])
@@ -765,7 +765,7 @@ _x(r'''$, pw(b,x):
    if isq(x)$* x[2]==2 $* $a(x)<0 $* isalg(b)$* $- has(b,'i'):
     dn=denest(b)
     if dn is $- $#:
-     $! pw(pw(dn,-1),-x[1])if x[1]!=-1 $( pw(dn,-1)
+     $! pw(pw(dn,-1),-x[1])if x[1]!=-1 $& pw(dn,-1)
    if $/(x)is $u $* x!=1 $* $- isalg(b):
     c=sumcontent(b)
     if c!=1:
@@ -787,15 +787,15 @@ _x(r'''$, pw(b,x):
  $!('^',b,x)
 $, tdeg(r):
  d=0
- fs=r[1:]if $&(r,'*')$((r,)
+ fs=r[1:]if $((r,'*')$&(r,)
  $) f in fs:
-  if $/(f)is $| $* f $- in SPECIAL:
+  if $/(f)is $y $* f $- in SPECIAL:
    d+=1
-  $L $&(f,'^')$* $/(f[1])is $| $* f[1]$- in SPECIAL $* $D(f[2]):
+  $L $((f,'^')$* $/(f[1])is $y $* f[1]$- in SPECIAL $* $D(f[2]):
    d+=tofl(f[2])
  $! d
 $, leadneg(b):
- ${=$#
+ $}=$#
  bk=$#
  $) t in b[1:]:
   if $D(t):
@@ -804,10 +804,10 @@ $, leadneg(b):
   k=(-tdeg(r),okey(r))
   if bk is $# or k<bk:
    bk=k
-   ${=c
- if ${ is $#:
+   $}=c
+ if $} is $#:
   $! $3
- $! $a(${)<0 if $D(${)$( $3
+ $! $a($})<0 if $D($})$& $3
 $, sumcontent(b):
  g=0
  L=1
@@ -833,7 +833,7 @@ $, denest(b):
   if isrrad(r)$* r[2]==$s $* $r(cc)$*(n is $# or n==r[1]):
    n=r[1]
    c=nadd(c,cc)
-  $(:
+  $&:
    $! $#
  if n is $# or c==0:
   $! $#
@@ -851,13 +851,13 @@ $, denest(b):
  if $a(p)<0 or $a(m)<0:
   $! $#
  r=$_(pw(p,$s),$:($a(c),pw(m,$s)))
- if $&(r,'+')$* $5(r)<=3:
+ if $((r,'+')$* $4(r)<=3:
   $! r
  $! $#
 $, expand_mul(a,b):
- ta=a[1:]if $&(a,'+')$((a,)
- tb=b[1:]if $&(b,'+')$((b,)
- if $5(ta)*$5(tb)>4*MAXTERMS:
+ ta=a[1:]if $((a,'+')$&(a,)
+ tb=b[1:]if $((b,'+')$&(b,)
+ if $4(ta)*$4(tb)>4*MAXTERMS:
   toobig('the expansion would have more than %d $M'%MAXTERMS)
  $?=[]
  $) u in ta:
@@ -865,7 +865,7 @@ $, expand_mul(a,b):
    $?.$%($:(u,v))
  $! $;($?)
 $, expand_pow(b,n):
- t=$5(b)-1 if $&(b,'+')$( 1
+ t=$4(b)-1 if $((b,'+')$& 1
  if t>1 $* $- $1(b):
   c=1
   $) k in $+(1,t):
@@ -886,15 +886,15 @@ _x(r'''$, rationalize_inv(b):
  re_,im_=reim(b)
  if im_!=0:
   d=$_($:(re_,re_),$:(im_,im_))
-  d=$>(d)
-  if $&(d,'+'):
+  d=$=(d)
+  if $((d,'+'):
    r2=rationalize_inv(d)
    if r2 is $#:
     $! $#
-  $(:
+  $&:
    r2=pw(d,-1)
-  $! expand_mul($^(re_,$:('i',im_)),r2)
- $M=b[1:]if $&(b,'+')$((b,)
+  $! expand_mul($](re_,$:('i',im_)),r2)
+ $M=b[1:]if $((b,'+')$&(b,)
  kern=$#
  kerns=[]
  $) t in $M:
@@ -903,41 +903,41 @@ _x(r'''$, rationalize_inv(b):
    if isrrad(r)$* r[2]==$s:
     if r $- in kerns:
      kerns.$%(r)
-   $(:
+   $&:
     $! $#
- if $- kerns or $5(kerns)>3:
+ if $- kerns or $4(kerns)>3:
   $! $#
  kern=kerns[0]
- if $5(kerns)>1:
+ if $4(kerns)>1:
   A=$;([t $) t in $M if $b(t)[1]!=kern])
   B=$;([$b(t)[0]$) t in $M if $b(t)[1]==kern])
-  den=$>($^($:(A,A),$:(B,B,kern[1])))
+  den=$=($]($:(A,A),$:(B,B,kern[1])))
   if den==0:
    $! $#
-  if $&(den,'+'):
+  if $((den,'+'):
    r2=rationalize_inv(den)
    if r2 is $#:
     $! $#
-  $(:
+  $&:
    r2=pw(den,-1)
-  $! expand_mul($^(A,$:(B,kern)),r2)
+  $! expand_mul($](A,$:(B,kern)),r2)
  a0=0
  a1=0
  $) t in $M:
   c,r=$b(t)
   if r==kern:
    a1=nadd(a1,c)
-  $(:
+  $&:
    a0=$_(a0,t)
- den=$^($:(a0,a0),$:(nmul(a1,a1),kern[1]))
+ den=$]($:(a0,a0),$:(nmul(a1,a1),kern[1]))
  if den==0:
   $! $#
- $! expand_mul($^(a0,$:(a1,kern)),pw(den,-1))
+ $! expand_mul($](a0,$:(a1,kern)),pw(den,-1))
 $, reim(e):
  t=$/(e)
  if t is $u or t is $@:
   $! e,0
- if t is $|:
+ if t is $y:
   if e=='i':
    $! 0,1
   $! e,0
@@ -960,8 +960,8 @@ $, reim(e):
    if ai==0:
     r=$:(r,ar)
     i=$:(i,ar)
-   $(:
-    r,i=$^($:(r,ar),$:(i,ai)),$_($:(r,ai),$:(i,ar))
+   $&:
+    r,i=$]($:(r,ar),$:(i,ai)),$_($:(r,ai),$:(i,ar))
   $! r,i
  if h=='^':
   b=e[1]
@@ -985,9 +985,9 @@ $, reim(e):
    $L $1(b):
     r=rationalize_inv(b)
     if r is $- $#:
-     $! reim(expand_pow(r,-x))if x!=-1 $( reim(r)
+     $! reim(expand_pow(r,-x))if x!=-1 $& reim(r)
   $! reim_generic(e)
- if h in('$J','mat','$|'):
+ if h in('$J','mat','$y'):
   $! e,0
  $) a in e[1:]:
   if has(a,'i'):
@@ -996,14 +996,14 @@ $, reim(e):
 $, cv(u):
  try:
   v=$U(u)
- $9($O,$Q,$C,$[,TypeError):
+ $9($P,$R,$C,$[,TypeError):
   $! $#
  if v!=v:
   $! $#
  if $/(v)is $2:
-  if v.$P!=v.$P or v.imag!=v.imag:
+  if v.$Q!=v.$Q or v.imag!=v.imag:
    $! $#
-  if $H(v.$P)==$@('$N')or $H(v.imag)==$@('$N'):
+  if $H(v.$Q)==$@('$N')or $H(v.imag)==$@('$N'):
    $! $#
  $L $H(v)==$@('$N'):
   $! $#
@@ -1012,46 +1012,46 @@ $, reim_generic(e):
  if $1(e):
   v=cv(e)
   if v is $#:
-   $!('$P',e),('imag',e)
+   $!('$Q',e),('imag',e)
   z=$2(v)
-  $! z.$P,z.imag
- $!('$P',e),('imag',e)
+  $! z.$Q,z.imag
+ $!('$Q',e),('imag',e)
 $, conj(e):
  r,i=reim(e)
- $! $^(r,$:('i',i))
+ $! $](r,$:('i',i))
 $, fromcomplex(z):
  if $/(z)is $- $2:
   $! z
  if z.imag==0:
-  $! z.$P
- if z.$P==0:
+  $! z.$Q
+ if z.$Q==0:
   $! $:(z.imag,'i')
- $! $_(z.$P,$:(z.imag,'i'))
-$p={}
-$, fn($B,*$X):
- if $5($X)==1 $* $/($X[0])is $J:
-  $X=$0($X[0])
- $) a in($X[:1]if $B=='when' $( $X):
+ $! $_(z.$Q,$:(z.imag,'i'))
+$q={}
+$, fn($B,*$Y):
+ if $4($Y)==1 $* $/($Y[0])is $J:
+  $Y=$0($Y[0])
+ $) a in($Y[:1]if $B=='when' $& $Y):
   if a=='$F':
    $! '$F'
- f=$p.get($B)
+ f=$q.get($B)
  if f is $- $#:
-  r=f(*$X)
+  r=f(*$Y)
   if r is $- $#:
    $! r
- $!($B,)+$0($X)
+ $!($B,)+$0($Y)
 $, isneg(e):
  if $D(e):
   $! $a(e)<0
- if $&(e,'*'):
+ if $((e,'*'):
   $! $D(e[1])$* $a(e[1])<0
- if $&(e,'+'):
+ if $((e,'+'):
   $! leadneg(e)
  $! $3
 $, isreal_expr(e):
  if $D(e):
   $! $E
- if $/(e)is $|:
+ if $/(e)is $y:
   $! e!='i' $* e!='$F'
  $! $- has(e,'i')
 $, fval($B,x):
@@ -1059,10 +1059,10 @@ $, fval($B,x):
 $, fvalc($B,u):
  try:
   v=NUMF[$B]($U(u))
- $9($O,$Q,$C,$[,TypeError):
+ $9($P,$R,$C,$[,TypeError):
   $! $#
  if $/(v)is $2:
-  if v.$P!=v.$P or v.imag!=v.imag:
+  if v.$Q!=v.$Q or v.imag!=v.imag:
    $! $#
  $L v!=v:
   $! $#
@@ -1072,11 +1072,11 @@ $, pi_coef(u):
   $! 1
  if u==0:
   $! 0
- if $&(u,'*')$* $5(u)==3 $* u[2]=='pi' $* $r(u[1]):
+ if $((u,'*')$* $4(u)==3 $* u[2]=='pi' $* $r(u[1]):
   $! u[1]
  $! $#
 $, split_pi(u):
- if $&(u,'+'):
+ if $((u,'+'):
   $) t in u[1:]:
    c=pi_coef(t)
    if c is $- $# $* c!=0:
@@ -1094,11 +1094,11 @@ $, trig_table():
   q=Q
   T={}
   T[0]=0
-  T[q(1,12)]=$:(q(1,4),$^(s6,s2))
-  T[q(1,10)]=$:(q(1,4),$^(s5,1))
-  T[q(1,8)]=$:($s,$V($^(2,s2)))
+  T[q(1,12)]=$:(q(1,4),$](s6,s2))
+  T[q(1,10)]=$:(q(1,4),$](s5,1))
+  T[q(1,8)]=$:($s,$V($](2,s2)))
   T[q(1,6)]=$s
-  T[q(1,5)]=$:(q(1,4),$V($^(10,$:(2,s5))))
+  T[q(1,5)]=$:(q(1,4),$V($](10,$:(2,s5))))
   T[q(1,4)]=$:($s,s2)
   T[q(3,10)]=$:(q(1,4),$_(s5,1))
   T[q(1,3)]=$:($s,s3)
@@ -1108,16 +1108,16 @@ $, trig_table():
   T[$s]=1
   TT={}
   TT[0]=0
-  TT[q(1,12)]=$^(2,s3)
-  TT[q(1,8)]=$^(s2,1)
+  TT[q(1,12)]=$](2,s3)
+  TT[q(1,8)]=$](s2,1)
   TT[q(1,6)]=$:(q(1,3),s3)
   TT[q(1,4)]=1
   TT[q(1,3)]=s3
   TT[q(3,8)]=$_(s2,1)
   TT[q(5,12)]=$_(2,s3)
-  TT[q(1,5)]=$V($^(5,$:(2,s5)))
+  TT[q(1,5)]=$V($](5,$:(2,s5)))
   TT[q(2,5)]=$V($_(5,$:(2,s5)))
-  TT[q(1,10)]=$:(q(1,5),$V($^(25,$:(10,s5))))
+  TT[q(1,10)]=$:(q(1,5),$V($](25,$:(10,s5))))
   TT[q(3,10)]=$:(q(1,5),$V($_(25,$:(10,s5))))
   TRIGT=(T,TT)
  $! TRIGT
@@ -1181,12 +1181,12 @@ _x(r'''$, sin_(u):
   if ncmp(c,1)>0:
    $!('sin',$_($d,$:(nsub(c,2),'pi')))
   $!('sin',$_($d,$:(c,'pi')))
- if $&(u,'$y'):
+ if $((u,'$z'):
   $! u[1]
- if $&(u,'arccos'):
-  $! $V($^(1,pw(u[1],2)))
- if $&(u,'$t'):
-  $! $R(u[1],$V($_(1,pw(u[1],2))))
+ if $((u,'arccos'):
+  $! $V($](1,pw(u[1],2)))
+ if $((u,'$t'):
+  $! $O(u[1],$V($_(1,pw(u[1],2))))
  $! $#
 $, cos_(u):
  if $D(u):
@@ -1221,11 +1221,11 @@ $, cos_(u):
   if ncmp(c,1)>0:
    $!('cos',$_($d,$:(nsub(c,2),'pi')))
   $!('cos',$_($d,$:(c,'pi')))
- if $&(u,'arccos'):
+ if $((u,'arccos'):
   $! u[1]
- if $&(u,'$y'):
-  $! $V($^(1,pw(u[1],2)))
- if $&(u,'$t'):
+ if $((u,'$z'):
+  $! $V($](1,pw(u[1],2)))
+ if $((u,'$t'):
   $! pw($_(1,pw(u[1],2)),Q(-1,2))
  $! $#
 $, tan_(u):
@@ -1253,7 +1253,7 @@ $, tan_(u):
   if c==$s:
    $! $m(pw(fn('tan',$d),-1))
   $!('tan',$_($d,$:(c,'pi')))
- if $&(u,'$t'):
+ if $((u,'$t'):
   $! u[1]
  $! $#
 INVT=$#
@@ -1274,14 +1274,14 @@ $, asin_(u):
   if $/(u)is $@:
    if-1.0<=u<=1.0:
     $! $I.asin(u)
-   $! fval('$y',u)
+   $! fval('$z',u)
  if isneg(u):
-  $! $m(fn('$y',$m(u)))
+  $! $m(fn('$z',$m(u)))
  S=inv_table()[0]
  if u in S:
   $! $:(S[u],'pi')
  if $1(u)$* $`(u):
-  $! fvalc('$y',u)
+  $! fvalc('$z',u)
  $! $#
 $, acos_(u):
  if $D(u)$* $/(u)is $@:
@@ -1289,10 +1289,10 @@ $, acos_(u):
    $! $I.acos(u)
   $! fval('arccos',u)
  a=asin_(u)
- if a is $- $# $* $- $&(a,'$y')$* $4(a,'$y'):
-  $! $^($:($s,'pi'),a)
+ if a is $- $# $* $- $((a,'$z')$* $5(a,'$z'):
+  $! $]($:($s,'pi'),a)
  if isneg(u):
-  $! $^('pi',fn('arccos',$m(u)))
+  $! $]('pi',fn('arccos',$m(u)))
  $! $#
 $, atan_(u):
  if $D(u):
@@ -1332,7 +1332,7 @@ $, ln_(u):
   $! '$N'
  if u=='i':
   $! $:($s,'i','pi')
- if $&(u,'^'):
+ if $((u,'^'):
   if u[1]=='e' $* isreal_expr(u[2]):
    $! u[2]
   if isposconst(u[1])$* isreal_expr(u[2])$* $D(u[2]):
@@ -1346,7 +1346,7 @@ $, log_(u,b=10):
    a1=fvalc('ln',u)
    a2=fvalc('ln',b)
    if a1 is $- $# $* a2 is $- $# $* a2!=0:
-    $! $R(a1,a2)
+    $! $O(a1,a2)
    $! $#
   if u==1:
    $! 0
@@ -1356,13 +1356,13 @@ $, log_(u,b=10):
     $! k
  if u==b:
   $! 1
- if $&(u,'^')$* u[1]==b $* isreal_expr(u[2]):
+ if $((u,'^')$* u[1]==b $* isreal_expr(u[2]):
   $! u[2]
  if $1(u)$* $1(b)$*($`(u)or $`(b)):
   a1=fvalc('ln',u)
   a2=fvalc('ln',b)
   if a1 is $- $# $* a2 is $- $# $* a2!=0:
-   $! $R(a1,a2)
+   $! $O(a1,a2)
   $! $#
  $! $#
 $, exact_log(u,b):
@@ -1386,9 +1386,9 @@ $, abs_(u):
   $! nabs(u)
  if u=='$N' or u==('*',-1,'$N'):
   $! '$N'
- if $&(u,'$H'):
+ if $((u,'$H'):
   $! u
- if $&(u,'^')$* $/(u[2])is $u $* u[2]%2==0 $* isreal_expr(u[1]):
+ if $((u,'^')$* $/(u[2])is $u $* u[2]%2==0 $* isreal_expr(u[1]):
   $! u
  if has(u,'i'):
   r,i=reim(u)
@@ -1400,7 +1400,7 @@ $, abs_(u):
    if v>=0:
     $! u
    $! $m(u)
- if $&(u,'*'):
+ if $((u,'*'):
   outs=[]
   $d=[]
   $) f in u[1:]:
@@ -1408,32 +1408,32 @@ $, abs_(u):
     outs.$%(nabs(f))
    $L $1(f):
     outs.$%(abs_(f)or('$H',f))
-   $L $&(f,'^')$* $/(f[2])is $u $* f[2]%2==0:
+   $L $((f,'^')$* $/(f[2])is $u $* f[2]%2==0:
     outs.$%(f)
-   $L $&(f,'^')$* f[1]=='e':
+   $L $((f,'^')$* f[1]=='e':
     outs.$%(f)
-   $(:
+   $&:
     $d.$%(f)
   if outs:
    $! $G(outs+[fn('$H',$G($d))])
  if isneg(u):
   $! fn('$H',$m(u))
- if $&(u,'^')$* u[1]=='e' $* isreal_expr(u[2]):
+ if $((u,'^')$* u[1]=='e' $* isreal_expr(u[2]):
   $! u
  $! $#
 ''')
 _x(r'''$, sign_(u):
  if $D(u):
-  $! $a(u)if $/(u)is $- $@ $( $@($a(u))
+  $! $a(u)if $/(u)is $- $@ $& $@($a(u))
  if u=='$N':
   $! 1
  if $1(u):
   v=cv(u)
   if v is $- $# $* $/(v)is $- $2:
-   $! 1 if v>0 $((-1 if v<0 $( 0)
- if $&(u,'*')$* $D(u[1]):
+   $! 1 if v>0 $&(-1 if v<0 $& 0)
+ if $((u,'*')$* $D(u[1]):
   $! $:($a(u[1]),fn('sign',cmul(nabs(u[1]),$b(u)[1])))
- if $&(u,'^')$* $/(u[2])is $u $* u[2]%2==0:
+ if $((u,'^')$* $/(u[2])is $u $* u[2]%2==0:
   $! $#
  $! $#
 $, finite(v):
@@ -1441,7 +1441,7 @@ $, finite(v):
 $, floor_(u):
  if $D(u):
   if $/(u)is $@:
-   $! $@($I.floor(u))if finite(u)$( $#
+   $! $@($I.floor(u))if finite(u)$& $#
   $! nfloor(u)
  if $1(u)$* $- has(u,'i'):
   v=cv(u)
@@ -1458,7 +1458,7 @@ $, sinh_(u):
   $! 0
  if isneg(u):
   $! $m(fn('sinh',$m(u)))
- if $&(u,'arcsinh'):
+ if $((u,'arcsinh'):
   $! u[1]
  $! $#
 $, cosh_(u):
@@ -1466,7 +1466,7 @@ $, cosh_(u):
   $! 1
  if isneg(u):
   $! fn('cosh',$m(u))
- if $&(u,'arccosh'):
+ if $((u,'arccosh'):
   $! u[1]
  $! $#
 $, tanh_(u):
@@ -1506,8 +1506,8 @@ $, fact_(u):
    $! '$F'
   try:
    $! gamma(u+1.0)
-  $9($[,$C,$Q):
-   $! '$N' if u>0 $( '$F'
+  $9($[,$C,$R):
+   $! '$N' if u>0 $& '$F'
  $! $#
 $, gamma(x):
  try:
@@ -1530,7 +1530,7 @@ $, gamma(x):
 $, real_(u):
  if $1(u)or has(u,'i'):
   r,i=reim(u)
-  if $- $&(r,'$P'):
+  if $- $((r,'$Q'):
    $! r
  if isreal_expr(u):
   $! u
@@ -1539,19 +1539,19 @@ $, imag_(u):
  if isreal_expr(u):
   $! 0
  r,i=reim(u)
- if $- $&(i,'imag'):
+ if $- $((i,'imag'):
   $! i
  $! $#
 $, conj_(u):
  if isreal_expr(u):
   $! u
  r,i=reim(u)
- if $- $&(r,'$P'):
-  $! $^(r,$:('i',i))
+ if $- $((r,'$Q'):
+  $! $](r,$:('i',i))
  $! $#
 $, angle_(u):
  r,i=reim(u)
- if $&(r,'$P')or $&(i,'imag'):
+ if $((r,'$Q')or $((i,'imag'):
   $! $#
  if i==0:
   if $1(r):
@@ -1565,61 +1565,61 @@ $, angle_(u):
   if $1(i):
    v=cv(i)
    if v is $- $# $* $/(v)is $- $2:
-    $! $:(Q(1 if v>0 $(-1,2),'pi')
+    $! $:(Q(1 if v>0 $&-1,2),'pi')
   $! $#
  if $1(r)$* $1(i):
   vr=cv(r)
   vi=cv(i)
   if vr is $# or vi is $# or $/(vr)is $2 or $/(vi)is $2:
    $! $#
-  a=fn('$t',$R(i,r))
+  a=fn('$t',$O(i,r))
   if vr<0:
    if vi>=0:
     a=$_(a,'pi')
-   $(:
-    a=$^(a,'pi')
+   $&:
+    a=$](a,'pi')
   $! a
  $! $#
-$p['sin']=sin_
-$p['cos']=cos_
-$p['tan']=tan_
-$p['$y']=asin_
-$p['arccos']=acos_
-$p['$t']=atan_
-$p['ln']=ln_
-$p['log']=log_
-$p['$H']=abs_
-$p['sign']=sign_
-$p['floor']=floor_
-$p['ceiling']=ceil_
-$p['sinh']=sinh_
-$p['cosh']=cosh_
-$p['tanh']=tanh_
-$p['arcsinh']=odd0('arcsinh')
-$p['arctanh']=odd0('arctanh')
-$p['arccosh']=$8 u:0 if u==1 $( $#
-$p['fact']=fact_
-$p['$P']=real_
-$p['imag']=imag_
-$p['conj']=conj_
-$p['$l']=angle_
-$p['exp']=$8 u:pw('e',u)
-$p['$V']=$8 u:pw(u,$s)
-$p['sec']=$8 u:pw(fn('cos',u),-1)
-$p['csc']=$8 u:pw(fn('sin',u),-1)
-$p['cot']=$8 u:pw(fn('tan',u),-1)
-$p['sech']=$8 u:pw(fn('cosh',u),-1)
-$p['csch']=$8 u:pw(fn('sinh',u),-1)
-$p['coth']=$8 u:pw(fn('tanh',u),-1)
-$p['arcsec']=$8 u:fn('arccos',pw(u,-1))
-$p['arccsc']=$8 u:fn('$y',pw(u,-1))
-$p['arccot']=$8 u:$^($:($s,'pi'),fn('$t',u))
-$p['arcsech']=$8 u:fn('arccosh',pw(u,-1))
-$p['arccsch']=$8 u:fn('arcsinh',pw(u,-1))
-$p['arccoth']=$8 u:fn('arctanh',pw(u,-1))
+$q['sin']=sin_
+$q['cos']=cos_
+$q['tan']=tan_
+$q['$z']=asin_
+$q['arccos']=acos_
+$q['$t']=atan_
+$q['ln']=ln_
+$q['log']=log_
+$q['$H']=abs_
+$q['sign']=sign_
+$q['floor']=floor_
+$q['ceiling']=ceil_
+$q['sinh']=sinh_
+$q['cosh']=cosh_
+$q['tanh']=tanh_
+$q['arcsinh']=odd0('arcsinh')
+$q['arctanh']=odd0('arctanh')
+$q['arccosh']=$8 u:0 if u==1 $& $#
+$q['fact']=fact_
+$q['$Q']=real_
+$q['imag']=imag_
+$q['conj']=conj_
+$q['$l']=angle_
+$q['exp']=$8 u:pw('e',u)
+$q['$V']=$8 u:pw(u,$s)
+$q['sec']=$8 u:pw(fn('cos',u),-1)
+$q['csc']=$8 u:pw(fn('sin',u),-1)
+$q['cot']=$8 u:pw(fn('tan',u),-1)
+$q['sech']=$8 u:pw(fn('cosh',u),-1)
+$q['csch']=$8 u:pw(fn('sinh',u),-1)
+$q['coth']=$8 u:pw(fn('tanh',u),-1)
+$q['arcsec']=$8 u:fn('arccos',pw(u,-1))
+$q['arccsc']=$8 u:fn('$z',pw(u,-1))
+$q['arccot']=$8 u:$]($:($s,'pi'),fn('$t',u))
+$q['arcsech']=$8 u:fn('arccosh',pw(u,-1))
+$q['arccsch']=$8 u:fn('arcsinh',pw(u,-1))
+$q['arccoth']=$8 u:fn('arctanh',pw(u,-1))
 $, root_(u,n=2):
  $! pw(u,pw(n,-1))
-$p['root']=root_
+$q['root']=root_
 import cmath
 $, _c(f):
  $, g(x):
@@ -1627,7 +1627,7 @@ $, _c(f):
    if $/(x)is $2:
     $! f[1](x)
    $! f[0](x)
-  $9($Q,TypeError):
+  $9($R,TypeError):
    $! f[1]($2(x))
  $! g
 $, _ln(x):
@@ -1639,11 +1639,11 @@ $, _ln(x):
 $, _asinr(x):
  if-1<=x<=1:
   $! $I.asin(x)
- $f $Q
+ $f $R
 $, _acosr(x):
  if-1<=x<=1:
   $! $I.acos(x)
- $f $Q
+ $f $R
 $, _casin(z):
  $!-1j*cmath.log(1j*z+cmath.$V(1-z*z))
 $, _cacos(z):
@@ -1651,9 +1651,9 @@ $, _cacos(z):
 $, _catan(z):
  $! 0.5j*cmath.log((1-1j*z)/(1+1j*z))
 $, _sinh(x):
- $!(cmath.exp(x)-cmath.exp(-x))/2 if $/(x)is $2 $(($I.exp(x)-$I.exp(-x))/2
+ $!(cmath.exp(x)-cmath.exp(-x))/2 if $/(x)is $2 $&($I.exp(x)-$I.exp(-x))/2
 $, _cosh(x):
- $!(cmath.exp(x)+cmath.exp(-x))/2 if $/(x)is $2 $(($I.exp(x)+$I.exp(-x))/2
+ $!(cmath.exp(x)+cmath.exp(-x))/2 if $/(x)is $2 $&($I.exp(x)+$I.exp(-x))/2
 $, _tanh(x):
  if $/(x)is $- $2:
   if x>20:
@@ -1666,7 +1666,7 @@ $, _tanh(x):
  $!(a-1)/(a+1)
 $, _asinh(x):
  if $/(x)is $- $2:
-  $! $I.log(x+$I.$V(x*x+1))if x>=0 $(-$I.log(-x+$I.$V(x*x+1))
+  $! $I.log(x+$I.$V(x*x+1))if x>=0 $&-$I.log(-x+$I.$V(x*x+1))
  $! cmath.log(x+cmath.$V(x*x+1))
 $, _acosh(x):
  if $/(x)is $- $2 $* x>=1:
@@ -1680,69 +1680,69 @@ $, _atanh(x):
  $! 0.5*cmath.log((1+x)/(1-x))
 $, _sign(x):
  if $/(x)is $2:
-  $! x/$H(x)if x!=0 $( 0.0
- $! 1.0 if x>0 $((-1.0 if x<0 $( 0.0)
+  $! x/$H(x)if x!=0 $& 0.0
+ $! 1.0 if x>0 $&(-1.0 if x<0 $& 0.0)
 ''')
 _x(r'''$, _floor(x):
  if $/(x)is $2:
-  $! $2($I.floor(x.$P),$I.floor(x.imag))
+  $! $2($I.floor(x.$Q),$I.floor(x.imag))
  $! $@($I.floor(x))
 $, _ceil(x):
  if $/(x)is $2:
-  $! $2($I.ceil(x.$P),$I.ceil(x.imag))
+  $! $2($I.ceil(x.$Q),$I.ceil(x.imag))
  $! $@($I.ceil(x))
 $, _real(x):
- $! x.$P if $/(x)is $2 $( x
+ $! x.$Q if $/(x)is $2 $& x
 $, _imag(x):
- $! x.imag if $/(x)is $2 $( 0.0
+ $! x.imag if $/(x)is $2 $& 0.0
 $, _conj(x):
- $! x.conjugate()if $/(x)is $2 $( x
+ $! x.conjugate()if $/(x)is $2 $& x
 $, _angle(x):
  if $/(x)is $2:
   $! cmath.phase(x)
- $! 0.0 if x>=0 $( $I.pi
+ $! 0.0 if x>=0 $& $I.pi
 $, _fact(x):
  if $/(x)is $2:
-  $f $Q
+  $f $R
  $! gamma(x+1.0)
 NUMF={
  'sin':_c(($I.sin,cmath.sin)),'cos':_c(($I.cos,cmath.cos)),
  'tan':_c(($I.tan,$8 z:cmath.sin(z)/cmath.cos(z))),
- '$y':_c((_asinr,_casin)),'arccos':_c((_acosr,_cacos)),
+ '$z':_c((_asinr,_casin)),'arccos':_c((_acosr,_cacos)),
  '$t':_c(($I.atan,_catan)),
  'ln':_ln,'exp':_c(($I.exp,cmath.exp)),
- '$V':_c(($8 x:$I.$V(x)if x>=0 $( cmath.$V(x),cmath.$V)),
+ '$V':_c(($8 x:$I.$V(x)if x>=0 $& cmath.$V(x),cmath.$V)),
  '$H':$H,'sign':_sign,'floor':_floor,'ceiling':_ceil,
  'sinh':_sinh,'cosh':_cosh,'tanh':_tanh,
  'arcsinh':_asinh,'arccosh':_acosh,'arctanh':_atanh,
- '$P':_real,'imag':_imag,'conj':_conj,'$l':_angle,
+ '$Q':_real,'imag':_imag,'conj':_conj,'$l':_angle,
  'fact':_fact,
  }
 $, nfun_call($B,$e):
  if $B=='log':
-  b=$e[1]if $5($e)>1 $( 10.0
+  b=$e[1]if $4($e)>1 $& 10.0
   $! _ln($e[0])/_ln(b)
  if $B=='root':
-  n=$e[1]if $5($e)>1 $( 2.0
+  n=$e[1]if $4($e)>1 $& 2.0
   $! npow($e[0],1.0/n)
  if $B=='round':
-  d=$u($e[1])if $5($e)>1 $( 0
+  d=$u($e[1])if $4($e)>1 $& 0
   $! round($e[0],d)
  if $B=='when':
-  $! $e[1]if $e[0]$(($e[2]if $5($e)>2 $( $@('nan'))
+  $! $e[1]if $e[0]$&($e[2]if $4($e)>2 $& $@('nan'))
  if $B=='max':
   $! max($e)
  if $B=='min':
   $! min($e)
  if $B=='mod':
-  $! $e[0]-$e[1]*$I.floor($e[0]/$e[1])if $e[1]!=0 $( $e[0]
+  $! $e[0]-$e[1]*$I.floor($e[0]/$e[1])if $e[1]!=0 $& $e[0]
  f=NUMF.get($B)
  if f is $#:
   if $B in('sec','csc','cot','sech','csch','coth'):
    base={'sec':'cos','csc':'sin','cot':'tan','sech':'cosh','csch':'sinh','coth':'tanh'}[$B]
    $! 1.0/NUMF[base]($e[0])
   if $B in('arcsec','arccsc','arccot','arcsech','arccsch','arccoth'):
-   base={'arcsec':'arccos','arccsc':'$y','arccot':'$t','arcsech':'arccosh','arccsch':'arcsinh','arccoth':'arctanh'}[$B]
+   base={'arcsec':'arccos','arccsc':'$z','arccot':'$t','arcsech':'arccosh','arccsch':'arcsinh','arccoth':'arctanh'}[$B]
    $! NUMF[base](1.0/$e[0])
   if $B in('ipart','$u'):
    $! $@($u($e[0]))
@@ -1770,10 +1770,10 @@ $, $U(e,env=$#):
   try:
    $! $@(e)
   $9 $[:
-   $! '$N' if e>0 $(('*',-1,'$N')
+   $! '$N' if e>0 $&('*',-1,'$N')
  if t is $@:
   $! e
- if t is $|:
+ if t is $y:
   if env is $- $# $* e in env:
    $! env[e]
   v=NCONST.get(e)
@@ -1800,7 +1800,7 @@ $, $U(e,env=$#):
    bv=$U(b,env)
    if $/(bv)is $- $2 $* bv<0:
     r=(-bv)**(x[1]/x[2])
-    $!-r if x[1]%2 $( r
+    $!-r if x[1]%2 $& r
    $! npow(bv,x[1]/x[2])
   if $/(x)is $u:
    bv=$U(b,env)
@@ -1808,13 +1808,13 @@ $, $U(e,env=$#):
     $f $C
    $! bv**x
   $! npow($U(b,env),$U(x,env))
- if h in('$J','mat','$|','Q'):
+ if h in('$J','mat','$y','Q'):
   err("Not numeric")
  if h=='when':
   c=nbool(e[1],env)
   if c:
    $! $U(e[2],env)
-  $! $U(e[3],env)if $5(e)>3 $( $@('nan')
+  $! $U(e[3],env)if $4(e)>3 $& $@('nan')
  $e=[$U(a,env)$) a in e[1:]]
  $! nfun_call(h,$e)
 $, nbool(c,env):
@@ -1823,9 +1823,9 @@ $, nbool(c,env):
   a=$U(c[1],env)
   b=$U(c[2],env)
   if $/(a)is $2:
-   a=a.$P
+   a=a.$Q
   if $/(b)is $2:
-   b=b.$P
+   b=b.$Q
   if h=='<':
    $! a<b
   if h=='>':
@@ -1857,109 +1857,109 @@ $, nbool(c,env):
 $, nreal(e,env=$#):
  v=$U(e,env)
  if $/(v)is $2:
-  if $H(v.imag)>1e-9*(1+$H(v.$P)):
-   $f $Q
-  $! v.$P
+  if $H(v.imag)>1e-9*(1+$H(v.$Q)):
+   $f $R
+  $! v.$Q
  $! v
 $, simp(e):
  t=$/(e)
  if t is $- $0:
   $! e
  h=e[0]
- if h=='Q' or h=='$|' or h=='hold':
+ if h=='Q' or h=='$y' or h=='hold':
   if h=='hold':
    $! simp(e[1])
   $! e
- $X=[simp(a)$) a in e[1:]]
+ $Y=[simp(a)$) a in e[1:]]
  if h=='+':
-  $! $;($X)
+  $! $;($Y)
  if h=='*':
-  $! $G($X)
+  $! $G($Y)
  if h=='^':
-  $! pw($X[0],$X[1])
+  $! pw($Y[0],$Y[1])
  if h in('$J','mat','=','<','>','<=','>=','/=','$*','or','$-'):
-  $!(h,)+$0($X)
- $! fn(h,$X)
+  $!(h,)+$0($Y)
+ $! fn(h,$Y)
 $, $T(e,old,new):
  if e==old:
   $! new
  t=$/(e)
- if t is $- $0 or e[0]=='Q' or e[0]=='$|':
+ if t is $- $0 or e[0]=='Q' or e[0]=='$y':
   $! e
  ch=$3
- $X=[]
+ $Y=[]
  $) a in e[1:]:
   b=$T(a,old,new)
   if b is $- a:
    ch=$E
-  $X.$%(b)
+  $Y.$%(b)
  if $- ch:
   $! e
- $! simp((e[0],)+$0($X))
+ $! simp((e[0],)+$0($Y))
 $, subsd(e,d):
  t=$/(e)
- if t is $|:
+ if t is $y:
   if e in d:
    $! d[e]
   $! e
- if t is $- $0 or e[0]=='Q' or e[0]=='$|':
+ if t is $- $0 or e[0]=='Q' or e[0]=='$y':
   $! e
  ch=$3
- $X=[]
+ $Y=[]
  $) a in e[1:]:
   b=subsd(a,d)
   if b is $- a:
    ch=$E
-  $X.$%(b)
+  $Y.$%(b)
  if $- ch:
   $! e
- $! simp((e[0],)+$0($X))
+ $! simp((e[0],)+$0($Y))
 $, mapexpr(f,e):
- if $&(e,'$J'):
+ if $((e,'$J'):
   $!('$J',)+$0(mapexpr(f,a)$) a in e[1:])
- if $&(e,'mat'):
+ if $((e,'mat'):
   $!('mat',)+$0(mapexpr(f,a)$) a in e[1:])
  $! f(e)
 ''')
-_x(r'''$, $>(e):
+_x(r'''$, $=(e):
  t=$/(e)
  if t is $- $0:
   $! e
  h=e[0]
- if h=='Q' or h=='$|':
+ if h=='Q' or h=='$y':
   $! e
  if h=='+':
-  $! $;([$>(a)$) a in e[1:]])
+  $! $;([$=(a)$) a in e[1:]])
  if h=='*':
   r=1
   $) f in e[1:]:
-   r=expand_mul(r,$>(f))
+   r=expand_mul(r,$=(f))
   $! r
  if h=='^':
-  b=$>(e[1])
-  x=$>(e[2])
-  if $&(b,'+')$* $/(x)is $u:
+  b=$=(e[1])
+  x=$=(e[2])
+  if $((b,'+')$* $/(x)is $u:
    if x>0:
     $! expand_pow(b,x)
    if x<0:
     $! pw(expand_pow(b,-x),-1)
-  if $&(b,'*')$* $/(x)is $u:
-   $! $>($G([pw(f,x)$) f in b[1:]]))
-  if b=='e' $* $&(x,'+'):
+  if $((b,'*')$* $/(x)is $u:
+   $! $=($G([pw(f,x)$) f in b[1:]]))
+  if b=='e' $* $((x,'+'):
    $! $G([pw('e',a)$) a in x[1:]])
-  if $&(x,'+')$* $D(b):
+  if $((x,'+')$* $D(b):
    $! $G([pw(b,a)$) a in x[1:]])
   $! pw(b,x)
  if h in('$J','mat','=','<','>','<=','>=','/=','$*','or','$-'):
-  $!(h,)+$0($>(a)$) a in e[1:])
- $! fn(h,[$>(a)$) a in e[1:]])
+  $!(h,)+$0($=(a)$) a in e[1:])
+ $! fn(h,[$=(a)$) a in e[1:]])
 $, evalf(e):
  t=$/(e)
  if t is $u:
   $! $@(e)
  if t is $@:
   $! e
- if t is $|:
+ if t is $y:
   if e=='pi':
    $! $I.pi
   if e=='e':
@@ -1968,7 +1968,7 @@ $, evalf(e):
  h=e[0]
  if h=='Q':
   $! e[1]/e[2]
- if h=='$|':
+ if h=='$y':
   $! e
  if $1(e)$* h $- in('$J','mat','=','<','>','<=','>=','/=','$*','or','$-'):
   try:
@@ -1982,19 +1982,19 @@ $, evalf(e):
    if v==$@('-$N'):
     $!('*',-1,'$N')
    $! v
-  $9($C,$Q,$[,TypeError):
+  $9($C,$R,$[,TypeError):
    pass
-  $9 $O:
+  $9 $P:
    pass
- $X=[evalf(a)$) a in e[1:]]
+ $Y=[evalf(a)$) a in e[1:]]
  if h=='^' $* $/(e[2])is $u:
-  $X[1]=e[2]
- $! simp((h,)+$0($X))
+  $Y[1]=e[2]
+ $! simp((h,)+$0($Y))
 $, exactify(e,tol=$#):
  t=$/(e)
  if t is $@:
   $! float2rat(e,tol)
- if t is $0 $* e[0]!='Q' $* e[0]!='$|':
+ if t is $0 $* e[0]!='Q' $* e[0]!='$y':
   $! simp((e[0],)+$0(exactify(a,tol)$) a in e[1:]))
  $! e
 $, float2rat(x,tol=$#):
@@ -2023,7 +2023,7 @@ $, float2rat(x,tol=$#):
   y=1.0/f
  $! Q(h1,k1)
 $, degree(e,x):
- if $4(e,x):
+ if $5(e,x):
   $! 0
  if e==x:
   $! 1
@@ -2051,60 +2051,60 @@ $, degree(e,x):
    $! $#
   $! k*e[2]
  $! $#
-$, $Z(e,x):
- e=$>(e)
- if $4(e,x):
+$, $X(e,x):
+ e=$=(e)
+ if $5(e,x):
   $![e]
- $M=e[1:]if $&(e,'+')$((e,)
+ $M=e[1:]if $((e,'+')$&(e,)
  cs={}
  mx=0
  $) t in $M:
-  if $&(t,'*'):
+  if $((t,'*'):
    k=0
    $d=[]
    $) f in t[1:]:
     if f==x:
      k+=1
-    $L $&(f,'^')$* f[1]==x $* $/(f[2])is $u $* f[2]>0:
+    $L $((f,'^')$* f[1]==x $* $/(f[2])is $u $* f[2]>0:
      k+=f[2]
-    $L $4(f,x):
+    $L $5(f,x):
      $d.$%(f)
-    $(:
+    $&:
      $! $#
    c=$G($d)
   $L t==x:
    k=1
    c=1
-  $L $&(t,'^')$* t[1]==x $* $/(t[2])is $u $* t[2]>0:
+  $L $((t,'^')$* t[1]==x $* $/(t[2])is $u $* t[2]>0:
    k=t[2]
    c=1
-  $L $4(t,x):
+  $L $5(t,x):
    k=0
    c=t
-  $(:
+  $&:
    $! $#
   cs[k]=$_(cs.get(k,0),c)
   if k>mx:
    mx=k
  $![cs.get(k,0)$) k in $+(mx+1)]
 $, fromcoeffs(cs,x):
- $! $;([$:(cs[k],pw(x,k))$) k in $+($5(cs))])
+ $! $;([$:(cs[k],pw(x,k))$) k in $+($4(cs))])
 $, numer_denom(e):
- if $&(e,'*'):
+ if $((e,'*'):
   nu=[]
   de=[]
   $) f in e[1:]:
    if isq(f):
     nu.$%(f[1])
     de.$%(f[2])
-   $L $&(f,'^')$* $D(f[2])$* $a(f[2])<0:
+   $L $((f,'^')$* $D(f[2])$* $a(f[2])<0:
     de.$%(pw(f[1],nneg(f[2])))
-   $(:
+   $&:
     nu.$%(f)
   $! $G(nu),$G(de)
  if isq(e):
   $! e[1],e[2]
- if $&(e,'^')$* $D(e[2])$* $a(e[2])<0:
+ if $((e,'^')$* $D(e[2])$* $a(e[2])<0:
   $! 1,pw(e[1],nneg(e[2]))
  $! e,1
 ''')
@@ -2129,33 +2129,33 @@ $, ffloat(x):
  if x!=x:
   $! '$F'
  if x==$@('$N'):
-  $! USYM['$N']if OPT['uni']$( '$N'
+  $! USYM['$N']if OPT['uni']$& '$N'
  if x==$@('-$N'):
-  $! '-'+(USYM['$N']if OPT['uni']$( '$N')
+  $! '-'+(USYM['$N']if OPT['uni']$& '$N')
  if x==0:
   $! '0.'
  d=OPT['digits']
- s=('%.'+$|(d)+'g')%x
+ s=('%.'+$y(d)+'g')%x
  m=s
  ex=''
  if 'e' in s:
   m,ex=s.split('e')
   ex=$u(ex)
-  ex='E'+$|(ex)
+  ex='E'+$y(ex)
  if '.' in m:
   m=m.rstrip('0')
- $(:
+ $&:
   m=m+'.'
  $! m+ex
 $, fnum(x):
  t=$/(x)
  if t is $u:
-  $! $|(x),(P_ATOM if x>=0 $( P_NEG)
+  $! $y(x),(P_ATOM if x>=0 $& P_NEG)
  if t is $@:
   s=ffloat(x)
-  $! s,(P_ATOM if $- s.$x('-')$( P_NEG)
- s=$|(x[1])+'/'+$|(x[2])
- $! s,(P_PROD if x[1]>0 $( P_NEG)
+  $! s,(P_ATOM if $- s.$x('-')$& P_NEG)
+ s=$y(x[1])+'/'+$y(x[2])
+ $! s,(P_PROD if x[1]>0 $& P_NEG)
 $, psym(e):
  if OPT['uni']$* e in USYM:
   $! USYM[e]
@@ -2168,7 +2168,7 @@ $, pr(e,keep):
  t=$/(e)
  if t is $u or t is $@:
   $! fnum(e)
- if t is $|:
+ if t is $y:
   $! psym(e),P_ATOM
  h=e[0]
  if h=='Q':
@@ -2184,26 +2184,26 @@ $, pr(e,keep):
  keep=$3
  if h=='$J':
   $! '{'+','.join([pr(a,keep)[0]$) a in e[1:]])+'}',P_ATOM
- if h=='mat' $* $5(e)==2:
+ if h=='mat' $* $4(e)==2:
   $! '['+','.join([pr(a,keep)[0]$) a in e[1][1:]])+']',P_ATOM
  if h=='mat':
-  $o=[]
+  $p=[]
   $) r in e[1:]:
-   $o.$%('['+','.join([pr(a,keep)[0]$) a in r[1:]])+']')
-  $! '['+''.join($o)+']',P_ATOM
- if h=='$|':
+   $p.$%('['+','.join([pr(a,keep)[0]$) a in r[1:]])+']')
+  $! '['+''.join($p)+']',P_ATOM
+ if h=='$y':
   $! '"'+e[1]+'"',P_ATOM
  if h in REL:
-  op=REL[h]if OPT['uni']$( h
+  op=REL[h]if OPT['uni']$& h
   a=pr(e[1],keep)
   b=pr(e[2],keep)
   $! paren(a[0],a[1],P_SUM)+op+paren(b[0],b[1],P_SUM),P_REL
- if h=='$*' $* $5(e)==3 $* head(e[1])in('<','<=')$* head(e[2])in('<','<=')$* e[1][2]==e[2][1]:
-  op1=REL[e[1][0]]if OPT['uni']$( e[1][0]
-  op2=REL[e[2][0]]if OPT['uni']$( e[2][0]
+ if h=='$*' $* $4(e)==3 $* head(e[1])in('<','<=')$* head(e[2])in('<','<=')$* e[1][2]==e[2][1]:
+  op1=REL[e[1][0]]if OPT['uni']$& e[1][0]
+  op2=REL[e[2][0]]if OPT['uni']$& e[2][0]
   $! pr(e[1][1],$3)[0]+op1+pr(e[1][2],$3)[0]+op2+pr(e[2][2],$3)[0],P_REL
  if h=='$*' or h=='or':
-  p=P_AND if h=='$*' $( P_OR
+  p=P_AND if h=='$*' $& P_OR
   ss=[]
   $) a in e[1:]:
    s,q=pr(a,keep)
@@ -2218,21 +2218,21 @@ $, pr(e,keep):
   s,q=pr(e[1],keep)
   $! paren(s,q,P_ATOM)+'!',P_POST
  if h=='log':
-  if $5(e)==2 or e[2]==10:
+  if $4(e)==2 or e[2]==10:
    $! 'log10('+pr(e[1],keep)[0]+')',P_ATOM
   $! 'log('+pr(e[1],keep)[0]+','+pr(e[2],keep)[0]+')',P_ATOM
  if h=='call':
   $! e[1]+'('+','.join([pr(a,keep)[0]$) a in e[2:]])+')',P_ATOM
  if h=='prime':
   $! e[1]+"'"*e[2],P_ATOM
- if h=='$]':
-  nm='\u222b' if OPT['uni']$( '$]'
+ if h=='$^':
+  nm='\u222b' if OPT['uni']$& '$^'
   $! nm+'('+','.join([pr(a,keep)[0]$) a in e[1:]])+')',P_ATOM
  if h=='sumseq':
-  nm='\u03a3' if OPT['uni']$( 'sumseq'
+  nm='\u03a3' if OPT['uni']$& 'sumseq'
   $! nm+'('+','.join([pr(a,keep)[0]$) a in e[1:]])+')',P_ATOM
  if h=='prodseq':
-  nm='\u03a0' if OPT['uni']$( 'prodseq'
+  nm='\u03a0' if OPT['uni']$& 'prodseq'
   $! nm+'('+','.join([pr(a,keep)[0]$) a in e[1:]])+')',P_ATOM
  if h=='$V' or h=='root':
   pass
@@ -2241,28 +2241,28 @@ $, pr(e,keep):
 TINAME={'ncr':'nCr','npr':'nPr'}
 MAINV='xyzt'
 $, varprio(v):
- i=MAINV.find(v)if $5(v)==1 $(-1
+ i=MAINV.find(v)if $4(v)==1 $&-1
  if i<0:
   $!(100,v)
  $!(i,v)
 $, facprio(v):
- i=MAINV.find(v)if $5(v)==1 $(-1
+ i=MAINV.find(v)if $4(v)==1 $&-1
  if i<0:
   $!(0,v)
- $!(1,$|(i))
+ $!(1,$y(i))
 $, termdegs(t,d):
  c,r=$b(t)
- fs=r[1:]if $&(r,'*')$((r,)
+ fs=r[1:]if $((r,'*')$&(r,)
  $) f in fs:
-  if $/(f)is $| $* f $- in SPECIAL:
+  if $/(f)is $y $* f $- in SPECIAL:
    d[f]=d.get(f,0)+1
-  $L $&(f,'^')$* $/(f[1])is $| $* f[1]$- in SPECIAL $* $D(f[2]):
+  $L $((f,'^')$* $/(f[1])is $y $* f[1]$- in SPECIAL $* $D(f[2]):
    d[f[1]]=d.get(f[1],0)+tofl(f[2])
-  $L $&(f,'^')$* $D(f[2]):
-   $) v in $q(f[1]):
+  $L $((f,'^')$* $D(f[2]):
+   $) v in $o(f[1]):
     d[v]=d.get(v,0)+tofl(f[2])*0.001
-  $L $- $D(f)$* $/(f)is $- $|:
-   $) v in $q(f):
+  $L $- $D(f)$* $/(f)is $- $y:
+   $) v in $o(f):
     d[v]=d.get(v,0)+0.0001
 $, sumkeys($M):
  vs=[]
@@ -2278,23 +2278,23 @@ $, sumkeys($M):
  mv=[v $) v in vs if varprio(v)[0]<100]
  ov=[v $) v in vs if varprio(v)[0]>=100]
  keys=[]
- $) k in $+($5($M)):
+ $) k in $+($4($M)):
   t=$M[k]
   d=degs[k]
   if $D(t):
    keys.$%((2,(),0,0,(),''))
   $L $- d:
-   cat=3 if has(t,'i')$( 1
-   keys.$%((cat,(),0,1 if isneg(t)$( 0,(),okey($b(t)[1])))
-  $(:
+   cat=3 if has(t,'i')$& 1
+   keys.$%((cat,(),0,1 if isneg(t)$& 0,(),okey($b(t)[1])))
+  $&:
    keys.$%((0,$0([-d.get(v,0)$) v in mv]),-sum([d.get(v,0)$) v in ov]),
- 1 if isneg(t)$( 0,$0([-d.get(v,0)$) v in ov]),okey($b(t)[1])))
+ 1 if isneg(t)$& 0,$0([-d.get(v,0)$) v in ov]),okey($b(t)[1])))
  $! keys
 $, pr_sum(e,keep):
  $M=$J(e[1:])
  if $- keep:
   ks=sumkeys($M)
-  idx=$J($+($5($M)))
+  idx=$J($+($4($M)))
   idx.sort(key=$8 i:ks[i])
   $M=[$M[i]$) i in idx]
  $?=''
@@ -2308,7 +2308,7 @@ $, pr_sum(e,keep):
    first=$3
   $L s.$x('-'):
    $?+=s
-  $(:
+  $&:
    $?+='+'+s
  $! $?,P_SUM
 $, fackey(f):
@@ -2316,13 +2316,13 @@ $, fackey(f):
   $!(0,(0,''),okey(f))
  if f=='i':
   $!(3,(0,''),'')
- if $/(f)is $|:
+ if $/(f)is $y:
   $!(1,facprio(f),'')
- if $&(f,'^')$* $/(f[1])is $|:
+ if $((f,'^')$* $/(f[1])is $y:
   if f[1]=='e':
    $!(2,(0,''),okey(f))
   $!(1,facprio(f[1]),okey(f))
- if $&(f,'+')or($&(f,'^')$* $&(f[1],'+')):
+ if $((f,'+')or($((f,'^')$* $((f[1],'+')):
   $!(4,(0,''),okey(f))
  $!(2,(0,''),okey(f))
 $, pr_factor(f,keep,first):
@@ -2340,13 +2340,13 @@ _x(r'''$, pr_prod(e,keep):
  num=[]
  den=[]
  $) f in fs:
-  if $&(f,'^')$* $D(f[2])$* $a(f[2])<0:
+  if $((f,'^')$* $D(f[2])$* $a(f[2])<0:
    ex=nneg(f[2])
-   den.$%(f[1]if ex==1 $(('^',f[1],ex))
+   den.$%(f[1]if ex==1 $&('^',f[1],ex))
   $L isq(f)$* keep:
    num.$%(f[1])
    den.$%(f[2])
-  $(:
+  $&:
    num.$%(f)
  if $- keep:
   num.sort(key=fackey)
@@ -2356,7 +2356,7 @@ _x(r'''$, pr_prod(e,keep):
   sign='-'
   if num[0]==-1:
    num=num[1:]
-  $(:
+  $&:
    num[0]=nneg(num[0])
  cn=coef
  cd=1
@@ -2367,57 +2367,57 @@ _x(r'''$, pr_prod(e,keep):
   if isq(coef):
    cn=coef[1]
    cd=coef[2]
-  $(:
+  $&:
    cn=coef
  if keep:
   num=[f $) f in num if f!=1]or[1]
  if sign $* den $* $- keep:
-  sums=[k $) k in $+($5(num))if $&(num[k],'+')]
-  dsums=[k $) k in $+($5(den))if $&(den[k],'+')]
-  if $5(sums)==1 $* any([isneg(t)$) t in num[sums[0]][1:]]):
+  sums=[k $) k in $+($4(num))if $((num[k],'+')]
+  dsums=[k $) k in $+($4(den))if $((den[k],'+')]
+  if $4(sums)==1 $* any([isneg(t)$) t in num[sums[0]][1:]]):
    num=$J(num)
    num[sums[0]]=$:(-1,num[sums[0]])
    sign=''
-  $L $5(dsums)==1 $* $- sums $* $5(den[dsums[0]])==3 $* $1(den[dsums[0]])$* any([isneg(t)$) t in den[dsums[0]][1:]]):
+  $L $4(dsums)==1 $* $- sums $* $4(den[dsums[0]])==3 $* $1(den[dsums[0]])$* any([isneg(t)$) t in den[dsums[0]][1:]]):
    den=$J(den)
    den[dsums[0]]=$:(-1,den[dsums[0]])
    sign=''
- $z=[]
+ $|=[]
  if cn!=1 or $/(cn)is $@:
-  $z.$%(fnum(cn)[0])
+  $|.$%(fnum(cn)[0])
  $) f in num:
-  $z.$%(pr_factor(f,$3,$- $z))
- if $- $z:
-  $z.$%('1')
- ns='*'.join($z)
+  $|.$%(pr_factor(f,$3,$- $|))
+ if $- $|:
+  $|.$%('1')
+ ns='*'.join($|)
  if cd!=1:
   den.insert(0,cd)
  if $- den:
-  if sign $* $5(num)==1 $* cn==1 $* pr(num[0],$3)[1]<=P_SUM:
+  if sign $* $4(num)==1 $* cn==1 $* pr(num[0],$3)[1]<=P_SUM:
    $! sign+'('+pr(num[0],$3)[0]+')',P_NEG
-  $! sign+ns,(P_NEG if sign $( P_PROD)
- if $5($z)==1 $* $5(num)==1 $* cn==1:
+  $! sign+ns,(P_NEG if sign $& P_PROD)
+ if $4($|)==1 $* $4(num)==1 $* cn==1:
   s,p=pr(num[0],$3)
-  ns=paren(s,p,P_PROD+1)if p<P_PROD $( s
+  ns=paren(s,p,P_PROD+1)if p<P_PROD $& s
   if s.$x('-'):
    ns='('+s+')'
  dparts=[]
  $) f in den:
   dparts.$%(pr_factor(f,$3,$- dparts))
  ds='*'.join(dparts)
- if $5(den)>1:
+ if $4(den)>1:
   ds='('+ds+')'
- $(:
+ $&:
   s,p=pr(den[0],$3)
   if p<=P_PROD or s.$x('-'):
    ds='('+s+')'
- $! sign+ns+'/'+ds,(P_NEG if sign $( P_PROD)
+ $! sign+ns+'/'+ds,(P_NEG if sign $& P_PROD)
 $, pr_pow(e,keep):
  b=e[1]
  x=e[2]
  if $D(x)$* $a(x)<0 $* $- keep:
   ex=nneg(x)
-  d=b if ex==1 $(('^',b,ex)
+  d=b if ex==1 $&('^',b,ex)
   s,p=pr(d,$3)
   if p<=P_PROD or s.$x('-'):
    s='('+s+')'
@@ -2425,26 +2425,26 @@ $, pr_pow(e,keep):
  if x==$s:
   s,p=pr(b,$3)
   if OPT['uni']:
-   if($/(b)is $u $* b>=0)or($/(b)is $|):
+   if($/(b)is $u $* b>=0)or($/(b)is $y):
     $! '\u221a'+s,P_POW
    $! '\u221a('+s+')',P_ATOM
   $! '$V('+s+')',P_ATOM
  bs,bp=pr(b,$3)
- if bp<=P_POW or bs.$x('-')or $&(b,'fact'):
+ if bp<=P_POW or bs.$x('-')or $((b,'fact'):
   bs='('+bs+')'
  xs,xp=pr(x,$3)
- if $-(($/(x)is $u $* x>=0)or($/(x)is $|)):
+ if $-(($/(x)is $u $* x>=0)or($/(x)is $y)):
   xs='('+xs+')'
  $! bs+'^'+xs,P_POW
 $, fmt_top(e):
- if $&(e,'mat')$* $5(e)>2:
-  $o=[]
+ if $((e,'mat')$* $4(e)>2:
+  $p=[]
   $) r in e[1:]:
-   $o.$%('['+','.join([fmt(a)$) a in r[1:]])+']')
-  if sum([$5(r)$) r in $o])>28:
-   $! '['+('\n '.join($o))+']'
-  $! '['+''.join($o)+']'
- if $&(e,'$|'):
+   $p.$%('['+','.join([fmt(a)$) a in r[1:]])+']')
+  if sum([$4(r)$) r in $p])>28:
+   $! '['+('\n '.join($p))+']'
+  $! '['+''.join($p)+']'
+ if $((e,'$y'):
   $! e[1]
  $! fmt(e)
 ''')
@@ -2468,14 +2468,14 @@ $, closeup(s):
  $! s+''.join(reversed(st))
 REPL=(
  ('**','^'),('==','='),('!=','/='),
- ('sin\u207b\u00b9','$y'),('cos\u207b\u00b9','arccos'),('tan\u207b\u00b9','$t'),
+ ('sin\u207b\u00b9','$z'),('cos\u207b\u00b9','arccos'),('tan\u207b\u00b9','$t'),
  ('\u2212','-'),('\u2013','-'),('\u00d7','*'),('\u00b7','*'),
  ('\u2022','*'),('\u22c5','*'),('\u00f7','/'),('\u2264','<='),
  ('\u2265','>='),('\u2260','/='),('\u2192','->'),('\u21d2','=>'),
  ('\u21d4','<=>'),('\u207b\u00b9','^(-1)'),('\u00b2','^2'),
  ('\u00b3','^3'),('\u03c0',' pi '),('\u221e',' $N '),
  ('\u212f',' e '),('\u2148',' i '),('\u03b8','theta'),
- ('\u222b',' $]'),('\u03a3',' sumseq'),('\u2211',' sumseq'),
+ ('\u222b',' $^'),('\u03a3',' sumseq'),('\u2211',' sumseq'),
  ('\u03a0',' prodseq'),('\u220f',' prodseq'),('\u1d07','E'),
  ('\u2032',"'"),('\u2033',"''"),('@i',' i '),('@e',' e '),
  ('@>','\u25ba'),('@d','\u00b0'),('@t','\u1d40'),('\u2044','/'),
@@ -2507,16 +2507,16 @@ $, tokenize(s):
  s=normalize(s)
  toks=[]
  i=0
- n=$5(s)
+ n=$4(s)
  $K i<n:
   c=s[i]
   if c==' ' or c=='\t':
    i+=1
    $7
   if c=='0' $* i+2<n $* s[i+1]in 'bBhH':
-   base=2 if s[i+1]in 'bB' $( 16
+   base=2 if s[i+1]in 'bB' $& 16
    j=i+2
-   dg='01' if base==2 $( '0123456789abcdefABCDEF'
+   dg='01' if base==2 $& '0123456789abcdefABCDEF'
    $K j<n $* s[j]in dg:
     j+=1
    if j>i+2:
@@ -2545,7 +2545,7 @@ $, tokenize(s):
    txt=s[i:j]
    if isf:
     toks.$%(('num',$@(txt)))
-   $(:
+   $&:
     toks.$%(('num',$u(txt)))
    i=j
    $7
@@ -2566,310 +2566,310 @@ $, tokenize(s):
   if c=='"':
    j=s.find('"',i+1)
    if j<0:
-    $f $O('Missing "')
-   toks.$%(('$|',s[i+1:j]))
+    $f $P('Missing "')
+   toks.$%(('$y',s[i+1:j]))
    i=j+1
    $7
   $) op in OPS:
    if s.$x(op,i):
-    i+=$5(op)
+    i+=$4(op)
     if op=='<>':
      op='/='
     if op=='>>':
      op='\u25ba'
     toks.$%(('op',op))
     $W
-  $(:
-   $f $O('Invalid character: '+c)
+  $&:
+   $f $P('Invalid character: '+c)
  toks.$%(('end',$#))
  $! toks
 ''')
 _x(r'''class Parser:
- $, __init__($=,toks,isfunc):
-  $=.t=toks
-  $=.i=0
-  $=.isfunc=isfunc
- $, peek($=):
-  $! $=.t[$=.i]
- $, nxt($=):
-  tk=$=.t[$=.i]
-  $=.i+=1
+ $, __init__($>,toks,isfunc):
+  $>.t=toks
+  $>.i=0
+  $>.isfunc=isfunc
+ $, peek($>):
+  $! $>.t[$>.i]
+ $, nxt($>):
+  tk=$>.t[$>.i]
+  $>.i+=1
   $! tk
- $, isop($=,op):
-  tk=$=.t[$=.i]
+ $, isop($>,op):
+  tk=$>.t[$>.i]
   $! tk[0]=='op' $* tk[1]==op
- $, isid($=,$B):
-  tk=$=.t[$=.i]
+ $, isid($>,$B):
+  tk=$>.t[$>.i]
   $! tk[0]=='id' $* tk[1]==$B
- $, expect($=,op):
-  if $- $=.isop(op):
-   tk=$=.peek()
-   $f $O('Missing '+op)
-  $=.i+=1
- $, top($=):
-  e=$=.store()
-  $K $=.isop('\u25ba'):
-   $=.nxt()
-   tk=$=.nxt()
+ $, expect($>,op):
+  if $- $>.isop(op):
+   tk=$>.peek()
+   $f $P('Missing '+op)
+  $>.i+=1
+ $, top($>):
+  e=$>.store()
+  $K $>.isop('\u25ba'):
+   $>.nxt()
+   tk=$>.nxt()
    if tk[0]!='id':
-    $f $O('Syntax error after conversion')
-   $X=[]
-   if $=.isop('('):
-    $=.nxt()
-    $X=$=.$X(')')
-   e=('conv',e,tk[1])+$0($X)
-  if $=.peek()[0]!='end':
-   tk=$=.peek()
-   $f $O('Syntax error near '+$|(tk[1])if tk[1]is $- $# $( 'Syntax error')
+    $f $P('Syntax error after conversion')
+   $Y=[]
+   if $>.isop('('):
+    $>.nxt()
+    $Y=$>.$Y(')')
+   e=('conv',e,tk[1])+$0($Y)
+  if $>.peek()[0]!='end':
+   tk=$>.peek()
+   $f $P('Syntax error near '+$y(tk[1])if tk[1]is $- $# $& 'Syntax error')
   $! e
- $, store($=):
-  if $=.isid('define'):
-   $=.nxt()
-   lhs=$=.sum()
-   if $- $=.isop('='):
-    $f $O('Define needs =')
-   $=.nxt()
-   rhs=$=.wth()
+ $, store($>):
+  if $>.isid('define'):
+   $>.nxt()
+   lhs=$>.sum()
+   if $- $>.isop('='):
+    $f $P('Define needs =')
+   $>.nxt()
+   rhs=$>.wth()
    $!('define',lhs,rhs)
-  e=$=.wth()
-  if $=.isop('->')or $=.isop('=:'):
-   $=.nxt()
-   tgt=$=.wth()
+  e=$>.wth()
+  if $>.isop('->')or $>.isop('=:'):
+   $>.nxt()
+   tgt=$>.wth()
    $!('store',e,tgt)
-  if $=.isop(':='):
-   $=.nxt()
-   rhs=$=.wth()
+  if $>.isop(':='):
+   $>.nxt()
+   rhs=$>.wth()
    $!('define',e,rhs)
   $! e
- $, wth($=):
-  e=$=.iff()
-  $K $=.isop('|'):
-   $=.nxt()
-   c=$=.iff()
+ $, wth($>):
+  e=$>.iff()
+  $K $>.isop('|'):
+   $>.nxt()
+   c=$>.iff()
    e=('|',e,c)
   $! e
- $, iff($=):
-  e=$=.imp()
-  $K $=.isop('<=>'):
-   $=.nxt()
-   e=('<=>',e,$=.imp())
+ $, iff($>):
+  e=$>.imp()
+  $K $>.isop('<=>'):
+   $>.nxt()
+   e=('<=>',e,$>.imp())
   $! e
- $, imp($=):
-  e=$=.xor()
-  $K $=.isop('=>'):
-   $=.nxt()
-   e=('=>',e,$=.xor())
+ $, imp($>):
+  e=$>.xor()
+  $K $>.isop('=>'):
+   $>.nxt()
+   e=('=>',e,$>.xor())
   $! e
- $, xor($=):
-  e=$=.lor()
-  $K $=.isid('xor')or $=.isid('nor')or $=.isid('nand'):
-   op=$=.nxt()[1]
-   e=(op,e,$=.lor())
+ $, xor($>):
+  e=$>.lor()
+  $K $>.isid('xor')or $>.isid('nor')or $>.isid('nand'):
+   op=$>.nxt()[1]
+   e=(op,e,$>.lor())
   $! e
- $, lor($=):
-  e=$=.land()
-  $K $=.isid('or'):
-   $=.nxt()
-   e=('or',e,$=.land())
+ $, lor($>):
+  e=$>.land()
+  $K $>.isid('or'):
+   $>.nxt()
+   e=('or',e,$>.land())
   $! e
- $, land($=):
-  e=$=.lnot()
-  $K $=.isid('$*'):
-   $=.nxt()
-   e=('$*',e,$=.lnot())
+ $, land($>):
+  e=$>.lnot()
+  $K $>.isid('$*'):
+   $>.nxt()
+   e=('$*',e,$>.lnot())
   $! e
- $, lnot($=):
-  if $=.isid('$-'):
-   $=.nxt()
-   $!('$-',$=.lnot())
-  $! $=.rel()
- $, rel($=):
-  a=$=.sum()
-  tk=$=.peek()
+ $, lnot($>):
+  if $>.isid('$-'):
+   $>.nxt()
+   $!('$-',$>.lnot())
+  $! $>.rel()
+ $, rel($>):
+  a=$>.sum()
+  tk=$>.peek()
   if tk[0]=='op' $* tk[1]in('=','/=','<','>','<=','>='):
-   $=.nxt()
-   b=$=.sum()
+   $>.nxt()
+   b=$>.sum()
    r=(tk[1],a,b)
-   tk2=$=.peek()
+   tk2=$>.peek()
    if tk2[0]=='op' $* tk2[1]in('<','>','<=','>='):
-    $=.nxt()
-    c=$=.sum()
+    $>.nxt()
+    c=$>.sum()
     r=('$*',r,(tk2[1],b,c))
    $! r
   $! a
- $, sum($=):
-  a=$=.prod()
+ $, sum($>):
+  a=$>.prod()
   $K $E:
-   tk=$=.peek()
+   tk=$>.peek()
    if tk[0]=='op' $* tk[1]in('+','-','.+','.-','&'):
-    $=.nxt()
-    b=$=.prod()
+    $>.nxt()
+    b=$>.prod()
     op=tk[1]
     if op=='.+':
      op='+'
     $L op=='.-':
      op='-'
     a=(op,a,b)
-   $(:
+   $&:
     $! a
- $, startsprimary($=):
-  tk=$=.peek()
-  if tk[0]=='num' or tk[0]=='$|':
+ $, startsprimary($>):
+  tk=$>.peek()
+  if tk[0]=='num' or tk[0]=='$y':
    $! $E
   if tk[0]=='id':
    $! tk[1]$- in KEYW
   if tk[0]=='op':
    $! tk[1]in('(','{','\u221a')
   $! $3
- $, prod($=):
-  a=$=.unary()
+ $, prod($>):
+  a=$>.unary()
   $K $E:
-   tk=$=.peek()
+   tk=$>.peek()
    if tk[0]=='op' $* tk[1]in('*','/','.*','./'):
-    $=.nxt()
-    b=$=.unary()
+    $>.nxt()
+    b=$>.unary()
     op=tk[1]
     a=(op,a,b)
-   $L $=.startsprimary():
-    b=$=.pw()
+   $L $>.startsprimary():
+    b=$>.pw()
     a=('*',a,b)
-   $(:
+   $&:
     $! a
- $, unary($=):
-  if $=.isop('-'):
-   $=.nxt()
-   $!('$m',$=.unary())
-  if $=.isop('+'):
-   $=.nxt()
-   $! $=.unary()
-  $! $=.pw()
- $, pw($=):
-  b=$=.post()
-  if $=.isop('^')or $=.isop('.^'):
-   op=$=.nxt()[1]
-   if $=.isop('\u1d40')or $=.isid('t')$* $3:
+ $, unary($>):
+  if $>.isop('-'):
+   $>.nxt()
+   $!('$m',$>.unary())
+  if $>.isop('+'):
+   $>.nxt()
+   $! $>.unary()
+  $! $>.pw()
+ $, pw($>):
+  b=$>.post()
+  if $>.isop('^')or $>.isop('.^'):
+   op=$>.nxt()[1]
+   if $>.isop('\u1d40')or $>.isid('t')$* $3:
     pass
-   x=$=.unary()
-   $!('^' if op=='^' $( '.^',b,x)
+   x=$>.unary()
+   $!('^' if op=='^' $& '.^',b,x)
   $! b
- $, post($=):
-  a=$=.primary()
+ $, post($>):
+  a=$>.primary()
   $K $E:
-   if $=.isop('!'):
-    $=.nxt()
+   if $>.isop('!'):
+    $>.nxt()
     a=('!',a)
-   $L $=.isop('%'):
-    $=.nxt()
+   $L $>.isop('%'):
+    $>.nxt()
     a=('%',a)
-   $L $=.isop('\u00b0'):
-    $=.nxt()
+   $L $>.isop('\u00b0'):
+    $>.nxt()
     a=('deg',a)
-   $L $=.isop('\u1d40'):
-    $=.nxt()
+   $L $>.isop('\u1d40'):
+    $>.nxt()
     a=('call','transpose',a)
-   $L $=.isop('['):
-    $=.nxt()
-    idx=$=.$X(']')
+   $L $>.isop('['):
+    $>.nxt()
+    idx=$>.$Y(']')
     a=('index',a)+$0(idx)
-   $(:
+   $&:
     $! a
- $, $X($=,close):
+ $, $Y($>,close):
   $?=[]
-  if $=.isop(close):
-   $=.nxt()
+  if $>.isop(close):
+   $>.nxt()
    $! $?
   $K $E:
-   $?.$%($=.store_in())
-   if $=.isop(','):
-    $=.nxt()
+   $?.$%($>.store_in())
+   if $>.isop(','):
+    $>.nxt()
     $7
-   $=.expect(close)
+   $>.expect(close)
    $! $?
- $, store_in($=):
-  e=$=.wth()
+ $, store_in($>):
+  e=$>.wth()
   $! e
- $, primary($=):
-  tk=$=.nxt()
+ $, primary($>):
+  tk=$>.nxt()
   k=tk[0]
   if k=='num':
    $! tk[1]
-  if k=='$|':
-   $!('$|',tk[1])
+  if k=='$y':
+   $!('$y',tk[1])
   if k=='id':
    $B=tk[1]
    if $B in KEYW:
-    $f $O('Syntax error: '+$B)
-   if $=.peek()[0]=='prime':
-    n=$=.nxt()[1]
-    if $=.isop('('):
-     $=.nxt()
-     a=$=.$X(')')
+    $f $P('Syntax error: '+$B)
+   if $>.peek()[0]=='prime':
+    n=$>.nxt()[1]
+    if $>.isop('('):
+     $>.nxt()
+     a=$>.$Y(')')
      $!('primecall',$B,n)+$0(a)
     $!('prime',$B,n)
-   if $=.isop('(')$*($=.isfunc($B)or($5($B)>1 $* $B $- in('pi','$N','$F','theta'))):
-    $=.nxt()
-    a=$=.$X(')')
+   if $>.isop('(')$*($>.isfunc($B)or($4($B)>1 $* $B $- in('pi','$N','$F','theta'))):
+    $>.nxt()
+    a=$>.$Y(')')
     $!('call',$B)+$0(a)
    $! $B
   if k=='op':
    op=tk[1]
    if op=='(':
-    e=$=.store_in()
-    if $=.isop('\u2220'):
-     $=.nxt()
-     th=$=.store_in()
-     $=.expect(')')
+    e=$>.store_in()
+    if $>.isop('\u2220'):
+     $>.nxt()
+     th=$>.store_in()
+     $>.expect(')')
      $!('polar',e,th)
-    $=.expect(')')
+    $>.expect(')')
     $! e
    if op=='{':
-    $!('$J',)+$0($=.$X('}'))
+    $!('$J',)+$0($>.$Y('}'))
    if op=='[':
-    $! $=.matrix()
+    $! $>.matrix()
    if op=='\u221a':
-    $!('call','$V',$=.post())
+    $!('call','$V',$>.post())
    if op=='-':
-    $!('$m',$=.pw())
+    $!('$m',$>.pw())
   if k=='end':
-   $f $O('Incomplete expression')
-  $f $O('Syntax error near '+$|(tk[1]))
- $, matrix($=):
-  $o=[]
-  if $=.isop('['):
-   $K $=.isop('['):
-    $=.nxt()
-    $o.$%(('$J',)+$0($=.$X(']')))
-    if $=.isop(','):
-     $=.nxt()
-   $=.expect(']')
-  $(:
+   $f $P('Incomplete expression')
+  $f $P('Syntax error near '+$y(tk[1]))
+ $, matrix($>):
+  $p=[]
+  if $>.isop('['):
+   $K $>.isop('['):
+    $>.nxt()
+    $p.$%(('$J',)+$0($>.$Y(']')))
+    if $>.isop(','):
+     $>.nxt()
+   $>.expect(']')
+  $&:
    row=[]
    $K $E:
-    if $=.isop(']'):
-     $=.nxt()
+    if $>.isop(']'):
+     $>.nxt()
      $W
-    row.$%($=.store_in())
-    if $=.isop(','):
-     $=.nxt()
-    $L $=.isop(';'):
-     $=.nxt()
-     $o.$%(('$J',)+$0(row))
+    row.$%($>.store_in())
+    if $>.isop(','):
+     $>.nxt()
+    $L $>.isop(';'):
+     $>.nxt()
+     $p.$%(('$J',)+$0(row))
      row=[]
-    $L $=.isop(']'):
+    $L $>.isop(']'):
      $7
-    $(:
-     $f $O('Missing ]')
-   $o.$%(('$J',)+$0(row))
-  n=$5($o[0])
-  $) r in $o:
-   if $5(r)!=n:
-    $f $O('Dimension error')
-  $!('mat',)+$0($o)
+    $&:
+     $f $P('Missing ]')
+   $p.$%(('$J',)+$0(row))
+  n=$4($p[0])
+  $) r in $p:
+   if $4(r)!=n:
+    $f $P('Dimension error')
+  $!('mat',)+$0($p)
 ''')
 _x(r'''$, parse(s,isfunc):
  toks=tokenize(s)
  if toks[0][0]=='end':
-  $f $O('Empty input')
+  $f $P('Empty input')
  $! Parser(toks,isfunc).top()
 ''')
 _x(r'''import cmath
@@ -2891,7 +2891,7 @@ $, p_neg(A):
 $, p_sub(A,B):
  $! p_add(A,p_neg(B))
 $, madd(a,b):
- $! $0([a[i]+b[i]$) i in $+($5(a))])
+ $! $0([a[i]+b[i]$) i in $+($4(a))])
 $, p_mul(A,B):
  C={}
  $) a in A:
@@ -2909,7 +2909,7 @@ $, p_scale(A,c):
   $!{}
  $! dict([(m,A[m]*c)$) m in A])
 $, p_pow(A,n):
- nv=$5(next(iter(A)))if A $( 0
+ nv=$4(next(iter(A)))if A $& 0
  R=p_const(1,nv)
  $K n>0:
   if n&1:
@@ -2959,7 +2959,7 @@ $, $S(A,B):
   err("Division by zero")
  lmB=max(B)
  lcB=B[lmB]
- nv=$5(lmB)
+ nv=$4(lmB)
  Qt={}
  R=dict(A)
  cnt=0
@@ -3021,7 +3021,7 @@ $, p_at(A,pt):
  s=0
  $) m in A:
   t=A[m]
-  $) i in $+($5(m)):
+  $) i in $+($4(m)):
    if m[i]:
     t*=pt[i]**m[i]
   s+=t
@@ -3031,11 +3031,11 @@ $, p_gcd(A,B,nv):
   $! p_normsign(B)
  if $- B:
   $! p_normsign(A)
- if nv $*($5(A)>2 or $5(B)>2):
+ if nv $*($4(A)>2 or $4(B)>2):
   c=igcd(p_icont(A),p_icont(B))
   ok=$E
   $) sh in(0,1):
-   pt=[EVP[(i+sh*5)%$5(EVP)]*(1+sh)+i $) i in $+(nv)]
+   pt=[EVP[(i+sh*5)%$4(EVP)]*(1+sh)+i $) i in $+(nv)]
    g=igcd(p_at(A,pt),p_at(B,pt))
    if g!=c:
     ok=$3
@@ -3075,7 +3075,7 @@ $, p_gcd0(A,B,nv):
   pB=$S(r,p_cont(r,k,nv))
  if pB:
   g=p_const(1,nv)
- $(:
+ $&:
   g=$S(pA,p_cont(pA,k,nv))
  $! p_normsign(p_mul(c,g))
 $, prem(A,B,k,nv):
@@ -3122,8 +3122,8 @@ $, p_sqrt(D):
   $! $#
  hm=$0([x//2 $) x in lm])
  S={hm:r}
- nv=$5(lm)
- $) _ in $+($5(D)+3):
+ nv=$4(lm)
+ $) _ in $+($4(D)+3):
   R=p_sub(D,p_mul(S,S))
   if $- R:
    $! S
@@ -3160,7 +3160,7 @@ $, kernels(e,ks):
  t=$/(e)
  if t is $u or t is $@:
   $!
- if t is $|:
+ if t is $y:
   if e $- in ks:
    ks.$%(e)
   $!
@@ -3176,8 +3176,8 @@ $, kernels(e,ks):
    kernels(e[1],ks)
    $!
   k,n=splitpow(e)
-  if k==e or $- $&(k,'^')or $E:
-   if $&(k,'^')$* $/(k[2])is $u:
+  if k==e or $- $((k,'^')or $E:
+   if $((k,'^')$* $/(k[2])is $u:
     kernels(k,ks)
     $!
    if k $- in ks:
@@ -3186,11 +3186,11 @@ $, kernels(e,ks):
  if e $- in ks:
   ks.$%(e)
 $, sortkernels(ks):
- ks.sort(key=$8 k:varprio(k)if $/(k)is $| $((200,okey(k)))
+ ks.sort(key=$8 k:varprio(k)if $/(k)is $y $&(200,okey(k)))
  $! ks
 ''')
 _x(r'''$, ratform(e,ks):
- nv=$5(ks)
+ nv=$4(ks)
  t=$/(e)
  if t is $u:
   $! p_const(e,nv),p_const(1,nv)
@@ -3211,7 +3211,7 @@ _x(r'''$, ratform(e,ks):
    n,d=r
    if D==d:
     N=p_add(N,n)
-   $(:
+   $&:
     g=p_gcd(D,d,nv)
     d1=$S(d,g)
     D1=$S(D,g)
@@ -3232,7 +3232,7 @@ _x(r'''$, ratform(e,ks):
   if $/(e[2])is $u:
    b=e[1]
    n=e[2]
-  $(:
+  $&:
    b,n=splitpow(e)
   if b in ks $* b!=e or(b==e):
    if b $- in ks:
@@ -3252,7 +3252,7 @@ $, p2e(P,ks):
  $M=[]
  $) m in P:
   fs=[P[m]]
-  $) i in $+($5(m)):
+  $) i in $+($4(m)):
    if m[i]:
     fs.$%(pw(ks[i],m[i]))
   $M.$%($G(fs))
@@ -3273,10 +3273,10 @@ $, to_ratform(e):
  r=ratform(e,ks)
  if r is $#:
   $! $#
- N,D=cancel_pair(r[0],r[1],$5(ks))
+ N,D=cancel_pair(r[0],r[1],$4(ks))
  $! N,D,ks
 $, comdenom(e):
- if $&(e,'$J')or $&(e,'mat'):
+ if $((e,'$J')or $((e,'mat'):
   $! mapexpr(comdenom,e)
  if isrel(e):
   $!(e[0],comdenom(e[1]),comdenom(e[2]))
@@ -3289,9 +3289,9 @@ $, comdenom(e):
  g=igcd(cN,cD)
  num=p2e(N,ks)
  den=p2e(D,ks)
- if $&(num,'+')$* $&(den,'+')or den==1 or $D(den):
-  $! $R(num,den)
- $! $R(num,den)
+ if $((num,'+')$* $((den,'+')or den==1 or $D(den):
+  $! $O(num,den)
+ $! $O(num,den)
 $, getnum(e):
  r=to_ratform(e)
  if r is $#:
@@ -3305,7 +3305,7 @@ $, getden(e):
 $, isrel(e):
  $! $/(e)is $0 $* e[0]in('=','<','>','<=','>=','/=')
 $, hasdenom(e):
- if $&(e,'^')$* $D(e[2])$* $a(e[2])<0 $* $- $1(e[1]):
+ if $((e,'^')$* $D(e[2])$* $a(e[2])<0 $* $- $1(e[1]):
   $! $E
  if $/(e)is $0 $* e[0]in('+','*'):
   $) a in e[1:]:
@@ -3314,20 +3314,20 @@ $, hasdenom(e):
  $! $3
 $, $.(e):
  t=$/(e)
- if t is $- $0 or e[0]=='Q' or e[0]=='$|':
+ if t is $- $0 or e[0]=='Q' or e[0]=='$y':
   $! e
  h=e[0]
- $X=[$.(a)$) a in e[1:]]
- e2=simp((h,)+$0($X))if h!='hold' $( e
- if $- $&(e2,'*'):
+ $Y=[$.(a)$) a in e[1:]]
+ e2=simp((h,)+$0($Y))if h!='hold' $& e
+ if $- $((e2,'*'):
   $! e2
  hasden=$3
  hassum=$3
  $) f in e2[1:]:
-  if $&(f,'^')$* $D(f[2])$* $a(f[2])<0 $* $- $1(f[1]):
-   if $&(f[1],'+')or($&(f[1],'^')$* $&(f[1][1],'+')):
+  if $((f,'^')$* $D(f[2])$* $a(f[2])<0 $* $- $1(f[1]):
+   if $((f[1],'+')or($((f[1],'^')$* $((f[1][1],'+')):
     hasden=$E
-  if $&(f,'+')or($&(f,'^')$* $&(f[1],'+')):
+  if $((f,'+')or($((f,'^')$* $((f[1],'+')):
    hassum=$E
  if $-(hasden $* hassum)$* $- hasden:
   $! e2
@@ -3336,15 +3336,15 @@ $, $.(e):
  ks=[]
  kernels(e2,ks)
  sortkernels(ks)
- nv=$5(ks)
+ nv=$4(ks)
  if nv==0 or nv>6:
   $! e2
  nums=[]
  dens=[]
  $) f in e2[1:]:
-  if $&(f,'^')$* $D(f[2])$* $a(f[2])<0:
+  if $((f,'^')$* $D(f[2])$* $a(f[2])<0:
    dens.$%(pw(f[1],nneg(f[2])))
-  $(:
+  $&:
    nums.$%(f)
  num=$G(nums)
  den=$G(dens)
@@ -3352,11 +3352,11 @@ $, $.(e):
  rd=ratform(den,ks)
  if rn is $# or rd is $#:
   $! e2
- if $5(rn[0])*$5(rd[1])>400 or $5(rn[1])*$5(rd[0])>400:
+ if $4(rn[0])*$4(rd[1])>400 or $4(rn[1])*$4(rd[0])>400:
   $! e2
  N=p_mul(rn[0],rd[1])
  D=p_mul(rn[1],rd[0])
- if $5(N)>80 or $5(D)>80 or p_tdeg(N)>30 or p_tdeg(D)>30:
+ if $4(N)>80 or $4(D)>80 or p_tdeg(N)>30 or p_tdeg(D)>30:
   $! e2
  g=p_gcd(N,D,nv)
  if p_isconst(g):
@@ -3366,15 +3366,15 @@ $, $.(e):
  if D $* D[max(D)]<0:
   N=p_neg(N)
   D=p_neg(D)
- $! $R(p2e(N,ks),p2e(D,ks))
+ $! $O(p2e(N,ks),p2e(D,ks))
 $, u_trim(a):
  a=$J(a)
  $K a $* a[-1]==0:
   a.pop()
  $! a
 $, u_add(a,b):
- n=max($5(a),$5(b))
- $! u_trim([nadd(a[i]if i<$5(a)$( 0,b[i]if i<$5(b)$( 0)$) i in $+(n)])
+ n=max($4(a),$4(b))
+ $! u_trim([nadd(a[i]if i<$4(a)$& 0,b[i]if i<$4(b)$& 0)$) i in $+(n)])
 $, u_neg(a):
  $![nneg(c)$) c in a]
 $, u_sub(a,b):
@@ -3382,11 +3382,11 @@ $, u_sub(a,b):
 $, u_mul(a,b):
  if $- a or $- b:
   $![]
- r=[0]*($5(a)+$5(b)-1)
- $) i in $+($5(a)):
+ r=[0]*($4(a)+$4(b)-1)
+ $) i in $+($4(a)):
   if a[i]==0:
    $7
-  $) j in $+($5(b)):
+  $) j in $+($4(b)):
    r[i+j]=nadd(r[i+j],nmul(a[i],b[j]))
  $! u_trim(r)
 $, u_scale(a,c):
@@ -3396,16 +3396,16 @@ $, u_divmod(a,b):
  if $- b:
   err("Division by zero")
  a=u_trim(a)
- q=[0]*max($5(a)-$5(b)+1,0)
+ q=[0]*max($4(a)-$4(b)+1,0)
  r=$J(a)
  lb=b[-1]
- $K $5(r)>=$5(b)$* r:
+ $K $4(r)>=$4(b)$* r:
   c=ndiv(r[-1],lb)
-  k=$5(r)-$5(b)
+  k=$4(r)-$4(b)
   q[k]=c
-  $) j in $+($5(b)):
+  $) j in $+($4(b)):
    r[k+j]=nsub(r[k+j],nmul(c,b[j]))
-  r=u_trim(r[:-1])if r[-1]==0 or $E $( r
+  r=u_trim(r[:-1])if r[-1]==0 or $E $& r
   r=u_trim(r)
  $! u_trim(q),r
 $, u_monic(a):
@@ -3426,9 +3426,9 @@ $, u_egcd(a,b):
  c=ninv(r0[-1])
  $! u_scale(r0,c),u_scale(s0,c),u_scale(t0,c)
 $, u_toexpr(a,x):
- $! $;([$:(a[i],pw(x,i))$) i in $+($5(a))if a[i]!=0])
+ $! $;([$:(a[i],pw(x,i))$) i in $+($4(a))if a[i]!=0])
 $, u_from_expr(e,x):
- cs=$Z(e,x)
+ cs=$X(e,x)
  if cs is $#:
   $! $#
  $) c in cs:
@@ -3451,18 +3451,18 @@ $, u_toint(a):
  $! ints,Q(g,L)
 $, i_divexact(a,b):
  a=$J(a)
- if $5(a)<$5(b):
+ if $4(a)<$4(b):
   $! $#
- q=[0]*($5(a)-$5(b)+1)
+ q=[0]*($4(a)-$4(b)+1)
  lb=b[-1]
- $) k in $+($5(a)-$5(b),-1,-1):
-  c=a[k+$5(b)-1]
+ $) k in $+($4(a)-$4(b),-1,-1):
+  c=a[k+$4(b)-1]
   if c%lb:
    $! $#
   c//=lb
   q[k]=c
   if c:
-   $) j in $+($5(b)):
+   $) j in $+($4(b)):
     a[k+j]-=c*b[j]
  $) x in a:
   if x:
@@ -3470,10 +3470,10 @@ $, i_divexact(a,b):
  $! q
 ''')
 _x(r'''$, aberth(c):
- c=[$2(tofl(x))if $/(x)is $- $2 $( x $) x in c]
+ c=[$2(tofl(x))if $/(x)is $- $2 $& x $) x in c]
  $K c $* c[-1]==0:
   c.pop()
- n=$5(c)-1
+ n=$4(c)-1
  if n<1:
   $![]
  zeros=0
@@ -3505,7 +3505,7 @@ _x(r'''$, aberth(c):
     p=p*zk+a[j]
    if p==0:
     $7
-   ratio=p/dp if dp!=0 $( 1e-3
+   ratio=p/dp if dp!=0 $& 1e-3
    s=0j
    $) j in $+(n):
     if j!=k:
@@ -3513,7 +3513,7 @@ _x(r'''$, aberth(c):
      if d!=0:
       s+=1/d
    den=1-ratio*s
-   w=ratio/den if den!=0 $( ratio
+   w=ratio/den if den!=0 $& ratio
    z[k]=zk-w
    aw=$H(w)
    if aw>mx*(1+$H(zk))or $E:
@@ -3549,7 +3549,7 @@ $, divisors_int(n,$w=400):
     nd_.$%(v)
     v*=p
   ds=nd_
-  if $5(ds)>$w:
+  if $4(ds)>$w:
    $! $#
  ds.sort()
  $! ds
@@ -3566,24 +3566,24 @@ $, combos(n,k):
   $) j in $+(i+1,k):
    idx[j]=idx[j-1]+1
 $, ifactor_sqf(f):
- n=$5(f)-1
+ n=$4(f)-1
  if n<=1:
   $![f]
  res=[]
  $K f[0]==0:
   res.$%([0,1])
   f=f[1:]
- if $5(f)-1<=1:
-  $! res+[f]if $5(f)>1 $( res
+ if $4(f)-1<=1:
+  $! res+[f]if $4(f)>1 $& res
  roots=aberth(f)
  lcd=divisors_int(f[-1])or[1]
  $d=[]
  $) r in roots:
   found=$3
-  if $H(r.imag)<1e-6*(1+$H(r.$P)):
+  if $H(r.imag)<1e-6*(1+$H(r.$Q)):
    $) q in lcd:
-    p=$u(round(r.$P*q))
-    if p==0 $* $H(r.$P)>0.5/q:
+    p=$u(round(r.$Q*q))
+    if p==0 $* $H(r.$Q)>0.5/q:
      $7
     g=[-p,q]
     if igcd(p,q)!=1:
@@ -3596,29 +3596,29 @@ $, ifactor_sqf(f):
      $W
   if $- found:
    $d.$%(r)
- if $5(f)-1<=3:
-  if $5(f)>1:
+ if $4(f)-1<=3:
+  if $4(f)>1:
    res.$%(f)
   $! res
  roots=$d
- if $5(roots)!=$5(f)-1:
+ if $4(roots)!=$4(f)-1:
   roots=aberth(f)
  lcd=divisors_int(f[-1])or[1]
  d=2
- $K d<=($5(f)-1)//2 $* $5(roots)<=24:
+ $K d<=($4(f)-1)//2 $* $4(roots)<=24:
   done=$3
-  $) idx in combos($5(roots),d):
+  $) idx in combos($4(roots),d):
    pc=[1+0j]
    $) i in idx:
     r=roots[i]
-    nw=[0j]*($5(pc)+1)
-    $) j in $+($5(pc)):
+    nw=[0j]*($4(pc)+1)
+    $) j in $+($4(pc)):
      nw[j+1]+=pc[j]
      nw[j]-=pc[j]*r
     pc=nw
    ok=$E
    $) v in pc:
-    if $H(v.imag)>1e-6*(1+$H(v.$P)):
+    if $H(v.imag)>1e-6*(1+$H(v.$Q)):
      ok=$3
      $W
    if $- ok:
@@ -3627,7 +3627,7 @@ $, ifactor_sqf(f):
     g=[]
     good=$E
     $) v in pc:
-     x=v.$P*q
+     x=v.$Q*q
      ix=$u(round(x))
      if $H(x-ix)>1e-5*(1+$H(x)):
       good=$3
@@ -3639,22 +3639,22 @@ $, ifactor_sqf(f):
     if qq is $- $#:
      res.$%(g)
      f=qq
-     roots=[roots[i]$) i in $+($5(roots))if i $- in idx]
+     roots=[roots[i]$) i in $+($4(roots))if i $- in idx]
      done=$E
      $W
    if done:
     $W
   if $- done:
    d+=1
- if $5(f)>1:
+ if $4(f)>1:
   res.$%(f)
  $! res
 $, ufactor(a):
  ints,c=u_toint(u_trim(a))
- if $5(ints)<=1:
-  $! nmul(c,ints[0]if ints $( 0),[]
+ if $4(ints)<=1:
+  $! nmul(c,ints[0]if ints $& 0),[]
  nv=1
- P=dict([((i,),ints[i])$) i in $+($5(ints))if ints[i]])
+ P=dict([((i,),ints[i])$) i in $+($4(ints))if ints[i]])
  $?=[]
  mn=min([m[0]$) m in P])
  if mn>0:
@@ -3673,18 +3673,18 @@ $, ufactor(a):
      g=[-x $) x in g]
      c=nneg(c)
     $?.$%((g,i))
- $(:
+ $&:
   c=nmul(c,p_cval(P))
  $! c,$?
 $, i2p(f,nv,k):
- $! dict([(p_mono(nv,k,i),f[i])$) i in $+($5(f))if f[i]])
+ $! dict([(p_mono(nv,k,i),f[i])$) i in $+($4(f))if f[i]])
 $, mfactor(P,nv):
  if $- P:
   $! 0,[]
  c=p_icont(P)
  if P[max(P)]<0:
   c=-c
- P=p_scale(P,1)if c==1 $( dict([(m,P[m]//c)$) m in P])
+ P=p_scale(P,1)if c==1 $& dict([(m,P[m]//c)$) m in P])
  res=[]
  mins=[min([m[k]$) m in P])$) k in $+(nv)]
  $) k in $+(nv):
@@ -3698,8 +3698,8 @@ $, mfactor(P,nv):
 $, mfac_rec(P,nv,res,mult):
  vs=p_vars(P,nv)
  if $- vs:
-  $! p_cval(P)**mult if P $( 0
- if $5(vs)==1:
+  $! p_cval(P)**mult if P $& 0
+ if $4(vs)==1:
   k=vs[0]
   fl=[0]*(p_deg(P,k)+1)
   $) m in P:
@@ -3707,7 +3707,7 @@ $, mfac_rec(P,nv,res,mult):
   cc,fs=ufactor(fl)
   $) g,i in fs:
    res.$%((i2p(g,nv,k),i*mult))
-  $! cc**mult if $/(cc)is $u $( nipow(cc,mult)
+  $! cc**mult if $/(cc)is $u $& nipow(cc,mult)
  vs.sort(key=$8 k:p_deg(P,k))
  k=vs[0]
  cst=1
@@ -3734,7 +3734,7 @@ $, ishomog(F):
 ''')
 _x(r'''$, msplit(F,nv,$<):
  vs=p_vars(F,nv)
- if $5(vs)<=1:
+ if $4(vs)<=1:
   if $- vs:
    $![F]
   k=vs[0]
@@ -3746,24 +3746,24 @@ _x(r'''$, msplit(F,nv,$<):
   $) g,i in fs:
    $) _ in $+(i):
     $?.$%(i2p(g,nv,k))
-  $! $? if $? $([F]
+  $! $? if $? $&[F]
  if $<>8:
   $![F]
  $) k in vs:
   if p_deg(F,k)==1:
    pass
- if $5(vs)==2 $* ishomog(F):
+ if $4(vs)==2 $* ishomog(F):
   a,b=vs
   fl=[0]*(p_deg(F,a)+1)
   $) m in F:
    fl[m[a]]=F[m]
   cc,fs=ufactor(fl)
-  if $5(fs)>1 or(fs $* fs[0][1]>1):
+  if $4(fs)>1 or(fs $* fs[0][1]>1):
    $?=[]
    $) g,i in fs:
-    d=$5(g)-1
+    d=$4(g)-1
     G={}
-    $) j in $+($5(g)):
+    $) j in $+($4(g)):
      if g[j]:
       m=[0]*nv
       m[a]=j
@@ -3779,7 +3779,7 @@ _x(r'''$, msplit(F,nv,$<):
    B=p_coeff(F,k,1)
    C=p_coeff(F,k,0)
    D=p_sub(p_mul(B,B),p_scale(p_mul(A,C),4))
-   S=p_sqrt(D)if D $({}
+   S=p_sqrt(D)if D $&{}
    if S is $- $# $* S:
     x={p_mono(nv,k,1):1}
     base=p_add(p_mul(p_scale(A,2),x),B)
@@ -3796,7 +3796,7 @@ _x(r'''$, msplit(F,nv,$<):
   tc=p_coeff(F,k,0)
   da=pdivisors(lc,nv)
   db=pdivisors(tc,nv)
-  if da is $# or db is $# or $5(da)*$5(db)>3000:
+  if da is $# or db is $# or $4(da)*$4(db)>3000:
    $7
   x={p_mono(nv,k,1):1}
   $) a in da:
@@ -3822,7 +3822,7 @@ $, pdivisors(P,nv):
     nds.$%(v)
     v=p_mul(v,g)
   ds=nds
-  if $5(ds)>300:
+  if $4(ds)>300:
    $! $#
  $! ds
 $, factor_int_full(n):
@@ -3877,7 +3877,7 @@ $, isprime(n):
    x=x*x%n
    if x==n-1:
     $W
-  $(:
+  $&:
    $! $3
  $! $E
 $, rho(n):
@@ -3913,20 +3913,20 @@ $, factor_rat_held(q):
  if n<0:
   fs.$%(-1)
  $) p,k in factor_int_full(n):
-  fs.$%(p if k==1 $(('^',p,k))
+  fs.$%(p if k==1 $&('^',p,k))
  $) p,k in factor_int_full(d):
   fs.$%(('^',p,-k))
  if $- fs:
   $! 1
- if $5(fs)==1 $* fs[0]==-1:
+ if $4(fs)==1 $* fs[0]==-1:
   $!-1
- if $5(fs)==1:
+ if $4(fs)==1:
   $!('hold',fs[0])
  $!('hold',('*',)+$0(fs))
 $, factor_expr(e,var=$#,$A=$3):
  if $r(e):
   $! factor_rat_held(e)
- if $&(e,'$J')or $&(e,'mat'):
+ if $((e,'$J')or $((e,'mat'):
   $! mapexpr($8 a:factor_expr(a,var,$A),e)
  if isrel(e):
   $!(e[0],factor_expr(e[1],var,$A),factor_expr(e[2],var,$A))
@@ -3935,7 +3935,7 @@ $, factor_expr(e,var=$#,$A=$3):
  ks=[]
  kernels(e,ks)
  sortkernels(ks)
- nv=$5(ks)
+ nv=$4(ks)
  if nv==0:
   $! e
  r=ratform(e,ks)
@@ -3956,13 +3956,13 @@ $, factor_expr(e,var=$#,$A=$3):
  $) f,m in nfac:
   if $D(f):
    const=nmul(const,nipow(f,m))
-  $(:
+  $&:
    items.$%((f,m))
  ditems=[]
  $) f,m in dfac:
   if $D(f):
    const=ndiv(const,nipow(f,m))
-  $(:
+  $&:
    ditems.$%((f,m))
  items.sort(key=$8 fm:fsortkey(fm[0]))
  ditems.sort(key=$8 fm:fsortkey(fm[0]))
@@ -3970,55 +3970,55 @@ $, factor_expr(e,var=$#,$A=$3):
  if const!=1 or($- items $* $- ditems):
   $?.$%(const)
  $) f,m in items:
-  $?.$%(f if m==1 $(('^',f,m))
+  $?.$%(f if m==1 $&('^',f,m))
  $) f,m in ditems:
   $?.$%(('^',f,-m))
- if $5($?)==1:
-  if $&($?[0],'^')or $D($?[0]):
-   $!('hold',$?[0])if $- $D($?[0])$( $?[0]
+ if $4($?)==1:
+  if $(($?[0],'^')or $D($?[0]):
+   $!('hold',$?[0])if $- $D($?[0])$& $?[0]
   $! $?[0]
  $!('hold',('*',)+$0($?))
 $, fsortkey(f):
- ss=$q(f)
+ ss=$o(f)
  ss.sort(key=varprio)
  d=0
  if ss:
   d=degree(f,ss[0])
   if d is $#:
    d=99
- $!($5(ss),okey(ss),d,okey(f))
+ $!($4(ss),okey(ss),d,okey(f))
 $, split_radical(f,m,var,$A):
  if var is $# $* $- $A:
   $![(f,m)]
- vs=$q(f)
+ vs=$o(f)
  if var is $#:
-  if $5(vs)!=1:
+  if $4(vs)!=1:
    $![(f,m)]
   x=vs[0]
- $(:
+ $&:
   x=var
- cs=$Z(f,x)
- if cs is $# or $5(cs)!=3:
-  if cs is $- $# $* $5(cs)==2 $* $A:
+ cs=$X(f,x)
+ if cs is $# or $4(cs)!=3:
+  if cs is $- $# $* $4(cs)==2 $* $A:
    $![(f,m)]
   $![(f,m)]
  c,b,a=cs
- D=$>($^($:(b,b),$:(4,a,c)))
+ D=$=($]($:(b,b),$:(4,a,c)))
  if $- $1(D):
   if var is $#:
    $![(f,m)]
- $(:
+ $&:
   v=$U(D)
   if $/(v)is $2:
-   v=v.$P
+   v=v.$Q
   if v<0 $* $- $A:
    $![(f,m)]
  sD=$V(D)
- r1=$R($_($m(b),sD),$:(2,a))
- r2=$R($^($m(b),sD),$:(2,a))
- res=[(a,m)]if a!=1 $([]
- res.$%(($^(x,r2),m))
- res.$%(($^(x,r1),m))
+ r1=$O($_($m(b),sD),$:(2,a))
+ r2=$O($]($m(b),sD),$:(2,a))
+ res=[(a,m)]if a!=1 $&[]
+ res.$%(($](x,r2),m))
+ res.$%(($](x,r1),m))
  $! res
 ''')
 _x(r'''$, partfrac(e,x):
@@ -4029,31 +4029,31 @@ _x(r'''$, partfrac(e,x):
  if x $- in ks:
   $! $#
  k=ks.index(x)
- $) v in p_vars(N,$5(ks))+p_vars(D,$5(ks)):
+ $) v in p_vars(N,$4(ks))+p_vars(D,$4(ks)):
   if v!=k:
    $! $#
- nv=$5(ks)
+ nv=$4(ks)
  num=[0]*(max(p_deg(N,k),0)+1)
  $) m in N:
   num[m[k]]=N[m]
  den=[0]*(p_deg(D,k)+1)
  $) m in D:
   den[m[k]]=D[m]
- if $5(den)<=1:
+ if $4(den)<=1:
   $! $#
  q,rem=u_divmod(num,den)
  cc,fs=ufactor(den)
  $M=[u_toexpr(q,x)]
  if rem:
-  $z=[u_trim(pw_list(f,m))$) f,m in fs]
+  $|=[u_trim(pw_list(f,m))$) f,m in fs]
   rem=u_scale(rem,ninv(cc))
-  $) j in $+($5(fs)):
+  $) j in $+($4(fs)):
    f,m=fs[j]
-   Pj=$z[j]
+   Pj=$|[j]
    others=[1]
-   $) i in $+($5(fs)):
+   $) i in $+($4(fs)):
     if i!=j:
-     others=u_mul(others,$z[i])
+     others=u_mul(others,$|[i])
    g,s,t=u_egcd(others,Pj)
    Aj=u_divmod(u_mul(rem,s),Pj)[1]
    fe=u_toexpr(f,x)
@@ -4062,7 +4062,7 @@ _x(r'''$, partfrac(e,x):
      $W
     qq,cj=u_divmod(Aj,f)
     if cj:
-     $M.$%($R(u_toexpr(cj,x),pw(fe,p)))
+     $M.$%($O(u_toexpr(cj,x),pw(fe,p)))
     Aj=qq
  $! $;($M)
 $, pw_list(f,m):
@@ -4087,36 +4087,36 @@ $, propfrac(e,x=$#):
   $! e
  N,D,ks=r
  if x is $#:
-  vs=p_vars(D,$5(ks))
+  vs=p_vars(D,$4(ks))
   if $- vs:
    $! e
   x=ks[vs[0]]
  num=p2e(N,ks)
  den=p2e(D,ks)
- cn=$Z(num,x)
- cd=$Z(den,x)
- if cn is $# or cd is $# or $5(cd)<=1:
+ cn=$X(num,x)
+ cd=$X(den,x)
+ if cn is $# or cd is $# or $4(cd)<=1:
   $! e
  qq,rr=e_divmod(cn,cd)
- $! $_(fromcoeffs(qq,x),$R(fromcoeffs(rr,x),den))
+ $! $_(fromcoeffs(qq,x),$O(fromcoeffs(rr,x),den))
 $, e_divmod(a,b):
- a=[$>(c)$) c in a]
- b=[$>(c)$) c in b]
+ a=[$=(c)$) c in a]
+ b=[$=(c)$) c in b]
  $K b $* b[-1]==0:
   b.pop()
  $K a $* a[-1]==0:
   a.pop()
  if $- b:
   err("Division by zero")
- q=[0]*max($5(a)-$5(b)+1,1)
+ q=[0]*max($4(a)-$4(b)+1,1)
  r=$J(a)
  lb=b[-1]
- $K $5(r)>=$5(b)$* r:
-  c=$.($R(r[-1],lb))
-  kk=$5(r)-$5(b)
+ $K $4(r)>=$4(b)$* r:
+  c=$.($O(r[-1],lb))
+  kk=$4(r)-$4(b)
   q[kk]=c
-  $) j in $+($5(b)):
-   r[kk+j]=$>($^(r[kk+j],$:(c,b[j])))
+  $) j in $+($4(b)):
+   r[kk+j]=$=($](r[kk+j],$:(c,b[j])))
   r.pop()
   $K r $* r[-1]==0:
    r.pop()
@@ -4130,30 +4130,30 @@ $, poly_gcd_expr(a,b):
  rb=ratform(b,ks)
  if ra is $# or rb is $#:
   err("Polynomials required")
- nv=$5(ks)
+ nv=$4(ks)
  g=p_gcd(ra[0],rb[0],nv)
  if $- ks:
   $! p_cval(g)
  $! p2e(g,ks)
 $, expand_full(e,var=$#):
- if $&(e,'$J')or $&(e,'mat'):
+ if $((e,'$J')or $((e,'mat'):
   $! mapexpr($8 a:expand_full(a,var),e)
  if isrel(e):
   $!(e[0],expand_full(e[1],var),expand_full(e[2],var))
- x=$>(e)
+ x=$=(e)
  if $- hasdenom(x)or $`(x):
   $! x
  if var is $#:
-  ks=$q(x)
+  ks=$o(x)
   ks.sort(key=varprio)
   $) v in ks:
    r=partfrac(x,v)
    if r is $- $#:
-    $! $>(r)
+    $! $=(r)
   $! x
  r=partfrac(x,var)
  if r is $- $#:
-  $! $>(r)
+  $! $=(r)
  $! x
 ''')
 _x(r'''TV='T_'
@@ -4168,10 +4168,10 @@ $, dfun($B,u):
   $! $m(fn('sin',u))
  if $B=='tan':
   $! pw(fn('cos',u),-2)
- if $B=='$y':
-  $! pw($^(1,pw(u,2)),Q(-1,2))
+ if $B=='$z':
+  $! pw($](1,pw(u,2)),Q(-1,2))
  if $B=='arccos':
-  $! $m(pw($^(1,pw(u,2)),Q(-1,2)))
+  $! $m(pw($](1,pw(u,2)),Q(-1,2)))
  if $B=='$t':
   $! pw($_(pw(u,2),1),-1)
  if $B=='sinh':
@@ -4183,9 +4183,9 @@ $, dfun($B,u):
  if $B=='arcsinh':
   $! pw($_(pw(u,2),1),Q(-1,2))
  if $B=='arccosh':
-  $! pw($^(pw(u,2),1),Q(-1,2))
+  $! pw($](pw(u,2),1),Q(-1,2))
  if $B=='arctanh':
-  $! pw($^(1,pw(u,2)),-1)
+  $! pw($](1,pw(u,2)),-1)
  if $B=='ln':
   $! pw(u,-1)
  if $B=='$H':
@@ -4203,11 +4203,11 @@ $, diff(e,x,n=1):
   e=diff1(e,x)
  $! e
 $, diff1(e,x):
- if $&(e,'$J')or $&(e,'mat'):
+ if $((e,'$J')or $((e,'mat'):
   $! mapexpr($8 a:diff1(a,x),e)
- if $&(e,'=')or $&(e,'<')or $&(e,'>'):
+ if $((e,'=')or $((e,'<')or $((e,'>'):
   $!(e[0],diff1(e[1],x),diff1(e[2],x))
- if $4(e,x):
+ if $5(e,x):
   $! 0
  if e==x:
   $! 1
@@ -4217,37 +4217,37 @@ $, diff1(e,x):
  if h=='*':
   fs=e[1:]
   $M=[]
-  $) i in $+($5(fs)):
+  $) i in $+($4(fs)):
    d=diff1(fs[i],x)
    if d!=0:
-    $M.$%($G([d]+[fs[j]$) j in $+($5(fs))if j!=i]))
+    $M.$%($G([d]+[fs[j]$) j in $+($4(fs))if j!=i]))
   $! $;($M)
  if h=='^':
   b=e[1]
   p=e[2]
-  if $4(p,x):
-   $! $:(p,pw(b,$^(p,1)),diff1(b,x))
-  if $4(b,x):
+  if $5(p,x):
+   $! $:(p,pw(b,$](p,1)),diff1(b,x))
+  if $5(b,x):
    $! $:(e,fn('ln',b),diff1(p,x))
-  $! $:(e,$_($:(diff1(p,x),fn('ln',b)),$R($:(p,diff1(b,x)),b)))
+  $! $:(e,$_($:(diff1(p,x),fn('ln',b)),$O($:(p,diff1(b,x)),b)))
  if h=='log':
-  b=e[2]if $5(e)>2 $( 10
-  $! diff1($R(fn('ln',e[1]),fn('ln',b)),x)
+  b=e[2]if $4(e)>2 $& 10
+  $! diff1($O(fn('ln',e[1]),fn('ln',b)),x)
  if h=='when':
-  $! fn('when',e[1],diff1(e[2],x),diff1(e[3],x))if $5(e)>3 $( fn('when',e[1],diff1(e[2],x))
- if h=='$]' $* $5(e)==3 $* e[2]==x:
+  $! fn('when',e[1],diff1(e[2],x),diff1(e[3],x))if $4(e)>3 $& fn('when',e[1],diff1(e[2],x))
+ if h=='$^' $* $4(e)==3 $* e[2]==x:
   $! e[1]
- if h=='$]' $* $5(e)==5 $* $4(e[1],x)is $3 $* e[2]!=x:
+ if h=='$^' $* $4(e)==5 $* $5(e[1],x)is $3 $* e[2]!=x:
   f,v,a,b=e[1],e[2],e[3],e[4]
-  $! $^($:($T(f,v,b),diff1(b,x)),$:($T(f,v,a),diff1(a,x)))
- if $5(e)==2:
+  $! $]($:($T(f,v,b),diff1(b,x)),$:($T(f,v,a),diff1(a,x)))
+ if $4(e)==2:
   d=dfun(h,e[1])
   if d is $- $#:
    $! $:(d,diff1(e[1],x))
  $!('d',e,x)
 $, $i(u,x):
- cs=$Z(u,x)
- if cs is $# or $5(cs)!=2 or cs[1]==0:
+ cs=$X(u,x)
+ if cs is $# or $4(cs)!=2 or cs[1]==0:
   $! $#
  $! cs[1],cs[0]
 $, nice(e):
@@ -4255,35 +4255,35 @@ $, nice(e):
   e=$.(e)
  $9 $6:
   $! e
- if $- hasdenom(e)or $`(e)or $&(e,'$J')or $&(e,'mat'):
+ if $- hasdenom(e)or $`(e)or $((e,'$J')or $((e,'mat'):
   $! e
- ${=e
- bl=$5(fmt(e))
+ $}=e
+ bl=$4(fmt(e))
  if bl>400:
   $! e
  $) f in(comdenom,factor_expr):
   try:
    c=f(e)
-   l=$5(fmt(c))
+   l=$4(fmt(c))
    if l<bl:
-    ${=c
+    $}=c
     bl=l
   $9 $6:
    pass
- $! ${
+ $! $}
 BUDGET=[0]
 $, integrate(f,x,$<=0):
  BUDGET[0]=0
- r=$}(f,x,$<)
+ r=$~(f,x,$<)
  if r is $# $* hasdenom(f):
   g=$.(f)
   if g!=f:
    BUDGET[0]=0
-   r=$}(g,x,$<)
+   r=$~(g,x,$<)
  if r is $#:
-  $!('$]',f,x)
+  $!('$^',f,x)
  $! r
-$, $}(f,x,$<=0):
+$, $~(f,x,$<=0):
  if $<>7:
   $! $#
  if $<==0:
@@ -4291,33 +4291,33 @@ $, $}(f,x,$<=0):
  BUDGET[0]+=1
  if BUDGET[0]>400:
   $! $#
- if $4(f,x):
+ if $5(f,x):
   $! $:(f,x)
  if f==x:
   $! $:($s,pw(x,2))
- h=f[0]if $/(f)is $0 $( $#
+ h=f[0]if $/(f)is $0 $& $#
  if h=='+':
   $?=[]
   $) t in f[1:]:
-   r=$}(t,x,$<+1)
+   r=$~(t,x,$<+1)
    if r is $#:
     $! integ_whole(f,x,$<)
    $?.$%(r)
   $! $;($?)
  if h=='*':
-  c=[g $) g in f[1:]if $4(g,x)]
-  v=[g $) g in f[1:]if $- $4(g,x)]
+  c=[g $) g in f[1:]if $5(g,x)]
+  v=[g $) g in f[1:]if $- $5(g,x)]
   if c:
-   r=$}($G(v),x,$<)
+   r=$~($G(v),x,$<)
    if r is $#:
     $! $#
    $! $:($G(c),r)
  if h=='when':
-  a=$}(f[2],x,$<+1)
-  b=$}(f[3],x,$<+1)if $5(f)>3 $( $#
-  if a is $# or($5(f)>3 $* b is $#):
+  a=$~(f[2],x,$<+1)
+  b=$~(f[3],x,$<+1)if $4(f)>3 $& $#
+  if a is $# or($4(f)>3 $* b is $#):
    $! $#
-  $!('when',f[1],a,b)if b is $- $# $(('when',f[1],a)
+  $!('when',f[1],a,b)if b is $- $# $&('when',f[1],a)
  r=itable(f,x)
  if r is $- $#:
   $! r
@@ -4325,9 +4325,9 @@ $, $}(f,x,$<=0):
 $, integ_whole(f,x,$<):
  d=degree(f,x)
  if d is $- $#:
-  g=$>(f)
+  g=$=(f)
   if g!=f:
-   $! $}(g,x,$<+1)
+   $! $~(g,x,$<+1)
  r=irational(f,x)
  if r is $- $#:
   $! r
@@ -4346,26 +4346,26 @@ $, integ_whole(f,x,$<):
  if hastrig(f):
   g=tcollect(f)
   if g!=f:
-   r=$}(g,x,$<+1)
+   r=$~(g,x,$<+1)
    if r is $- $#:
     $! r
  r=iparts(f,x,$<)
  if r is $- $#:
   $! r
- g=$>(f)
+ g=$=(f)
  if g!=f:
-  r=$}(g,x,$<+1)
+  r=$~(g,x,$<+1)
   if r is $- $#:
    $! r
  if $<<4:
   g=untan(f)
   if g!=f:
-   r=$}(g,x,$<+2)
+   r=$~(g,x,$<+2)
    if r is $- $#:
     $! r
   g=unhyp(f)
   if g!=f:
-   r=$}($>(g),x,$<+2)
+   r=$~($=(g),x,$<+2)
    if r is $- $#:
     $! r
   r=iweier(f,x,$<)
@@ -4376,15 +4376,15 @@ $, integ_whole(f,x,$<):
    $! r
  $! $#
 $, qfrac(A,B,p,q,x):
- w=$V($^($:(4,q),pw(p,2)))
+ w=$V($]($:(4,q),pw(p,2)))
  P=$_(pw(x,2),$:(p,x),q)
  $! $_($:(A,$s,fn('ln',P)),
- $:($^(B,$:(A,p,$s)),$R(2,w),fn("$t",$>($R($_($:(2,x),p),w)))))
+ $:($](B,$:(A,p,$s)),$O(2,w),fn("$t",$=($O($_($:(2,x),p),w)))))
 $, iquartic(f,x,$<):
  n,d=numer_denom(f)
- cd=$Z(d,x)
- cn=$Z(n,x)
- if cd is $# or cn is $# or $5(cd)!=5 or $5(cn)>4:
+ cd=$X(d,x)
+ cn=$X(n,x)
+ if cd is $# or cn is $# or $4(cd)!=5 or $4(cn)>4:
   $! $#
  if cd[1]!=0 or cd[3]!=0 or $- all([$1(q)$) q in cd+cn]):
   $! $#
@@ -4392,44 +4392,44 @@ $, iquartic(f,x,$<):
  try:
   if fv_(c)/fv_(a)<=0:
    $! $#
-  q=$V($R(c,a))
-  s2=$^($:(2,q),$R(b,a))
+  q=$V($O(c,a))
+  s2=$]($:(2,q),$O(b,a))
   if fv_(s2)<=0:
    $! $#
  $9 $6:
   $! $#
  sr=$V(s2)
- cn=[$R(v,a)$) v in cn]+[0]*(4-$5(cn))
+ cn=[$O(v,a)$) v in cn]+[0]*(4-$4(cn))
  n0,n1,n2,n3=cn
- BE=$R(n0,q)
- EmB=$R($^(n1,$:(q,n3)),sr)
- B=$:($s,$^(BE,EmB))
+ BE=$O(n0,q)
+ EmB=$O($](n1,$:(q,n3)),sr)
+ B=$:($s,$](BE,EmB))
  E=$:($s,$_(BE,EmB))
- CmA=$R($^(n2,BE),sr)
- A=$:($s,$^(n3,CmA))
+ CmA=$O($](n2,BE),sr)
+ A=$:($s,$](n3,CmA))
  C=$:($s,$_(n3,CmA))
  P1=$_(pw(x,2),$:(sr,x),q)
- P2=$_($^(pw(x,2),$:(sr,x)),q)
+ P2=$_($](pw(x,2),$:(sr,x)),q)
  R=$_(qfrac(A,B,sr,q,x),qfrac(C,E,$m(sr),q,x))
- $! R if antiok(R,f,x)$( $#
+ $! R if antiok(R,f,x)$& $#
 $, unhyp(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
  a=[unhyp(b)$) b in e[1:]]
- if $5(a)==1 $* e[0]in('sinh','cosh','tanh'):
+ if $4(a)==1 $* e[0]in('sinh','cosh','tanh'):
   p=pw('e',a[0])
   m=pw('e',$m(a[0]))
   if e[0]=='sinh':
-   $! $:($s,$^(p,m))
+   $! $:($s,$](p,m))
   if e[0]=='cosh':
    $! $:($s,$_(p,m))
-  $! $R($^(p,m),$_(p,m))
+  $! $O($](p,m),$_(p,m))
  $! simp((e[0],)+$0(a))
 ''')
 _x(r'''$, trigargs_x(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
- if f[0]in('sin','cos','tan')$* $- $4(f[1],x):
+ if f[0]in('sin','cos','tan')$* $- $5(f[1],x):
   if f[1]$- in $?:
    $?.$%(f[1])
   $!
@@ -4438,7 +4438,7 @@ _x(r'''$, trigargs_x(f,x,$?):
 $, iweier(f,x,$<):
  us=[]
  trigargs_x(f,x,us)
- if $5(us)!=1:
+ if $4(us)!=1:
   $! $#
  u=us[0]
  lu=$i(u,x)
@@ -4449,64 +4449,64 @@ $, iweier(f,x,$<):
  $, rep(e):
   if $/(e)is $- $0 or e[0]=='Q':
    $! e
-  if $5(e)==2 $* e[1]==u:
+  if $4(e)==2 $* e[1]==u:
    if e[0]=='sin':
-    $! $R($:(2,t),q)
+    $! $O($:(2,t),q)
    if e[0]=='cos':
-    $! $R($^(1,pw(t,2)),q)
+    $! $O($](1,pw(t,2)),q)
    if e[0]=='tan':
-    $! $R($:(2,t),$^(1,pw(t,2)))
+    $! $O($:(2,t),$](1,pw(t,2)))
   $! simp((e[0],)+$0(rep(b)$) b in e[1:]))
  g=rep(f)
- if $- $4(g,x):
+ if $- $5(g,x):
   $! $#
- g=$.($R($:(2,g),$:(lu[0],q)))
- R=$}(g,t,$<+2)
+ g=$.($O($:(2,g),$:(lu[0],q)))
+ R=$~(g,t,$<+2)
  if R is $#:
   $! $#
  R=$T(R,t,fn('tan',$:($s,u)))
- $! R if antiok(R,f,x)$( $#
+ $! R if antiok(R,f,x)$& $#
 $, itable(f,x):
  h=head(f)
  if h=='^':
   b=f[1]
   p=f[2]
-  if $4(p,x):
+  if $5(p,x):
    lb=$i(b,x)
    if lb is $- $#:
     a=lb[0]
     if p==-1:
-     $! $R(fn('ln',fn('$H',b)),a)
-    $! $R(pw(b,$_(p,1)),$:(a,$_(p,1)))
+     $! $O(fn('ln',fn('$H',b)),a)
+    $! $O(pw(b,$_(p,1)),$:(a,$_(p,1)))
    if(p==$s or p==Q(-1,2))$* degree(b,x)==2:
     $! iquadrad(b,p,x)
-   if $5(b)==2 $* head(b)in('sin','cos','tan','sinh','cosh')$* $/(b)is $0:
+   if $4(b)==2 $* head(b)in('sin','cos','tan','sinh','cosh')$* $/(b)is $0:
     lu=$i(b[1],x)
     if lu is $- $#:
      a=lu[0]
      u=b[1]
      n=b[0]
      if n=='cos' $* p==-2:
-      $! $R(fn('tan',u),a)
+      $! $O(fn('tan',u),a)
      if n=='sin' $* p==-2:
-      $! $R($m(pw(fn('tan',u),-1)),a)
+      $! $O($m(pw(fn('tan',u),-1)),a)
      if n=='cos' $* p==-1:
-      $! $R(fn('ln',fn('$H',$_(pw(fn('cos',u),-1),fn('tan',u)))),a)
+      $! $O(fn('ln',fn('$H',$_(pw(fn('cos',u),-1),fn('tan',u)))),a)
      if n=='sin' $* p==-1:
-      $! $R(fn('ln',fn('$H',fn('tan',$:($s,u)))),a)
+      $! $O(fn('ln',fn('$H',fn('tan',$:($s,u)))),a)
      if n=='tan' $* p==-1:
-      $! $R(fn('ln',fn('$H',fn('sin',u))),a)
+      $! $O(fn('ln',fn('$H',fn('sin',u))),a)
      if n=='cosh' $* p==-2:
-      $! $R(fn('tanh',u),a)
-  if $4(b,x):
+      $! $O(fn('tanh',u),a)
+  if $5(b,x):
    lu=$i(p,x)
    if lu is $- $#:
     a=lu[0]
     if b=='e':
-     $! $R(f,a)
-    $! $R(f,$:(a,fn('ln',b)))
+     $! $O(f,a)
+    $! $O(f,$:(a,fn('ln',b)))
   $! $#
- if $/(f)is $0 $* $5(f)==2:
+ if $/(f)is $0 $* $4(f)==2:
   u=f[1]
   lu=$i(u,x)
   if lu is $#:
@@ -4526,48 +4526,48 @@ $, itable(f,x):
   $L h=='tanh':
    r=fn('ln',fn('cosh',u))
   $L h=='ln':
-   r=$^($:(u,fn('ln',u)),u)
+   r=$]($:(u,fn('ln',u)),u)
   $L h=='$t':
-   r=$^($:(u,fn('$t',u)),$:($s,fn('ln',$_(pw(u,2),1))))
-  $L h=='$y':
-   r=$_($:(u,fn('$y',u)),$V($^(1,pw(u,2))))
+   r=$]($:(u,fn('$t',u)),$:($s,fn('ln',$_(pw(u,2),1))))
+  $L h=='$z':
+   r=$_($:(u,fn('$z',u)),$V($](1,pw(u,2))))
   $L h=='arccos':
-   r=$^($:(u,fn('arccos',u)),$V($^(1,pw(u,2))))
+   r=$]($:(u,fn('arccos',u)),$V($](1,pw(u,2))))
   $L h=='$H':
    r=$:($s,u,fn('$H',u))
   $L h=='sign':
    r=fn('$H',u)
   $L h=='arcsinh':
-   r=$^($:(u,fn('arcsinh',u)),$V($_(pw(u,2),1)))
+   r=$]($:(u,fn('arcsinh',u)),$V($_(pw(u,2),1)))
   $L h=='arctanh':
-   r=$_($:(u,fn('arctanh',u)),$:($s,fn('ln',$^(1,pw(u,2)))))
+   r=$_($:(u,fn('arctanh',u)),$:($s,fn('ln',$](1,pw(u,2)))))
   if r is $- $#:
-   $! $R(r,a)
- if h=='log' $* $5(f)==3:
+   $! $O(r,a)
+ if h=='log' $* $4(f)==3:
   lu=$i(f[1],x)
   if lu is $- $#:
    u=f[1]
-   $! $R($^($:(u,fn('ln',u)),u),$:(lu[0],fn('ln',f[2])))
+   $! $O($]($:(u,fn('ln',u)),u),$:(lu[0],fn('ln',f[2])))
  $! $#
 $, iquadrad(b,p,x):
- cs=$Z(b,x)
+ cs=$X(b,x)
  C,B,A=cs
  if $- $1(A):
   $! $#
  av=$U(A)
  if $/(av)is $2:
   $! $#
- D=$^($:(B,B),$:(4,A,C))
+ D=$]($:(B,B),$:(4,A,C))
  if p==Q(-1,2):
   if av<0:
-   $! $:(pw($m(A),Q(-1,2)),fn('$y',$R($m($_($:(2,A,x),B)),$V(D))))
+   $! $:(pw($m(A),Q(-1,2)),fn('$z',$O($m($_($:(2,A,x),B)),$V(D))))
   sA=$V(A)
-  $! $:(pw(A,Q(-1,2)),fn('ln',fn('$H',$_($V(b),$:(sA,x),$R(B,$:(2,sA))))))
+  $! $:(pw(A,Q(-1,2)),fn('ln',fn('$H',$_($V(b),$:(sA,x),$O(B,$:(2,sA))))))
  J=iquadrad(b,Q(-1,2),x)
  if J is $#:
   $! $#
- $! $_($R($:($_($:(2,A,x),B),$V(b)),$:(4,A)),
- $:($R($^($:(4,A,C),$:(B,B)),$:(8,A)),J))
+ $! $_($O($:($_($:(2,A,x),B),$V(b)),$:(4,A)),
+ $:($O($]($:(4,A,C),$:(B,B)),$:(8,A)),J))
 $, irational(f,x):
  ks=[]
  kernels(f,ks)
@@ -4579,31 +4579,31 @@ $, irational(f,x):
  pf=partfrac(f,x)
  if pf is $#:
   $! $#
- $M=pf[1:]if $&(pf,'+')$((pf,)
+ $M=pf[1:]if $((pf,'+')$&(pf,)
  $?=[]
  $) t in $M:
   if $- hasdenom(t):
-   r=$}(t,x,5)
+   r=$~(t,x,5)
    if r is $#:
     $! $#
    $?.$%(r)
    $7
-  fs=t[1:]if $&(t,'*')$((t,)
+  fs=t[1:]if $((t,'*')$&(t,)
   num=[]
   den=$#
   k=1
   $) g in fs:
-   if $&(g,'^')$* $/(g[2])is $u $* g[2]<0:
+   if $((g,'^')$* $/(g[2])is $u $* g[2]<0:
     den=g[1]
     k=-g[2]
-   $(:
+   $&:
     num.$%(g)
   if den is $#:
    $! $#
   N=$G(num)
   dg=degree(den,x)
   if dg==1:
-   r=$}(t,x,5)
+   r=$~(t,x,5)
    if r is $#:
     $! $#
    $?.$%(r)
@@ -4612,8 +4612,8 @@ $, irational(f,x):
    if r is $#:
     $! $#
    $?.$%(r)
-  $(:
-   r=isubst(t,x,3)if k==1 $( $#
+  $&:
+   r=isubst(t,x,3)if k==1 $& $#
    if r is $# $* k==1:
     r=iquartic(t,x,3)
    if r is $#:
@@ -4621,22 +4621,22 @@ $, irational(f,x):
    $?.$%(r)
  $! $;($?)
 $, iquadfrac(N,Qd,k,x):
- cs=$Z(N,x)
- if cs is $# or $5(cs)>2:
+ cs=$X(N,x)
+ if cs is $# or $4(cs)>2:
   $! $#
  n0=cs[0]
- n1=cs[1]if $5(cs)>1 $( 0
- C,B,A=$Z(Qd,x)
+ n1=cs[1]if $4(cs)>1 $& 0
+ C,B,A=$X(Qd,x)
  res=[]
  if n1!=0:
   if k==1:
-   D=$^($:(B,B),$:(4,A,C))
-   dv=$U(D)if $1(D)$( 0
-   arg=Qd if($/(dv)is $- $2 $* dv<0 $* $U(A)>0)$( fn('$H',Qd)
-   res.$%($:($R(n1,$:(2,A)),fn('ln',arg)))
-  $(:
-   res.$%($:($R(n1,$:(2,A)),$R(-1,$:(k-1,pw(Qd,k-1)))))
- c0=$^(n0,$R($:(n1,B),$:(2,A)))
+   D=$]($:(B,B),$:(4,A,C))
+   dv=$U(D)if $1(D)$& 0
+   arg=Qd if($/(dv)is $- $2 $* dv<0 $* $U(A)>0)$& fn('$H',Qd)
+   res.$%($:($O(n1,$:(2,A)),fn('ln',arg)))
+  $&:
+   res.$%($:($O(n1,$:(2,A)),$O(-1,$:(k-1,pw(Qd,k-1)))))
+ c0=$](n0,$O($:(n1,B),$:(2,A)))
  if c0!=0:
   J=jquad(A,B,C,Qd,k,x)
   if J is $#:
@@ -4644,7 +4644,7 @@ $, iquadfrac(N,Qd,k,x):
   res.$%($:(c0,J))
  $! $;(res)
 $, jquad(A,B,C,Qd,k,x):
- D=$>($^($:(B,B),$:(4,A,C)))
+ D=$=($]($:(B,B),$:(4,A,C)))
  if k==1:
   if $- $1(D):
    $! $#
@@ -4654,20 +4654,20 @@ $, jquad(A,B,C,Qd,k,x):
   L=$_($:(2,A,x),B)
   if dv<0:
    s=$V($m(D))
-   $! $:($R(2,s),fn('$t',$R(L,s)))
+   $! $:($O(2,s),fn('$t',$O(L,s)))
   if dv>0:
    s=$V(D)
-   $! $:(pw(s,-1),fn('ln',fn('$H',$R($^(L,s),$_(L,s)))))
-  $! $R(-2,L)
+   $! $:(pw(s,-1),fn('ln',fn('$H',$O($](L,s),$_(L,s)))))
+  $! $O(-2,L)
  Jp=jquad(A,B,C,Qd,k-1,x)
  if Jp is $#:
   $! $#
  Dl=$m(D)
  L=$_($:(2,A,x),B)
- $! $_($:($R(L,$:(k-1,Dl)),pw(Qd,1-k)),
- $:($R($:(2*k-3,2,A),$:(k-1,Dl)),Jp))
+ $! $_($:($O(L,$:(k-1,Dl)),pw(Qd,1-k)),
+ $:($O($:(2*k-3,2,A),$:(k-1,Dl)),Jp))
 $, itanpow(f,x,$<):
- if $&(f,'^')$* $&(f[1],'tan')$* $/(f[2])is $u $* f[2]>=2:
+ if $((f,'^')$* $((f[1],'tan')$* $/(f[2])is $u $* f[2]>=2:
   u=f[1][1]
   lu=$i(u,x)
   if lu is $#:
@@ -4675,15 +4675,15 @@ $, itanpow(f,x,$<):
   n=f[2]
   a=lu[0]
   t=f[1]
-  first=$R(pw(t,n-1),$:(n-1,a))
-  $d=$}(pw(t,n-2),x,$<+1)
+  first=$O(pw(t,n-1),$:(n-1,a))
+  $d=$~(pw(t,n-2),x,$<+1)
   if $d is $#:
    $! $#
-  $! $^(first,$d)
+  $! $](first,$d)
  $! $#
 ''')
 _x(r'''$, isecpow(f,x,$<):
- if($&(f,'^')$* head(f[1])in('cos','sin')$* $5(f[1])==2
+ if($((f,'^')$* head(f[1])in('cos','sin')$* $4(f[1])==2
  $* $/(f[2])is $u $* f[2]<=-3):
   u=f[1][1]
   lu=$i(u,x)
@@ -4693,15 +4693,15 @@ _x(r'''$, isecpow(f,x,$<):
   a=lu[0]
   if f[1][0]=='cos':
    first=$:(pw(fn('cos',u),2-n),fn('tan',u))
-  $(:
+  $&:
    first=$m($:(pw(fn('sin',u),2-n),pw(fn('tan',u),-1)))
-  $d=$}(pw(f[1],2-n),x,$<+1)
+  $d=$~(pw(f[1],2-n),x,$<+1)
   if $d is $#:
    $! $#
-  $! $_($R(first,$:(n-1,a)),$:(Q(n-2,n-1),$d))
+  $! $_($O(first,$:(n-1,a)),$:(Q(n-2,n-1),$d))
  $! $#
 $, cands(f,x,$?):
- if $/(f)is $- $0 or $4(f,x)or f[0]=='Q':
+ if $/(f)is $- $0 or $5(f,x)or f[0]=='Q':
   $!
  h=f[0]
  if h=='+' or h=='*':
@@ -4709,13 +4709,13 @@ $, cands(f,x,$?):
    cands(a,x,$?)
   $!
  if h=='^':
-  if f[1]!=x $* $- $4(f[1],x)$* f[1]$- in $?:
+  if f[1]!=x $* $- $5(f[1],x)$* f[1]$- in $?:
    $?.$%(f[1])
-  if isq(f[2])$* $- $4(f[1],x):
+  if isq(f[2])$* $- $5(f[1],x):
    rad=pw(f[1],Q(1,f[2][2]))
    if rad $- in $?:
     $?.$%(rad)
-  if $- $4(f[2],x)$* f[2]$- in $?:
+  if $- $5(f[2],x)$* f[2]$- in $?:
    $?.$%(f[2])
    if f $- in $?:
     $?.$%(f)
@@ -4729,31 +4729,31 @@ $, cands(f,x,$?):
  if f $- in $?:
   $?.$%(f)
  $) a in f[1:]:
-  if a!=x $* $- $4(a,x)$* a $- in $?:
+  if a!=x $* $- $5(a,x)$* a $- in $?:
    $?.$%(a)
   cands(a,x,$?)
 $, subst_kernel(q,u,V,x):
- if $&(u,'^')$* u[1]==x $* $D(u[2]):
+ if $((u,'^')$* u[1]==x $* $D(u[2]):
   q2=$T(q,x,pw(V,pw(u[2],-1)))
   $! $T(q2,fn('$H',V),V)
- if $&(u,'ln'):
+ if $((u,'ln'):
   lu=$i(u[1],x)
   if lu is $- $#:
    a,b=lu
-   $! $T(q,x,$R($^(pw('e',V),b),a))
- if $&(u,'^')$* isq(u[2])$* $- $4(u[1],x):
-  cs_=$Z(u[1],x)
+   $! $T(q,x,$O($](pw('e',V),b),a))
+ if $((u,'^')$* isq(u[2])$* $- $5(u[1],x):
+  cs_=$X(u[1],x)
   q2=$T(q,u,V)
-  if cs_ is $- $# $* $- $4(q2,x):
-   nz=[k $) k in $+(1,$5(cs_))if cs_[k]!=0]
-   if $5(nz)==1:
+  if cs_ is $- $# $* $- $5(q2,x):
+   nz=[k $) k in $+(1,$4(cs_))if cs_[k]!=0]
+   if $4(nz)==1:
     k=nz[0]
-    xk=$R($^(pw(V,pw(u[2],-1)),cs_[0]),cs_[k])
+    xk=$O($](pw(V,pw(u[2],-1)),cs_[0]),cs_[k])
     q3=$T(q2,x,pw(xk,Q(1,k)))
-    if $4(q3,x):
+    if $5(q3,x):
      $! q3
   $! q2
- if $&(u,'^')$* u[1]=='e':
+ if $((u,'^')$* u[1]=='e':
   lu=$i(u[2],x)
   if lu is $- $# $* lu[1]==0:
    a=lu[0]
@@ -4765,7 +4765,7 @@ $, subst_exp(q,a,V,x):
  if q[0]=='^' $* q[1]=='e':
   lm=$i(q[2],x)
   if lm is $- $#:
-   $! $:(pw(V,$R(lm[0],a)),pw('e',lm[1]))
+   $! $:(pw(V,$O(lm[0],a)),pw('e',lm[1]))
  $! simp((q[0],)+$0(subst_exp(b,a,V,x)$) b in q[1:]))
 $, isubst(f,x,$<):
  if $<>5:
@@ -4776,36 +4776,36 @@ $, isubst(f,x,$<):
  cs=[]
  cands(f,x,cs)
  fracf=hasfracpow(f,x)
- big=$5(okey(f))>500
+ big=$4(okey(f))>500
  $) u in cs[:14]:
   if u==x:
    $7
   du=diff(u,x)
   if du==0:
    $7
-  q=$R(f,du)
+  q=$O(f,du)
   if $- big:
    q=$.(q)
   q2=subst_kernel(q,u,VV,x)
-  if $4(q2,x)$*(fracf or $- hasfracpow(q2,VV))$* $5(okey(q2))<800:
-   r=$}(q2,VV,$<+2)
+  if $5(q2,x)$*(fracf or $- hasfracpow(q2,VV))$* $4(okey(q2))<800:
+   r=$~(q2,VV,$<+2)
    if r is $- $#:
     r=$T(r,VV,u)
     if antiok(r,f,x):
      $! r
  $) u in cs:
-  if $&(u,'+'):
+  if $((u,'+'):
    lu=$i(u,x)
    if lu is $- $#:
     a,b=lu
-    g=$>($R($T(f,x,$R($^(VV,b),a)),a))
-    r=$}(g,VV,$<+2)
+    g=$=($O($T(f,x,$O($](VV,b),a)),a))
+    r=$~(g,VV,$<+2)
     if r is $- $#:
      $! $T(r,VV,u)
  $! $#
 TPTS=(-2.3,-1.7,-0.8,-0.35,0.3,0.75,1.6,2.4)
 $, antiok(F,f,x):
- if $5($q(f))>1 or $5($q(F))>1:
+ if $4($o(f))>1 or $4($o(F))>1:
   $! $E
  $, v(e,t):
   try:
@@ -4813,9 +4813,9 @@ $, antiok(F,f,x):
   $9 $6:
    $! $#
   if $/(z)is $2:
-   if $H(z.imag)>1e-9*(1+$H(z.$P)):
+   if $H(z.imag)>1e-9*(1+$H(z.$Q)):
     $! $#
-   z=z.$P
+   z=z.$Q
   if z!=z or $H(z)>1e12:
    $! $#
   $! z
@@ -4837,48 +4837,48 @@ $, itrigsub(f,x,$<):
  if $- rad:
   $! $#
  B=rad[0]
- cs=$Z(B,x)
- if cs is $# or $5(cs)!=3 or cs[1]!=0 or $- $1(cs[0])or $- $1(cs[2]):
+ cs=$X(B,x)
+ if cs is $# or $4(cs)!=3 or cs[1]!=0 or $- $1(cs[0])or $- $1(cs[2]):
   $! $#
  if any([q!=B $) q in rad]):
   $! $#
  c0,c2=cs[0],cs[2]
  T='T%d_'%$<
  if fv_(c0)<0 $* fv_(c2)>0:
-  r=$V($R($m(c0),c2))
-  xs=$R(r,fn('cos',T))
+  r=$V($O($m(c0),c2))
+  xs=$O(r,fn('cos',T))
   rt=$:($V(c2),r,fn('tan',T))
   dx=$:(r,fn('tan',T),pw(fn('cos',T),-1))
   g=$:(subrad(f,B,rt,x,xs),dx)
   R=$#
   $) h in(pyth_to(g,'cos'),pyth_to(g,'sin'),pyth(g)):
-   R=$}(h,T,$<+2)
+   R=$~(h,T,$<+2)
    if R is $- $#:
     $W
   if R is $#:
    $! $#
-  R=backtrig(texpand(R),T,$R(pw(B,$s),$:($V(c2),x)),$R(r,x))
-  R=$T(R,T,fn('arccos',$R(r,x)))
-  if $- $4(R,T)or $- antiok(R,f,x):
+  R=backtrig(texpand(R),T,$O(pw(B,$s),$:($V(c2),x)),$O(r,x))
+  R=$T(R,T,fn('arccos',$O(r,x)))
+  if $- $5(R,T)or $- antiok(R,f,x):
    $! $#
   $! R
  if fv_(c0)<=0:
   $! $#
  sc0=$V(c0)
  if fv_(c2)<0:
-  r=$V($R(c0,$m(c2)))
+  r=$V($O(c0,$m(c2)))
   xs=$:(r,fn('sin',T))
   rt=$:(sc0,fn('cos',T))
   dx=$:(r,fn('cos',T))
- $(:
-  r=$V($R(c0,c2))
+ $&:
+  r=$V($O(c0,c2))
   xs=$:(r,fn('tan',T))
-  rt=$R(sc0,fn('cos',T))
-  dx=$R(r,pw(fn('cos',T),2))
+  rt=$O(sc0,fn('cos',T))
+  dx=$O(r,pw(fn('cos',T),2))
  g=$:(subrad(f,B,rt,x,xs),dx)
  R=$#
  $) h in(pyth(g),pyth_to(g,'cos'),pyth_to(g,'sin')):
-  R=$}(h,T,$<+2)
+  R=$~(h,T,$<+2)
   if R is $- $#:
    $W
  if R is $#:
@@ -4886,22 +4886,22 @@ $, itrigsub(f,x,$<):
  R=texpand(R)
  sq=pw(B,$s)
  if fv_(c2)<0:
-  sinT=$R(x,r)
-  cosT=$R(sq,sc0)
-  Tx=fn('$y',$R(x,r))
- $(:
-  cosT=$R(sc0,sq)
-  sinT=$:($R(x,r),cosT)
-  Tx=fn('$t',$R(x,r))
+  sinT=$O(x,r)
+  cosT=$O(sq,sc0)
+  Tx=fn('$z',$O(x,r))
+ $&:
+  cosT=$O(sc0,sq)
+  sinT=$:($O(x,r),cosT)
+  Tx=fn('$t',$O(x,r))
  R=backtrig(R,T,sinT,cosT)
  R=$T(R,T,Tx)
- if $- $4(R,T)or $- antiok(R,f,x):
+ if $- $5(R,T)or $- antiok(R,f,x):
   $! $#
  $! R
 $, radicals(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
- if f[0]=='^' $* isq(f[2])$* f[2][2]==2 $* $- $4(f[1],x):
+ if f[0]=='^' $* isq(f[2])$* f[2][2]==2 $* $- $5(f[1],x):
   $?.$%(f[1])
  $) a in f[1:]:
   radicals(a,x,$?)
@@ -4916,18 +4916,18 @@ $, subrad(f,B,rt,x,xs):
 $, backtrig(R,T,sinT,cosT):
  if $/(R)is $- $0 or R[0]=='Q':
   $! R
- if $5(R)==2 $* R[1]==T:
+ if $4(R)==2 $* R[1]==T:
   if R[0]=='sin':
    $! sinT
   if R[0]=='cos':
    $! cosT
   if R[0]=='tan':
-   $! $R(sinT,cosT)
+   $! $O(sinT,cosT)
  $! simp((R[0],)+$0(backtrig(a,T,sinT,cosT)$) a in R[1:]))
 $, hasfracpow(e,x):
  if $/(e)is $- $0 or e[0]=='Q':
   $! $3
- if e[0]=='^' $* $- $g(e[2])$* $- $4(e[1],x):
+ if e[0]=='^' $* $- $g(e[2])$* $- $5(e[1],x):
   $! $E
  $) a in e[1:]:
   if hasfracpow(a,x):
@@ -4948,19 +4948,19 @@ $, ispoly(e,x):
 $, iparts(f,x,$<):
  if $<>5:
   $! $#
- fs=f[1:]if $&(f,'*')$((f,)
+ fs=f[1:]if $((f,'*')$&(f,)
  P=[]
  G=[]
  $) g in fs:
   if ispoly(g,x):
    P.$%(g)
-  $(:
+  $&:
    G.$%(g)
- if $5(G)==2:
+ if $4(G)==2:
   ex=$#
   tr=$#
   $) g in G:
-   if $&(g,'^')$* g[1]=='e' $* $i(g[2],x):
+   if $((g,'^')$* g[1]=='e' $* $i(g[2],x):
     ex=g
    $L head(g)in('sin','cos')$* $i(g[1],x):
     tr=g
@@ -4970,20 +4970,20 @@ $, iparts(f,x,$<):
    u=tr[1]
    den=$_($:(a,a),$:(b,b))
    if tr[0]=='sin':
-    r=$:(ex,$^($:(a,fn('sin',u)),$:(b,fn('cos',u))))
-   $(:
+    r=$:(ex,$]($:(a,fn('sin',u)),$:(b,fn('cos',u))))
+   $&:
     r=$:(ex,$_($:(a,fn('cos',u)),$:(b,fn('sin',u))))
-   $! $R(r,den)
+   $! $O(r,den)
   $! $#
- if $5(G)!=1:
+ if $4(G)!=1:
   $! $#
  g=G[0]
  Pp=$G(P)
  gh=head(g)
  tabular=$3
- if $&(g,'^')$* g[1]=='e' $* $i(g[2],x):
+ if $((g,'^')$* g[1]=='e' $* $i(g[2],x):
   tabular=$E
- $L $&(g,'^')$* $D(g[1])$* $i(g[2],x):
+ $L $((g,'^')$* $D(g[1])$* $i(g[2],x):
   tabular=$E
  $L gh in('sin','cos','sinh','cosh')$* $i(g[1],x):
   tabular=$E
@@ -4993,7 +4993,7 @@ $, iparts(f,x,$<):
   Gi=g
   Pd=Pp
   $) _ in $+(40):
-   Gi=$}(Gi,x,$<+1)
+   Gi=$~(Gi,x,$<+1)
    if Gi is $#:
     $! $#
    res.$%($:(sg,Pd,Gi))
@@ -5002,14 +5002,14 @@ $, iparts(f,x,$<):
    if Pd==0:
     $! $;(res)
   $! $#
- if gh in('ln','$t','$y','arccos','log','arcsinh','arctanh')or($&(g,'^')$* head(g[1])in('ln','$y','$t')$* $g(g[2])$* g[2]>0):
-  V=$}(Pp,x,$<+1)
+ if gh in('ln','$t','$z','arccos','log','arcsinh','arctanh')or($((g,'^')$* head(g[1])in('ln','$z','$t')$* $g(g[2])$* g[2]>0):
+  V=$~(Pp,x,$<+1)
   if V is $#:
    $! $#
-  $d=$}($.($>($:(V,diff(g,x)))),x,$<+1)
+  $d=$~($.($=($:(V,diff(g,x)))),x,$<+1)
   if $d is $#:
    $! $#
-  $! $^($:(g,V),$d)
+  $! $]($:(g,V),$d)
  $! $#
 $, defint(f,x,a,b):
  if a==b:
@@ -5018,7 +5018,7 @@ $, defint(f,x,a,b):
   try:
    if numpt(a)>numpt(b):
     r=defint(f,x,b,a)
-    $! $m(r)if $- $&(r,'$]')$(('$]',f,x,a,b)
+    $! $m(r)if $- $((r,'$^')$&('$^',f,x,a,b)
   $9 $6:
    pass
  if haswhen(f,x)$* $1(a)$* $1(b):
@@ -5031,10 +5031,10 @@ $, defint(f,x,a,b):
     total=$_(total,defint(g,x,p,q))
    $! total
  BUDGET[0]=0
- F=$}(f,x)
+ F=$~(f,x)
  if F is $# $* hasdenom(f):
   BUDGET[0]=0
-  F=$}($.(f),x)
+  F=$~($.(f),x)
  sing=singular_points(f,x,a,b)or[]
  if F is $- $# $* $- $`(f):
   $) p in singular_points(F,x,a,b)or[]:
@@ -5046,15 +5046,15 @@ $, defint(f,x,a,b):
   pts=[a]+sing+[b]
   total=0
   infs=[]
-  $) i in $+($5(pts)-1):
+  $) i in $+($4(pts)-1):
    lo=pts[i]
    hi=pts[i+1]
-   vb=$w(F,x,hi,-1 if $- isinf(hi)$( 0)
-   va=$w(F,x,lo,1 if $- isinf(lo)$( 0)
-   if $&(vb,'$w')or $&(va,'$w'):
+   vb=$w(F,x,hi,-1 if $- isinf(hi)$& 0)
+   va=$w(F,x,lo,1 if $- isinf(lo)$& 0)
+   if $((vb,'$w')or $((va,'$w'):
     total=$#
     $W
-   d=$^(vb,va)
+   d=$](vb,va)
    if va=='$F' or vb=='$F':
     $! '$F'
    if has(va,'$N')or has(vb,'$N'):
@@ -5072,49 +5072,49 @@ $, defint(f,x,a,b):
    $! '$F'
   if total is $- $# $* total!='$F':
    $! total
- if $1(a)$* $1(b)$* freeofall(f,[s $) s in $q(f)if s!=x]):
+ if $1(a)$* $1(b)$* freeofall(f,[s $) s in $o(f)if s!=x]):
   try:
    $! nint_split(f,x,a,b)
   $9 $6:
    pass
- $!('$]',f,x,a,b)
+ $!('$^',f,x,a,b)
 $, haswhen(f,x):
  if $/(f)is $- $0 or f[0]=='Q':
   $! $3
- if f[0]in('when','$H')$* $- $4(f[1],x):
+ if f[0]in('when','$H')$* $- $5(f[1],x):
   $! $E
  $) a in f[1:]:
   if haswhen(a,x):
    $! $E
  $! $3
 $, gensol(r):
- ns=[w $) w in $q(r)if w[0]=='n' $* w[1:].isdigit()]
- if $5(ns)==1 $* $1($T(r,ns[0],0)):
+ ns=[w $) w in $o(r)if w[0]=='n' $* w[1:].isdigit()]
+ if $4(ns)==1 $* $1($T(r,ns[0],0)):
   $! ns[0]
  $! $#
 $, firstwhen_(f,x):
  if $/(f)is $- $0 or f[0]=='Q':
   $! $3
- if f[0]=='when' $* $- $4(f[1],x):
+ if f[0]=='when' $* $- $5(f[1],x):
   $! $E
  $! any([firstwhen_(a,x)$) a in f[1:]])
 $, whenpts(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
- if f[0]=='$H' $* $- $4(f[1],x):
+ if f[0]=='$H' $* $- $5(f[1],x):
   rs=$n(f[1],x,$3)
   if rs $* rs!='all':
    $) r in rs:
     if($v(r)or gensol(r))$* r $- in $?:
      $?.$%(r)
- if f[0]=='when' $* $- $4(f[1],x):
+ if f[0]=='when' $* $- $5(f[1],x):
   cs=[f[1]]
   $K cs:
    c=cs.pop()
    if head(c)in('$*','or','$-'):
     cs.extend(c[1:])
    $L head(c)in('<','>','<=','>=','=','/='):
-    rs=$n($^(c[1],c[2]),x,$3)
+    rs=$n($](c[1],c[2]),x,$3)
     if rs $* rs!='all':
      $) r in rs:
       if($v(r)or gensol(r))$* r $- in $?:
@@ -5124,18 +5124,18 @@ $, whenpts(f,x,$?):
 $, pickwhen(f,x,t):
  if $/(f)is $- $0 or f[0]=='Q':
   $! f
- if f[0]=='when' $* $- $4(f[1],x):
+ if f[0]=='when' $* $- $5(f[1],x):
   try:
    c=nbool(f[1],{x:t})
   $9 $6:
    $! '$F'
   if c:
    $! pickwhen(f[2],x,t)
-  $! pickwhen(f[3],x,t)if $5(f)>3 $( '$F'
- if f[0]=='$H' $* $- $4(f[1],x):
+  $! pickwhen(f[3],x,t)if $4(f)>3 $& '$F'
+ if f[0]=='$H' $* $- $5(f[1],x):
   u=pickwhen(f[1],x,t)
   try:
-   $! u if fv_($T(u,x,t))>=0 $( $m(u)
+   $! u if fv_($T(u,x,t))>=0 $& $m(u)
   $9 $6:
    $! f
  $! simp((f[0],)+$0(pickwhen(a,x,t)$) a in f[1:]))
@@ -5147,7 +5147,7 @@ $, numpt(v):
  $! fv_(v)
 $, fv_(v):
  z=$U(v)
- $! z.$P if $/(z)is $2 $( z
+ $! z.$Q if $/(z)is $2 $& z
 $, whensplit(f,x,a,b):
  pts=[]
  whenpts(f,x,pts)
@@ -5169,14 +5169,14 @@ $, whensplit(f,x,a,b):
  ins.sort(key=fv_)
  ends=[a]+ins+[b]
  $?=[]
- $) i in $+($5(ends)-1):
+ $) i in $+($4(ends)-1):
   p,q=ends[i],ends[i+1]
   pv,qv=numpt(p),numpt(q)
   if pv<-1e299:
    t=qv-1.0
   $L qv>1e299:
    t=pv+1.0
-  $(:
+  $&:
    t=0.5*(pv+qv)
   $?.$%((p,q,pickwhen(f,x,t)))
  $! $?
@@ -5185,7 +5185,7 @@ _x(r'''$, whenlimit(f,x,a,dirn):
  pts=[]
  whenpts(f,x,pts)
  if isinf(a):
-  t=1e6 if a=='$N' $(-1e6
+  t=1e6 if a=='$N' $&-1e6
   $! $w(pickwhen(f,x,t),x,a,dirn)
  av=fv_(a)
  d=1e-6
@@ -5193,8 +5193,8 @@ _x(r'''$, whenlimit(f,x,a,dirn):
   q=$H(fv_(p)-av)
   if q>1e-12:
    d=min(d,q/2)
- r=$w(pickwhen(f,x,av+d),x,a,1)if dirn>=0 $( $#
- l=$w(pickwhen(f,x,av-d),x,a,-1)if dirn<=0 $( $#
+ r=$w(pickwhen(f,x,av+d),x,a,1)if dirn>=0 $& $#
+ l=$w(pickwhen(f,x,av-d),x,a,-1)if dirn<=0 $& $#
  if dirn==1:
   $! r
  if dirn==-1:
@@ -5213,8 +5213,8 @@ $, singular_points(f,x,a,b):
  if $-($1(a)$* $1(b)):
   $![]
  try:
-  av=nreal(a)if $- isinf(a)$((-1e300 if a!='$N' $( 1e300)
-  bv=nreal(b)if $- isinf(b)$((1e300 if b=='$N' $(-1e300)
+  av=nreal(a)if $- isinf(a)$&(-1e300 if a!='$N' $& 1e300)
+  bv=nreal(b)if $- isinf(b)$&(1e300 if b=='$N' $&-1e300)
  $9 $6:
   $![]
  lo,hi=min(av,bv),max(av,bv)
@@ -5223,7 +5223,7 @@ $, singular_points(f,x,a,b):
  collect_dens(f,x,dens)
  $) d in dens:
   u=u_from_expr(d,x)
-  if u is $- $# $* $5(u)<2:
+  if u is $- $# $* $4(u)<2:
    $7
   if u is $#:
    if hi-lo<1e6:
@@ -5232,8 +5232,8 @@ $, singular_points(f,x,a,b):
       pts.$%(snapzero(d,x,r))
    $7
   $) r in aberth(u):
-   if $H(r.imag)<1e-9 $* lo<r.$P<hi:
-    rr=exactify(r.$P)if $H(r.$P-round(r.$P))<1e-12 $( r.$P
+   if $H(r.imag)<1e-9 $* lo<r.$Q<hi:
+    rr=exactify(r.$Q)if $H(r.$Q-round(r.$Q))<1e-12 $& r.$Q
     pts.$%(rr)
  pts.sort(key=fv_)
  if av>bv:
@@ -5242,11 +5242,11 @@ $, singular_points(f,x,a,b):
 $, collect_dens(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
- if f[0]=='^' $* $D(f[2])$* $a(f[2])<0 $* $- $4(f[1],x):
+ if f[0]=='^' $* $D(f[2])$* $a(f[2])<0 $* $- $5(f[1],x):
   $?.$%(f[1])
- if f[0]=='tan' $* $- $4(f[1],x):
+ if f[0]=='tan' $* $- $5(f[1],x):
   $?.$%(fn('cos',f[1]))
- if f[0]in('ln','log')$* $- $4(f[1],x):
+ if f[0]in('ln','log')$* $- $5(f[1],x):
   $?.$%(f[1])
  $) a in f[1:]:
   collect_dens(a,x,$?)
@@ -5255,14 +5255,14 @@ $, scanzeros(d,x,lo,hi,n=400):
  $, g(t):
   try:
    v=$U(d,{x:t})
-   $! v.$P if $/(v)is $2 $( v
+   $! v.$Q if $/(v)is $2 $& v
   $9 $6:
    $! $#
  h=(hi-lo)/n
  t0=lo+h*1e-3
  v0=g(t0)
  $) k in $+(1,n+1):
-  t1=lo+h*k-(h*1e-3 if k==n $( 0)
+  t1=lo+h*k-(h*1e-3 if k==n $& 0)
   v1=g(t1)
   if v0 is $- $# $* v1 is $- $# $* v0*v1<=0:
    a,b,fa=t0,t1,v0
@@ -5273,7 +5273,7 @@ $, scanzeros(d,x,lo,hi,n=400):
      $W
     if(fm<=0)==(fa<=0):
      a,fa=m,fm
-    $(:
+    $&:
      b=m
    m=0.5*(a+b)
    fm=g(m)
@@ -5285,7 +5285,7 @@ $, snapzero(d,x,r):
  $) c in(exactify_guess(r/$I.pi),exactify_guess(r)):
   if $/(c)is $@:
    $7
-  v=$:(c,'pi')if c is $- exactify_guess(r)$( c
+  v=$:(c,'pi')if c is $- exactify_guess(r)$& c
   try:
    if $H(fv_($T(d,x,v)))<1e-9:
     $! v
@@ -5317,7 +5317,7 @@ $, nint(f,x,a,b,tol=1e-10):
    if isinf(a):
     f,a,b=$T(f,x,$m(x)),$m(b),'$N'
    a0=nreal(a)
-   g=$8 t:_nv(f,x,a0+t/(1-t))/(1-t)**2 if t<1 $( 0.0
+   g=$8 t:_nv(f,x,a0+t/(1-t))/(1-t)**2 if t<1 $& 0.0
    $) j in $+(3):
     g=smooth(g)
     NERR[0]=0.0
@@ -5325,12 +5325,12 @@ $, nint(f,x,a,b,tol=1e-10):
     if NERR[0]<=1e-7*max(1.0,$H(r)):
      $W
   if NERR[0]>1e-7*max(1.0,$H(r)):
-   err('Questionable accuracy: the $] may diverge')
+   err('Questionable accuracy: the $^ may diverge')
  if r!=r or $H(r)==$@('$N'):
-  err('Questionable accuracy: the $] may diverge')
+  err('Questionable accuracy: the $^ may diverge')
  if $/(r)is $2:
-  if $H(r.imag)<1e-12*(1+$H(r.$P)):
-   $! r.$P
+  if $H(r.imag)<1e-12*(1+$H(r.$Q)):
+   $! r.$Q
   $! fromcomplex(r)
  $! r
 $, nint0(f,x,a,b,tol=1e-10):
@@ -5359,15 +5359,15 @@ $, smooth(g):
 $, nint_split(f,x,a,b):
  pts=[a]+(singular_points(f,x,a,b)or[])+[b]
  r=0
- $) i in $+($5(pts)-1):
+ $) i in $+($4(pts)-1):
   r=$_(r,nint(f,x,pts[i],pts[i+1]))
  $! r
 $, trigk(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
- if f[0]in('sin','cos')$* $- $4(f[1],x):
+ if f[0]in('sin','cos')$* $- $5(f[1],x):
   lu=$i(f[1],x)
-  $?.$%(lu[0]if lu is $- $# $* $1(lu[0])$( $#)
+  $?.$%(lu[0]if lu is $- $# $* $1(lu[0])$& $#)
  $) a in f[1:]:
   trigk(a,x,$?)
 $, nint_osc(f,x,a,b,tol):
@@ -5398,41 +5398,41 @@ $, nint_osc(f,x,a,b,tol):
   t+=h
   sums.$%(s_)
  if max($M[-4:])>0.25*max($M[:4])$* max($M[-4:])>1e-12:
-  err('Questionable accuracy: the $] may diverge')
+  err('Questionable accuracy: the $^ may diverge')
  est=wynn(sums)
  est2=wynn(sums[:-6])
  if est is $# or est2 is $# or $H(est-est2)>1e-7*max(1.0,$H(est)):
-  err('Questionable accuracy: the $] may diverge')
+  err('Questionable accuracy: the $^ may diverge')
  $! sgn_*est
 $, wynn(S):
- n=$5(S)
+ n=$4(S)
  e0=[0.0]*(n+1)
  e1=$J(S)
- ${=S[-1]
+ $}=S[-1]
  $) k in $+(1,n):
   e2=[]
-  $) j in $+($5(e1)-1):
+  $) j in $+($4(e1)-1):
    d=e1[j+1]-e1[j]
    if d==0:
     $! e1[j+1]
    e2.$%(e0[j+1]+1.0/d)
   if k%2==0 $* e2:
-   ${=e2[-1]
+   $}=e2[-1]
   e0,e1=e1,e2
-  if $5(e1)<2:
+  if $4(e1)<2:
    $W
- $! ${
+ $! $}
 $, _nv(f,x,t):
  try:
   v=$U(f,{x:t})
  $9 $C:
   $! 0.0
- $9($Q,$[):
+ $9($R,$[):
   $! 0.0
  if $/(v)is $2:
-  if $H(v.imag)>1e-12*(1+$H(v.$P)):
+  if $H(v.imag)>1e-12*(1+$H(v.$Q)):
    $! v
-  v=v.$P
+  v=v.$Q
  if v!=v or v in($@('$N'),$@('-$N')):
   $! 0.0
  $! v
@@ -5488,12 +5488,12 @@ $, s_val(A):
    m=k
  $! m
 $, cs(c):
- c=$>(c)
+ c=$=(c)
  if hasdenom(c):
   c=$.(c)
  $! c
 $, s_add(A,B):
- p=A[1]if ncmp(A[1],B[1])<0 $( B[1]
+ p=A[1]if ncmp(A[1],B[1])<0 $& B[1]
  d={}
  $) S in(A,B):
   $) k in S[0]:
@@ -5510,7 +5510,7 @@ $, s_mul(A,B):
  vB=s_val(B)
  p1=nadd(A[1],vB)
  p2=nadd(B[1],vA)
- p=p1 if ncmp(p1,p2)<0 $( p2
+ p=p1 if ncmp(p1,p2)<0 $& p2
  d={}
  $) a in A[0]:
   $) b in B[0]:
@@ -5544,7 +5544,7 @@ $, s_powser(U,coefs):
  res=s_const(coefs[0])
  res=(res[0],U[1])
  P=({0:1},BIGP)
- $) k in $+(1,$5(coefs)):
+ $) k in $+(1,$4(coefs)):
   P=s_mul(P,U)
   if $- P[0]:
    $W
@@ -5557,7 +5557,7 @@ $, nterms(U):
   $f $k()
  p=U[1]
  if ncmp(p,BIGP)>=0:
-  $! 0 if $- U[0]$( 30
+  $! 0 if $- U[0]$& 30
  n=nfloor(ndiv(p,v))+1
  if n>30:
   n=30
@@ -5569,13 +5569,13 @@ $, s_pow(A,p):
    R=s_mul(R,A)
   $! R
  a,c,U=s_split(A)
- n=nterms(U)if U[0]$( 0
+ n=nterms(U)if U[0]$& 0
  coefs=[1]
  b=1
  $) k in $+(1,n+1):
-  b=$:(b,$R($^(p,k-1),k))
+  b=$:(b,$O($](p,k-1),k))
   coefs.$%(b)
- S=s_powser(U,coefs)if U[0]$(({0:1},U[1])
+ S=s_powser(U,coefs)if U[0]$&({0:1},U[1])
  ap=$:(a,p)
  if $- $r(ap):
   $f $k()
@@ -5589,40 +5589,40 @@ $, s_exp(A):
  U=(dict([(k,A[0][k])$) k in A[0]if k!=0]),A[1])
  shift=0
  if has(c0,LNT):
-  cc=$Z(c0,LNT)
-  if cc is $# or $5(cc)!=2 or $- $r(cc[1]):
+  cc=$X(c0,LNT)
+  if cc is $# or $4(cc)!=2 or $- $r(cc[1]):
    $f $k()
   shift=cc[1]
   c0=cc[0]
- n=nterms(U)if U[0]$( 0
+ n=nterms(U)if U[0]$& 0
  coefs=[1]
  f=1
  $) k in $+(1,n+1):
   f=f*k
   coefs.$%(Q(1,f))
- S=s_powser(U,coefs)if U[0]$(({0:1},U[1])
+ S=s_powser(U,coefs)if U[0]$&({0:1},U[1])
  $! s_scale(S,pw('e',c0),shift)
 $, s_ln(A):
  a,c,U=s_split(A)
- n=nterms(U)if U[0]$( 0
+ n=nterms(U)if U[0]$& 0
  coefs=[0]
  $) k in $+(1,n+1):
   coefs.$%(Q((-1)**(k+1),k))
- S=s_powser(U,coefs)if U[0]$(({},U[1])
+ S=s_powser(U,coefs)if U[0]$&({},U[1])
  base=$_(fn('ln',c),$:(a,LNT))
- $! s_add(S,(({0:base}if base!=0 $({}),BIGP))
+ $! s_add(S,(({0:base}if base!=0 $&{}),BIGP))
 $, s_fun($B,A):
  neg_=[k $) k in A[0]if ncmp(k,0)<0]
  if neg_:
   if $B=='$t':
    a,c=s_lead(A)
    sg=$U(c)
-   sg=1 if($/(sg)is $- $2 $* sg>0)$(-1
+   sg=1 if($/(sg)is $- $2 $* sg>0)$&-1
    inv_=s_pow(A,-1)
    $! s_add(s_const($:(sg,$s,'pi')),s_scale(s_fun('$t',inv_),-1))
   if $B=='tanh':
    a,c=s_lead(A)
-   $! s_const(1 if $U(c).$P>0 $(-1)
+   $! s_const(1 if $U(c).$Q>0 $&-1)
   $f $k()
  c0=A[0].get(0,0)
  if has(c0,LNT):
@@ -5630,16 +5630,16 @@ $, s_fun($B,A):
  U=(dict([(k,A[0][k])$) k in A[0]if k!=0]),A[1])
  if $B=='$H' or $B=='sign':
   a,c=s_lead(A)
-  v=$U($T(c,LNT,-1000))if has(c,LNT)$( $U(c)
+  v=$U($T(c,LNT,-1000))if has(c,LNT)$& $U(c)
   if $/(v)is $2:
    $f $k()
-  sg=1 if v>0 $(-1
+  sg=1 if v>0 $&-1
   if $B=='sign':
    $! s_const(sg)
   $! s_scale(A,sg)
  if $B in('floor','ceiling','ipart','round','$u','fpart'):
   $f $k()
- n=nterms(U)if U[0]$( 0
+ n=nterms(U)if U[0]$& 0
  z='Z_'
  g=fn($B,z)
  coefs=[$T(g,z,c0)]
@@ -5647,15 +5647,15 @@ $, s_fun($B,A):
  $) k in $+(1,n+1):
   g=diff(g,z)
   fact*=k
-  coefs.$%(cs($R($T(g,z,c0),fact)))
+  coefs.$%(cs($O($T(g,z,c0),fact)))
  $) cc in coefs:
   if has(cc,'$F')or cc=='$F' or has(cc,'$N'):
    $f $k()
  if $- U[0]:
-  $! s_const(coefs[0])if $E $( $#
+  $! s_const(coefs[0])if $E $& $#
  $! s_powser(U,coefs)
 $, ser(e,N):
- if $4(e,TV):
+ if $5(e,TV):
   $! s_const(e)
  if e==TV:
   $!({1:1},BIGP)
@@ -5673,7 +5673,7 @@ $, ser(e,N):
  if h=='^':
   b=e[1]
   p=e[2]
-  if $4(p,TV):
+  if $5(p,TV):
    B=ser(b,N)
    if $r(p):
     $! trunc(s_pow(B,p),N)
@@ -5682,15 +5682,15 @@ $, ser(e,N):
     if a!=0:
      $f $k()
     $! trunc(s_pow(B,p),N)
-  if $4(b,TV):
+  if $5(b,TV):
    $! trunc(s_exp(s_scale(ser(p,N),fn('ln',b))),N)
   $! trunc(s_exp(s_mul(ser(p,N),s_ln(ser(b,N)))),N)
  if h=='ln':
   $! trunc(s_ln(ser(e[1],N)),N)
  if h=='log':
-  b=e[2]if $5(e)>2 $( 10
+  b=e[2]if $4(e)>2 $& 10
   $! trunc(s_scale(s_ln(ser(e[1],N)),pw(fn('ln',b),-1)),N)
- if $5(e)==2:
+ if $4(e)==2:
   $! trunc(s_fun(h,ser(e[1],N)),N)
  $f $k()
 $, trunc(A,N):
@@ -5716,26 +5716,26 @@ $, lead_t(e):
  $! $#
 $, lnt_lim(c):
  n,d=numer_denom(c)
- cn=$Z(n,LNT)
- cd=$Z(d,LNT)
+ cn=$X(n,LNT)
+ cd=$X(d,LNT)
  if cn is $# or cd is $#:
   $f $k()
- p=$5(cn)-1
- q=$5(cd)-1
+ p=$4(cn)-1
+ q=$4(cd)-1
  if p<q:
   $! 0
  if p==q:
-  $! $R(cn[p],cd[q])
+  $! $O(cn[p],cd[q])
  v=lnt_sign(c)
  if $/(v)is $2:
   $! '$F'
- $! '$N' if v>0 $(('*',-1,'$N')
+ $! '$N' if v>0 $&('*',-1,'$N')
 $, lnt_sign(c):
- cc=$Z(c,LNT)
+ cc=$X(c,LNT)
  if cc is $#:
   v=$U($T(c,LNT,-1e6))
   $! v
- k=$5(cc)-1
+ k=$4(cc)-1
  lead=cc[k]
  v=$U(lead)
  if $/(v)is $2:
@@ -5746,19 +5746,19 @@ $, lnt_sign(c):
 $, $w(f,x,a,dirn=0):
  $! infnorm(limit0(f,x,a,dirn))
 $, infnorm(r):
- if $&(r,'*')$*('$N' in r[1:]):
+ if $((r,'*')$*('$N' in r[1:]):
   c=$G([b $) b in r[1:]if b!='$N'])
   if $1(c):
    try:
     v=fv_(c)
-    $! '$N' if v>0 $((('*',-1,'$N')if v<0 $( '$F')
+    $! '$N' if v>0 $&(('*',-1,'$N')if v<0 $& '$F')
    $9 $6:
     pass
  $! r
 $, limit0(f,x,a,dirn=0):
- if $&(f,'$J')or $&(f,'mat'):
+ if $((f,'$J')or $((f,'mat'):
   $! mapexpr($8 g:$w(g,x,a,dirn),f)
- if $4(f,x):
+ if $5(f,x):
   $! f
  if haswhen(f,x)$* $1(a)$* firstwhen_(f,x):
   $! whenlimit(f,x,a,dirn)
@@ -5771,29 +5771,29 @@ $, limit0(f,x,a,dirn=0):
   if r is $- $#:
    $! r
  if a=='$N' or a==('*',-1,'$N'):
-  sub_=pw(TV,-1)if a=='$N' $( $m(pw(TV,-1))
+  sub_=pw(TV,-1)if a=='$N' $& $m(pw(TV,-1))
   $! lim_side(f,x,sub_,a)
  if dirn==0 $* $- has_disc(f):
   try:
    v=$T(f,x,a)
-   if v!='$F' $* $4(v,'$F')$* $- has(v,'$N'):
+   if v!='$F' $* $5(v,'$F')$* $- has(v,'$N'):
     v2=v
     if $1(v2):
      vv=$U(v2)
-     if $/(vv)is $2 $* $H(vv.imag)>1e-12 $* $4(f,'i'):
-      $f $Q
+     if $/(vv)is $2 $* $H(vv.imag)>1e-12 $* $5(f,'i'):
+      $f $R
     $! v
-  $9($O,$C,$Q,TypeError):
+  $9($P,$C,$R,TypeError):
    pass
  if dirn==1:
   $! lim_side(f,x,$_(a,TV),a)
  if dirn==-1:
-  $! lim_side(f,x,$^(a,TV),a)
+  $! lim_side(f,x,$](a,TV),a)
  r=lim_side(f,x,$_(a,TV),a)
- l=lim_side(f,x,$^(a,TV),a)
+ l=lim_side(f,x,$](a,TV),a)
  if r==l:
   $! r
- if $&(r,'$w')or $&(l,'$w'):
+ if $((r,'$w')or $((l,'$w'):
   $!('$w',f,x,a)
  try:
   if $1(r)$* $1(l)$* $- has(r,'$N')$* $- has(l,'$N'):
@@ -5812,7 +5812,7 @@ $, factnorm(f,x):
  $, walk(e):
   if $/(e)is $- $0 or e[0]=='Q':
    $!
-  if e[0]=='fact' $* $- $4(e[1],x):
+  if e[0]=='fact' $* $- $5(e[1],x):
    fs.$%(e[1])
   $) b in e[1:]:
    walk(b)
@@ -5821,14 +5821,14 @@ $, factnorm(f,x):
   $! f
  base=fs[0]
  $) u in fs:
-  d=$^(base,u)
+  d=$](base,u)
   if $g(d)$* d>0:
    base=u
  $, rep(e):
   if $/(e)is $- $0 or e[0]=='Q':
    $! e
-  if e[0]=='fact' $* $- $4(e[1],x):
-   k=$^(e[1],base)
+  if e[0]=='fact' $* $- $5(e[1],x):
+   k=$](e[1],base)
    if $g(k)$* 0<k<=50:
     $! $G([$_(base,j)$) j in $+(1,k+1)]+[fn('fact',base)])
    $! e
@@ -5837,21 +5837,21 @@ $, factnorm(f,x):
 $, stirling(f,x):
  if $/(f)is $- $0 or f[0]=='Q':
   $! f
- if f[0]=='fact' $* $- $4(f[1],x):
+ if f[0]=='fact' $* $- $5(f[1],x):
   u=stirling(f[1],x)
-  $! $:($V($:(2,'pi',u)),pw($R(u,'e'),u))
+  $! $:($V($:(2,'pi',u)),pw($O(u,'e'),u))
  $! simp((f[0],)+$0(stirling(b,x)$) b in f[1:]))
 $, bounded_nodes(f,x,a,dirn,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
  $) b in f[1:]:
   bounded_nodes(b,x,a,dirn,$?)
- if $5(f)==2 $* $- $4(f[1],x)$* f[0]in STEPF+('sin','cos'):
+ if $4(f)==2 $* $- $5(f[1],x)$* f[0]in STEPF+('sin','cos'):
   try:
    L=$w(f[1],x,a,dirn)
   $9 $6:
    $!
-  if L in('$N',('*',-1,'$N'))or L=='$F' or $&(L,'$w'):
+  if L in('$N',('*',-1,'$N'))or L=='$F' or $((L,'$w'):
    if(f,1)$- in $?:
     $?.$%((f,1))
   $L f[0]in STEPF $* $- isinf(a):
@@ -5868,7 +5868,7 @@ $, lim_bounded(f,x,a,dirn):
    l=lim_bounded(f,x,a,-1)
    if r is $# or l is $#:
     $! $#
-   $! r if r==l $( '$F'
+   $! r if r==l $& '$F'
   stp=[n $) n,k in ns if k==0]
   ns=[n $) n,k in ns if k==1]
   if stp:
@@ -5880,7 +5880,7 @@ $, lim_bounded(f,x,a,dirn):
     $9 $6:
      $! $#
    $! $w(g,x,a,dirn)
- $(:
+ $&:
   ns=[n $) n,k in ns]
  if $- ns:
   $! $#
@@ -5890,21 +5890,21 @@ $, lim_bounded(f,x,a,dirn):
   if n[0]in('sin','cos'):
    reps.$%((n,C,(-1,0,1)))
   $L n[0]in('floor','$u','ipart'):
-   reps.$%((n,$^(n[1],C),(0,Q(1,2),1)))
+   reps.$%((n,$](n[1],C),(0,Q(1,2),1)))
   $L n[0]=='ceiling':
    reps.$%((n,$_(n[1],C),(0,Q(1,2),1)))
   $L n[0]=='round':
    reps.$%((n,$_(n[1],C),(Q(-1,2),0,Q(1,2))))
-  $(:
+  $&:
    reps.$%((n,C,(0,Q(1,2),1)))
- if $5(reps)>1:
+ if $4(reps)>1:
   $! $#
  n,r,cs=reps[0]
  g=replnode_(f,n,r)
  $e=[]
  $) c in cs:
   v=$w($T(g,C,c),x,a,dirn)
-  if $&(v,'$w'):
+  if $((v,'$w'):
    $! $#
   $e.$%(v)
  if $e[0]==$e[1]==$e[2]$* $e[0]!='$F':
@@ -5945,7 +5945,7 @@ _x(r'''$, lim_side(f,x,sub_,a):
     $! '$F'
    if v==0:
     $f $k()
-   $! '$N' if v>0 $(('*',-1,'$N')
+   $! '$N' if v>0 $&('*',-1,'$N')
   if al==0:
    $! c
   if $- $1(c):
@@ -5953,8 +5953,8 @@ _x(r'''$, lim_side(f,x,sub_,a):
   v=$U(c)
   if $/(v)is $2:
    $! '$F'
-  $! '$N' if v>0 $(('*',-1,'$N')
- $9($k,$O,$C,$Q,TypeError,$[):
+  $! '$N' if v>0 $&('*',-1,'$N')
+ $9($k,$P,$C,$R,TypeError,$[):
   pass
  r=lim_lh(g,0)
  if r is $- $#:
@@ -5988,12 +5988,12 @@ $, lim_log(g,$<=0):
   v=$#
  if v is $#:
   $! $#
- sg=1 if v>0 $(-1
+ sg=1 if v>0 $&-1
  L=lim_val($.(lnexp($:(sg,g))),$<)
- if L is $# or $&(L,'$w')or L=='$F':
+ if L is $# or $((L,'$w')or L=='$F':
   $! $#
  if L=='$N':
-  $! '$N' if sg>0 $(('*',-1,'$N')
+  $! '$N' if sg>0 $&('*',-1,'$N')
  if L==('*',-1,'$N'):
   $! 0
  if $1(L):
@@ -6013,12 +6013,12 @@ $, lim_val(g,$<):
    $! lnt_lim(c)
   if has(c,LNT):
    v=lnt_sign(c)
-   $! '$N' if v>0 $(('*',-1,'$N')
+   $! '$N' if v>0 $&('*',-1,'$N')
   if al==0:
    $! c
   v=$U(c)
-  $! '$N' if v>0 $(('*',-1,'$N')
- $9($k,$O,$C,$Q,TypeError,$[):
+  $! '$N' if v>0 $&('*',-1,'$N')
+ $9($k,$P,$C,$R,TypeError,$[):
   pass
  r=lim_lh(g,$<+1)
  if r is $# $* $<<3:
@@ -6027,10 +6027,10 @@ $, lim_val(g,$<):
 $, lim_lh(g,$<):
  if $<>4:
   $! $#
- if $4(g,TV):
+ if $5(g,TV):
   $! g
  h=head(g)
- if h=='^' $* $- $4(g[2],TV):
+ if h=='^' $* $- $5(g[2],TV):
   L=lim_val($:(g[2],fn('ln',g[1])),$<)
   if L is $#:
    $! $#
@@ -6050,25 +6050,25 @@ $, lim_lh(g,$<):
    if ln_ is $# or ld is $#:
     $! $#
    if(ln_==0 $* ld==0)or(isinfv(ln_)$* isinfv(ld)):
-    $! lim_val($.($R(diff(nu,TV),diff(de,TV))),$<)
+    $! lim_val($.($O(diff(nu,TV),diff(de,TV))),$<)
    if ld==0:
     s=$U($T(de,TV,1e-9))
-    sn=$U(ln_)if $1(ln_)$* $- isinfv(ln_)$((1 if ln_=='$N' $(-1)
-    $! '$N' if(s.$P if $/(s)is $2 $( s)*(sn.$P if $/(sn)is $2 $( sn)>0 $(('*',-1,'$N')
-   $! $R(ln_,ld)
+    sn=$U(ln_)if $1(ln_)$* $- isinfv(ln_)$&(1 if ln_=='$N' $&-1)
+    $! '$N' if(s.$Q if $/(s)is $2 $& s)*(sn.$Q if $/(sn)is $2 $& sn)>0 $&('*',-1,'$N')
+   $! $O(ln_,ld)
   ls=[lim_val(fct,$<)$) fct in g[1:]]
   if $# in ls:
    $! $#
-  zero=[i $) i in $+($5(ls))if ls[i]==0]
-  infs=[i $) i in $+($5(ls))if isinfv(ls[i])]
+  zero=[i $) i in $+($4(ls))if ls[i]==0]
+  infs=[i $) i in $+($4(ls))if isinfv(ls[i])]
   if zero $* infs:
    r=lim_log(g,$<+1)
    if r is $- $#:
     $! r
    i=zero[0]
    j=infs[0]
-   $d=$G([g[k+1]$) k in $+($5(ls))if k!=i $* k!=j])
-   q=$R(g[i+1],pw(g[j+1],-1))
+   $d=$G([g[k+1]$) k in $+($4(ls))if k!=i $* k!=j])
+   q=$O(g[i+1],pw(g[j+1],-1))
    r=lim_val(q,$<)
    if r is $#:
     $! $#
@@ -6081,18 +6081,18 @@ $, lim_lh(g,$<):
   r=$;(ls)
   if r!='$F':
    $! r
-  ii=[k $) k in $+($5(ls))if isinfv(ls[k])]
+  ii=[k $) k in $+($4(ls))if isinfv(ls[k])]
   if $- ii:
    $! $#
   $) i in ii:
    A=g[i+1]
-   $d=$;([g[k+1]$) k in $+($5(ls))if k!=i])
-   q=lim_val($.($R($d,A)),$<)
+   $d=$;([g[k+1]$) k in $+($4(ls))if k!=i])
+   q=lim_val($.($O($d,A)),$<)
    if q is $# or q=='$F' or isinfv(q)or q==-1:
     $7
    $! $:(ls[i],$_(1,q))
   $! $#
- if $/(g)is $0 $* $5(g)==2:
+ if $/(g)is $0 $* $4(g)==2:
   L=lim_val(g[1],$<)
   if L is $#:
    $! $#
@@ -6111,7 +6111,7 @@ $, lim_num(g,a):
   if $/(v1)is $2 or $/(v2)is $2:
    $!('$w',g)
   if $H(v1)>1e12 $* $H(v1)>$H(v2):
-   $! '$N' if v1>0 $(('*',-1,'$N')
+   $! '$N' if v1>0 $&('*',-1,'$N')
   if $H(v1)<1e-6 $* $H(v1)<$H($e[-3])$* $H(v2)<$H($e[-3]):
    $! 0
   if $H(v1-v2)<1e-6*(1+$H(v1)):
@@ -6127,18 +6127,18 @@ $, exactify_guess(v):
  $! v
 $, series_at(f,x,a,order):
  if a=='$N' or a==('*',-1,'$N'):
-  sub_=pw(TV,-1)if a=='$N' $( $m(pw(TV,-1))
-  back=pw(x,-1)if a=='$N' $( $m(pw(x,-1))
- $(:
+  sub_=pw(TV,-1)if a=='$N' $& $m(pw(TV,-1))
+  back=pw(x,-1)if a=='$N' $& $m(pw(x,-1))
+ $&:
   sub_=$_(a,TV)
-  back=$^(x,a)
+  back=$](x,a)
  g=$T(f,x,sub_)
  S=series_t(g,order)
  $! S,back
 $, taylor(f,x,n,a=0):
  try:
   S,back=series_at(f,x,a,n)
- $9($k,$O,$C,$Q):
+ $9($k,$P,$C,$R):
   $! taylor_d(f,x,n,a)
  $M=[]
  $) k in S[0]:
@@ -6159,15 +6159,15 @@ $, taylor_d(f,x,n,a):
   v=$T(g,x,a)
   if has(v,'$F')or v=='$F' or has(v,'$N'):
    $!('taylor',f,x,n,a)
-  $M.$%($:($R(v,fact),pw($^(x,a),k)))
+  $M.$%($:($O(v,fact),pw($](x,a),k)))
  $! $;($M)
 $, series_cmd(f,x,n,a=0):
  try:
   S,back=series_at(f,x,a,n)
- $9($k,$O,$C,$Q):
+ $9($k,$P,$C,$R):
   $!('series',f,x,n,a)
  $M=[]
- lnback=fn('ln',back)if $-(a=='$N' or a==('*',-1,'$N'))$( $m(fn('ln',fn('$H',x)))
+ lnback=fn('ln',back)if $-(a=='$N' or a==('*',-1,'$N'))$& $m(fn('ln',fn('$H',x)))
  $) k in S[0]:
   if ncmp(k,n)>0:
    $7
@@ -6177,16 +6177,16 @@ $, series_cmd(f,x,n,a=0):
 ''')
 _x(r'''$, dominant(f,x,a=0):
  if a=='$N' or a==('*',-1,'$N'):
-  sub_=pw(TV,-1)if a=='$N' $( $m(pw(TV,-1))
-  back=pw(x,-1)if a=='$N' $( $m(pw(x,-1))
+  sub_=pw(TV,-1)if a=='$N' $& $m(pw(TV,-1))
+  back=pw(x,-1)if a=='$N' $& $m(pw(x,-1))
   lnback=$m(fn('ln',fn('$H',x)))
- $(:
+ $&:
   sub_=$_(a,TV)
-  back=$^(x,a)
+  back=$](x,a)
   lnback=fn('ln',back)
  try:
   r=lead_t($T(f,x,sub_))
- $9($k,$O,$C,$Q):
+ $9($k,$P,$C,$R):
   $!('dominantterm',f,x,a)
  if r is $#:
   $! 0
@@ -6224,18 +6224,18 @@ $, sumseq(f,k,a,b):
   if b-a<=300:
    $M=[$T(f,k,j)$) j in $+(a,b+1)]
    $! $;($M)
- if $4(f,k):
-  $! $:(f,$_($^(b,a),1))
- cs_=$Z(f,k)
+ if $5(f,k):
+  $! $:(f,$_($](b,a),1))
+ cs_=$X(f,k)
  if cs_ is $- $# $* b!='$N':
   res=[]
-  $) j in $+($5(cs_)):
+  $) j in $+($4(cs_)):
    if cs_[j]!=0:
     if j==0:
-     res.$%($:(cs_[0],$_($^(b,a),1)))
-    $(:
-     res.$%($:(cs_[j],$^(powsum(j,b),powsum(j,$^(a,1)))))
-  $! $>($;(res))
+     res.$%($:(cs_[0],$_($](b,a),1)))
+    $&:
+     res.$%($:(cs_[j],$](powsum(j,b),powsum(j,$](a,1)))))
+  $! $=($;(res))
  r=geomsum(f,k,a,b)
  if r is $- $#:
   $! r
@@ -6244,56 +6244,56 @@ $, sumseq(f,k,a,b):
   $! r
  if b=='$N' $* $g(a)$* has(f,('fact',k)):
   g=$:(f,('fact',k))
-  gs=geomsum(g,k,0,'$N')if $3 $( $#
+  gs=geomsum(g,k,0,'$N')if $3 $& $#
   cr=expsum(g,k)
   if cr is $- $#:
    C,r=cr
    tot=$:(C,pw('e',r))
    if a>0:
-    tot=$^(tot,$;([$:(C,$R(pw(r,j),fact_(j)))$) j in $+(a)]))
+    tot=$](tot,$;([$:(C,$O(pw(r,j),fact_(j)))$) j in $+(a)]))
    $! tot
  if b=='$N' $* $g(a):
   nu,de=numer_denom(f)
-  if $4(nu,k):
-   dd=$Z(de,k)
-   if dd is $- $# $* $5(dd)>=2 $* all([c==0 $) c in dd[:-1]]):
-    p=$5(dd)-1
+  if $5(nu,k):
+   dd=$X(de,k)
+   if dd is $- $# $* $4(dd)>=2 $* all([c==0 $) c in dd[:-1]]):
+    p=$4(dd)-1
     if p==1:
-     $! '$N' if $U($R(nu,dd[-1])).$P>0 $(('*',-1,'$N')
+     $! '$N' if $U($O(nu,dd[-1])).$Q>0 $&('*',-1,'$N')
     if p in ZETA $* a>=1:
      z=$:(ZETA[p],pw('pi',p))
-     z=$^(z,$;([pw(j,-p)$) j in $+(1,a)]))
-     $! $:($R(nu,dd[-1]),z)
- if($g(a)or $1(a))$*(b=='$N' or $g(b))$* freeofall(f,[s $) s in $q(f)if s!=k]):
+     z=$](z,$;([pw(j,-p)$) j in $+(1,a)]))
+     $! $:($O(nu,dd[-1]),z)
+ if($g(a)or $1(a))$*(b=='$N' or $g(b))$* freeofall(f,[s $) s in $o(f)if s!=k]):
   $! nsum(f,k,a,b)
  $!('sumseq',f,k,a,b)
 $, expsum(g,k):
- if $4(g,k):
+ if $5(g,k):
   $! g,1
- fs=g[1:]if $&(g,'*')$((g,)
+ fs=g[1:]if $((g,'*')$&(g,)
  C=[]
  r=$#
  $) h in fs:
-  if $4(h,k):
+  if $5(h,k):
    C.$%(h)
-  $L $&(h,'^')$* $4(h[1],k)$* h[2]==k $* r is $#:
+  $L $((h,'^')$* $5(h[1],k)$* h[2]==k $* r is $#:
    r=h[1]
-  $L $&(h,'^')$* $4(h[1],k)$* $i(h[2],k)$* $i(h[2],k)[1]==0 $* r is $#:
+  $L $((h,'^')$* $5(h[1],k)$* $i(h[2],k)$* $i(h[2],k)[1]==0 $* r is $#:
    r=pw(h[1],$i(h[2],k)[0])
-  $(:
+  $&:
    $! $#
  if r is $#:
   $! $#
  $! $G(C),r
 $, geomsum(f,k,a,b):
- fs=f[1:]if $&(f,'*')$((f,)
+ fs=f[1:]if $((f,'*')$&(f,)
  C=[]
  base=$#
  ex=$#
  $) g in fs:
-  if $4(g,k):
+  if $5(g,k):
    C.$%(g)
-  $L $&(g,'^')$* $4(g[1],k)$* $i(g[2],k):
+  $L $((g,'^')$* $5(g[1],k)$* $i(g[2],k):
    if base is $- $#:
     if g[1]==base or($D(g[1])$* $D(base)):
      lp=$i(g[2],k)
@@ -6307,7 +6307,7 @@ $, geomsum(f,k,a,b):
     $! $#
    base=g[1]
    ex=g[2]
-  $(:
+  $&:
    $! $#
  if base is $#:
   $! $#
@@ -6318,30 +6318,30 @@ $, geomsum(f,k,a,b):
   if $1(r):
    v=$U(r)
    if $H(v)<1:
-    $! $R($:(Cq,pw(r,a)),$^(1,r))
-   $! '$N' if $U(Cq).$P>0 $* v.$P>0 $( '$F'
+    $! $O($:(Cq,pw(r,a)),$](1,r))
+   $! '$N' if $U(Cq).$Q>0 $* v.$Q>0 $& '$F'
   $! $#
  if r==1:
-  $! $:(Cq,$_($^(b,a),1))
- $! $R($:(Cq,$^(pw(r,$_(b,1)),pw(r,a))),$^(r,1))
+  $! $:(Cq,$_($](b,a),1))
+ $! $O($:(Cq,$](pw(r,$_(b,1)),pw(r,a))),$](r,1))
 $, telesum(f,k,a,b):
  if $- hasdenom(f):
   $! $#
  pf=partfrac(f,k)
  if pf is $#:
   $! $#
- $M=pf[1:]if $&(pf,'+')$((pf,)
+ $M=pf[1:]if $((pf,'+')$&(pf,)
  groups=[]
  $) t in $M:
   c,r=$b(t)
-  if $&(r,'^')$* r[2]==-1:
+  if $((r,'^')$* r[2]==-1:
    lb=$i(r[1],k)
    if lb is $# or lb[0]!=1:
     $! $#
    groups.$%((c,lb[1]))
-  $L $4(t,k):
+  $L $5(t,k):
    $! $#
-  $(:
+  $&:
    $! $#
  if $- groups:
   $! $#
@@ -6349,7 +6349,7 @@ $, telesum(f,k,a,b):
  tot=0
  ms=[]
  $) c,s in groups:
-  m=nsub(s,s0)if $r(s)$* $r(s0)$( $#
+  m=nsub(s,s0)if $r(s)$* $r(s0)$& $#
   if m is $# or $- $g(m):
    $! $#
   ms.$%(m)
@@ -6364,7 +6364,7 @@ $, telesum(f,k,a,b):
   ms=[m-mn $) m in ms]
  M=max(ms)
  res=[]
- $) idx in $+($5(groups)):
+ $) idx in $+($4(groups)):
   c=groups[idx][0]
   m=ms[idx]
   part=[]
@@ -6386,24 +6386,24 @@ $, nsum(f,k,a,b):
 ''')
 _x(r'''$, nsum_inf(f,k,av):
  L=$w(f,k,'$N')
- if L!=0 $* $- $&(L,'$w'):
+ if L!=0 $* $- $((L,'$w'):
   if L=='$F' or $- $1(L):
    $! '$F'
   try:
    v=fv_(L)
   $9 $6:
    $! '$F'
-  $! '$N' if v>0 $(('*',-1,'$N')
+  $! '$N' if v>0 $&('*',-1,'$N')
  $, t(n):
   z=$U(f,{k:$@(n)})
   if $/(z)is $2:
-   if $H(z.imag)>1e-12*(1+$H(z.$P)):
-    $f $Q
-   z=z.$P
+   if $H(z.imag)>1e-12*(1+$H(z.$Q)):
+    $f $R
+   z=z.$Q
   $! z
  first=[t(n)$) n in $+(av,av+40)]
  tail=first[10:]
- if all([tail[i]*tail[i+1]<0 $) i in $+($5(tail)-1)]):
+ if all([tail[i]*tail[i+1]<0 $) i in $+($4(tail)-1)]):
   S=[]
   s_=0.0
   $) n in $+(av,av+60):
@@ -6448,106 +6448,106 @@ $, prodseq(f,k,a,b):
    $! pw(prodseq(f,k,b+1,a-1),-1)
   if b-a<=300:
    $! $G([$T(f,k,j)$) j in $+(a,b+1)])
- if $4(f,k):
-  $! pw(f,$_($^(b,a),1))
+ if $5(f,k):
+  $! pw(f,$_($](b,a),1))
  if f==k $* a==1:
   $! fn('fact',b)
- if $&(f,'^')$* f[1]==k $* $g(f[2])$* a==1:
+ if $((f,'^')$* f[1]==k $* $g(f[2])$* a==1:
   $! pw(fn('fact',b),f[2])
- if $&(f,'*')$* a==1:
-  c=[g $) g in f[1:]if $4(g,k)]
-  r=[g $) g in f[1:]if $- $4(g,k)]
-  if c $* $5(r)==1:
+ if $((f,'*')$* a==1:
+  c=[g $) g in f[1:]if $5(g,k)]
+  r=[g $) g in f[1:]if $- $5(g,k)]
+  if c $* $4(r)==1:
    rr=prodseq(r[0],k,a,b)
-   if $- $&(rr,'prodseq'):
+   if $- $((rr,'prodseq'):
     $! $:(pw($G(c),b),rr)
- fs=f[1:]if $&(f,'*')$((f,)
- if $&(f,'^')$* $4(f[1],k):
+ fs=f[1:]if $((f,'*')$&(f,)
+ if $((f,'^')$* $5(f[1],k):
   $! pw(f[1],sumseq(f[2],k,a,b))
  $!('prodseq',f,k,a,b)
 $, texpand(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- $X=[texpand(a)$) a in e[1:]]
- e=simp((e[0],)+$0($X))
+ $Y=[texpand(a)$) a in e[1:]]
+ e=simp((e[0],)+$0($Y))
  if $/(e)is $- $0:
   $! e
  h=e[0]
- if h in('sin','cos','tan')$* $5(e)==2:
+ if h in('sin','cos','tan')$* $4(e)==2:
   u=e[1]
   if h=='tan':
-   $! texpand($R(fn('sin',u),fn('cos',u)))
-  if $&(u,'+'):
+   $! texpand($O(fn('sin',u),fn('cos',u)))
+  if $((u,'+'):
    a=u[1]
    b=$;($J(u[2:]))
    sa,ca=texpand(fn('sin',a)),texpand(fn('cos',a))
    sb,cb=texpand(fn('sin',b)),texpand(fn('cos',b))
    if h=='sin':
-    $! $>($_($:(sa,cb),$:(ca,sb)))
-   $! $>($^($:(ca,cb),$:(sa,sb)))
+    $! $=($_($:(sa,cb),$:(ca,sb)))
+   $! $=($]($:(ca,cb),$:(sa,sb)))
   c,r=$b(u)
   if $g(c)$* c>1 $* c<=30:
    s1=texpand(fn('sin',r))
    c1=texpand(fn('cos',r))
    z=expand_pow($_(c1,$:('i',s1)),c)
    re_,im_=reim(z)
-   $! $>(im_ if h=='sin' $( re_)
+   $! $=(im_ if h=='sin' $& re_)
  $! e
 $, trigfactor(f):
- if head(f)in('sin','cos')$* $5(f)==2:
+ if head(f)in('sin','cos')$* $4(f)==2:
   $![(f[0],f[1])]
- if $&(f,'^')$* head(f[1])in('sin','cos')$* $g(f[2])$* f[2]>0:
+ if $((f,'^')$* head(f[1])in('sin','cos')$* $g(f[2])$* f[2]>0:
   $![(f[1][0],f[1][1])]*f[2]
  $! $#
 $, tmul(a,b):
  n1,u=a
  n2,v=b
  if n1=='sin' $* n2=='sin':
-  $! $:($s,$^(fn('cos',$^(u,v)),fn('cos',$_(u,v))))
+  $! $:($s,$](fn('cos',$](u,v)),fn('cos',$_(u,v))))
  if n1=='cos' $* n2=='cos':
-  $! $:($s,$_(fn('cos',$^(u,v)),fn('cos',$_(u,v))))
+  $! $:($s,$_(fn('cos',$](u,v)),fn('cos',$_(u,v))))
  if n1=='cos':
   u,v=v,u
- $! $:($s,$_(fn('sin',$_(u,v)),fn('sin',$^(u,v))))
+ $! $:($s,$_(fn('sin',$_(u,v)),fn('sin',$](u,v))))
 $, tcollect(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- e=$>(e)
- if $&(e,'+'):
+ e=$=(e)
+ if $((e,'+'):
   $! $;([tcollect_term(t)$) t in e[1:]])
  $! tcollect_term(e)
 $, tcollect_term(t):
- fs=t[1:]if $&(t,'*')$((t,)
+ fs=t[1:]if $((t,'*')$&(t,)
  other=[]
  trig=[]
  $) f in fs:
   tf=trigfactor(f)
   if tf is $#:
    other.$%(f)
-  $(:
+  $&:
    trig.extend(tf)
- if $5(trig)<=1:
+ if $4(trig)<=1:
   $! t
  acc=fn(trig[0][0],trig[0][1])
  $) tf in trig[1:]:
-  $M=acc[1:]if $&(acc,'+')$((acc,)
+  $M=acc[1:]if $((acc,'+')$&(acc,)
   $?=[]
   $) term in $M:
    c,r=$b(term)
    ftf=trigfactor(r)
-   if ftf is $# or $5(ftf)!=1:
+   if ftf is $# or $4(ftf)!=1:
     if freeof_trig(r):
      $?.$%($:(term,fn(tf[0],tf[1])))
      $7
     $?.$%($:(term,fn(tf[0],tf[1])))
     $7
    $?.$%($:(c,tmul(ftf[0],tf)))
-  acc=$>($;($?))
- $! $>($:($G(other),acc))
+  acc=$=($;($?))
+ $! $=($:($G(other),acc))
 $, trigargs(e,$?):
  if $/(e)is $- $0 or e[0]=='Q':
   $!
- if e[0]in('sin','cos')$* $5(e)==2:
+ if e[0]in('sin','cos')$* $4(e)==2:
   if e[1]$- in $?:
    $?.$%(e[1])
  $) a in e[1:]:
@@ -6557,68 +6557,68 @@ $, pyth(e):
  trigargs(e,us)
  if $- us:
   $! e
- ${=e
- bl=$5(fmt(e))
+ $}=e
+ bl=$4(fmt(e))
  $) u in us:
   s=fn('sin',u)
   c=fn('cos',u)
   $) a,b in((s,c),(c,s)):
    g=rsquare(e,a,b)
    if g is $- $#:
-    g=$>(g)
-    l=$5(fmt(g))
+    g=$=(g)
+    l=$4(fmt(g))
     if l<bl:
-     ${=g
+     $}=g
      bl=l
- $! ${
+ $! $}
 $, rsquare(e,a,b):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
  if e[0]=='^' $* e[1]==a $* $g(e[2])$* e[2]>=2:
-  $! $:(pw(a,e[2]-2),$^(1,pw(b,2)))
+  $! $:(pw(a,e[2]-2),$](1,pw(b,2)))
  $! simp((e[0],)+$0(rsquare(t,a,b)$) t in e[1:]))
 $, freeof_trig(e):
  $! $- hastrig(e)
 $, arclen(f,x,a,b):
- g=$.($>($_(1,pw(diff(f,x),2))))
+ g=$.($=($_(1,pw(diff(f,x),2))))
  $! defint($V(g),x,a,b)
 $, tangentline(f,x,a):
  d=$T(diff(f,x),x,a)
- $! $>($_($T(f,x,a),$:(d,$^(x,a))))
+ $! $=($_($T(f,x,a),$:(d,$](x,a))))
 $, normalline(f,x,a):
  d=$T(diff(f,x),x,a)
  if d==0:
   $!('=',x,a)
- $! $>($^($T(f,x,a),$R($^(x,a),d)))
+ $! $=($]($T(f,x,a),$O($](x,a),d)))
 $, impdif(eq,x,y,n=1):
- F=$^(eq[1],eq[2])if $&(eq,'=')$( eq
- yp=$.($m($R(diff(F,x),diff(F,y))))
+ F=$](eq[1],eq[2])if $((eq,'=')$& eq
+ yp=$.($m($O(diff(F,x),diff(F,y))))
  d=yp
  $) _ in $+(n-1):
   d=$.($_(diff(d,x),$:(diff(d,y),yp)))
  $! nice(d)
 $, avgrc(f,x,v,h=Q(1,1000)):
- $! $R($^($T(f,x,$_(v,h)),$T(f,x,v)),h)
+ $! $O($]($T(f,x,$_(v,h)),$T(f,x,v)),h)
 $, centraldiff(f,x,v,h=Q(1,1000)):
- $! $R($^($T(f,x,$_(v,h)),$T(f,x,$^(v,h))),$:(2,h))
+ $! $O($]($T(f,x,$_(v,h)),$T(f,x,$](v,h))),$:(2,h))
 $, untan(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- $X=[untan(a)$) a in e[1:]]
- if e[0]=='tan' $* $5($X)==1:
-  $! $R(fn('sin',$X[0]),fn('cos',$X[0]))
- $! simp((e[0],)+$0($X))
+ $Y=[untan(a)$) a in e[1:]]
+ if e[0]=='tan' $* $4($Y)==1:
+  $! $O(fn('sin',$Y[0]),fn('cos',$Y[0]))
+ $! simp((e[0],)+$0($Y))
 $, pyth_to(e,which):
- other='cos' if which=='sin' $( 'sin'
+ other='cos' if which=='sin' $& 'sin'
  e=untan(e)
  us=[]
  trigargs(e,us)
  $) u in us:
   e=rsquare(e,fn(other,u),fn(which,u))
- $! $>(e)
+ $! $=(e)
 ''')
 _x(r'''$, unhold(e):
- if $&(e,'hold'):
+ if $((e,'hold'):
   $! simp(e[1])
  $! e
 $, $v(e):
@@ -6629,12 +6629,12 @@ $, $v(e):
  $9 $6:
   $! $3
  if $/(v)is $2:
-  $! $H(v.imag)<=1e-10*(1+$H(v.$P))
+  $! $H(v.imag)<=1e-10*(1+$H(v.$Q))
  $! v==v
 $, fv(e):
  v=$U(e)
  if $/(v)is $2:
-  $! v.$P
+  $! v.$Q
  $! v
 $, clean(e):
  e=$.(e)
@@ -6642,28 +6642,28 @@ $, clean(e):
   e=evalf(e)
   if has(e,'i'):
    r,i=reim(e)
-   if $/(i)is $@ $* $H(i)<1e-11*(1+$H(tofl(r)if $D(r)$( 1)):
+   if $/(i)is $@ $* $H(i)<1e-11*(1+$H(tofl(r)if $D(r)$& 1)):
     e=r
  $! e
 class Sols:
- $, __init__($=):
-  $=.$e=[]
-  $=.all=$3
-  $=.fail=$3
-  $=.ints=[]
+ $, __init__($>):
+  $>.$e=[]
+  $>.all=$3
+  $>.fail=$3
+  $>.ints=[]
 $, $n(f,x,$A=$3,$<=0):
  if $<>6:
   $! $#
  f=$.(unhold(f))
- if $4(f,x):
+ if $5(f,x):
   if f==0:
    $! 'all'
   if $1(f)or $- $A:
    $![]
   $![]
  nu=numer_of(f)
- if $4(nu,x):
-  $![]if nu!=0 $( 'all'
+ if $5(nu,x):
+  $![]if nu!=0 $& 'all'
  if $- $A $* firstabs(nu,x)is $- $# $* $<<4:
   r=abs_cases(nu,x,[],$<)
   if r is $- $# $* r!='interval':
@@ -6693,7 +6693,7 @@ $, numer_of(f):
   c=f
  $! numer_denom(c)[0]
 $, valid(f,x,s,$A):
- if has(s,'n1')or $q(s)$* $- $1(s):
+ if has(s,'n1')or $o(s)$* $- $1(s):
   $! $E
  try:
   v=$T(f,x,s)
@@ -6705,7 +6705,7 @@ $, valid(f,x,s,$A):
   mag=1.0
   if $/(vv)is $2:
    ok=$H(vv)<1e-6
-  $(:
+  $&:
    ok=$H(vv)<1e-6
   if $- ok:
    try:
@@ -6715,10 +6715,10 @@ $, valid(f,x,s,$A):
     ok=$3
   if $- $A:
    sv=$U(s)
-   if $/(sv)is $2 $* $H(sv.imag)>1e-9*(1+$H(sv.$P)):
+   if $/(sv)is $2 $* $H(sv.imag)>1e-9*(1+$H(sv.$Q)):
     $! $3
   $! ok
- $9($O,$C,$Q,TypeError,$[):
+ $9($P,$C,$R,TypeError,$[):
   $! $3
 $, solve_num(nu,x,$A,$<):
  d=degree(nu,x)
@@ -6727,13 +6727,13 @@ $, solve_num(nu,x,$A,$<):
   if r is $- $#:
    $! r
  fac=factor_expr(nu)
- fac=fac[1]if $&(fac,'hold')$( fac
- if $&(fac,'*'):
+ fac=fac[1]if $((fac,'hold')$& fac
+ if $((fac,'*'):
   allsol=[]
   $) g in fac[1:]:
-   if $&(g,'^')$* $D(g[2])$* $a(g[2])>0:
+   if $((g,'^')$* $D(g[2])$* $a(g[2])>0:
     g=g[1]
-   if $4(g,x):
+   if $5(g,x):
     $7
    r=$n(g,x,$A,$<+1)
    if r is $#:
@@ -6742,7 +6742,7 @@ $, solve_num(nu,x,$A,$<):
     $! 'all'
    allsol.extend(r)
   $! dedup(allsol)
- if $&(fac,'^')$* $D(fac[2])$* $a(fac[2])>0:
+ if $((fac,'^')$* $D(fac[2])$* $a(fac[2])>0:
   $! $n(fac[1],x,$A,$<+1)
  r=isolate(nu,0,x,$A,$<)
  if r is $- $#:
@@ -6765,8 +6765,8 @@ $, solve_num(nu,x,$A,$<):
    r=kernel_solve(g,x,$A,$<+1)
    if r is $#:
     fg=factor_expr(g)
-    fg=fg[1]if $&(fg,'hold')$( fg
-    if $&(fg,'*'):
+    fg=fg[1]if $((fg,'hold')$& fg
+    if $((fg,'*'):
      $! solve_num(g,x,$A,$<+1)
    if r is $- $#:
     $! r
@@ -6780,22 +6780,22 @@ $, radical_solve(nu,x,$A,$<):
  if $- ks:
   $! $#
  $) k in ks:
-  if $-($&(k,'^')$* isq(k[2])$* k[2][1]==1):
+  if $-($((k,'^')$* isq(k[2])$* k[2][1]==1):
    $! $#
- if $5(ks)>1:
-  if $<>4 or $5(ks)>3:
+ if $4(ks)>1:
+  if $<>4 or $4(ks)>3:
    $! $#
   $) k in ks:
    if k[2]!=$s:
     $! $#
   k=ks[0]
   W='W_'
-  g=$>($T(nu,k,W))
-  cs_=$Z(g,W)
-  if cs_ is $# or $5(cs_)!=2:
+  g=$=($T(nu,k,W))
+  cs_=$X(g,W)
+  if cs_ is $# or $4(cs_)!=2:
    $! $#
   A,B=cs_
-  g2=$>($^(pw(A,2),$:(pw(B,2),k[1])))
+  g2=$=($](pw(A,2),$:(pw(B,2),k[1])))
   rs=$n(g2,x,$A,$<+1)
   if rs is $# or rs=='all':
    $! $#
@@ -6804,14 +6804,14 @@ $, radical_solve(nu,x,$A,$<):
  base=k[1]
  q=k[2][2]
  W='W_'
- g=$>($T(nu,k,W))
- cs_=$Z(g,W)
- if cs_ is $# or $5(cs_)!=2 or has(cs_[0],W):
+ g=$=($T(nu,k,W))
+ cs_=$X(g,W)
+ if cs_ is $# or $4(cs_)!=2 or has(cs_[0],W):
   $! $#
  A,B=cs_
  if degree(A,x)is $# or degree(B,x)is $# or degree(base,x)is $#:
   $! $#
- poly=$>($^(pw($m(A),q),$:(pw(B,q),base)))
+ poly=$=($](pw($m(A),q),$:(pw(B,q),base)))
  rs=solve_poly(poly,x,$A)
  if rs is $# or rs=='all':
   $! $#
@@ -6821,67 +6821,67 @@ $, radical_solve(nu,x,$A,$<):
    $?.$%(r)
  $! $?
 $, expterm(t,x):
- fs=t[1:]if $&(t,'*')$((t,)
+ fs=t[1:]if $((t,'*')$&(t,)
  c=[]
  L=[]
  $) f in fs:
-  if $4(f,x):
+  if $5(f,x):
    c.$%(f)
-  $L $&(f,'^')$* $4(f[1],x)$* $i(f[2],x)is $- $# $* $v(f[1])$* fv(f[1])>0:
-   L.$%($:(f[2],fn('ln',f[1]))if f[1]!='e' $( f[2])
-  $(:
+  $L $((f,'^')$* $5(f[1],x)$* $i(f[2],x)is $- $# $* $v(f[1])$* fv(f[1])>0:
+   L.$%($:(f[2],fn('ln',f[1]))if f[1]!='e' $& f[2])
+  $&:
    $! $#
  $! $G(c),$;(L)
 $, explog_solve(nu,x,$A,$<):
- if $- $&(nu,'+'):
+ if $- $((nu,'+'):
   $! $#
- dep=[t $) t in nu[1:]if $- $4(t,x)]
- ind=$;([t $) t in nu[1:]if $4(t,x)])
- if $5(dep)==2 $* ind==0:
+ dep=[t $) t in nu[1:]if $- $5(t,x)]
+ ind=$;([t $) t in nu[1:]if $5(t,x)])
+ if $4(dep)==2 $* ind==0:
   A=expterm(dep[0],x)
   B=expterm(dep[1],x)
   if A is $# or B is $#:
    $! $#
-  r=$.($m($R(B[0],A[0])))
+  r=$.($m($O(B[0],A[0])))
   if $v(r)$* fv(r)<=0 $* $- $A:
    $![]
-  eq=$>($^(A[1],$_(B[1],fn('ln',r))))
+  eq=$=($](A[1],$_(B[1],fn('ln',r))))
   lx=$i(eq,x)
   if lx is $#:
    $! $#
-  $![nice($.($m($R(lx[1],lx[0]))))]
+  $![nice($.($m($O(lx[1],lx[0]))))]
  $! $#
 ''')
 _x(r'''$, ln_solve(nu,x,$A,$<):
- $M=nu[1:]if $&(nu,'+')$((nu,)
+ $M=nu[1:]if $((nu,'+')$&(nu,)
  lns=[]
  $d=[]
  $) t in $M:
   c,r=$b(t)
-  if $&(r,'log')$* $5(r)==3:
-   c=$R(c,fn('ln',r[2]))
+  if $((r,'log')$* $4(r)==3:
+   c=$O(c,fn('ln',r[2]))
    r=('ln',r[1])
-  if $&(r,'ln')$* $r(c)$* $- $4(r,x):
+  if $((r,'ln')$* $r(c)$* $- $5(r,x):
    lns.$%((c,r[1]))
-  $L $4(t,x):
+  $L $5(t,x):
    $d.$%(t)
-  $L $&(r,'ln')$* $1(c)$* $- $4(r,x):
+  $L $((r,'ln')$* $1(c)$* $- $5(r,x):
    lns.$%((c,r[1]))
-  $(:
+  $&:
    $! $#
- if $5(lns)<2 $* $-($5(lns)==1 $* $d):
+ if $4(lns)<2 $* $-($4(lns)==1 $* $d):
   $! $#
  k=rest_k=$;($d)
  c0=lns[0][0]
  if all([c==c0 $) c,u in lns]):
   P=$G([u $) c,u in lns])
-  rhs=pw('e',$.($m($R(rest_k,c0))))
+  rhs=pw('e',$.($m($O(rest_k,c0))))
  $L all([$r(c)$) c,u in lns]):
   P=$G([pw(u,c)$) c,u in lns])
   rhs=pw('e',$m(rest_k))
- $(:
+ $&:
   $! $#
- rs=$n($^(P,rhs),x,$A,$<+1)
+ rs=$n($](P,rhs),x,$A,$<+1)
  if rs is $# or rs=='all':
   $! rs
  $?=[]
@@ -6916,26 +6916,26 @@ $, dedup($h):
 $, sortsols($h):
  $, key(s):
   t=s
-  $) w in $q(s):
+  $) w in $o(s):
    if w[0]=='n' $* w[1:].isdigit():
     t=$T(t,w,0)
   try:
    v=$U(t)
    if $/(v)is $2:
-    $!(1,v.$P,v.imag,okey(s))
+    $!(1,v.$Q,v.imag,okey(s))
    $!(0,v,0.0,okey(s))
   $9 $6:
    $!(2,0.0,0.0,okey(s))
  $! sorted($h,key=key)
 $, solve_poly(p,x,$A):
- cs=$Z(p,x)
+ cs=$X(p,x)
  if cs is $#:
   $! $#
  $K cs $* cs[-1]==0:
   cs.pop()
- n=$5(cs)-1
+ n=$4(cs)-1
  if n<=0:
-  $![]if cs $* cs[0]!=0 $( 'all'
+  $![]if cs $* cs[0]!=0 $& 'all'
  $h=[]
  k=0
  $K cs[k]==0:
@@ -6943,7 +6943,7 @@ $, solve_poly(p,x,$A):
  if k:
   $h.$%(0)
   cs=cs[k:]
-  n=$5(cs)-1
+  n=$4(cs)-1
  if n==0:
   $! $h
  allrat=$E
@@ -6961,16 +6961,16 @@ $, solve_poly(p,x,$A):
    $h.extend(solve_small(g,x,$A))
   $! dedup($h)
  if n==1:
-  $! $h+[$.($m($R(cs[0],cs[1])))]
+  $! $h+[$.($m($O(cs[0],cs[1])))]
  if n==2:
   $! $h+quad(cs[2],cs[1],cs[0],$A)
  fac=factor_expr(p,x)
- fac=fac[1]if $&(fac,'hold')$( fac
- if $&(fac,'*'):
+ fac=fac[1]if $((fac,'hold')$& fac
+ if $((fac,'*'):
   $) g in fac[1:]:
-   if $&(g,'^')$* $D(g[2]):
+   if $((g,'^')$* $D(g[2]):
     g=g[1]
-   if $4(g,x):
+   if $5(g,x):
     $7
    dg=degree(g,x)
    if dg is $- $# $* dg<n:
@@ -6978,7 +6978,7 @@ $, solve_poly(p,x,$A):
     if r is $#:
      $! $#
     $h.extend(r)
-   $(:
+   $&:
     $! $#
   $! dedup($h)
  r=solve_binom(cs,x,$A)
@@ -6988,21 +6988,21 @@ $, solve_poly(p,x,$A):
   $! $h+numroots(cs,$A)
  $! $#
 $, quad(a,b,c,$A):
- D=$.($>($^($:(b,b),$:(4,a,c))))
+ D=$.($=($]($:(b,b),$:(4,a,c))))
  if $v(D)$* $- $A:
   if fv(D)<0:
    $![]
  if D==0:
-  $![$.($R($m(b),$:(2,a)))]
+  $![$.($O($m(b),$:(2,a)))]
  s=$V(D)
- r1=$.($R($^($m(b),s),$:(2,a)))
- r2=$.($R($_($m(b),s),$:(2,a)))
+ r1=$.($O($]($m(b),s),$:(2,a)))
+ r2=$.($O($_($m(b),s),$:(2,a)))
  if $1(r1):
-  r1=$>(r1)
-  r2=$>(r2)
+  r1=$=(r1)
+  r2=$=(r2)
  $![r1,r2]
 $, solve_small(g,x,$A):
- n=$5(g)-1
+ n=$4(g)-1
  if n==1:
   $![Q(-g[0],g[1])]
  if n==2:
@@ -7013,11 +7013,11 @@ $, solve_small(g,x,$A):
  if n==3:
   r=cardano(g,$A)
   if r is $- $#:
-   if $5(fmt(r[0]))<=32:
+   if $4(fmt(r[0]))<=32:
     $! r
  $! numroots(g,$A)
 $, solve_binom(cs,x,$A):
- n=$5(cs)-1
+ n=$4(cs)-1
  m=0
  $) i in $+(1,n+1):
   if cs[i]!=0:
@@ -7025,12 +7025,12 @@ $, solve_binom(cs,x,$A):
  if m<=1:
   $! $#
  sub_cs=[cs[i]$) i in $+(0,n+1,m)]
- if $5(sub_cs)-1>2 $* $-($5([c $) c in sub_cs if c!=0])==2):
+ if $4(sub_cs)-1>2 $* $-($4([c $) c in sub_cs if c!=0])==2):
   $! $#
  u='U_'
- if $5(sub_cs)==2:
-  roots_u=[$.($m($R(sub_cs[0],sub_cs[1])))]
- $(:
+ if $4(sub_cs)==2:
+  roots_u=[$.($m($O(sub_cs[0],sub_cs[1])))]
+ $&:
   roots_u=solve_poly(fromcoeffs(sub_cs,u),u,$A)
   if roots_u is $#:
    $! $#
@@ -7062,30 +7062,30 @@ $, nthroots(r,m,$A):
   ang=fn('$l',r)
   $?=[]
   $) k in $+(m):
-   th=$R($_(ang,$:(2*k,'pi')),m)
+   th=$O($_(ang,$:(2*k,'pi')),m)
    z=$:(pw(mod,Q(1,m)),$_(fn('cos',th),$:('i',fn('sin',th))))
-   z=$>(z)
+   z=$=(z)
    $?.$%(z)
   $! $?
  rt=pw(r,Q(1,m))
- $![$:(rt,pw('e',$R($:(2*k,'i','pi'),m)))$) k in $+(m)]
+ $![$:(rt,pw('e',$O($:(2*k,'i','pi'),m)))$) k in $+(m)]
 $, cardano(g,$A):
- d,c,b,a=[Q(v)if $/(v)is $u $( v $) v in g]
- p=$R($^($:(3,a,c),$:(b,b)),$:(3,a,a))
- q=$R($_($:(2,pw(b,3)),$:(-9,a,b,c),$:(27,a,a,d)),$:(27,pw(a,3)))
- disc=$_($R(pw(q,2),4),$R(pw(p,3),27))
+ d,c,b,a=[Q(v)if $/(v)is $u $& v $) v in g]
+ p=$O($]($:(3,a,c),$:(b,b)),$:(3,a,a))
+ q=$O($_($:(2,pw(b,3)),$:(-9,a,b,c),$:(27,a,a,d)),$:(27,pw(a,3)))
+ disc=$_($O(pw(q,2),4),$O(pw(p,3),27))
  if $- $r(disc)or $a(disc)<=0:
   $! $#
  s=$V(disc)
- u=$_($m($R(q,2)),s)
- v=$^($m($R(q,2)),s)
+ u=$_($m($O(q,2)),s)
+ v=$]($m($O(q,2)),s)
  $, cbrt(w):
   wv=fv(w)
   if wv<0:
    $! $m(pw($m(w),Q(1,3)))
   $! pw(w,Q(1,3))
  t=$_(cbrt(u),cbrt(v))
- root=$^(t,$R(b,$:(3,a)))
+ root=$](t,$O(b,$:(3,a)))
  if $- $A:
   $![root]
  $![root]+[clean(r)$) r in numroots_after(g,root)]
@@ -7094,46 +7094,46 @@ $, numroots_after(g,root):
  rs=aberth(g)
  $![fromcomplex(z)$) z in rs if $H(z-rv)>1e-6]
 $, numroots(cs,$A):
- rs=aberth([evalf(c)if $- $D(c)$( c $) c in cs])
+ rs=aberth([evalf(c)if $- $D(c)$& c $) c in cs])
  $?=[]
  $) z in rs:
-  if $H(z.imag)<1e-9*(1+$H(z.$P)):
-   $?.$%($@(z.$P))
+  if $H(z.imag)<1e-9*(1+$H(z.$Q)):
+   $?.$%($@(z.$Q))
   $L $A:
    $?.$%(fromcomplex(z))
  $! $?
 NC=[0]
 $, newint():
  NC[0]+=1
- $! 'n'+$|(NC[0])
+ $! 'n'+$y(NC[0])
 ''')
 _x(r'''$, isolate(lhs,rhs,x,$A,$<):
  if $<>12:
   $! $#
  if lhs==x:
   $![rhs]
- if $4(lhs,x):
-  $! 'all' if $.($^(lhs,rhs))==0 $([]
+ if $5(lhs,x):
+  $! 'all' if $.($](lhs,rhs))==0 $&[]
  h=head(lhs)
  if h=='+':
-  dep=[t $) t in lhs[1:]if $- $4(t,x)]
-  ind=[t $) t in lhs[1:]if $4(t,x)]
-  if $5(dep)==1:
-   $! isolate(dep[0],$^(rhs,$;(ind)),x,$A,$<+1)
+  dep=[t $) t in lhs[1:]if $- $5(t,x)]
+  ind=[t $) t in lhs[1:]if $5(t,x)]
+  if $4(dep)==1:
+   $! isolate(dep[0],$](rhs,$;(ind)),x,$A,$<+1)
   $! $#
  if h=='*':
-  dep=[t $) t in lhs[1:]if $- $4(t,x)]
-  ind=[t $) t in lhs[1:]if $4(t,x)]
-  if $5(dep)==1:
+  dep=[t $) t in lhs[1:]if $- $5(t,x)]
+  ind=[t $) t in lhs[1:]if $5(t,x)]
+  if $4(dep)==1:
    c=$G(ind)
-   r=$R(rhs,c)
-   if $1(c)$* $&(rhs,'+'):
-    r=$>(r)
+   r=$O(rhs,c)
+   if $1(c)$* $((rhs,'+'):
+    r=$=(r)
    $! isolate(dep[0],r,x,$A,$<+1)
   $! $#
  if h=='^':
   b,p=lhs[1],lhs[2]
-  if $4(p,x):
+  if $5(p,x):
    if p==-1 or($D(p)$* $a(p)<0):
     if rhs==0:
      $![]
@@ -7154,7 +7154,7 @@ _x(r'''$, isolate(lhs,rhs,x,$A,$<):
      $![]
     $! isolate(pw(b,pn),pw(rhs,pd),x,$A,$<+1)
    $! isolate(b,pw(rhs,pw(p,-1)),x,$A,$<+1)
-  if $4(b,x):
+  if $5(b,x):
    if rhs==0:
     $![]
    if $- $A $* $v(rhs)$* fv(rhs)<0 $* $v(b)$* fv(b)>0:
@@ -7163,11 +7163,11 @@ _x(r'''$, isolate(lhs,rhs,x,$A,$<):
     $! isolate(p,fn('ln',rhs),x,$A,$<+1)
    if $D(b)$* $1(rhs):
     $! isolate(p,fn('log',rhs,b),x,$A,$<+1)
-   $! isolate(p,$R(fn('ln',rhs),fn('ln',b)),x,$A,$<+1)
+   $! isolate(p,$O(fn('ln',rhs),fn('ln',b)),x,$A,$<+1)
   $! $#
- if $/(lhs)is $0 $* $5(lhs)>=2:
+ if $/(lhs)is $0 $* $4(lhs)>=2:
   u=lhs[1]
-  if $- all([$4(a,x)$) a in lhs[2:]]):
+  if $- all([$5(a,x)$) a in lhs[2:]]):
    $! $#
   rs=invfun(h,lhs,rhs,$A)
   if rs is $#:
@@ -7189,7 +7189,7 @@ $, invfun(h,lhs,r,$A):
  if h=='ln':
   $![pw('e',r)]
  if h=='log':
-  b=lhs[2]if $5(lhs)>2 $( 10
+  b=lhs[2]if $4(lhs)>2 $& 10
   $![pw(b,r)]
  if h=='$H':
   if rv is $- $#:
@@ -7206,10 +7206,10 @@ $, invfun(h,lhs,r,$A):
   n=newint()
   if r==0:
    $![$:(n,'pi')]
-  a=fn('$y',r)
+  a=fn('$z',r)
   if r==1 or r==-1:
    $![$_(a,$:(2,n,'pi'))]
-  $![$_(a,$:(2,n,'pi')),$_($^('pi',a),$:(2,n,'pi'))]
+  $![$_(a,$:(2,n,'pi')),$_($]('pi',a),$:(2,n,'pi'))]
  if h=='cos':
   if rv is $- $# $* $H(rv)>1 $* $- $A:
    $![]
@@ -7223,7 +7223,7 @@ $, invfun(h,lhs,r,$A):
  if h=='tan':
   n=newint()
   $![$_(fn('$t',r),$:(n,'pi'))]
- if h=='$y':
+ if h=='$z':
   if rv is $- $# $* $H(rv)>$I.pi/2+1e-12:
    $![]
   $![fn('sin',r)]
@@ -7254,7 +7254,7 @@ $, invfun(h,lhs,r,$A):
   $![fn('tanh',r)]
  $! $#
 $, xkernels(e,x,$?):
- if $/(e)is $- $0 or e[0]=='Q' or $4(e,x):
+ if $/(e)is $- $0 or e[0]=='Q' or $5(e,x):
   $!
  h=e[0]
  if h in('+','*'):
@@ -7281,10 +7281,10 @@ $, kernel_solve(nu,x,$A,$<):
   if all([b==base $) b,a,c in exps]):
    gg=0
    $) b,a,c in exps:
-    gg=a if gg==0 $( rgcd(gg,a)
+    gg=a if gg==0 $& rgcd(gg,a)
    if gg!=0:
     g2=repl_exp(g,x,base,gg,W)
-    if $4(g2,x):
+    if $5(g2,x):
      rs=$n(g2,W,$A,$<+1)
      if rs is $# or rs=='all':
       $! rs
@@ -7297,10 +7297,10 @@ $, kernel_solve(nu,x,$A,$<):
      $! $?
  ks=[]
  xkernels(g,x,ks)
- if $5(ks)==1 $* ks[0]!=x:
+ if $4(ks)==1 $* ks[0]!=x:
   k=ks[0]
   g2=$T(g,k,W)
-  if $4(g2,x):
+  if $5(g2,x):
    rs=$n(g2,W,$A,$<+1)
    if rs is $# or rs=='all':
     $! rs
@@ -7313,30 +7313,30 @@ $, kernel_solve(nu,x,$A,$<):
      $! 'all'
     $?.extend(rr)
    $! $?
- if $5(ks)==2:
+ if $4(ks)==2:
   names=sorted([head(k)$) k in ks])
   if names==['cos','sin']$* ks[0][1]==ks[1][1]:
    u=ks[0][1]
    s=fn('sin',u)
    c=fn('cos',u)
    $) a,b in((c,s),(s,c)):
-    g2=$>(g)
-    cc=$Z($T(g2,a,W),W)
-    if cc is $- $# $* all([cc[i]==0 $) i in $+(1,$5(cc),2)]):
-     g3=$>($T($T(g2,a,W),W,$V($^(1,pw(b,2)))))
+    g2=$=(g)
+    cc=$X($T(g2,a,W),W)
+    if cc is $- $# $* all([cc[i]==0 $) i in $+(1,$4(cc),2)]):
+     g3=$=($T($T(g2,a,W),W,$V($](1,pw(b,2)))))
      if $- has(g3,a):
-      $! kernel_solve(g3,x,$A,$<+1)if $<<4 $( $#
+      $! kernel_solve(g3,x,$A,$<+1)if $<<4 $& $#
  $! $#
 $, rgcd(a,b):
  if $r(a)$* $r(b):
   an,ad=nd(a)
   bn,bd=nd(b)
   $! Q(igcd(an,bn),ilcm(ad,bd))
- $! a if a==b $( 0
+ $! a if a==b $& 0
 $, findexp(e,x,$?):
  if $/(e)is $- $0 or e[0]=='Q':
   $!
- if e[0]=='^' $* $4(e[1],x)$* $- $4(e[2],x):
+ if e[0]=='^' $* $5(e[1],x)$* $- $5(e[2],x):
   l=$i(e[2],x)
   if l is $- $#:
    $?.$%((e[1],l[0],l[1]))
@@ -7348,16 +7348,16 @@ $, findexp(e,x,$?):
 $, repl_exp(e,x,base,gg,W):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- if e[0]=='^' $* e[1]==base $* $- $4(e[2],x):
+ if e[0]=='^' $* e[1]==base $* $- $5(e[2],x):
   l=$i(e[2],x)
   if l is $- $#:
-   $! $:(pw(base,l[1]),pw(W,$R(l[0],gg)))
+   $! $:(pw(base,l[1]),pw(W,$O(l[0],gg)))
  $! simp((e[0],)+$0(repl_exp(a,x,base,gg,W)$) a in e[1:]))
 ''')
 _x(r'''$, trig_lin(nu,x,$A):
  ks=[]
  xkernels(nu,x,ks)
- if $5(ks)!=2:
+ if $4(ks)!=2:
   $! $#
  names=sorted([head(k)$) k in ks])
  if names!=['cos','sin']or ks[0][1]!=ks[1][1]:
@@ -7365,39 +7365,39 @@ _x(r'''$, trig_lin(nu,x,$A):
  u=ks[0][1]
  S='S_'
  C='C_'
- g=$>($T($T(nu,fn('sin',u),S),fn('cos',u),C))
+ g=$=($T($T(nu,fn('sin',u),S),fn('cos',u),C))
  if has(g,x):
   $! $#
- cs_s=$Z(g,S)
- if cs_s is $# or $5(cs_s)!=2:
+ cs_s=$X(g,S)
+ if cs_s is $# or $4(cs_s)!=2:
   $! $#
  a=cs_s[1]
  $d=cs_s[0]
- cc=$Z($d,C)
- if cc is $# or $5(cc)!=2 or has(a,C):
+ cc=$X($d,C)
+ if cc is $# or $4(cc)!=2 or has(a,C):
   $! $#
  b=cc[1]
  c=cc[0]
  if c==0:
-  $! isolate(fn('tan',u),$.($m($R(b,a))),x,$A,0)
+  $! isolate(fn('tan',u),$.($m($O(b,a))),x,$A,0)
  R=$V($_(pw(a,2),pw(b,2)))
- phi=fn('$t',$R(b,a))
+ phi=fn('$t',$O(b,a))
  if $v(a)$* fv(a)<0:
   phi=$_(phi,'pi')
- $! isolate(fn('sin',$_(u,phi)),$.($m($R(c,R))),x,$A,0)
+ $! isolate(fn('sin',$_(u,phi)),$.($m($O(c,R))),x,$A,0)
 $, numeric_solve(f,x,$A,lo=$#,hi=$#,maxn=12):
- others=[s $) s in $q(f)if s!=x]
+ others=[s $) s in $o(f)if s!=x]
  if others:
   $! $#
  $, F(t):
   try:
    v=$U(f,{x:t})
-  $9($C,$Q,$[,$O,TypeError):
+  $9($C,$R,$[,$P,TypeError):
    $! $#
   if $/(v)is $2:
-   if $H(v.imag)>1e-9*(1+$H(v.$P)):
+   if $H(v.imag)>1e-9*(1+$H(v.$Q)):
     $! $#
-   v=v.$P
+   v=v.$Q
   if v!=v:
    $! $#
   $! v
@@ -7434,7 +7434,7 @@ $, numeric_solve(f,x,$A,lo=$#,hi=$#,maxn=12):
     roots.$%(r)
   t0,a=t1,b
   t1,b=t2,c
-  if $5(roots)>200:
+  if $4(roots)>200:
    $W
  if b is $- $# $* b==0 $* a is $- $# $* a!=0:
   roots.$%(t1)
@@ -7442,7 +7442,7 @@ $, numeric_solve(f,x,$A,lo=$#,hi=$#,maxn=12):
  $) r in sorted(roots):
   if $- $? or $H(r-$?[-1])>1e-9*(1+$H(r)):
    $?.$%(r)
- if $5($?)>maxn $* lo is $#:
+ if $4($?)>maxn $* lo is $#:
   $?.sort(key=$H)
   $?=sorted($?[:maxn])
  $![snap(r)$) r in $?]
@@ -7460,7 +7460,7 @@ $, bisect(F,a,b,fa,fb):
    $W
   if(fm<0)==(fa<0):
    a,fa=m,fm
-  $(:
+  $&:
    b,fb=m,fm
  m=0.5*(a+b)
  fm=F(m)
@@ -7493,12 +7493,12 @@ $, nsolve(f,x,guess=$#,lo=$#,hi=$#):
  $, F(t):
   try:
    v=$U(f,{x:t})
-  $9($C,$Q,$[,$O,TypeError):
+  $9($C,$R,$[,$P,TypeError):
    $! $#
   if $/(v)is $2:
-   if $H(v.imag)>1e-9*(1+$H(v.$P)):
+   if $H(v.imag)>1e-9*(1+$H(v.$Q)):
     $! $#
-   v=v.$P
+   v=v.$Q
   $! v
  if guess is $- $#:
   r=secant(F,guess,lo,hi)
@@ -7506,7 +7506,7 @@ $, nsolve(f,x,guess=$#,lo=$#,hi=$#):
    $! r
  if lo is $- $# $* hi is $- $#:
   rs=numeric_solve(f,x,$3,lo,hi)
- $(:
+ $&:
   rs=numeric_solve(f,x,$3)
   if lo is $- $#:
    rs=[r $) r in rs if r>=lo]
@@ -7515,7 +7515,7 @@ $, nsolve(f,x,guess=$#,lo=$#,hi=$#):
  if rs:
   if guess is $- $#:
    rs.sort(key=$8 r:$H(r-guess))
-  $(:
+  $&:
    rs.sort(key=$8 r:$H(r))
   $! rs[0]
  $! $#
@@ -7543,20 +7543,20 @@ $, rel_pairs(cs,x):
     $! $#
    $?+=r
   $L h in('<','>','<=','>=','/=','='):
-   $?.$%((h,$.($^(c[1],c[2]))))
-  $(:
+   $?.$%((h,$.($](c[1],c[2]))))
+  $&:
    $! $#
  $) rel,f in $?:
-  if $- $4(f,x)$* fvars(f,x):
+  if $- $5(f,x)$* fvars(f,x):
    $! $#
  $! $?
 $, fvars(f,x):
- $! any(w!=x $* w $- in('pi','e','i','$N')$) w in $q(f))
+ $! any(w!=x $* w $- in('pi','e','i','$N')$) w in $o(f))
 ''')
 _x(r'''$, solve_rels(pairs,x,anyof=$3):
  pts=[]
  $) rel,f in pairs:
-  if $4(f,x):
+  if $5(f,x):
    $7
   rs=$n(f,x,$3)
   if rs is $#:
@@ -7587,9 +7587,9 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
   $9 $6:
    $! $3
   if $/(v)is $2:
-   if $H(v.imag)>1e-9*(1+$H(v.$P)):
+   if $H(v.imag)>1e-9*(1+$H(v.$Q)):
     $! $3
-   v=v.$P
+   v=v.$Q
   if v!=v:
    $! $3
   $! relok(rel,v)
@@ -7615,7 +7615,7 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
     if $/(vv)is $2:
      if $H(vv.imag)>=1e-9:
       $! $3
-     vv=vv.$P
+     vv=vv.$Q
     if $H(vv)<1e-10:
      vv=0.0
     if $- relok(rel,vv):
@@ -7625,12 +7625,12 @@ _x(r'''$, solve_rels(pairs,x,anyof=$3):
   $! $E
  $e=[fv(p)$) p in pts]
  if $- $e:
-  $! 'true' if test(0.5)$( 'false'
+  $! 'true' if test(0.5)$& 'false'
  segs=[('I',$#,pts[0],test($e[0]-max(1.0,$H($e[0]))))]
- $) i in $+($5(pts)):
+ $) i in $+($4(pts)):
   p=pts[i]
   segs.$%(('P',p,p,testp(p)))
-  if i+1<$5(pts):
+  if i+1<$4(pts):
    segs.$%(('I',p,pts[i+1],test(0.5*($e[i]+$e[i+1]))))
  segs.$%(('I',pts[-1],$#,test($e[-1]+max(1.0,$H($e[-1])))))
  $! segs_to_bool(segs,x)
@@ -7640,8 +7640,8 @@ $, sgn(e):
    v=fv(e)
   $9 $6:
    $! 0
-  $! 1 if v>0 $((-1 if v<0 $( 0)
- if $&(e,'*'):
+  $! 1 if v>0 $&(-1 if v<0 $& 0)
+ if $((e,'*'):
   s=1
   $) a in e[1:]:
    k=sgn(a)
@@ -7649,51 +7649,51 @@ $, sgn(e):
     $! 0
    s*=k
   $! s
- if $&(e,'+'):
-  ks=[sgn(a)or(2 if nonneg(a)$( 0)$) a in e[1:]]
+ if $((e,'+'):
+  ks=[sgn(a)or(2 if nonneg(a)$& 0)$) a in e[1:]]
   if all(k in(1,2)$) k in ks)$* 1 in ks:
    $! 1
-  ks=[sgn($m(a))or(2 if nonneg($m(a))$( 0)$) a in e[1:]]
+  ks=[sgn($m(a))or(2 if nonneg($m(a))$& 0)$) a in e[1:]]
   if all(k in(1,2)$) k in ks)$* 1 in ks:
    $!-1
   $! 0
- if $&(e,'^')$* $g(e[2])$* e[2]%2==1:
+ if $((e,'^')$* $g(e[2])$* e[2]%2==1:
   $! sgn(e[1])
- if head(e)=='exp' or($&(e,'^')$* e[1]=='e'):
+ if head(e)=='exp' or($((e,'^')$* e[1]=='e'):
   $! 1
  $! 0
 $, nonneg(e):
- if $&(e,'^')$* $g(e[2])$* e[2]%2==0:
+ if $((e,'^')$* $g(e[2])$* e[2]%2==0:
   $! $E
  if head(e)=='$H':
   $! $E
- if $&(e,'*'):
+ if $((e,'*'):
   $! all(nonneg(a)or sgn(a)>0 $) a in e[1:])
  $! sgn(e)>0
 $, ineq_param(rel,f,x):
- cs=$Z(f,x)
- if cs is $# or $5(cs)!=2:
+ cs=$X(f,x)
+ if cs is $# or $4(cs)!=2:
   $! $#
  a=nice(comdenom(cs[1]))
  b=cs[0]
- v=nice(comdenom($R($m(b),a)))
+ v=nice(comdenom($O($m(b),a)))
  k=sgn(a)
  if k:
-  $!(rel if k>0 $( FLIP[rel],x,v)
+  $!(rel if k>0 $& FLIP[rel],x,v)
  n=numer_denom(a)[0]
  if rel=='/=':
   $?=[('$*',('/=',x,v),('/=',n,0))]
- $(:
+ $&:
   $?=[('$*',(rel,x,v),('>',a,0)),
  ('$*',(FLIP[rel],x,v),('<',a,0))]
- if $/(n)is $|:
+ if $/(n)is $y:
   b=$T(b,n,0)
  if $1(b):
   if relok(rel,fv(b)):
    $?.$%(('=',n,0))
- $(:
+ $&:
   $?.$%(('$*',('=',n,0),(rel,b,0)))
- $!('or',)+$0($?)if $5($?)>1 $( $?[0]
+ $!('or',)+$0($?)if $4($?)>1 $& $?[0]
 $, relok(rel,v):
  if rel=='<':
   $! v<0
@@ -7710,12 +7710,12 @@ $, domainpts(f,x,$?):
  if $/(f)is $- $0 or f[0]=='Q':
   $!
  h=f[0]
- if h=='^' $* $- $4(f[1],x):
+ if h=='^' $* $- $5(f[1],x):
   if $D(f[2])$* $a(f[2])<0:
    $?.$%(f[1])
   if isq(f[2])$* f[2][2]%2==0:
    $?.$%(f[1])
- if h in('ln','log','$H','sign','floor','ceiling')$* $- $4(f[1],x):
+ if h in('ln','log','$H','sign','floor','ceiling')$* $- $5(f[1],x):
   $?.$%(f[1])
  $) a in f[1:]:
   domainpts(a,x,$?)
@@ -7727,12 +7727,12 @@ $, segs_to_bool(segs,x):
    if cur is $#:
     if kind=='I':
      cur=[a,$3,b,$3]
-    $(:
+    $&:
      cur=[a,$E,b,$E]
-   $(:
+   $&:
     cur[2]=b
     cur[3]=(kind=='P')
-  $(:
+  $&:
    if cur is $- $#:
     ivs.$%(cur)
     cur=$#
@@ -7740,14 +7740,14 @@ $, segs_to_bool(segs,x):
   ivs.$%(cur)
  if $- ivs:
   $! 'false'
- if $5(ivs)>=2 $* ivs[0][0]is $# $* ivs[-1][2]is $#:
+ if $4(ivs)>=2 $* ivs[0][0]is $# $* ivs[-1][2]is $#:
   okp=$E
-  $) i in $+($5(ivs)-1):
+  $) i in $+($4(ivs)-1):
    if $-(ivs[i][2]==ivs[i+1][0]$* $- ivs[i][3]$* $- ivs[i+1][1]):
     okp=$3
   if okp:
-   ne=[('/=',x,ivs[i][2])$) i in $+($5(ivs)-1)]
-   $! ne[0]if $5(ne)==1 $(('$*',)+$0(ne)
+   ne=[('/=',x,ivs[i][2])$) i in $+($4(ivs)-1)]
+   $! ne[0]if $4(ne)==1 $&('$*',)+$0(ne)
  $?=[]
  $) lo,li,hi,hiinc in ivs:
   if lo is $# $* hi is $#:
@@ -7755,17 +7755,17 @@ $, segs_to_bool(segs,x):
   if lo is $- $# $* hi is $- $# $* lo==hi:
    $?.$%(('=',x,lo))
   $L lo is $#:
-   $?.$%(('<=' if hiinc $( '<',x,hi))
+   $?.$%(('<=' if hiinc $& '<',x,hi))
   $L hi is $#:
-   $?.$%(('>=' if li $( '>',x,lo))
-  $(:
-   $?.$%(('$*',('<=' if li $( '<',lo,x),('<=' if hiinc $( '<',x,hi)))
- if $5($?)==1:
+   $?.$%(('>=' if li $& '>',x,lo))
+  $&:
+   $?.$%(('$*',('<=' if li $& '<',lo,x),('<=' if hiinc $& '<',x,hi)))
+ if $4($?)==1:
   $! $?[0]
  $!('or',)+$0($?)
 $, eqexpr(eq):
- if $&(eq,'='):
-  $! $.($^(eq[1],eq[2]))
+ if $((eq,'='):
+  $! $.($](eq[1],eq[2]))
  $! eq
 $, is_linear_sys(fs,vs):
  $) f in fs:
@@ -7773,27 +7773,27 @@ $, is_linear_sys(fs,vs):
    d=degree(f,v)
    if d is $# or d>1:
     $! $3
-  g=$>(f)
-  $) i in $+($5(vs)):
-   $) j in $+($5(vs)):
-    cs_=$Z(g,vs[i])
+  g=$=(f)
+  $) i in $+($4(vs)):
+   $) j in $+($4(vs)):
+    cs_=$X(g,vs[i])
     if cs_ is $#:
      $! $3
-    if $5(cs_)>1 $* has(cs_[1],vs[j]):
+    if $4(cs_)>1 $* has(cs_[1],vs[j]):
      $! $3
  $! $E
 ''')
 _x(r'''$, linsys(fs,vs):
- m=$5(fs)
- n=$5(vs)
+ m=$4(fs)
+ n=$4(vs)
  A=[]
  $) f in fs:
-  g=$>(f)
+  g=$=(f)
   row=[]
   $d=g
   $) v in vs:
-   cs_=$Z(g,v)
-   c=cs_[1]if $5(cs_)>1 $( 0
+   cs_=$X(g,v)
+   c=cs_[1]if $4(cs_)>1 $& 0
    row.$%(c)
   const=g
   $) v in vs:
@@ -7812,11 +7812,11 @@ _x(r'''$, linsys(fs,vs):
    $7
   A[r],A[p]=A[p],A[r]
   pv=A[r][c]
-  A[r]=[$.($R(a,pv))$) a in A[r]]
+  A[r]=[$.($O(a,pv))$) a in A[r]]
   $) i in $+(m):
    if i!=r $* A[i][c]!=0:
     fct=A[i][c]
-    A[i]=[$.($>($^(A[i][j],$:(fct,A[r][j]))))$) j in $+(n+1)]
+    A[i]=[$.($=($](A[i][j],$:(fct,A[r][j]))))$) j in $+(n+1)]
   piv.$%(c)
   r+=1
   if r==m:
@@ -7829,13 +7829,13 @@ _x(r'''$, linsys(fs,vs):
  params={}
  k=1
  $) c in free:
-  params[vs[c]]='c'+$|(k)
+  params[vs[c]]='c'+$y(k)
   k+=1
- $) i in $+($5(piv)):
+ $) i in $+($4(piv)):
   c=piv[i]
   val=A[i][n]
   $) c2 in free:
-   val=$^(val,$:(A[i][c2],params[vs[c2]]))
+   val=$](val,$:(A[i][c2],params[vs[c2]]))
   sol[vs[c]]=nice($.(val))
  $) c in free:
   sol[vs[c]]=params[vs[c]]
@@ -7845,7 +7845,7 @@ $, solve_system(eqs,vs,$A=$3,guesses=$#):
  fs=[]
  $) e in eqs:
   f=eqexpr(e)
-  f=numer_of(f)if hasdenom_x(f,vs)$( f
+  f=numer_of(f)if hasdenom_x(f,vs)$& f
   if f!=0:
    fs.$%(f)
  if guesses:
@@ -7854,7 +7854,7 @@ $, solve_system(eqs,vs,$A=$3,guesses=$#):
   $! linsys(fs,vs)
  r=elim(fs,vs,$A,0)
  if r is $#:
-  $! newton_sys(fs,vs,[0.0]*$5(vs))
+  $! newton_sys(fs,vs,[0.0]*$4(vs))
  $?=[]
  $) s in r:
   ok=$E
@@ -7875,7 +7875,7 @@ $, hasdenom_x(f,vs):
    $! $E
  $! $3
 $, elim(fs,vs,$A,$<):
- fs=[$.($>(f))$) f in fs]
+ fs=[$.($=(f))$) f in fs]
  fs=[f $) f in fs if f!=0]
  if $- fs:
   $![{}]
@@ -7885,33 +7885,33 @@ $, elim(fs,vs,$A,$<):
     $![]
  if $<>8:
   $! $#
- ${=$#
+ $}=$#
  $) f in fs:
   inv=[v $) v in vs if has(f,v)]
-  if $5(inv)==1:
-   ${=(f,inv[0])
+  if $4(inv)==1:
+   $}=(f,inv[0])
    $W
- if ${ is $#:
+ if $} is $#:
   $) f in fs:
    $) v in vs:
     d=degree(f,v)
     if d==1:
-     c=$Z(f,v)
+     c=$X(f,v)
      if c is $- $# $* $1(c[1])$* c[1]!=0:
-      ${=(f,v)
+      $}=(f,v)
       $W
-   if ${:
+   if $}:
     $W
- if ${ is $#:
+ if $} is $#:
   $) f in fs:
    $) v in vs:
     if degree(f,v)==1:
-     ${=(f,v)
+     $}=(f,v)
      $W
-   if ${:
+   if $}:
     $W
- if ${ is $- $#:
-  f,v=${
+ if $} is $- $#:
+  f,v=$}
   rs=$n(f,v,$A)
   if rs is $#:
    $! $#
@@ -7933,7 +7933,7 @@ $, elim(fs,vs,$A,$<):
     s2[v]=clean(val)
     $?.$%(s2)
   $! $?
- if $5(fs)>=2 $* $5(vs)>=2:
+ if $4(fs)>=2 $* $4(vs)>=2:
   y=vs[-1]
   R=resultant(fs[0],fs[1],y)
   if R is $# or R==0:
@@ -7948,7 +7948,7 @@ $, elim(fs,vs,$A,$<):
     h=g
     $) w in s:
      h=$T(h,w,s[w])
-    gs.$%($.($>(h)))
+    gs.$%($.($=(h)))
    ys=elim(gs,[y],$A,$<+1)
    if ys is $#:
     $7
@@ -7959,12 +7959,12 @@ $, elim(fs,vs,$A,$<):
   $! $?
  $! $#
 $, resultant(f,g,y):
- a=$Z(f,y)
- b=$Z(g,y)
+ a=$X(f,y)
+ b=$X(g,y)
  if a is $# or b is $#:
   $! $#
- m=$5(a)-1
- n=$5(b)-1
+ m=$4(a)-1
+ n=$4(b)-1
  if m<1 or n<1:
   $! $#
  N=m+n
@@ -7979,9 +7979,9 @@ $, resultant(f,g,y):
   $) j in $+(n+1):
    row[i+j]=b[n-j]
   M.$%(row)
- $! $>(bareiss(M))
+ $! $=(bareiss(M))
 $, bareiss(M):
- n=$5(M)
+ n=$4(M)
  M=[$J(r)$) r in M]
  sign=1
  prev=1
@@ -7998,7 +7998,7 @@ $, bareiss(M):
    sign=-sign
   $) i in $+(k+1,n):
    $) j in $+(k+1,n):
-    num=$>($^($:(M[i][j],M[k][k]),$:(M[i][k],M[k][j])))
+    num=$=($]($:(M[i][j],M[k][k]),$:(M[i][k],M[k][j])))
     M[i][j]=exdiv(num,prev)
   prev=M[k][k]
  $! $:(sign,M[n-1][n-1])
@@ -8006,7 +8006,7 @@ $, exdiv(a,b):
  if b==1:
   $! a
  if $D(b):
-  $! $>($:(a,ninv(b))if $r(b)$( $R(a,b))
+  $! $=($:(a,ninv(b))if $r(b)$& $O(a,b))
  ks=[]
  kernels(a,ks)
  kernels(b,ks)
@@ -8014,22 +8014,22 @@ $, exdiv(a,b):
  ra=ratform(a,ks)
  rb=ratform(b,ks)
  if ra is $# or rb is $#:
-  $! $.($R(a,b))
+  $! $.($O(a,b))
  q=$S(p_mul(ra[0],rb[1]),p_mul(ra[1],rb[0]))
  if q is $#:
-  $! $.($R(a,b))
+  $! $.($O(a,b))
  $! p2e(q,ks)
 $, newton_sys(fs,vs,guess):
- n=$5(vs)
- if $5(fs)!=n:
+ n=$4(vs)
+ if $4(fs)!=n:
   $! $#
  others=[]
  $) f in fs:
-  $) s in $q(f):
+  $) s in $o(f):
    if s $- in vs:
     $! $#
  J=[[diff(f,v)$) v in vs]$) f in fs]
- xv=[$@($U(g).$P)if $D(g)or $1(g)$( 0.0 $) g in guess]
+ xv=[$@($U(g).$Q)if $D(g)or $1(g)$& 0.0 $) g in guess]
  $) it in $+(100):
   env=dict(zip(vs,xv))
   try:
@@ -8037,8 +8037,8 @@ $, newton_sys(fs,vs,guess):
    Jv=[[$U(J[i][j],env)$) j in $+(n)]$) i in $+(n)]
   $9 $6:
    $! $#
-  F=[v.$P if $/(v)is $2 $( v $) v in F]
-  Jv=[[v.$P if $/(v)is $2 $( v $) v in r]$) r in Jv]
+  F=[v.$Q if $/(v)is $2 $& v $) v in F]
+  Jv=[[v.$Q if $/(v)is $2 $& v $) v in r]$) r in Jv]
   dx=linsolve_float(Jv,[-v $) v in F])
   if dx is $#:
    $! $#
@@ -8053,7 +8053,7 @@ $, newton_sys(fs,vs,guess):
   $![]
  $![dict([(vs[i],snap(xv[i]))$) i in $+(n)])]
 $, linsolve_float(A,b):
- n=$5(A)
+ n=$4(A)
  M=[$J(A[i])+[b[i]]$) i in $+(n)]
  $) c in $+(n):
   p=max($+(c,n),key=$8 i:$H(M[i][c]))
@@ -8074,7 +8074,7 @@ $, sols_to_bool(x,$h):
  if $- $h:
   $! 'false'
  eqs=[('=',x,s)$) s in $h]
- if $5(eqs)==1:
+ if $4(eqs)==1:
   $! eqs[0]
  $!('or',)+$0(eqs)
 ''')
@@ -8086,8 +8086,8 @@ _x(r'''$, apply_constraints($h,x,cons):
  $?=[]
  expanded=[]
  $) s in $h:
-  ns=[w $) w in $q(s)if w[0]=='n' $* w[1:].isdigit()]
-  if ns $* $5(ns)==1:
+  ns=[w $) w in $o(s)if w[0]=='n' $* w[1:].isdigit()]
+  if ns $* $4(ns)==1:
    b=bounds(cons,x)
    if b is $#:
     expanded.$%(s)
@@ -8096,7 +8096,7 @@ _x(r'''$, apply_constraints($h,x,cons):
    $) k in $+(-60,61):
     v=$T(s,n,k)
     expanded.$%(v)
-  $(:
+  $&:
    expanded.$%(s)
  $) s in expanded:
   if satisfies(s,x,cons):
@@ -8109,12 +8109,12 @@ $, bounds(cons,x):
   if head(c)in('<','<=','>','>=')$* $1(c[1])$* c[2]==x:
    if c[0]in('<','<='):
     lo=c[1]
-   $(:
+   $&:
     hi=c[1]
   $L head(c)in('<','<=','>','>=')$* c[1]==x $* $1(c[2]):
    if c[0]in('<','<='):
     hi=c[2]
-   $(:
+   $&:
     lo=c[2]
  if lo is $# or hi is $#:
   $! $#
@@ -8149,42 +8149,42 @@ $, satisfies(s,x,cons):
  $! $E
 $, solve(eq,x,$A=$3,cons=$#):
  NC[0]=0
- if $&(eq,'$*')or $&(eq,'$J'):
+ if $((eq,'$*')or $((eq,'$J'):
   $! $#
  h=head(eq)
  if h in('<','>','<=','>=','/='):
-  f=$^(eq[1],eq[2])
-  cp=rel_pairs(cons,x)if cons $( $#
+  f=$](eq[1],eq[2])
+  cp=rel_pairs(cons,x)if cons $& $#
   if cp:
    $! solve_rels([(h,$.(f))]+cp,x)
   r=solve_ineq(h,f,x)
   $! r
  if h=='=':
-  f=$^(eq[1],eq[2])
+  f=$](eq[1],eq[2])
  $L h=='or':
   if $- $A $* any([head(q)in('<','>','<=','>=','/=')$) q in eq[1:]]):
-   ps=rel_pairs(eq[1:],x)if all([head(q)!='$*' $) q in eq[1:]])$( $#
+   ps=rel_pairs(eq[1:],x)if all([head(q)!='$*' $) q in eq[1:]])$& $#
    if ps:
     r=solve_rels(ps,x,$E)
     if r is $- $#:
      $! r
-  $z=[]
+  $|=[]
   $) e in eq[1:]:
    r=solve(e,x,$A,cons)
    if r is $#:
     $! $#
    if r=='true':
     $! 'true'
-   if $&(r,'or'):
-    $z.extend([q $) q in r[1:]if q $- in $z])
-   $L r!='false' $* r $- in $z:
-    $z.$%(r)
-  if $- $z:
+   if $((r,'or'):
+    $|.extend([q $) q in r[1:]if q $- in $|])
+   $L r!='false' $* r $- in $|:
+    $|.$%(r)
+  if $- $|:
    $! 'false'
-  $!('or',)+$0($z)if $5($z)>1 $( $z[0]
+  $!('or',)+$0($|)if $4($|)>1 $& $|[0]
  $L eq=='true':
   $! 'true'
- $(:
+ $&:
   f=eq
  w=firstwhen(f,x)
  if w is $- $#:
@@ -8210,7 +8210,7 @@ $, solve(eq,x,$A=$3,cons=$#):
 $, firstabs(f,x):
  if $/(f)is $- $0 or f[0]=='Q':
   $! $#
- if f[0]=='$H' $* $- $4(f[1],x):
+ if f[0]=='$H' $* $- $5(f[1],x):
   $! f
  $) a in f[1:]:
   w=firstabs(a,x)
@@ -8223,18 +8223,18 @@ $, abs_cases(f,x,conds,$<):
   rs=$n(f,x,$3,$<+1)
   if rs=='all':
    ps=rel_pairs(conds,x)
-   r=solve_rels(ps,x)if ps is $- $# $( $#
+   r=solve_rels(ps,x)if ps is $- $# $& $#
    if r=='false':
     $![]
-   if r is $# or $&(r,'$*')or head(r)in('<','>','<=','>=','/=','or')or r=='true':
+   if r is $# or $((r,'$*')or head(r)in('<','>','<=','>=','/=','or')or r=='true':
     $! 'interval'
-   $![r[2]]if $&(r,'=')$( 'interval'
+   $![r[2]]if $((r,'=')$& 'interval'
   if rs is $#:
    $! $#
   $?=[]
   $) q in rs:
-   ns=[w $) w in $q(q)if w[0]=='n' $* w[1:].isdigit()]
-   q0=$T(q,ns[0],0)if $5(ns)==1 $( q
+   ns=[w $) w in $o(q)if w[0]=='n' $* w[1:].isdigit()]
+   q0=$T(q,ns[0],0)if $4(ns)==1 $& q
    if $v(q0)$* satisfies(q0,x,conds):
     $?.$%(q)
   $! $?
@@ -8253,7 +8253,7 @@ $, abs_region(f,x,cons):
  $, walk(e):
   if $/(e)is $- $0 or e[0]=='Q':
    $!
-  if e[0]=='$H' $* $- $4(e[1],x):
+  if e[0]=='$H' $* $- $5(e[1],x):
    rs=$n(e[1],x,$3)
    if rs $* rs!='all':
     pts.extend([q $) q in rs if $v(q)])
@@ -8262,9 +8262,9 @@ $, abs_region(f,x,cons):
  walk(f)
  $, ok(t):
   try:
-   v=fv($T(f,x,t))if $- $/(t)is $@ $( $U(f,{x:t})
+   v=fv($T(f,x,t))if $- $/(t)is $@ $& $U(f,{x:t})
    if $/(v)is $2:
-    v=v.$P
+    v=v.$Q
    $! $H(v)<1e-9 $* satisfies(t,x,cons or[])
   $9 $6:
    $! $3
@@ -8273,9 +8273,9 @@ $, abs_region(f,x,cons):
   $! $#
  $e=[fv(p)$) p in pts]
  segs=[('I',$#,pts[0],ok($e[0]-1.0))]
- $) i in $+($5(pts)):
+ $) i in $+($4(pts)):
   segs.$%(('P',pts[i],pts[i],ok(pts[i])))
-  if i+1<$5(pts):
+  if i+1<$4(pts):
    segs.$%(('I',pts[i],pts[i+1],ok(0.5*($e[i]+$e[i+1]))))
  segs.$%(('I',pts[-1],$#,ok($e[-1]+1.0)))
  $! segs_to_bool(segs,x)
@@ -8283,7 +8283,7 @@ NOTREL={'<':'>=','>':'<=','<=':'>','>=':'<','=':'/=','/=':'='}
 $, firstwhen(f,x):
  if $/(f)is $- $0 or f[0]=='Q':
   $! $#
- if f[0]=='when' $* $- $4(f[1],x):
+ if f[0]=='when' $* $- $5(f[1],x):
   $! f
  $) a in f[1:]:
   w=firstwhen(a,x)
@@ -8299,31 +8299,31 @@ $, replnode(f,w,r):
 ''')
 _x(r'''$, solve_when(f,w,x,$A,cons):
  c=w[1]
- cs=$J(c[1:])if head(c)=='$*' $([c]
+ cs=$J(c[1:])if head(c)=='$*' $&[c]
  if $- all([head(q)in NOTREL $) q in cs]):
   $! $#
- $z=[]
+ $|=[]
  r=solve(('=',replnode(f,w,w[2]),0),x,$A,(cons or[])+cs)
  if r is $#:
   $! $#
- $z.$%(r)
- if $5(w)>3:
-  $) k in $+($5(cs)):
+ $|.$%(r)
+ if $4(w)>3:
+  $) k in $+($4(cs)):
    nc=cs[:k]+[(NOTREL[cs[k][0]],cs[k][1],cs[k][2])]
    r=solve(('=',replnode(f,w,w[3]),0),x,$A,(cons or[])+nc)
    if r is $#:
     $! $#
-   $z.$%(r)
+   $|.$%(r)
  $?=[]
- $) r in $z:
-  $) q in(r[1:]if $&(r,'or')$((r,)):
+ $) r in $|:
+  $) q in(r[1:]if $((r,'or')$&(r,)):
    if q!='false' $* q $- in $?:
     $?.$%(q)
  if 'true' in $?:
   $! $#
  if $- $?:
   $! 'false'
- $! $?[0]if $5($?)==1 $(('or',)+$0($?)
+ $! $?[0]if $4($?)==1 $&('or',)+$0($?)
 $, realpart(s):
  if $1(s)$* has(s,'i'):
   r,i=reim(s)
@@ -8332,12 +8332,12 @@ $, realpart(s):
  $! s
 $, zeros(e,x,$A=$3,cons=$#):
  NC[0]=0
- if $&(e,'='):
-  e=$^(e[1],e[2])
+ if $((e,'='):
+  e=$](e[1],e[2])
  if firstwhen(e,x)is $- $#:
   r=solve(('=',e,0),x,$A,cons)
-  qs=r[1:]if $&(r,'or')$((r,)
-  if r is $- $# $* all([r=='false' or($&(q,'=')$* q[1]==x)$) q in qs]):
+  qs=r[1:]if $((r,'or')$&(r,)
+  if r is $- $# $* all([r=='false' or($((q,'=')$* q[1]==x)$) q in qs]):
    $!('$J',)+$0([q[2]$) q in qs if r!='false'])
  $h=$n(e,x,$A)
  if $h is $#:
@@ -8354,12 +8354,12 @@ $, zeros(e,x,$A=$3,cons=$#):
 YP=('Y1_','Y2_')
 $, desolve(ode,x,y,conds):
  NC[0]=0
- F=eqexpr(ode)if $&(ode,'=')$( ode
+ F=eqexpr(ode)if $((ode,'=')$& ode
  F=$.(F)
  if has(F,YP[1]):
   sol=de2(F,x,y)
   nconst=2
- $(:
+ $&:
   sol=de1(F,x,y)
   nconst=1
  if sol is $#:
@@ -8369,40 +8369,40 @@ $, desolve(ode,x,y,conds):
  $! sol
 $, de1(F,x,y):
  y1=YP[0]
- cs_=$Z(F,y1)
- if cs_ is $- $# $* $5(cs_)==2 $* $4(cs_[1],y1):
-  g=$.($m($R(cs_[0],cs_[1])))
- $(:
+ cs_=$X(F,y1)
+ if cs_ is $- $# $* $4(cs_)==2 $* $5(cs_[1],y1):
+  g=$.($m($O(cs_[0],cs_[1])))
+ $&:
   rs=$n(F,y1)
-  if $- rs or rs=='all' or $5(rs)!=1:
+  if $- rs or rs=='all' or $4(rs)!=1:
    $! $#
   g=rs[0]
  c1='c1'
- gy=$Z($>(g),y)
- if gy is $- $# $* $5(gy)==2 $* $4(gy[1],y):
+ gy=$X($=(g),y)
+ if gy is $- $# $* $4(gy)==2 $* $5(gy[1],y):
   P=$m(gy[1])
   Bq=gy[0]
-  if Bq==0 or $4(P,x)$* $4(Bq,x)$* $3:
+  if Bq==0 or $5(P,x)$* $5(Bq,x)$* $3:
    pass
   mu=pw('e',integrate(P,x))
   mu=dropabs(simp(mu))
-  I=$}($.($>($:(mu,Bq))),x)
+  I=$~($.($=($:(mu,Bq))),x)
   if I is $- $#:
-   yy=$.($R($_(I,c1),mu))
-   $!('=',y,nice($>(yy))if $- hasden_free(yy)$( nice(yy))
+   yy=$.($O($_(I,c1),mu))
+   $!('=',y,nice($=(yy))if $- hasden_free(yy)$& nice(yy))
  sep=separate(g,x,y)
  if sep is $- $#:
   p,q=sep
-  L=$}($.(pw(q,-1)),y)
-  R=$}(p,x)
+  L=$~($.(pw(q,-1)),y)
+  R=$~(p,x)
   if L is $- $# $* R is $- $#:
    rs=isolate_eq(L,$_(R,c1),y)
-   if rs is $- $# $* $5(rs)==1:
+   if rs is $- $# $* $4(rs)==1:
     $!('=',y,nice(simp(rs[0])))
    G=lncombine(L,y)
    if G is $- $#:
-    rs=$n($^(G,$:(c1,pw('e',R))),y)
-    if rs $* rs!='all' $* $5(rs)==1:
+    rs=$n($](G,$:(c1,pw('e',R))),y)
+    if rs $* rs!='all' $* $4(rs)==1:
      $!('=',y,nice(rs[0]))
    $!('=',L,$_(R,c1))
  bern_=bernoulli(g,x,y)
@@ -8410,16 +8410,16 @@ $, de1(F,x,y):
   $! bern_
  V='V_'
  h=$.($T(g,y,$:(V,x)))
- if $4(h,x)$* has(h,V):
-  dv=$.($^(h,V))
+ if $5(h,x)$* has(h,V):
+  dv=$.($](h,V))
   if dv!=0:
-   L=$}($.(pw(dv,-1)),V)
+   L=$~($.(pw(dv,-1)),V)
    if L is $- $#:
     R=$_(fn('ln',fn('$H',x)),c1)
     rs=isolate_eq(L,R,V)
-    if rs is $- $# $* $5(rs)==1:
-     $!('=',y,nice($>($:(x,rs[0]))))
-    L2=$T(L,V,$R(y,x))
+    if rs is $- $# $* $4(rs)==1:
+     $!('=',y,nice($=($:(x,rs[0]))))
+    L2=$T(L,V,$O(y,x))
     $!('=',L2,R)
  $! $#
 $, dropabs(e):
@@ -8429,18 +8429,18 @@ $, dropabs(e):
   $! dropabs(e[1])
  $! simp((e[0],)+$0(dropabs(a)$) a in e[1:]))
 $, lncombine(L,y):
- $M=L[1:]if $&(L,'+')$((L,)
+ $M=L[1:]if $((L,'+')$&(L,)
  fs=[]
  $) t in $M:
   c,r=$b(t)
-  if $&(r,'ln')$* $r(c):
+  if $((r,'ln')$* $r(c):
    u=r[1]
-   if $&(u,'$H'):
+   if $((u,'$H'):
     u=u[1]
    fs.$%(pw(u,c))
-  $(:
+  $&:
    $! $#
- if $5(fs)<1:
+ if $4(fs)<1:
   $! $#
  $! $.($G(fs))
 $, hasden_free(e):
@@ -8454,99 +8454,99 @@ $, isolate_eq(L,R,y):
   $! $#
  $! r
 $, separate(g,x,y):
- if $4(g,y):
+ if $5(g,y):
   $! g,1
- if $4(g,x):
+ if $5(g,x):
   $! 1,g
- fs=g[1:]if $&(g,'*')$((g,)
+ fs=g[1:]if $((g,'*')$&(g,)
  px=[]
  qy=[]
  $) f in fs:
-  if $4(f,y):
+  if $5(f,y):
    px.$%(f)
-  $L $4(f,x):
+  $L $5(f,x):
    qy.$%(f)
-  $L $&(f,'^')$* $4(f[1],x)$* $4(f[1],y)$* $&(f[2],'+'):
-   tx=[t $) t in f[2][1:]if $4(t,y)]
-   ty=[t $) t in f[2][1:]if $4(t,x)]
-   if $5(tx)+$5(ty)!=$5(f[2])-1:
+  $L $((f,'^')$* $5(f[1],x)$* $5(f[1],y)$* $((f[2],'+'):
+   tx=[t $) t in f[2][1:]if $5(t,y)]
+   ty=[t $) t in f[2][1:]if $5(t,x)]
+   if $4(tx)+$4(ty)!=$4(f[2])-1:
     $! $#
    px.$%(pw(f[1],$;(tx)))
    qy.$%(pw(f[1],$;(ty)))
-  $(:
+  $&:
    $! $#
  $! $G(px),$G(qy)
 $, expand_exp(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- if e[0]=='^' $* $&(e[2],'+')$*(e[1]=='e' or $D(e[1])):
+ if e[0]=='^' $* $((e[2],'+')$*(e[1]=='e' or $D(e[1])):
   $! $G([pw(e[1],t)$) t in e[2][1:]])
  $! simp((e[0],)+$0(expand_exp(a)$) a in e[1:]))
 $, bernoulli(g,x,y):
- g=$>(g)
- $M=g[1:]if $&(g,'+')$((g,)
+ g=$=(g)
+ $M=g[1:]if $((g,'+')$&(g,)
  groups={}
  $) t in $M:
   k=$#
-  fs=t[1:]if $&(t,'*')$((t,)
+  fs=t[1:]if $((t,'*')$&(t,)
   $d=[]
   $) f in fs:
    if f==y:
-    k=1 if k is $# $( $#
-   $L $&(f,'^')$* f[1]==y $* $D(f[2]):
+    k=1 if k is $# $& $#
+   $L $((f,'^')$* f[1]==y $* $D(f[2]):
     k=f[2]
-   $L $4(f,y):
+   $L $5(f,y):
     $d.$%(f)
-   $(:
+   $&:
     $! $#
   if k is $#:
    $! $#
   groups[k]=$_(groups.get(k,0),$G($d))
- if $5(groups)!=2 or 1 $- in groups:
+ if $4(groups)!=2 or 1 $- in groups:
   $! $#
  n=[k $) k in groups if k!=1][0]
  a=groups[1]
  b=groups[n]
  m=nsub(1,n)
  V='V_'
- vs=de1($^(YP[0],$:(m,$_($:(a,V),b))),x,V)
- if vs is $# or $- $&(vs,'=')or vs[1]!=V:
+ vs=de1($](YP[0],$:(m,$_($:(a,V),b))),x,V)
+ if vs is $# or $- $((vs,'=')or vs[1]!=V:
   $! $#
  $!('=',y,nice(pw(vs[2],ninv(m))))
 ''')
 _x(r'''$, de2(F,x,y):
  y1,y2=YP
  c1,c2='c1','c2'
- G=$>(F)
- a=$Z(G,y2)
- if a is $# or $5(a)!=2:
+ G=$=(F)
+ a=$X(G,y2)
+ if a is $# or $4(a)!=2:
   $! $#
  A=a[1]
  $d=a[0]
- b=$Z($d,y1)
- if b is $# or $5(b)>2:
+ b=$X($d,y1)
+ if b is $# or $4(b)>2:
   $! $#
- B=b[1]if $5(b)==2 $( 0
+ B=b[1]if $4(b)==2 $& 0
  $d=b[0]
- c=$Z($d,y)
- if c is $# or $5(c)>2:
+ c=$X($d,y)
+ if c is $# or $4(c)>2:
   $! $#
- C=c[1]if $5(c)==2 $( 0
+ C=c[1]if $4(c)==2 $& 0
  g=$m(c[0])
  $) t in(A,B,C):
   if has(t,y)or has(t,y1)or has(t,y2):
    $! $#
- if $4(A,x)$* $4(B,x)$* $4(C,x):
+ if $5(A,x)$* $5(B,x)$* $5(C,x):
   y1s,y2s=charsol(A,B,C,x)
- $(:
+ $&:
   ce=cauchy_euler(A,B,C,x)
   if ce is $#:
    if C==0:
     V='V_'
     r=de1($_($:(A,YP[0]),$:(B,V),$m(g)),x,V)
-    if r is $# or $- $&(r,'=')or r[1]!=V:
+    if r is $# or $- $((r,'=')or r[1]!=V:
      $! $#
-    r2=$}($T(r[2],'c1','c2'),x)
+    r2=$~($T(r[2],'c1','c2'),x)
     if r2 is $#:
      $! $#
     $!('=',y,$_(r2,c1))
@@ -8555,48 +8555,48 @@ _x(r'''$, de2(F,x,y):
  yh=$_($:(c1,y1s),$:(c2,y2s))
  if g==0:
   $!('=',y,yh)
- W=pyth($.($>($^($:(y1s,diff(y2s,x)),$:(diff(y1s,x),y2s)))))
- gg=$.($R(g,A))
- I1=$}($.($>($R($:(y2s,gg),W))),x)
- I2=$}($.($>($R($:(y1s,gg),W))),x)
+ W=pyth($.($=($]($:(y1s,diff(y2s,x)),$:(diff(y1s,x),y2s)))))
+ gg=$.($O(g,A))
+ I1=$~($.($=($O($:(y2s,gg),W))),x)
+ I2=$~($.($=($O($:(y1s,gg),W))),x)
  if I1 is $# or I2 is $#:
   $! $#
- yp=pyth($>($_($:($m(y1s),I1),$:(y2s,I2))))
+ yp=pyth($=($_($:($m(y1s),I1),$:(y2s,I2))))
  $!('=',y,nice($_(yh,yp)))
 $, charsol(A,B,C,x):
- D=$.($>($^($:(B,B),$:(4,A,C))))
+ D=$.($=($]($:(B,B),$:(4,A,C))))
  if $v(D)$* fv(D)<0:
-  al=$.($R($m(B),$:(2,A)))
-  be=$.($R($V($m(D)),$:(2,A)))
+  al=$.($O($m(B),$:(2,A)))
+  be=$.($O($V($m(D)),$:(2,A)))
   ex=pw('e',$:(al,x))
   $! $:(ex,fn('cos',$:(be,x))),$:(ex,fn('sin',$:(be,x)))
  if D==0:
-  r=$.($R($m(B),$:(2,A)))
+  r=$.($O($m(B),$:(2,A)))
   $! pw('e',$:(r,x)),$:(x,pw('e',$:(r,x)))
  s=$V(D)
- r1=$.($R($_($m(B),s),$:(2,A)))
- r2=$.($R($^($m(B),s),$:(2,A)))
+ r1=$.($O($_($m(B),s),$:(2,A)))
+ r2=$.($O($]($m(B),s),$:(2,A)))
  $! pw('e',$:(r1,x)),pw('e',$:(r2,x))
 $, cauchy_euler(A,B,C,x):
- a=$.($R(A,pw(x,2)))
- b=$.($R(B,x))
- if $-($4(a,x)$* $4(b,x)$* $4(C,x)):
+ a=$.($O(A,pw(x,2)))
+ b=$.($O(B,x))
+ if $-($5(a,x)$* $5(b,x)$* $5(C,x)):
   $! $#
  aa=a
- bb=$^(b,a)
+ bb=$](b,a)
  cc=C
- D=$.($>($^($:(bb,bb),$:(4,aa,cc))))
+ D=$.($=($]($:(bb,bb),$:(4,aa,cc))))
  lx=fn('ln',x)
  if $v(D)$* fv(D)<0:
-  al=$.($R($m(bb),$:(2,aa)))
-  be=$.($R($V($m(D)),$:(2,aa)))
+  al=$.($O($m(bb),$:(2,aa)))
+  be=$.($O($V($m(D)),$:(2,aa)))
   $! $:(pw(x,al),fn('cos',$:(be,lx))),$:(pw(x,al),fn('sin',$:(be,lx)))
  if D==0:
-  r=$.($R($m(bb),$:(2,aa)))
+  r=$.($O($m(bb),$:(2,aa)))
   $! pw(x,r),$:(pw(x,r),lx)
  s=$V(D)
- r1=$.($R($_($m(bb),s),$:(2,aa)))
- r2=$.($R($^($m(bb),s),$:(2,aa)))
+ r1=$.($O($_($m(bb),s),$:(2,aa)))
+ r2=$.($O($]($m(bb),s),$:(2,aa)))
  $! pw(x,r1),pw(x,r2)
 $, apply_ic(sol,x,y,conds,nconst):
  cs_=['c1','c2'][:nconst]
@@ -8608,7 +8608,7 @@ $, apply_ic(sol,x,y,conds,nconst):
    $) _ in $+(order):
     e=diff(e,x)
    eqs.$%(('=',$T(e,x,x0),v))
- $(:
+ $&:
   $) order,x0,v in conds:
    if order==0:
     eqs.$%($T($T(sol,x,x0),y,v))
@@ -8626,7 +8626,7 @@ $, apply_ic(sol,x,y,conds,nconst):
  if r[1]==y:
   $!('=',y,nice(r[2]))
  rs2=isolate_eq(r[1],r[2],y)
- if rs2 is $- $# $* $5(rs2)>=1:
+ if rs2 is $- $# $* $4(rs2)>=1:
   $) cand in rs2:
    ok=$E
    $) order,x0,v in conds:
@@ -8645,24 +8645,24 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
  cands=[]
  rs=$n(d,x)
  if rs is $#:
-  rs=numeric_solve(d,x,$3,tofl($U(lo))if lo is $- $# $* $1(lo)$( $#,
- tofl($U(hi))if hi is $- $# $* $1(hi)$( $#)or[]
+  rs=numeric_solve(d,x,$3,tofl($U(lo))if lo is $- $# $* $1(lo)$& $#,
+ tofl($U(hi))if hi is $- $# $* $1(hi)$& $#)or[]
  if rs=='all':
   $! 'true'
  exp_=[]
  $) r in rs:
-  ns=[w $) w in $q(r)if w[0]=='n' $* w[1:].isdigit()]
+  ns=[w $) w in $o(r)if w[0]=='n' $* w[1:].isdigit()]
   if ns $* lo is $- $# $* hi is $- $#:
    $) k in $+(-50,51):
     exp_.$%($T(r,ns[0],k))
   $L ns:
    exp_.$%(r)
-  $(:
+  $&:
    exp_.$%(r)
  rs=exp_
  $) r in rs:
   r=clean(r)
-  ns=[w $) w in $q(r)if w[0]=='n' $* w[1:].isdigit()]
+  ns=[w $) w in $o(r)if w[0]=='n' $* w[1:].isdigit()]
   if ns:
    cands.$%(r)
    $7
@@ -8674,17 +8674,17 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
    $7
   cands.$%(r)
  ends=[]
- ends.$%(lo if lo is $- $# $(('*',-1,'$N'))
- ends.$%(hi if hi is $- $# $( '$N')
- ${=$#
+ ends.$%(lo if lo is $- $# $&('*',-1,'$N'))
+ ends.$%(hi if hi is $- $# $& '$N')
+ $}=$#
  bv=$#
  pts=[]
  $) c in cands+ends:
   if c=='$N' or c==('*',-1,'$N'):
    v=$w(f,x,c)
-  $(:
+  $&:
    cz=c
-   $) w in $q(c):
+   $) w in $o(c):
     if w[0]=='n' $* w[1:].isdigit():
      cz=$T(cz,w,0)
    v=$T(f,x,cz)
@@ -8695,7 +8695,7 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
     vv=$@('$N')
    $L v==('*',-1,'$N'):
     vv=$@('-$N')
-   $(:
+   $&:
     vv=fv(v)
   $9 $6:
    $7
@@ -8708,46 +8708,46 @@ $, fextreme(f,x,kind,lo=$#,hi=$#):
  m=pts[0][0]
  if m==$@('-$N'):
   win=[p[1]$) p in pts if p[0]==m]
- $(:
+ $&:
   win=[p[1]$) p in pts if $H(p[0]-m)<=1e-10*(1+$H(m))]
  win=sortsols(dedup(win))
  eqs=[('=',x,w)$) w in win]
- $! eqs[0]if $5(eqs)==1 $(('or',)+$0(eqs)
+ $! eqs[0]if $4(eqs)==1 $&('or',)+$0(eqs)
 ''')
 _x(r'''$, nfextreme(f,x,kind,lo=$#,hi=$#):
- sg=1.0 if kind=='min' $(-1.0
+ sg=1.0 if kind=='min' $&-1.0
  $, F(t):
   try:
    v=$U(f,{x:t})
    if $/(v)is $2:
-    v=v.$P
+    v=v.$Q
    $! sg*v
   $9 $6:
    $! $@('$N')
  if lo is $# or hi is $#:
-  a=-100.0 if lo is $# $( lo
-  b=100.0 if hi is $# $( hi
- $(:
+  a=-100.0 if lo is $# $& lo
+  b=100.0 if hi is $# $& hi
+ $&:
   a,b=lo,hi
  N=400
- ${=a
+ $}=a
  bv=F(a)
  $) i in $+(N+1):
   t=a+(b-a)*i/N
   v=F(t)
   if v<bv:
    bv=v
-   ${=t
+   $}=t
  h=(b-a)/N
- l=max(a,${-h)
- r=min(b,${+h)
+ l=max(a,$}-h)
+ r=min(b,$}+h)
  g=($I.$V(5)-1)/2
  $) _ in $+(200):
   c=r-g*(r-l)
   d=l+g*(r-l)
   if F(c)<F(d):
    r=d
-  $(:
+  $&:
    l=c
   if $H(r-l)<1e-12*(1+$H(l)):
    $W
@@ -8756,13 +8756,13 @@ _x(r'''$, nfextreme(f,x,kind,lo=$#,hi=$#):
   if bound is $#:
    vs=[F(side*10.0**k)$) k in(3,5,7)]
    if vs[0]<=bv $* vs[1]<=vs[0]$* vs[2]<=vs[1]$* vs[2]<bv:
-    $! '$N' if side>0 $(('*',-1,'$N')
+    $! '$N' if side>0 $&('*',-1,'$N')
  try:
   d=diff(f,x)
   $, G(u):
    try:
     v=$U(d,{x:u})
-    $! v.$P if $/(v)is $2 $( v
+    $! v.$Q if $/(v)is $2 $& v
    $9 $6:
     $! $#
   t2=newton(G,t)
@@ -8775,7 +8775,7 @@ $, domain(f,x):
  conds=[]
  domconds(f,x,conds)
  if $- conds:
-  $!('<',('*',-1,'$N'),x)if $3 $( 'true'
+  $!('<',('*',-1,'$N'),x)if $3 $& 'true'
  pts=[]
  $) rel,g in conds:
   rs=$n(g,x)
@@ -8796,7 +8796,7 @@ $, domain(f,x):
    if $/(v)is $2:
     if $H(v.imag)>1e-9:
      $! $3
-    v=v.$P
+    v=v.$Q
    if $- relok(rel,v):
     $! $3
   $! $E
@@ -8814,16 +8814,16 @@ $, domain(f,x):
   $! $E
  $e=[fv(p)$) p in pts]
  if $- $e:
-  $! 'true' if ok(0.5)$( 'false'
+  $! 'true' if ok(0.5)$& 'false'
  segs=[('I',$#,pts[0],ok($e[0]-max(1.0,$H($e[0]))))]
- $) i in $+($5(pts)):
+ $) i in $+($4(pts)):
   segs.$%(('P',pts[i],pts[i],okexact(pts[i])))
-  if i+1<$5(pts):
+  if i+1<$4(pts):
    segs.$%(('I',pts[i],pts[i+1],ok(0.5*($e[i]+$e[i+1]))))
  segs.$%(('I',pts[-1],$#,ok($e[-1]+max(1.0,$H($e[-1])))))
  $! segs_to_bool(segs,x)
 $, domconds(f,x,$?):
- if $/(f)is $- $0 or f[0]=='Q' or $4(f,x):
+ if $/(f)is $- $0 or f[0]=='Q' or $5(f,x):
   $!
  h=f[0]
  if h=='^':
@@ -8831,11 +8831,11 @@ $, domconds(f,x,$?):
   if $D(p)$* $a(p)<0:
    $?.$%(('/=',b))
   if isq(p)$* p[2]%2==0:
-   $?.$%(('>=' if $a(p)>0 $( '>',b))
+   $?.$%(('>=' if $a(p)>0 $& '>',b))
  $L h in('ln','log'):
   $?.$%(('>',f[1]))
- $L h in('$y','arccos'):
-  $?.$%(('<=',$^(fn('$H',f[1]),1)))
+ $L h in('$z','arccos'):
+  $?.$%(('<=',$](fn('$H',f[1]),1)))
  $L h=='tan':
   $?.$%(('/=',fn('cos',f[1])))
  $) a in f[1:]:
@@ -8843,17 +8843,17 @@ $, domconds(f,x,$?):
 ''')
 _x(r'''import $I
 $, ismat(e):
- $! $&(e,'mat')
+ $! $((e,'mat')
 $, $c(e):
- $! $&(e,'$J')
-$, $o(M):
+ $! $((e,'$J')
+$, $p(M):
  $![$J(r[1:])$) r in M[1:]]
 $, mk(R):
  $!('mat',)+$0(('$J',)+$0(r)$) r in R)
 $, lst(xs):
  $!('$J',)+$0(xs)
 $, dims(M):
- $! $5(M)-1,$5(M[1])-1
+ $! $4(M)-1,$4(M[1])-1
 $, tomat(e):
  if ismat(e):
   $! e
@@ -8861,27 +8861,27 @@ $, tomat(e):
   $! mk([$J(e[1:])])
  err("Matrix expected")
 $, ac(e):
- $! $.($>(e))if hasdenom(e)$( $>(e)
+ $! $.($=(e))if hasdenom(e)$& $=(e)
 $, m_add(A,B,sgn=1):
  if dims(A)!=dims(B):
   err("Dimension error")
- a=$o(A)
- b=$o(B)
- $! mk([[$_(a[i][j],$:(sgn,b[i][j]))$) j in $+($5(a[0]))]$) i in $+($5(a))])
+ a=$p(A)
+ b=$p(B)
+ $! mk([[$_(a[i][j],$:(sgn,b[i][j]))$) j in $+($4(a[0]))]$) i in $+($4(a))])
 $, m_scale(A,c):
- $! mk([[$:(c,v)$) v in r]$) r in $o(A)])
+ $! mk([[$:(c,v)$) v in r]$) r in $p(A)])
 $, m_map(A,f):
- $! mk([[f(v)$) v in r]$) r in $o(A)])
+ $! mk([[f(v)$) v in r]$) r in $p(A)])
 $, m_mul(A,B):
- a=$o(A)
- b=$o(B)
- if $5(a[0])!=$5(b):
+ a=$p(A)
+ b=$p(B)
+ if $4(a[0])!=$4(b):
   err("Dimension error")
- n=$5(b)
- $! mk([[ac($;([$:(a[i][k],b[k][j])$) k in $+(n)]))$) j in $+($5(b[0]))]$) i in $+($5(a))])
+ n=$4(b)
+ $! mk([[ac($;([$:(a[i][k],b[k][j])$) k in $+(n)]))$) j in $+($4(b[0]))]$) i in $+($4(a))])
 $, ident(n):
  cells(n,n)
- $! mk([[1 if i==j $( 0 $) j in $+(n)]$) i in $+(n)])
+ $! mk([[1 if i==j $& 0 $) j in $+(n)]$) i in $+(n)])
 $, m_pow(A,k):
  m,n=dims(A)
  if m!=n:
@@ -8900,21 +8900,21 @@ $, m_pow(A,k):
 $, transpose(A):
  if $c(A):
   $! mk([[v]$) v in A[1:]])
- a=$o(A)
- $! mk([[a[i][j]$) i in $+($5(a))]$) j in $+($5(a[0]))])
+ a=$p(A)
+ $! mk([[a[i][j]$) i in $+($4(a))]$) j in $+($4(a[0]))])
 $, det(A):
- a=$o(A)
- n=$5(a)
- if n!=$5(a[0]):
+ a=$p(A)
+ n=$4(a)
+ if n!=$4(a[0]):
   err("Square matrix required")
  if n==1:
   $! a[0][0]
  if n==2:
-  $! ac($^($:(a[0][0],a[1][1]),$:(a[0][1],a[1][0])))
+  $! ac($]($:(a[0][0],a[1][1]),$:(a[0][1],a[1][0])))
  if n==3:
   t=[]
   $) j in $+(3):
-   minor=$^($:(a[1][(j+1)%3],a[2][(j+2)%3]),$:(a[1][(j+2)%3],a[2][(j+1)%3]))
+   minor=$]($:(a[1][(j+1)%3],a[2][(j+2)%3]),$:(a[1][(j+2)%3],a[2][(j+1)%3]))
    t.$%($:(a[0][j],minor))
   $! ac($;(t))
  M=a
@@ -8933,7 +8933,7 @@ $, det(A):
    sign=-sign
   $) i in $+(k+1,n):
    $) j in $+(k+1,n):
-    M[i][j]=ac($R($^($:(M[i][j],M[k][k]),$:(M[i][k],M[k][j])),prev))
+    M[i][j]=ac($O($]($:(M[i][j],M[k][k]),$:(M[i][k],M[k][j])),prev))
   prev=M[k][k]
  $! ac($:(sign,M[n-1][n-1]))
 $, iszero(v):
@@ -8944,27 +8944,27 @@ $, iszero(v):
   $! $E
  $! $3
 $, rref(A,full=$E):
- M=$o(A)
- m=$5(M)
- n=$5(M[0])
+ M=$p(A)
+ m=$4(M)
+ n=$4(M[0])
  r=0
  $) c in $+(n):
   if r>=m:
    $W
   p=$#
   if hasfloat_m(M):
-   ${=0.0
+   $}=0.0
    $) i in $+(r,m):
     try:
      v=$H($U(M[i][c]))
     $9 $6:
-     v=1.0 if $- iszero(M[i][c])$( 0.0
-    if v>${+1e-14:
-     ${=v
+     v=1.0 if $- iszero(M[i][c])$& 0.0
+    if v>$}+1e-14:
+     $}=v
      p=i
-   if ${<1e-13:
+   if $}<1e-13:
     p=$#
-  $(:
+  $&:
    $) i in $+(r,m):
     if $- iszero(M[i][c]):
      p=i
@@ -8974,14 +8974,14 @@ $, rref(A,full=$E):
   M[r],M[p]=M[p],M[r]
   pv=M[r][c]
   if full:
-   M[r]=[ac($R(v,pv))$) v in M[r]]
-  $(:
-   M[r]=[ac($R(v,pv))$) v in M[r]]
-  rng=$+(m)if full $( $+(r+1,m)
+   M[r]=[ac($O(v,pv))$) v in M[r]]
+  $&:
+   M[r]=[ac($O(v,pv))$) v in M[r]]
+  rng=$+(m)if full $& $+(r+1,m)
   $) i in rng:
    if i!=r $* $- iszero(M[i][c]):
     f=M[i][c]
-    M[i]=[ac($^(M[i][j],$:(f,M[r][j])))$) j in $+(n)]
+    M[i]=[ac($](M[i][j],$:(f,M[r][j])))$) j in $+(n)]
   r+=1
  $) i in $+(m):
   $) j in $+(n):
@@ -8995,12 +8995,12 @@ $, hasfloat_m(M):
     $! $E
  $! $3
 $, minor(a,i,j):
- $![[a[r][c]$) c in $+($5(a))if c!=j]$) r in $+($5(a))if r!=i]
+ $![[a[r][c]$) c in $+($4(a))if c!=j]$) r in $+($4(a))if r!=i]
 $, m_inv(A):
  m,n=dims(A)
  if m!=n:
   err("Square matrix required")
- a0=$o(A)
+ a0=$p(A)
  if n<=3 $* $- all([$D(v)$) r in a0 $) v in r]):
   D=det(A)
   if iszero(D):
@@ -9014,24 +9014,24 @@ $, m_inv(A):
     c=det(mk(minor(a0,j,i)))
     if(i+j)%2:
      c=$m(c)
-    row.$%(nice(ac($R(c,D))))
+    row.$%(nice(ac($O(c,D))))
    $?.$%(row)
   $! mk($?)
- a=$o(A)
- aug=mk([a[i]+[1 if i==j $( 0 $) j in $+(n)]$) i in $+(n)])
- R=$o(rref(aug))
+ a=$p(A)
+ aug=mk([a[i]+[1 if i==j $& 0 $) j in $+(n)]$) i in $+(n)])
+ R=$p(rref(aug))
  $) i in $+(n):
   $) j in $+(n):
-   if $- iszero($^(R[i][j],1 if i==j $( 0)):
+   if $- iszero($](R[i][j],1 if i==j $& 0)):
     err("Singular matrix")
  $! mk([[nice(R[i][n+j])$) j in $+(n)]$) i in $+(n)])
 $, trace(A):
- a=$o(A)
- $! $;([a[i][i]$) i in $+($5(a))])
+ a=$p(A)
+ $! $;([a[i][i]$) i in $+($4(a))])
 $, charpoly(A,lam):
- a=$o(A)
- n=$5(a)
- if n!=$5(a[0]):
+ a=$p(A)
+ n=$4(a)
+ if n!=$4(a[0]):
   err("Square matrix required")
  I=ident(n)
  Mk=mk([[0]*n $) _ in $+(n)])
@@ -9039,32 +9039,32 @@ $, charpoly(A,lam):
  cs[n]=1
  $) k in $+(1,n+1):
   Mk=m_add(m_mul(A,Mk),m_scale(I,cs[n-k+1]))
-  cs[n-k]=ac($R($m(trace(m_mul(A,Mk))),k))
+  cs[n-k]=ac($O($m(trace(m_mul(A,Mk))),k))
  $! $;([$:(cs[k],pw(lam,k))$) k in $+(n+1)])
 $, eigvl(A):
- if hasfloat_m($o(A)):
+ if hasfloat_m($p(A)):
   try:
    E=m_map(A,exactify)
   $9 $6:
    E=$#
-  if E is $- $# $* $- hasfloat_m($o(E)):
+  if E is $- $# $* $- hasfloat_m($p(E)):
    $! evalf(eigvl(E))
  lam='L_'
  p=charpoly(A,lam)
  f=p
- if $- hasfloat_m($o(A)):
+ if $- hasfloat_m($p(A)):
   try:
    f=factor_expr(p)
   $9 $6:
    f=p
-  if $&(f,'hold'):
+  if $((f,'hold'):
    f=f[1]
  $?=[]
- $) g in(f[1:]if $&(f,'*')$((f,)):
+ $) g in(f[1:]if $((f,'*')$&(f,)):
   k=1
-  if $&(g,'^')$* $g(g[2])$* g[2]>0:
+  if $((g,'^')$* $g(g[2])$* g[2]>0:
    g,k=g[1],g[2]
-  if $4(g,lam):
+  if $5(g,lam):
    $7
   z=zeros(g,lam,$E)
   if z is $#:
@@ -9072,7 +9072,7 @@ $, eigvl(A):
   z=$J(z[1:])
   d=degree(g,lam)
   $) v in z:
-   m=mult(g,lam,v,d)if d is $- $# $* $5(z)<d $( 1
+   m=mult(g,lam,v,d)if d is $- $# $* $4(z)<d $& 1
    $?+=[v]*(k*m)
  if $- $?:
   err("Cannot compute eigenvalues")
@@ -9080,7 +9080,7 @@ $, eigvl(A):
   if $- $1(v):
    $!(1,0.0,0.0,okey(v))
   z=$2($U(v))
-  $!(0,-$H(z),-z.$P,-z.imag)
+  $!(0,-$H(z),-z.$Q,-z.imag)
  $?.sort(key=key)
  $! lst($?)
 $, mult(g,lam,v,d):
@@ -9095,16 +9095,16 @@ $, mult(g,lam,v,d):
      $W
    $9 $6:
     $W
-  $L $- iszero(ac($>(w))):
+  $L $- iszero(ac($=(w))):
    $W
   m+=1
  $! m
 $, diff_(e,x):
  $! diff(e,x)
 $, nullspace(A):
- R=$o(rref(A))
- m=$5(R)
- n=$5(R[0])
+ R=$p(rref(A))
+ m=$4(R)
+ n=$4(R[0])
  piv=[]
  $) i in $+(m):
   $) j in $+(n):
@@ -9123,12 +9123,12 @@ $, nullspace(A):
  $! basis
 ''')
 _x(r'''$, eigvc(A):
- if hasfloat_m($o(A)):
+ if hasfloat_m($p(A)):
   try:
    E=m_map(A,exactify)
   $9 $6:
    E=$#
-  if E is $- $# $* $- hasfloat_m($o(E)):
+  if E is $- $# $* $- hasfloat_m($p(E)):
    $! evalf(eigvc(E))
  $e=eigvl(A)
  n=dims(A)[0]
@@ -9138,7 +9138,7 @@ _x(r'''$, eigvc(A):
   if lv in seen:
    $7
   seen.$%(lv)
-  if $`(lv)or hasfloat_m($o(A)):
+  if $`(lv)or hasfloat_m($p(A)):
    cols.$%(numeigvec(A,lv))
    $7
   B=m_add(A,m_scale(ident(n),lv),-1)
@@ -9148,18 +9148,18 @@ _x(r'''$, eigvc(A):
    cols.$%(unitvec(v))
  if $- cols:
   err("Cannot compute eigenvectors")
- M=mk([[cols[j][i]$) j in $+($5(cols))]$) i in $+(n)])
+ M=mk([[cols[j][i]$) j in $+($4(cols))]$) i in $+(n)])
  $) c in cols:
   $) v in c:
    if esize(v)>60:
     $! evalf(M)
  $! M
 $, numeigvec(A,lam):
- a=[[$2($U(c))$) c in r]$) r in $o(A)]
- n=$5(a)
+ a=[[$2($U(c))$) c in r]$) r in $p(A)]
+ n=$4(a)
  mu=$2($U(lam))
  mu+=1e-9*(1+$H(mu))
- M=[[a[i][j]-(mu if i==j $( 0)$) j in $+(n)]$) i in $+(n)]
+ M=[[a[i][j]-(mu if i==j $& 0)$) j in $+(n)]$) i in $+(n)]
  x=[$2(1.0+0.37*i)$) i in $+(n)]
  $) it in $+(4):
   y=clsolve(M,x)
@@ -9175,12 +9175,12 @@ $, numeigvec(A,lam):
  $?=[]
  $) v in x:
   v=v/ph
-  re=0.0 if $H(v.$P)<1e-12 $( v.$P
-  im=0.0 if $H(v.imag)<1e-12 $( v.imag
-  $?.$%(re if im==0.0 $( fromcomplex($2(re,im)))
+  re=0.0 if $H(v.$Q)<1e-12 $& v.$Q
+  im=0.0 if $H(v.imag)<1e-12 $& v.imag
+  $?.$%(re if im==0.0 $& fromcomplex($2(re,im)))
  $! $?
 $, clsolve(M,b):
- n=$5(M)
+ n=$4(M)
  a=[$J(M[i])+[b[i]]$) i in $+(n)]
  $) c in $+(n):
   p=c
@@ -9205,17 +9205,17 @@ $, clsolve(M,b):
 $, coefs(e,$?):
  if $D(e):
   $?.$%(e)
- $L $&(e,'+'):
+ $L $((e,'+'):
   $) t in e[1:]:
    coefs(t,$?)
- $L $&(e,'*')$* $D(e[1]):
+ $L $((e,'*')$* $D(e[1]):
   $?.$%(e[1])
- $(:
+ $&:
   $?.$%(1)
 $, unitvec(v):
  if hasfloat_m([v]):
   nrm=$V($;([$:(c,fn('conj',c))$) c in v]))
-  $![nice(ac($R(c,nrm)))$) c in v]
+  $![nice(ac($O(c,nrm)))$) c in v]
  cs=[]
  $) c in v:
   coefs(c,cs)
@@ -9226,19 +9226,19 @@ $, unitvec(v):
    a,b=nd(q)
    den=ilcm(den,b)
    num=igcd(num,a)
- k=Q(den,num)if num $( 1
+ k=Q(den,num)if num $& 1
  $) c in v:
   if $- iszero(c):
    if isneg(c):
     k=$m(k)
    $W
- w=[ac($>($:(k,c)))$) c in v]
- n2=ac($>($;([$:(c,fn('conj',c))$) c in w])))
+ w=[ac($=($:(k,c)))$) c in v]
+ n2=ac($=($;([$:(c,fn('conj',c))$) c in w])))
  r=$V(n2)
- if $D(r)or $- $&(r,'^'):
-  $![ac($R(c,r))$) c in w]
+ if $D(r)or $- $((r,'^'):
+  $![ac($O(c,r))$) c in w]
  inv=('^',r[1],$m(r[2]))
- $![c if iszero(c)$(('*',c,inv)if $&(c,'+')$( $:(c,inv)$) c in w]
+ $![c if iszero(c)$&('*',c,inv)if $((c,'+')$& $:(c,inv)$) c in w]
 $, esize(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! 1
@@ -9247,24 +9247,24 @@ $, esize(e):
   k+=esize(a)
  $! k
 $, lu(A):
- a=$o(A)
- m=$5(a)
- n=$5(a[0])
- L=[[1 if i==j $( 0 $) j in $+(m)]$) i in $+(m)]
+ a=$p(A)
+ m=$4(a)
+ n=$4(a[0])
+ L=[[1 if i==j $& 0 $) j in $+(m)]$) i in $+(m)]
  P=$J($+(m))
  U=a
  $) k in $+(min(m,n)):
   p=$#
   if hasfloat_m(U):
-   ${=-1.0
+   $}=-1.0
    $) i in $+(k,m):
     v=$H($U(U[i][k]))
-    if v>${:
-     ${=v
+    if v>$}:
+     $}=v
      p=i
-   if ${<1e-14:
+   if $}<1e-14:
     p=$#
-  $(:
+  $&:
    $) i in $+(k,m):
     if $- iszero(U[i][k]):
      p=i
@@ -9277,163 +9277,163 @@ $, lu(A):
    $) j in $+(k):
     L[k][j],L[p][j]=L[p][j],L[k][j]
   $) i in $+(k+1,m):
-   f=ac($R(U[i][k],U[k][k]))
+   f=ac($O(U[i][k],U[k][k]))
    L[i][k]=f
-   U[i]=[ac($^(U[i][j],$:(f,U[k][j])))$) j in $+(n)]
- Pm=[[1 if P[i]==j $( 0 $) j in $+(m)]$) i in $+(m)]
+   U[i]=[ac($](U[i][j],$:(f,U[k][j])))$) j in $+(n)]
+ Pm=[[1 if P[i]==j $& 0 $) j in $+(m)]$) i in $+(m)]
  $! mk(L),mk(U),mk(Pm)
 $, qr(A):
- a=$o(A)
- m=$5(a)
- n=$5(a[0])
+ a=$p(A)
+ m=$4(a)
+ n=$4(a[0])
  cols=[[a[i][j]$) i in $+(m)]$) j in $+(n)]
  Qc=[]
  R=[[0]*n $) _ in $+(n)]
  $) j in $+(n):
   v=cols[j]
-  $) k in $+($5(Qc)):
+  $) k in $+($4(Qc)):
    r=ac($;([$:(Qc[k][i],v[i])$) i in $+(m)]))
    R[k][j]=r
-   v=[ac($^(v[i],$:(r,Qc[k][i])))$) i in $+(m)]
+   v=[ac($](v[i],$:(r,Qc[k][i])))$) i in $+(m)]
   nrm=nice($V(ac($;([pw(c,2)$) c in v]))))
   R[j][j]=nrm
   if iszero(nrm):
    Qc.$%([0]*m)
-  $(:
-   Qc.$%([nice(ac($R(c,nrm)))$) c in v])
+  $&:
+   Qc.$%([nice(ac($O(c,nrm)))$) c in v])
  Qm=mk([[Qc[j][i]$) j in $+(n)]$) i in $+(m)])
  $! Qm,mk(R)
 $, crossp(u,v):
  a=vec(u)
  b=vec(v)
- if $5(a)==2:
+ if $4(a)==2:
   a=a+[0]
   b=b+[0]
- if $5(a)!=3 or $5(b)!=3:
+ if $4(a)!=3 or $4(b)!=3:
   err("Dimension error")
- r=[ac($^($:(a[1],b[2]),$:(a[2],b[1]))),
- ac($^($:(a[2],b[0]),$:(a[0],b[2]))),
- ac($^($:(a[0],b[1]),$:(a[1],b[0])))]
+ r=[ac($]($:(a[1],b[2]),$:(a[2],b[1]))),
+ ac($]($:(a[2],b[0]),$:(a[0],b[2]))),
+ ac($]($:(a[0],b[1]),$:(a[1],b[0])))]
  $! revec(r,u)
 $, vec(u):
  if $c(u):
   $! $J(u[1:])
  if ismat(u):
-  R=$o(u)
-  if $5(R)==1:
+  R=$p(u)
+  if $4(R)==1:
    $! R[0]
-  if $5(R[0])==1:
+  if $4(R[0])==1:
    $![r[0]$) r in R]
  err("Vector expected")
 $, revec(r,like):
  if $c(like):
   $! lst(r)
- R=$o(like)
- if $5(R)==1:
+ R=$p(like)
+ if $4(R)==1:
   $! mk([r])
  $! mk([[v]$) v in r])
 $, dotp(u,v):
  a=vec(u)
  b=vec(v)
- if $5(a)!=$5(b):
+ if $4(a)!=$4(b):
   err("Dimension error")
- $! ac($;([$:(a[i],b[i])$) i in $+($5(a))]))
+ $! ac($;([$:(a[i],b[i])$) i in $+($4(a))]))
 $, norm(A):
  if $c(A)or ismat(A)$*(dims(A)[0]==1 or dims(A)[1]==1):
   v=vec(A)
   $! nice($V(ac($;([$:(c,fn('conj',c))$) c in v]))))
- $! nice($V(ac($;([$:(c,fn('conj',c))$) r in $o(A)$) c in r]))))
+ $! nice($V(ac($;([$:(c,fn('conj',c))$) r in $p(A)$) c in r]))))
 $, unitv(u):
  nrm=norm(u)
- $! revec([nice(ac($R(c,nrm)))$) c in vec(u)],u)
+ $! revec([nice(ac($O(c,nrm)))$) c in vec(u)],u)
 $, rownorm(A):
  if $- ismat(A):
   err('Argument must be a matrix')
- $! maxexpr([ac($;([fn('$H',c)$) c in r]))$) r in $o(A)])
+ $! maxexpr([ac($;([fn('$H',c)$) c in r]))$) r in $p(A)])
 $, colnorm(A):
  if $- ismat(A):
   err('Argument must be a matrix')
  $! rownorm(transpose(A))
 $, maxexpr(xs):
- ${=$#
+ $}=$#
  bv=$#
  $) x in xs:
   v=$U(x)
-  if ${ is $# or v>bv:
-   ${=x
+  if $} is $# or v>bv:
+   $}=x
    bv=v
- $! ${
+ $! $}
 $, augment(A,B):
  if $c(A)$* $c(B):
   $! A+B[1:]
- a=$o(tomat(A))
- b=$o(tomat(B))
- if $5(a)!=$5(b):
+ a=$p(tomat(A))
+ b=$p(tomat(B))
+ if $4(a)!=$4(b):
   err("Dimension error")
- $! mk([a[i]+b[i]$) i in $+($5(a))])
+ $! mk([a[i]+b[i]$) i in $+($4(a))])
 $, colaugment(A,B):
- a=$o(tomat(A))
- b=$o(tomat(B))
- if $5(a[0])!=$5(b[0]):
+ a=$p(tomat(A))
+ b=$p(tomat(B))
+ if $4(a[0])!=$4(b[0]):
   err("Dimension error")
  $! mk(a+b)
 $, submat(A,r1=1,c1=1,r2=$#,c2=$#):
- a=$o(A)
+ a=$p(A)
  if r2 is $#:
-  r2=$5(a)
+  r2=$4(a)
  if c2 is $#:
-  c2=$5(a[0])
+  c2=$4(a[0])
  $! mk([a[i][c1-1:c2]$) i in $+(r1-1,r2)])
 $, rowswap(A,i,j):
- a=$o(A)
+ a=$p(A)
  a[i-1],a[j-1]=a[j-1],a[i-1]
  $! mk(a)
 ''')
 _x(r'''$, rowadd(A,i,j):
- a=$o(A)
- a[j-1]=[$_(a[j-1][k],a[i-1][k])$) k in $+($5(a[0]))]
+ a=$p(A)
+ a[j-1]=[$_(a[j-1][k],a[i-1][k])$) k in $+($4(a[0]))]
  $! mk(a)
 $, mrow(c,A,i):
- a=$o(A)
+ a=$p(A)
  a[i-1]=[$:(c,v)$) v in a[i-1]]
  $! mk(a)
 $, mrowadd(c,A,i,j):
- a=$o(A)
- a[j-1]=[ac($_(a[j-1][k],$:(c,a[i-1][k])))$) k in $+($5(a[0]))]
+ a=$p(A)
+ a[j-1]=[ac($_(a[j-1][k],$:(c,a[i-1][k])))$) k in $+($4(a[0]))]
  $! mk(a)
 $, diag(A):
  if $c(A):
-  n=$5(A)-1
-  $! mk([[A[i+1]if i==j $( 0 $) j in $+(n)]$) i in $+(n)])
- a=$o(A)
- if $5(a)==1 or $5(a[0])==1:
+  n=$4(A)-1
+  $! mk([[A[i+1]if i==j $& 0 $) j in $+(n)]$) i in $+(n)])
+ a=$p(A)
+ if $4(a)==1 or $4(a[0])==1:
   v=vec(A)
   $! diag(lst(v))
- $! lst([a[i][i]$) i in $+(min($5(a),$5(a[0])))])
+ $! lst([a[i][i]$) i in $+(min($4(a),$4(a[0])))])
 $, matlist(A):
- $! lst([v $) r in $o(A)$) v in r])
+ $! lst([v $) r in $p(A)$) v in r])
 $, listmat(L,c=$#):
  xs=$J(L[1:])
  if c is $#:
-  c=$5(xs)
+  c=$4(xs)
  if $- $g(c)or c<1:
   err('Invalid number of columns')
  $?=[]
  $K xs:
   r=xs[:c]
   xs=xs[c:]
-  $K $5(r)<c:
+  $K $4(r)<c:
    r.$%(0)
   $?.$%(r)
  $! mk($?)
 $, simult(A,b):
- a=$o(A)
- n=$5(a)
- bb=$o(tomat(b))if ismat(b)$([[v]$) v in b[1:]]
- if $5(bb)!=n:
-  bb=$o(transpose(b))
- k=$5(bb[0])
- R=$o(rref(mk([a[i]+bb[i]$) i in $+(n)])))
+ a=$p(A)
+ n=$4(a)
+ bb=$p(tomat(b))if ismat(b)$&[[v]$) v in b[1:]]
+ if $4(bb)!=n:
+  bb=$p(transpose(b))
+ k=$4(bb[0])
+ R=$p(rref(mk([a[i]+bb[i]$) i in $+(n)])))
  $) i in $+(n):
   if iszero(R[i][i]):
    err("Singular matrix")
@@ -9446,71 +9446,71 @@ $, cumsum(L):
    s=$_(s,v)
    $?.$%(s)
   $! lst($?)
- a=$o(L)
+ a=$p(L)
  $?=[]
- acc=[0]*$5(a[0])
+ acc=[0]*$4(a[0])
  $) r in a:
-  acc=[$_(acc[j],r[j])$) j in $+($5(r))]
+  acc=[$_(acc[j],r[j])$) j in $+($4(r))]
   $?.$%($J(acc))
  $! mk($?)
 $, polar_vec(u):
  v=vec(u)
- if $5(v)==2:
+ if $4(v)==2:
   r=nice($V(ac($_(pw(v[0],2),pw(v[1],2)))))
   th=fn('$l',$_(v[0],$:('i',v[1])))
-  $!('$|','['+fmtx(r)+' \u2220'+fmtx(th)+']')
+  $!('$y','['+fmtx(r)+' \u2220'+fmtx(th)+']')
  err("Dimension error")
 $, fmtx(e):
  $! fmt(e)
 $, cylind(u):
  v=vec(u)
- if $5(v)!=3:
+ if $4(v)!=3:
   err("Dimension error")
  r=nice($V(ac($_(pw(v[0],2),pw(v[1],2)))))
  th=fn('$l',$_(v[0],$:('i',v[1])))
- $!('$|','['+fmtx(r)+' \u2220'+fmtx(th)+' '+fmtx(v[2])+']')
+ $!('$y','['+fmtx(r)+' \u2220'+fmtx(th)+' '+fmtx(v[2])+']')
 $, sphere(u):
  v=vec(u)
- if $5(v)!=3:
+ if $4(v)!=3:
   err("Dimension error")
  rho=nice($V(ac($_(pw(v[0],2),pw(v[1],2),pw(v[2],2)))))
  th=fn('$l',$_(v[0],$:('i',v[1])))
- ph=fn('arccos',$R(v[2],rho))if rho!=0 $( 0
- $!('$|','['+fmtx(rho)+' \u2220'+fmtx(th)+' \u2220'+fmtx(ph)+']')
+ ph=fn('arccos',$O(v[2],rho))if rho!=0 $& 0
+ $!('$y','['+fmtx(rho)+' \u2220'+fmtx(th)+' \u2220'+fmtx(ph)+']')
 $, lsum(L,a=1,b=$#):
  xs=$J(L[1:])
  if b is $#:
-  b=$5(xs)
+  b=$4(xs)
  $! $;(xs[a-1:b])
 $, lprod(L,a=1,b=$#):
  xs=$J(L[1:])
  if b is $#:
-  b=$5(xs)
+  b=$4(xs)
  $! $G(xs[a-1:b])
 $, mean(L,F=$#):
  xs=$J(L[1:])
  if F is $#:
-  $! $R($;(xs),$5(xs))
+  $! $O($;(xs),$4(xs))
  fs=$J(F[1:])
- $! $R($;([$:(xs[i],fs[i])$) i in $+($5(xs))]),$;(fs))
+ $! $O($;([$:(xs[i],fs[i])$) i in $+($4(xs))]),$;(fs))
 $, sortkey(v):
  try:
   x=$U(v)
-  $! x.$P if $/(x)is $2 $( x
+  $! x.$Q if $/(x)is $2 $& x
  $9 $6:
   $! 0.0
 $, median(L):
  xs=sorted($J(L[1:]),key=sortkey)
- n=$5(xs)
+ n=$4(xs)
  if n%2:
   $! xs[n//2]
- $! $R($_(xs[n//2-1],xs[n//2]),2)
+ $! $O($_(xs[n//2-1],xs[n//2]),2)
 $, variance(L,pop=$3):
  xs=$J(L[1:])
- n=$5(xs)
+ n=$4(xs)
  m=mean(L)
- s=$;([pw($^(v,m),2)$) v in xs])
- $! ac($R(s,n if pop $( n-1))
+ s=$;([pw($](v,m),2)$) v in xs])
+ $! ac($O(s,n if pop $& n-1))
 $, stddev(L,pop=$3):
  $! nice($V(variance(L,pop)))
 $, sorta(L):
@@ -9519,9 +9519,9 @@ $, sortd(L):
  $! lst(sorted($J(L[1:]),key=sortkey,reverse=$E))
 $, deltalist(L):
  xs=$J(L[1:])
- $! lst([$^(xs[i+1],xs[i])$) i in $+($5(xs)-1)])
+ $! lst([$](xs[i+1],xs[i])$) i in $+($4(xs)-1)])
 ''')
-_x(r'''SET={'$l':'rad','mode':'auto','$A':'$P'}
+_x(r'''SET={'$l':'rad','mode':'auto','$A':'$Q'}
 $, lmap(f,a):
  if $c(a):
   $!('$J',)+$0(lmap(f,v)$) v in a[1:])
@@ -9530,15 +9530,15 @@ $, lmap(f,a):
  $! f(a)
 $, lmap2(f,a,b):
  if $c(a)$* $c(b):
-  if $5(a)!=$5(b):
+  if $4(a)!=$4(b):
    err("Dimension error")
-  $!('$J',)+$0(lmap2(f,a[i],b[i])$) i in $+(1,$5(a)))
+  $!('$J',)+$0(lmap2(f,a[i],b[i])$) i in $+(1,$4(a)))
  if $c(a):
   $!('$J',)+$0(lmap2(f,v,b)$) v in a[1:])
  if $c(b):
   $!('$J',)+$0(lmap2(f,a,v)$) v in b[1:])
  if ismat(a)$* ismat(b):
-  $!('mat',)+$0(lmap2(f,a[i],b[i])$) i in $+(1,$5(a)))
+  $!('mat',)+$0(lmap2(f,a[i],b[i])$) i in $+(1,$4(a)))
  if ismat(a):
   $!('mat',)+$0(lmap2(f,r,b)$) r in a[1:])
  if ismat(b):
@@ -9557,12 +9557,12 @@ $, vadd(a,b):
 $, vsub(a,b):
  $! vadd(a,vneg(b))
 $, vneg(a):
- $! lmap($m,a)if $- isrel(a)$((a[0],$m(a[1]),$m(a[2]))
+ $! lmap($m,a)if $- isrel(a)$&(a[0],$m(a[1]),$m(a[2]))
 $, vmul(a,b):
  if ismat(a)$* ismat(b):
   $! m_mul(a,b)
  if ismat(a)$* $c(b)or $c(a)$* ismat(b):
-  $! m_mul(tomat(a),tomat(b)if ismat(b)$( transpose(b))
+  $! m_mul(tomat(a),tomat(b)if ismat(b)$& transpose(b))
  if $c(a)or $c(b)or ismat(a)or ismat(b):
   $! lmap2($:,a,b)
  if isrel(a)or isrel(b):
@@ -9574,12 +9574,12 @@ $, vdiv(a,b):
    $! m_mul(a,m_inv(b))
   $! vmul(a,m_inv(b))
  if $c(a)or $c(b)or ismat(a):
-  $! lmap2($R,a,b)
+  $! lmap2($O,a,b)
  if isrel(a)or isrel(b):
-  $! relop($R,a,b)
+  $! relop($O,a,b)
  if b==0 $* $1(a):
   $! '$F'
- $! $R(a,b)
+ $! $O(a,b)
 $, vpow(a,b):
  if ismat(a):
   if $/(b)is $u:
@@ -9599,12 +9599,12 @@ $, relop(f,a,b):
   $!(a[0],f(a[1],b),f(a[2],b))
  $!(b[0],f(a,b[1]),f(a,b[2]))
 $, isstr(e):
- $! $&(e,'$|')
+ $! $((e,'$y')
 $, dotop(op,a,b):
  if op=='.*':
   $! lmap2($:,a,b)
  if op=='./':
-  $! lmap2($R,a,b)
+  $! lmap2($O,a,b)
  $! lmap2(pw,a,b)
 $, rel(op,a,b):
  if $c(a)or $c(b):
@@ -9612,8 +9612,8 @@ $, rel(op,a,b):
  if isstr(a)$* isstr(b):
   r=cmpstr(op,a[1],b[1])
   if r is $- $#:
-   $! 'true' if r $( 'false'
- d=$.($^(a,b))if $-(isstr(a)or isstr(b))$( $#
+   $! 'true' if r $& 'false'
+ d=$.($](a,b))if $-(isstr(a)or isstr(b))$& $#
  if d is $- $# $* $1(d)$* d!='$F':
   try:
    v=$U(d)
@@ -9622,13 +9622,13 @@ $, rel(op,a,b):
   if v is $- $#:
    if $/(v)is $2:
     if op=='=':
-     $! 'true' if $H(v)<1e-13 $( 'false'
+     $! 'true' if $H(v)<1e-13 $& 'false'
     if op=='/=':
-     $! 'false' if $H(v)<1e-13 $( 'true'
-    err("Non-$P comparison")
+     $! 'false' if $H(v)<1e-13 $& 'true'
+    err("Non-$Q comparison")
    if d==0 or $H(v)<1e-300:
     v=0.0
-   $(:
+   $&:
     try:
      sc=$H($U(a))+$H($U(b))
     $9 $6:
@@ -9636,10 +9636,10 @@ $, rel(op,a,b):
     if $H(v)<1e-12*(1+sc):
      v=0.0
    r={'=':v==0,'/=':v!=0,'<':v<0,'>':v>0,'<=':v<=0,'>=':v>=0}[op]
-   $! 'true' if r $( 'false'
+   $! 'true' if r $& 'false'
  if d is $- $# $* op in('=','/=')$* $- $1(d):
   try:
-   z=expand_full(d)if hasattr(PO,'expand_full')$( $>(d)
+   z=expand_full(d)if hasattr(PO,'expand_full')$& $=(d)
   $9 $6:
    z=d
   if z==0:
@@ -9684,15 +9684,15 @@ $, lor(a,b):
 $, flat(op,a,b):
  xs=[]
  $) v in(a,b):
-  if $&(v,op):
+  if $((v,op):
    xs.extend(v[1:])
-  $(:
+  $&:
    xs.$%(v)
  $!(op,)+$0(xs)
 $, lnot(a):
  t=tobool(a)
  if t is $- $#:
-  $! 'false' if t $( 'true'
+  $! 'false' if t $& 'true'
  if $g(a):
   $!~a
  neg_={'<':'>=','>':'<=','<=':'>','>=':'<','=':'/=','/=':'='}
@@ -9703,7 +9703,7 @@ $, lxor(a,b):
  ta=tobool(a)
  tb=tobool(b)
  if ta is $- $# $* tb is $- $#:
-  $! 'true' if ta!=tb $( 'false'
+  $! 'true' if ta!=tb $& 'false'
  if $g(a)$* $g(b):
   $! a^b
  $!('xor',a,b)
@@ -9727,11 +9727,11 @@ $, lcm_(a,b):
   bn,bd=nd(b)
   $! Q(ilcm(an,bn),igcd(ad,bd))
  g=gcd_(a,b)
- $! $.($R($:(a,b),g))
+ $! $.($O($:(a,b),g))
 $, mod_(a,b):
- if $&(a,'^')$* $g(a[1])$* $g(a[2])$* a[2]>0 $* $g(b)$* b!=0:
+ if $((a,'^')$* $g(a[1])$* $g(a[2])$* a[2]>0 $* $g(b)$* b!=0:
   r=powmod(a[1],a[2],$H(b))
-  $! r-$H(b)if b<0 $* r $( r
+  $! r-$H(b)if b<0 $* r $& r
  if $D(a)$* $D(b):
   if b==0:
    $! a
@@ -9742,7 +9742,7 @@ $, remain_(a,b):
   if b==0:
    $! a
   q=ndiv(a,b)
-  t=nfloor(q)if $a(q)>=0 $(-nfloor(nneg(q))
+  t=nfloor(q)if $a(q)>=0 $&-nfloor(nneg(q))
   $! nsub(a,nmul(b,t))
  $!('remain',a,b)
 $, intdiv_(a,b):
@@ -9753,7 +9753,7 @@ $, intdiv_(a,b):
 $, bigcomb(n,k):
  if $-($g(n)$* $g(k))or k<=0:
   $! $3
- m=min(k,$H(n-k))if n>=k $( k
+ m=min(k,$H(n-k))if n>=k $& k
  $! m*ibits(n)>MAXBITS
 $, ncr_(n,k):
  if $g(n)$* $g(k):
@@ -9761,7 +9761,7 @@ $, ncr_(n,k):
    $! 0
   if bigcomb(n,k):
    $!('ncr',n,k)
-  $! binom(n,k)if n>=0 $( gen_ncr(n,k)
+  $! binom(n,k)if n>=0 $& gen_ncr(n,k)
  if $g(k)$* k>=0:
   $! gen_ncr(n,k)
  if isfl(n)or isfl(k):
@@ -9770,7 +9770,7 @@ $, ncr_(n,k):
 $, gen_ncr(n,k):
  r=1
  $) i in $+(k):
-  r=$:(r,$^(n,i))
+  r=$:(r,$](n,i))
  f=1
  $) i in $+(2,k+1):
   f*=i
@@ -9782,7 +9782,7 @@ _x(r'''$, npr_(n,k):
  if $g(k)$* k>=0:
   r=1
   $) i in $+(k):
-   r=$:(r,$^(n,i))
+   r=$:(r,$](n,i))
   $! r
  $!('npr',n,k)
 $, CA_gamma_ratio(n,k):
@@ -9793,19 +9793,19 @@ $, isprime_(n):
  n=need_int(n)
  if $H(n)>>1024:
   err('Number too large $) isPrime')
- $! 'true' if isprime($H(n))$( 'false'
+ $! 'true' if isprime($H(n))$& 'false'
 $, round_(x,d=0):
  if $1(x)$* $- $D(x):
   x=evalf(x)
  if $D(x):
   if $r(x)$* d==0:
-   $! nfloor(nadd(x,$s))if $a(x)>=0 $(-nfloor(nadd(nneg(x),$s))
+   $! nfloor(nadd(x,$s))if $a(x)>=0 $&-nfloor(nadd(nneg(x),$s))
   v=tofl(x)
   if $- finite(v):
    $! x
   p=10.0**d
   r=$I.floor($H(v)*p+0.5)/p
-  $! r if v>=0 $(-r
+  $! r if v>=0 $&-r
  $!('round',x,d)
 $, ipart_(x):
  if $1(x)$* $- $D(x):
@@ -9813,13 +9813,13 @@ $, ipart_(x):
  if $D(x):
   if $/(x)is $@:
    $! $@($u(x))
-  $! nfloor(x)if $a(x)>=0 $(-nfloor(nneg(x))
+  $! nfloor(x)if $a(x)>=0 $&-nfloor(nneg(x))
  $!('ipart',x)
 $, fpart_(x):
  i=ipart_(x)
- if $&(i,'ipart'):
+ if $((i,'ipart'):
   $!('fpart',x)
- $! $^(x,i)
+ $! $](x,i)
 $, approx_(e):
  $! evalf(e)
 $, exact_(e,tol=$#):
@@ -9827,61 +9827,61 @@ $, exact_(e,tol=$#):
   tol=tofl(tol)
  $! exactify(e,tol)
 $, approxfraction(e,tol=$#):
- t=tofl(tol)if tol is $- $# $( 5e-14
- $! lmap($8 v:float2rat(tofl(evalf(v)),t)if $1(v)$( exactify(v,t),e)
+ t=tofl(tol)if tol is $- $# $& 5e-14
+ $! lmap($8 v:float2rat(tofl(evalf(v)),t)if $1(v)$& exactify(v,t),e)
 $, left_(e,n=$#):
  if isrel(e):
   $! e[1]
  if $c(e):
   $!('$J',)+e[1:1+n]
  if isstr(e):
-  $!('$|',e[1][:n])
+  $!('$y',e[1][:n])
  err("Argument error")
 $, right_(e,n=$#):
  if isrel(e):
   $! e[2]
  if $c(e):
-  $!('$J',)+(e[$5(e)-n:]if n $(())
+  $!('$J',)+(e[$4(e)-n:]if n $&())
  if isstr(e):
-  $!('$|',e[1][$5(e[1])-n:]if n $( '')
+  $!('$y',e[1][$4(e[1])-n:]if n $& '')
  err("Argument error")
 $, mid_(e,start,n=$#):
  if isstr(e):
   s=e[1][start-1:]
-  $!('$|',s if n is $# $( s[:n])
+  $!('$y',s if n is $# $& s[:n])
  xs=$J(e[1:])[start-1:]
- $!('$J',)+$0(xs if n is $# $( xs[:n])
+ $!('$J',)+$0(xs if n is $# $& xs[:n])
 $, dim_(e):
  if $c(e):
-  $! $5(e)-1
+  $! $4(e)-1
  if ismat(e):
   r,c=dims(e)
   $!('$J',r,c)
  if isstr(e):
-  $! $5(e[1])
+  $! $4(e[1])
  err("Argument error")
 $, max_(a,b=$#):
  if b is $#:
-  xs=$J(a[1:])if $c(a)$([a]
+  xs=$J(a[1:])if $c(a)$&[a]
   $! maxexpr(xs)
- $! lmap2($8 x,y:x if cmpv(x,y)>=0 $( y,a,b)
+ $! lmap2($8 x,y:x if cmpv(x,y)>=0 $& y,a,b)
 $, min_(a,b=$#):
  if b is $#:
-  xs=$J(a[1:])if $c(a)$([a]
-  ${=$#
+  xs=$J(a[1:])if $c(a)$&[a]
+  $}=$#
   bv=$#
   $) x in xs:
    v=$U(x)
-   if ${ is $# or v<bv:
-    ${=x
+   if $} is $# or v<bv:
+    $}=x
     bv=v
-  $! ${
- $! lmap2($8 x,y:x if cmpv(x,y)<=0 $( y,a,b)
+  $! $}
+ $! lmap2($8 x,y:x if cmpv(x,y)<=0 $& y,a,b)
 $, cmpv(x,y):
  if $1(x)$* $1(y):
-  d=$U($^(x,y))
-  d=d.$P if $/(d)is $2 $( d
-  $! 1 if d>0 $((-1 if d<0 $( 0)
+  d=$U($](x,y))
+  d=d.$Q if $/(d)is $2 $& d
+  $! 1 if d>0 $&(-1 if d<0 $& 0)
  err("Cannot compare")
 $, when_(c,a,b=$#,u=$#):
  if b=='$F':
@@ -9890,7 +9890,7 @@ $, when_(c,a,b=$#,u=$#):
  if t is $E:
   $! a
  if t is $3:
-  $! b if b is $- $# $( '$F'
+  $! b if b is $- $# $& '$F'
  if b is $#:
   $!('when',c,a)
  if u is $#:
@@ -9898,22 +9898,22 @@ $, when_(c,a,b=$#,u=$#):
  $! u
 $, piecewise_(*a):
  a=$J(a)
- if $5(a)<2:
+ if $4(a)<2:
   err('Wrong number of arguments')
- if $5(a)%2==1:
+ if $4(a)%2==1:
   r=a[-1]
   a=a[:-1]
- $(:
+ $&:
   r=$#
- $) i in $+($5(a)-2,-1,-2):
+ $) i in $+($4(a)-2,-1,-2):
   r=when_(a[i+1],a[i],r)
  $! r
 $, string_(e):
  if isstr(e):
   $! e
- $!('$|',fmt(e))
+ $!('$y',fmt(e))
 $, char_(n):
- $!('$|',chr(need_int(n)))
+ $!('$y',chr(need_int(n)))
 $, ord_(s):
  $! ord(s[1][0])
 $, instring_(s,t,start=1):
@@ -9923,7 +9923,7 @@ $, polyeval(L,x):
  r=0
  $) c in L[1:]:
   r=$_($:(r,x),c)
- $! $>(r)
+ $! $=(r)
 $, randpoly(v,n):
  if $- $g(n)or n<0:
   err('Degree must be a nonnegative integer')
@@ -9954,10 +9954,10 @@ $, randint_(a,b,n=$#):
  if n is $#:
   $! random.randint(a,b)
  $!('$J',)+$0(random.randint(a,b)$) _ in $+(n))
-$, count_(*$X):
+$, count_(*$Y):
  n=0
- $) a in $X:
-  n+=($5(a)-1)if $c(a)$( 1
+ $) a in $Y:
+  n+=($4(a)-1)if $c(a)$& 1
  $! n
 $, erf(x):
  if $H(x)<2.5:
@@ -9977,14 +9977,14 @@ $, erf(x):
  $) k in $+(60,0,-1):
   t=(k/2.0)/(z+t)
  erfc=$I.exp(-z*z)/$I.$V($I.pi)/(z+t)
- $!(1-erfc)if x>0 $((erfc-1)
+ $!(1-erfc)if x>0 $&(erfc-1)
 $, numarg(v):
  if v=='$N':
   $! $@('$N')
  if v==('*',-1,'$N'):
   $! $@('-$N')
  if $1(v):
-  x=cv(v)if $- $D(v)$( tofl(v)
+  x=cv(v)if $- $D(v)$& tofl(v)
   if x is $- $# $* $/(x)is $- $2:
    $! x
  err('Numeric argument required')
@@ -10014,14 +10014,14 @@ $, invnorm(p,mu=0.0,sig=1.0):
   m=0.5*(lo+hi)
   if 0.5*(1+erf(m/$I.$V(2)))<p:
    lo=m
-  $(:
+  $&:
    hi=m
  $! mu+sig*0.5*(lo+hi)
 $, binompdf(n,p,x=$#):
  if x is $#:
   $!('$J',)+$0(binompdf(n,p,k)$) k in $+(n+1))
  if $r(p):
-  $! $:(binom(n,x),pw(p,x),pw($^(1,p),n-x))
+  $! $:(binom(n,x),pw(p,x),pw($](1,p),n-x))
  p=tofl(p)
  $! binom(n,x)*p**x*(1-p)**(n-x)
 $, binomcdf(n,p,a,b=$#):
@@ -10036,7 +10036,7 @@ $, poisscdf(lam,a,b=$#):
  $! $;([poisspdf(lam,k)$) k in $+($u(a),$u(b)+1)])
 ''')
 _x(r'''$, geompdf(p,x):
- $! $:(p,pw($^(1,p),x-1))
+ $! $:(p,pw($](1,p),x-1))
 $, geomcdf(p,a,b=$#):
  if b is $#:
   a,b=1,a
@@ -10049,53 +10049,53 @@ $, fact_int(n):
 $, toang(x):
  a=SET['$l']
  if a=='deg':
-  $! $:(x,$R('pi',180))
+  $! $:(x,$O('pi',180))
  if a=='grad':
-  $! $:(x,$R('pi',200))
+  $! $:(x,$O('pi',200))
  $! x
 $, fromang(x):
  a=SET['$l']
  if a=='deg':
-  $! $>($:(x,$R(180,'pi')))
+  $! $=($:(x,$O(180,'pi')))
  if a=='grad':
-  $! $>($:(x,$R(200,'pi')))
+  $! $=($:(x,$O(200,'pi')))
  $! x
 TRIG=('sin','cos','tan','sec','csc','cot')
-ITRIG=('$y','arccos','$t','arcsec','arccsc','arccot')
+ITRIG=('$z','arccos','$t','arcsec','arccsc','arccot')
 $, mathfn($B):
  $, f(*a):
   if $B in TRIG $* SET['$l']!='rad':
    $! lmap($8 u:fn($B,toang(u)),a[0])
   if $B in ITRIG $* SET['$l']!='rad':
    $! lmap($8 u:fromang(fn($B,u)),a[0])
-  if $5(a)==1:
+  if $4(a)==1:
    $! lmap($8 u:fn($B,u),a[0])
   $! fn($B,*a)
  $! f
 $, angle_fn(z):
  $! lmap($8 u:fromang(fn('$l',u)),z)
 F={}
-$) _n in('sin','cos','tan','sec','csc','cot','$y','arccos',
+$) _n in('sin','cos','tan','sec','csc','cot','$z','arccos',
  '$t','arcsec','arccsc','arccot','sinh','cosh','tanh',
  'sech','csch','coth','arcsinh','arccosh','arctanh',
  'arcsech','arccsch','arccoth','ln','exp','$H','sign',
- 'floor','ceiling','$P','imag','conj','fact'):
+ 'floor','ceiling','$Q','imag','conj','fact'):
  F[_n]=mathfn(_n)
-ALIAS={'asin':'$y','acos':'arccos','atan':'$t','asinh':'arcsinh',
+ALIAS={'asin':'$z','acos':'arccos','atan':'$t','asinh':'arcsinh',
  'acosh':'arccosh','atanh':'arctanh','ceil':'ceiling',
- 'factorial':'fact','derivative':'d','$]':'$]',
- 'int_':'$]','sumseq':'sumseq','prodseq':'prodseq',
+ 'factorial':'fact','derivative':'d','$^':'$^',
+ 'int_':'$^','sumseq':'sumseq','prodseq':'prodseq',
  'lim':'$w','nderiv':'nderivative','polycoef':'polycoeffs',
  'stddevsamp':'stddev','varsamp':'variance','cumsum':'cumulativesum',
  'nsolve':'nsolve','arg':'$l','inv':'inverse','mat2list':'matlist',
  'list2mat':'listmat','explist':'explist','tran':'transpose',
  'log10':'log10','sqr':'$V','diff':'d','deriv':'d',
- 'differentiate':'d','integrate':'$]','avg':'mean',
+ 'differentiate':'d','integrate':'$^','avg':'mean',
  'average':'mean'}
 F['$V']=$8 u:lmap($V,u)
 F['root']=$8 u,n=2:lmap($8 v:fn('root',v,n),u)
 F['cbrt']=$8 u:lmap($8 v:fn('root',v,3),u)
-F['log']=$8 u,b=$#:lmap($8 v:fn('ln',v)if b is $# $( fn('log',v,b),u)
+F['log']=$8 u,b=$#:lmap($8 v:fn('ln',v)if b is $# $& fn('log',v,b),u)
 F['atan2']=$8 y,x:lmap2($8 b,a:fromang(fn('$l',$_(a,$:('i',b)))),y,x)
 F['log10']=$8 u:lmap($8 v:fn('log',v,10),u)
 F['$l']=angle_fn
@@ -10167,9 +10167,9 @@ F['matlist']=matlist
 F['listmat']=listmat
 F['simult']=simult
 F['cumulativesum']=cumsum
-F['sum']=$8 L,a=1,b=$#:lsum(L,a,b)if $c(L)$( colwise(L,lsum)
-F['product']=$8 L,a=1,b=$#:lprod(L,a,b)if $c(L)$( colwise(L,lprod)
-F['mean']=$8 L,f=$#:mean(L,f)if $c(L)$( colwise(L,mean)
+F['sum']=$8 L,a=1,b=$#:lsum(L,a,b)if $c(L)$& colwise(L,lsum)
+F['product']=$8 L,a=1,b=$#:lprod(L,a,b)if $c(L)$& colwise(L,lprod)
+F['mean']=$8 L,f=$#:mean(L,f)if $c(L)$& colwise(L,mean)
 F['median']=median
 F['stddev']=$8 L:stddev(L)
 F['stddevpop']=$8 L:stddev(L,$E)
@@ -10190,17 +10190,17 @@ F['poisspdf']=poisspdf
 F['poisscdf']=poisscdf
 F['geompdf']=geompdf
 F['geomcdf']=geomcdf
-F['getmode']=$8*a:('$|','$l='+SET['$l']+' mode='+SET['mode']+' $A='+SET['$A'])
+F['getmode']=$8*a:('$y','$l='+SET['$l']+' mode='+SET['mode']+' $A='+SET['$A'])
 $, colwise(M,f):
- cols=$o(transpose(M))
+ cols=$p(transpose(M))
  $! mk([[f(('$J',)+$0(c))$) c in cols]])
 $, ref_(A):
  $! rref(A,$3)
-$, conv(e,$B,$X):
+$, conv(e,$B,$Y):
  if $B=='decimal':
   $! evalf(e)
  if $B=='approxfraction':
-  $! approxfraction(e,$X[0]if $X $( $#)
+  $! approxfraction(e,$Y[0]if $Y $& $#)
  if $B in('dms','dd','rad','grad','deg'):
   $! angconv(e,$B)
  if $B=='polar':
@@ -10208,7 +10208,7 @@ $, conv(e,$B,$X):
    $! polar_vec(e)
   r=$.(fn('$H',e))
   th=fn('$l',e)
-  $!('$|','('+fmt(r)+'\u2220'+fmt(fromang(th))+')')
+  $!('$y','('+fmt(r)+'\u2220'+fmt(fromang(th))+')')
  if $B=='rect':
   if $c(e)or ismat(e):
    $! e
@@ -10225,7 +10225,7 @@ $, conv(e,$B,$X):
  if $B=='ln':
   $! toln(e)
  if $B=='logbase':
-  $! tologbase(e,$X[0])
+  $! tologbase(e,$Y[0])
  if $B=='sin':
   $! pyth_to(e,'sin')
  if $B=='cos':
@@ -10239,7 +10239,7 @@ _x(r'''$, angconv(e,$B):
    v=v*180/$I.pi
   $L SET['$l']=='grad':
    v=v*0.9
-  sg='-' if v<0 $( ''
+  sg='-' if v<0 $& ''
   v=$H(v)
   d=$u(v)
   m=$u((v-d)*60)
@@ -10251,76 +10251,76 @@ _x(r'''$, angconv(e,$B):
    m=0
    d+=1
   ss=('%.4f'%s).rstrip('0').rstrip('.')
-  $!('$|',sg+$|(d)+'\u00b0'+$|(m)+"'"+ss+'"')
+  $!('$y',sg+$y(d)+'\u00b0'+$y(m)+"'"+ss+'"')
  if $B=='dd':
   if SET['$l']=='rad':
-   $! evalf($:(e,$R(180,'pi')))
+   $! evalf($:(e,$O(180,'pi')))
   $! evalf(e)
  if $B=='rad':
   if SET['$l']=='deg':
-   $! $:(e,$R('pi',180))
+   $! $:(e,$O('pi',180))
   if SET['$l']=='grad':
-   $! $:(e,$R('pi',200))
+   $! $:(e,$O('pi',200))
   $! e
  if $B=='grad':
   if SET['$l']=='deg':
    $! $:(e,Q(10,9))
   if SET['$l']=='rad':
-   $! $:(e,$R(200,'pi'))
+   $! $:(e,$O(200,'pi'))
   $! e
  if SET['$l']=='rad':
-  $! $:(e,$R(180,'pi'))
+  $! $:(e,$O(180,'pi'))
  $! e
 $, baseconv(e,$B):
  n=need_int(e)
  if $B=='base10':
   $! n
  if $B=='base2':
-  s=bin(n)if n>=0 $( '-'+bin(-n)
-  $!('$|',s.replace('0b','0b'))
- s=hex(n)if n>=0 $( '-'+hex(-n)
- $!('$|',s.replace('0x','0h').upper().replace('0H','0h'))
+  s=bin(n)if n>=0 $& '-'+bin(-n)
+  $!('$y',s.replace('0b','0b'))
+ s=hex(n)if n>=0 $& '-'+hex(-n)
+ $!('$y',s.replace('0x','0h').upper().replace('0H','0h'))
 $, toexp(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- $X=[toexp(a)$) a in e[1:]]
+ $Y=[toexp(a)$) a in e[1:]]
  h=e[0]
- if $5($X)==1:
-  u=$X[0]
+ if $4($Y)==1:
+  u=$Y[0]
   if h=='sinh':
-   $! $:($s,$^(pw('e',u),pw('e',$m(u))))
+   $! $:($s,$](pw('e',u),pw('e',$m(u))))
   if h=='cosh':
    $! $:($s,$_(pw('e',u),pw('e',$m(u))))
   if h=='tanh':
-   $! $R($^(pw('e',u),pw('e',$m(u))),$_(pw('e',u),pw('e',$m(u))))
+   $! $O($](pw('e',u),pw('e',$m(u))),$_(pw('e',u),pw('e',$m(u))))
   if h=='sin':
    iu=$:('i',u)
-   $! $R($^(pw('e',iu),pw('e',$m(iu))),$:(2,'i'))
+   $! $O($](pw('e',iu),pw('e',$m(iu))),$:(2,'i'))
   if h=='cos':
    iu=$:('i',u)
    $! $:($s,$_(pw('e',iu),pw('e',$m(iu))))
   if h=='arcsinh':
    $! fn('ln',$_(u,$V($_(pw(u,2),1))))
   if h=='arccosh':
-   $! fn('ln',$_(u,$V($^(pw(u,2),1))))
+   $! fn('ln',$_(u,$V($](pw(u,2),1))))
   if h=='arctanh':
-   $! $:($s,fn('ln',$R($_(1,u),$^(1,u))))
- $! simp((h,)+$0($X))
+   $! $:($s,fn('ln',$O($_(1,u),$](1,u))))
+ $! simp((h,)+$0($Y))
 $, toln(e):
  if $/(e)is $- $0 or e[0]=='Q':
   $! e
- $X=[toln(a)$) a in e[1:]]
+ $Y=[toln(a)$) a in e[1:]]
  if e[0]=='log':
-  b=$X[1]if $5($X)>1 $( 10
-  $! $R(fn('ln',$X[0]),fn('ln',b))
- $! simp((e[0],)+$0($X))
+  b=$Y[1]if $4($Y)>1 $& 10
+  $! $O(fn('ln',$Y[0]),fn('ln',b))
+ $! simp((e[0],)+$0($Y))
 $, tologbase(e,b):
  e=toln(e)
  $, walk(t):
   if $/(t)is $- $0 or t[0]=='Q':
    $! t
   if t[0]=='ln':
-   $! $R(('log',walk(t[1]),b),('log','e',b))
+   $! $O(('log',walk(t[1]),b),('log','e',b))
   $!(t[0],)+$0(walk(a)$) a in t[1:])
  $!('hold',walk(e))
 ''')
@@ -10330,7 +10330,7 @@ UFUN={}
 ASSUME=[]
 STATE={'ans':0,'$A':$3,'tmpf':[]}
 COMPLEXF=('csolve','czeros','cfactor','cpolyroots','eigvl','eigvc','conj',
- '$P','imag','$l')
+ '$Q','imag','$l')
 $, isfunc(n):
  $!(n in F or n in SF or n in UFUN or n in ALIAS
  or n in STATE['tmpf']or n in('expr','$V','log','root'))
@@ -10346,7 +10346,7 @@ $, ev(t):
  tt=$/(t)
  if tt is $u or tt is $@:
   $! t
- if tt is $|:
+ if tt is $y:
   $! lookup(t)
  h=t[0]
  if h=='+':
@@ -10368,11 +10368,11 @@ $, ev(t):
  if h=='!':
   $! lmap($8 a:fn('fact',a),ev(t[1]))
  if h=='%':
-  $! lmap($8 a:$R(a,100),ev(t[1]))
+  $! lmap($8 a:$O(a,100),ev(t[1]))
  if h=='deg':
   v=ev(t[1])
   if SET['$l']=='rad':
-   $! lmap($8 a:$:(a,$R('pi',180)),v)
+   $! lmap($8 a:$:(a,$O('pi',180)),v)
   if SET['$l']=='grad':
    $! lmap($8 a:$:(a,Q(10,9)),v)
   $! v
@@ -10406,12 +10406,12 @@ $, ev(t):
   $!('$J',)+$0(ev(a)$) a in t[1:])
  if h=='mat':
   $!('mat',)+$0(('$J',)+$0(ev(a)$) a in r[1:])$) r in t[1:])
- if h=='$|':
+ if h=='$y':
   $! t
  if h=='&':
   a=ev(t[1])
   b=ev(t[2])
-  $!('$|',string_(a)[1]+string_(b)[1])
+  $!('$y',string_(a)[1]+string_(b)[1])
  if h=='index':
   $! ev_index(ev(t[1]),[ev(a)$) a in t[2:]])
  if h=='prime':
@@ -10435,7 +10435,7 @@ $, evw(raw,names):
   $) n in saved:
    ENV[n]=saved[n]
 $, split_and(c):
- if $&(c,'$*'):
+ if $((c,'$*'):
   $! split_and(c[1])+split_and(c[2])
  $![c]
 $, ev_with(t):
@@ -10443,15 +10443,15 @@ $, ev_with(t):
  pairs={}
  ineq=[]
  $) c in conds:
-  if $&(c,'=')$* $/(c[1])is $|:
+  if $((c,'=')$* $/(c[1])is $y:
    pairs[c[1]]=ev(c[2])
-  $(:
+  $&:
    v=evw(c,$J(pairs.keys()))
-   if $&(v,'$*'):
+   if $((v,'$*'):
     ineq.extend($J(v[1:]))
    $L v!='true':
     ineq.$%(v)
- n0=$5(ASSUME)
+ n0=$4(ASSUME)
  ASSUME.extend(ineq)
  try:
   r=evw(t[1],$J(pairs.keys()))
@@ -10469,22 +10469,22 @@ $, assume_sign(r,c):
  if h $- in('<','>','<=','>='):
   $! r
  a,b=c[1],c[2]
- if $/(a)is $| $* b==0:
+ if $/(a)is $y $* b==0:
   v=a
   pos=h in('>','>=')
- $L $/(b)is $| $* a==0:
+ $L $/(b)is $y $* a==0:
   v=b
   pos=h in('<','<=')
- $(:
+ $&:
   $! r
- rep=v if pos $( $m(v)
+ rep=v if pos $& $m(v)
  r=$T(r,('$H',v),rep)
- r=$T(r,('sign',v),1 if pos $(-1)
+ r=$T(r,('sign',v),1 if pos $&-1)
  $! r
 $, target_fn(t):
- if $&(t,'call'):
+ if $((t,'call'):
   $! t[1],[p $) p in t[2:]]
- if $&(t,'*')$* $/(t[1])is $|:
+ if $((t,'*')$* $/(t[1])is $y:
   p=t[2]
   $! t[1],[p]
  $! $#
@@ -10492,92 +10492,92 @@ $, ev_store(raw,tgt):
  tf=target_fn(tgt)
  if tf is $- $#:
   $! ev_define(tgt,raw)
- if $/(tgt)is $- $|:
+ if $/(tgt)is $- $y:
   err('Invalid variable $B')
  if tgt in SPECIAL or tgt in F or tgt in SF:
   err('Reserved $B')
  v=ev(raw)
- ENV[tgt]=unhold(v)if $- $&(v,'$|')$( v
+ ENV[tgt]=unhold(v)if $- $((v,'$y')$& v
  $! v
 $, ev_define(lhs,rhs):
  tf=target_fn(lhs)
  if tf is $#:
-  if $/(lhs)is $|:
+  if $/(lhs)is $y:
    $! ev_store(rhs,lhs)
   err('Invalid definition')
  $B,params=tf
  $) p in params:
-  if $/(p)is $- $|:
+  if $/(p)is $- $y:
    err('Invalid parameter')
  body=unhold(evw(rhs,params))
  UFUN[$B]=(params,body)
  if $B in STATE['tmpf']:
   STATE['tmpf'].remove($B)
- $!('$|','Done')
+ $!('$y','Done')
 $, ev_index(a,idx):
  if $- idx:
   err('Invalid index')
- if $&(a,'$J'):
+ if $((a,'$J'):
   i=idx[0]
-  if $- $g(i)or i<1 or i>=$5(a):
+  if $- $g(i)or i<1 or i>=$4(a):
    err('Invalid index')
   $! a[i]
- if $&(a,'mat'):
+ if $((a,'mat'):
   $) k in idx:
    if $- $g(k)or k<1:
     err('Invalid index')
-  if $5(idx)==1:
-   if $5(a)==2:
-    if idx[0]>=$5(a[1]):
+  if $4(idx)==1:
+   if $4(a)==2:
+    if idx[0]>=$4(a[1]):
      err('Invalid index')
     $! a[1][idx[0]]
-   if idx[0]>=$5(a):
+   if idx[0]>=$4(a):
     err('Invalid index')
    $!('mat',a[idx[0]])
-  if idx[0]>=$5(a)or idx[1]>=$5(a[idx[0]]):
+  if idx[0]>=$4(a)or idx[1]>=$4(a[idx[0]]):
    err('Invalid index')
   $! a[idx[0]][idx[1]]
- if $&(a,'$|'):
+ if $((a,'$y'):
   k=idx[0]
-  if $5(idx)!=1 or $- $g(k)or k<1 or k>$5(a[1]):
+  if $4(idx)!=1 or $- $g(k)or k<1 or k>$4(a[1]):
    err('Invalid index')
-  $!('$|',a[1][k-1])
+  $!('$y',a[1][k-1])
  err('Invalid index')
 $, ev_conv(t):
  e=t[1]
  $B=t[2]
- $X=[ev(a)$) a in t[3:]]
+ $Y=[ev(a)$) a in t[3:]]
  if $B=='$J':
   if e=='exp':
-   $! explist($X[0],$X[1])
+   $! explist($Y[0],$Y[1])
   if e=='mat':
-   $! matlist($X[0])
+   $! matlist($Y[0])
   err('Unknown conversion')
  if $B=='mat' $* e=='$J':
-  $! listmat(*$X)
+  $! listmat(*$Y)
  v=ev(e)
  v=finalize(v,$E)
- $! builtin($B,conv,(v,$B,$X))
+ $! builtin($B,conv,(v,$B,$Y))
 $, explist(e,v):
  $?=[]
- $z=e[1:]if $&(e,'or')$((e,)
- $) p in $z:
-  if $&(p,'=')$* p[1]==v:
+ $|=e[1:]if $((e,'or')$&(e,)
+ $) p in $|:
+  if $((p,'=')$* p[1]==v:
    $?.$%(p[2])
  $!('$J',)+$0($?)
 ''')
 _x(r'''$, call($B,raw):
  $B=ALIAS.get($B,$B)
- if $B=='approx' $* $5(raw)==1:
+ if $B=='approx' $* $4(raw)==1:
   v=fastnum(raw[0])
   if v is $- $#:
    $! v
  if $B in UFUN:
   params,body=UFUN[$B]
-  $X=[ev(a)$) a in raw]
-  if $5($X)!=$5(params):
+  $Y=[ev(a)$) a in raw]
+  if $4($Y)!=$4(params):
    err('Wrong number of arguments')
-  $! subsd(body,dict(zip(params,$X)))
+  $! subsd(body,dict(zip(params,$Y)))
  f=SF.get($B)
  if f is $- $#:
   if $B in COMPLEXF:
@@ -10585,23 +10585,23 @@ _x(r'''$, call($B,raw):
   $! builtin($B,f,(raw,))
  f=F.get($B)
  if f is $- $#:
-  $X=[ev(a)$) a in raw]
+  $Y=[ev(a)$) a in raw]
   if $B in COMPLEXF:
    STATE['$A']=$E
-  $! builtin($B,f,$X)
+  $! builtin($B,f,$Y)
  if $B=='expr':
   s=ev(raw[0])
   $! ev(parse(s[1],isfunc))
- $X=[ev(a)$) a in raw]
- $!('call',$B)+$0($X)
+ $Y=[ev(a)$) a in raw]
+ $!('call',$B)+$0($Y)
 class NoNum($6):
  pass
-cs_NUMF={'sin':$I.sin,'cos':$I.cos,'tan':$I.tan,'$y':$I.asin,
+cs_NUMF={'sin':$I.sin,'cos':$I.cos,'tan':$I.tan,'$z':$I.asin,
  'arccos':$I.acos,'$t':$I.atan,'ln':$I.log,'log':$I.log,
  'log10':$I.log10,'$V':$I.$V,'exp':$I.exp,'$H':$H,
  'sinh':$I.sinh,'cosh':$I.cosh,'tanh':$I.tanh}
 TRIGF=('sin','cos','tan')
-ATRIGF=('$y','arccos','$t')
+ATRIGF=('$z','arccos','$t')
 NUMST={'big':0.0,'cost':0.0}
 $, lfact(n):
  $! $I.lgamma(n+1.0)
@@ -10610,7 +10610,7 @@ $, fastnum(t):
  NUMST['cost']=0.0
  try:
   v=numev(t)
- $9(NoNum,$Q,$[,$C,TypeError):
+ $9(NoNum,$R,$[,$C,TypeError):
   $! $#
  if NUMST['cost']<2000 or v!=v:
   $! $#
@@ -10625,7 +10625,7 @@ $, numev(t):
   $! $@(t)
  if tt is $@:
   $! t
- if tt is $|:
+ if tt is $y:
   if t=='pi':
    $! $I.pi
   if t=='e':
@@ -10639,7 +10639,7 @@ $, numev(t):
   a=numev(t[1])
   b=numev(t[2])
   NUMST['big']=max(NUMST['big'],$H(a),$H(b))
-  $! a+b if h=='+' $( a-b
+  $! a+b if h=='+' $& a-b
  if h=='*':
   $! numev(t[1])*numev(t[2])
  if h=='/':
@@ -10653,48 +10653,48 @@ $, numev(t):
    $f NoNum()
   if $H(b)>1:
    NUMST['cost']+=$H(x)*$I.log($H(b),2)
-  $! b**x if $H(x*$I.log($H(b)or 1.0))<709 $(($@('$N')if b>0 or x%2==0 $(-$@('$N'))
+  $! b**x if $H(x*$I.log($H(b)or 1.0))<709 $&($@('$N')if b>0 or x%2==0 $&-$@('$N'))
  if h=='!':
   n=numev(t[1])
   if n<0 or n!=$u(n):
    $f NoNum()
   lf=lfact(n)
   NUMST['cost']+=lf/$I.log(2)
-  $! $I.exp(lf)if lf<709 $( $@('$N')
+  $! $I.exp(lf)if lf<709 $& $@('$N')
  if h=='call':
   $B=ALIAS.get(t[1],t[1])
-  $X=[numev(a)$) a in t[2:]]
-  if $B in('ncr','npr')$* $5($X)==2:
-   n,k=$X
+  $Y=[numev(a)$) a in t[2:]]
+  if $B in('ncr','npr')$* $4($Y)==2:
+   n,k=$Y
    if n!=$u(n)or k!=$u(k)or k<0 or k>n:
     $f NoNum()
-   lv=lfact(n)-lfact(n-k)-(lfact(k)if $B=='ncr' $( 0)
+   lv=lfact(n)-lfact(n-k)-(lfact(k)if $B=='ncr' $& 0)
    NUMST['cost']+=lv/$I.log(2)
-   $! $@(round($I.exp(lv)))if lv<36 $(($I.exp(lv)if lv<709 $( $@('$N'))
+   $! $@(round($I.exp(lv)))if lv<36 $&($I.exp(lv)if lv<709 $& $@('$N'))
   f=cs_NUMF.get($B)
-  if f is $# or $5($X)!=1:
+  if f is $# or $4($Y)!=1:
    $f NoNum()
-  x=$X[0]
+  x=$Y[0]
   if $B in TRIGF $* SET['$l']!='rad':
-   x=x*($I.pi/180 if SET['$l']=='deg' $( $I.pi/200)
+   x=x*($I.pi/180 if SET['$l']=='deg' $& $I.pi/200)
   r=f(x)
   if $B in ATRIGF $* SET['$l']!='rad':
-   r=r*(180/$I.pi if SET['$l']=='deg' $( 200/$I.pi)
+   r=r*(180/$I.pi if SET['$l']=='deg' $& 200/$I.pi)
   $! r
  $f NoNum()
-$, builtin($B,f,$X):
+$, builtin($B,f,$Y):
  try:
-  $! f(*$X)
- $9 $O as ex:
-  if $|(ex).$x('Wrong number of arguments'):
+  $! f(*$Y)
+ $9 $P as ex:
+  if $y(ex).$x('Wrong number of arguments'):
    argerr($B)
   $f
  $9 TypeError as ex:
-  msg=$|(ex)
+  msg=$y(ex)
   if 'positional' in msg or 'takes' in msg or 'required' in msg or 'missing' in msg:
    argerr($B)
   err('Invalid argument $) '+$B)
- $9(IndexError,$Q,AttributeError,KeyError):
+ $9(IndexError,$R,AttributeError,KeyError):
   err('Invalid argument $) '+$B)
  $9 $[:
   err('Number too large in '+$B)
@@ -10713,29 +10713,29 @@ $, argerr($B):
  _load('cashelp')
  n=tinames().get($B,$B)
  sy=SYN.get($B)
- err('Wrong number of arguments $) '+n+('\n'+sy.split('\n')[0]if sy $( ''))
+ err('Wrong number of arguments $) '+n+('\n'+sy.split('\n')[0]if sy $& ''))
 $, suggest($B):
- if $5($B)<4:
+ if $4($B)<4:
   $! $#
- ${=$#
+ $}=$#
  $) k in tinames():
-  if $H($5(k)-$5($B))>1:
+  if $H($4(k)-$4($B))>1:
    $7
   if close(k,$B.lower()):
-   ${=tinames()[k]
+   $}=tinames()[k]
    $W
- $! ${
+ $! $}
 $, close(a,b):
  if a==b:
   $! $3
- if $5(a)==$5(b):
-  d=[i $) i in $+($5(a))if a[i]!=b[i]]
-  if $5(d)==2 $* d[1]==d[0]+1 $* a[d[0]]==b[d[1]]$* a[d[1]]==b[d[0]]:
+ if $4(a)==$4(b):
+  d=[i $) i in $+($4(a))if a[i]!=b[i]]
+  if $4(d)==2 $* d[1]==d[0]+1 $* a[d[0]]==b[d[1]]$* a[d[1]]==b[d[0]]:
    $! $E
-  $! $5(d)==1
- if $5(a)>$5(b):
+  $! $4(d)==1
+ if $4(a)>$4(b):
   a,b=b,a
- $) i in $+($5(b)):
+ $) i in $+($4(b)):
   if b[:i]+b[i+1:]==a:
    $! $E
  $! $3
@@ -10747,15 +10747,15 @@ $, unknown_calls(e,$?):
  $) a in e[1:]:
   unknown_calls(a,$?)
 $, var_of(raw):
- if $/(raw)is $|:
+ if $/(raw)is $y:
   $! raw,$#
- if $&(raw,'='):
-  if $/(raw[1])is $- $|:
+ if $((raw,'='):
+  if $/(raw[1])is $- $y:
    err('Variable expected')
   $! raw[1],ev(raw[2])
  err('Variable expected')
-$, $~(a,lo,hi):
- if $5(a)<lo or $5(a)>hi:
+$, ${(a,lo,hi):
+ if $4(a)<lo or $4(a)>hi:
   err('Wrong number of arguments')
 $, $j(a,k=1):
  v,val=var_of(a[k])
@@ -10768,72 +10768,72 @@ $, post_subst(r,v,val):
   $! $T(r,v,ENV[v])
  $! r
 $, sf_d(a):
- $~(a,2,3)
+ ${(a,2,3)
  e,v,val=$j(a)
- n=ev(a[2])if $5(a)>2 $( 1
+ n=ev(a[2])if $4(a)>2 $& 1
  if $- $g(n):
   err('Order must be an integer')
  r=lmap($8 u:nice(diff(u,v,n)),e)
  $! post_subst(r,v,val)
 $, sf_int(a):
- $~(a,2,4)
+ ${(a,2,4)
  e,v,val=$j(a)
- if $5(a)==2:
+ if $4(a)==2:
   $! lmap($8 u:nice(integrate(u,v)),e)
- if $5(a)==3:
+ if $4(a)==3:
   c=ev(a[2])
   $! lmap($8 u:$_(nice(integrate(u,v)),c),e)
  lo=ev(a[2])
  hi=ev(a[3])
  $! lmap($8 u:nice(defint(u,v,lo,hi)),e)
 $, sf_limit(a):
- $~(a,3,4)
+ ${(a,3,4)
  e,v,val=$j(a)
  pt=ev(a[2])
  dirn=0
- if $5(a)>3:
+ if $4(a)>3:
   d=ev(a[3])
   if $- $D(d):
    err('Direction must be -1, 0 or 1')
-  dirn=0 if d==0 $((1 if $a(d)>0 $(-1)
+  dirn=0 if d==0 $&(1 if $a(d)>0 $&-1)
  $, L(u):
   r=$w(u,v,pt,dirn)
-  if $&(r,'$w'):
-   $!('$w',u,v,pt)if dirn==0 $(('$w',u,v,pt,dirn)
+  if $((r,'$w'):
+   $!('$w',u,v,pt)if dirn==0 $&('$w',u,v,pt,dirn)
   $! nice(r)
  $! lmap(L,e)
 ''')
 _x(r'''$, cs_bounds(a,i):
  $! ev(a[i]),ev(a[i+1])
 $, sf_sum(a):
- $~(a,4,4)
+ ${(a,4,4)
  e,v,val=$j(a)
  lo,hi=cs_bounds(a,2)
  r=sumseq(e,v,lo,hi)
  $! prefer_fact(nice(r))
 $, prefer_fact(r):
- if $&(r,'+')$* $- $`(r)$* $5($q(r))==1:
+ if $((r,'+')$* $- $`(r)$* $4($o(r))==1:
   try:
    f=factor_expr(r)
-   if $&(f,'hold')$* $&(f[1],'*'):
+   if $((f,'hold')$* $((f[1],'*'):
     $! f
   $9 $6:
    pass
  $! r
 $, sf_prod(a):
- $~(a,4,4)
+ ${(a,4,4)
  e,v,val=$j(a)
  lo,hi=cs_bounds(a,2)
  $! prodseq(e,v,lo,hi)
 $, sf_seq(a):
- $~(a,4,5)
+ ${(a,4,5)
  e,v,val=$j(a)
  lo,hi=cs_bounds(a,2)
- st=ev(a[4])if $5(a)>4 $( 1
+ st=ev(a[4])if $4(a)>4 $& 1
  $?=[]
  k=lo
  cnt=0
- $K ncmp(k,hi)<=0 if $D(k)$( $3:
+ $K ncmp(k,hi)<=0 if $D(k)$& $3:
   $?.$%($T(e,v,k))
   k=nadd(k,st)
   cnt+=1
@@ -10841,43 +10841,43 @@ $, sf_seq(a):
    toobig('seq would make more than %d elements'%MAXLEN)
  $!('$J',)+$0($?)
 $, sf_taylor(a):
- $~(a,3,4)
+ ${(a,3,4)
  e,v,val=$j(a)
  n=ev(a[2])
- pt=ev(a[3])if $5(a)>3 $( 0
+ pt=ev(a[3])if $4(a)>3 $& 0
  $! lmap($8 u:taylor(u,v,n,pt),e)
 $, sf_series(a):
- $~(a,3,4)
+ ${(a,3,4)
  e,v,val=$j(a)
  n=ev(a[2])
- pt=ev(a[3])if $5(a)>3 $( 0
+ pt=ev(a[3])if $4(a)>3 $& 0
  $! lmap($8 u:series_cmd(u,v,n,pt),e)
 $, sf_dominant(a):
- $~(a,2,3)
+ ${(a,2,3)
  e,v,val=$j(a)
- pt=ev(a[2])if $5(a)>2 $( 0
+ pt=ev(a[2])if $4(a)>2 $& 0
  $! lmap($8 u:dominant(u,v,pt),e)
 $, solvevars(rawvs):
  vs=[]
  gs=[]
  $) r in rawvs:
-  if $&(r,'$J'):
+  if $((r,'$J'):
    $) q in r[1:]:
     v,g=var_of(q)
     vs.$%(v)
     gs.$%(g)
-  $(:
+  $&:
    v,g=var_of(r)
    vs.$%(v)
    gs.$%(g)
  $! vs,gs
 $, eqlist(e):
- if $&(e,'$*'):
+ if $((e,'$*'):
   $?=[]
   $) p in e[1:]:
    $?.extend(eqlist(p))
   $! $?
- if $&(e,'$J'):
+ if $((e,'$J'):
   $! $J(e[1:])
  $![e]
 $, cons_for(v):
@@ -10887,32 +10887,32 @@ $, cons_for(v):
    $?.$%(c)
  $! $?
 $, sf_solve(a,$A=$3):
- if $5(a)<2:
+ if $4(a)<2:
   err('Wrong number of arguments')
  vs,gs=solvevars(a[1:])
  e=evw(a[0],vs)
  eqs=eqlist(e)
- if $5(vs)==1 $* $5(eqs)==1:
+ if $4(vs)==1 $* $4(eqs)==1:
   v=vs[0]
   eq=eqs[0]
   if gs[0]is $- $#:
-   f=$^(eq[1],eq[2])if $&(eq,'=')$( eq
+   f=$](eq[1],eq[2])if $((eq,'=')$& eq
    r=nsolve(f,v,tofl(evalf(gs[0])))
-   $!('=',v,r)if r is $- $# $( 'false'
+   $!('=',v,r)if r is $- $# $& 'false'
   r=solve(eq,v,$A,cons_for(v))
   if r is $#:
-   f=$^(eq[1],eq[2])if $&(eq,'=')$( eq
-   ns=numeric_solve(f,v,$A)if head(eq)=='=' or head(eq)is $# $( $#
+   f=$](eq[1],eq[2])if $((eq,'=')$& eq
+   ns=numeric_solve(f,v,$A)if head(eq)=='=' or head(eq)is $# $& $#
    if ns:
     r=sols_to_bool(v,apply_constraints(ns,v,cons_for(v)))
-   $(:
+   $&:
     $!('solve',eq,v)
   $! finish_sol(r)
- if $5(eqs)>1 $* any([head(q)in('<','>','<=','>=','/=')$) q in eqs]):
-  if $5(vs)>1:
+ if $4(eqs)>1 $* any([head(q)in('<','>','<=','>=','/=')$) q in eqs]):
+  if $4(vs)>1:
    $!('solve',e)+$0(vs)
   $! finish_sol(solve_and(eqs,vs[0],$A))
- $h=solve_system(eqs,vs,$A,gs if any([g is $- $# $) g in gs])$( $#)
+ $h=solve_system(eqs,vs,$A,gs if any([g is $- $# $) g in gs])$& $#)
  if $h is $#:
   $!('solve',e)+$0(vs)
  if $- $h:
@@ -10920,11 +10920,11 @@ $, sf_solve(a,$A=$3):
  $?=[]
  $) s in $h:
   conj=[('=',v,clean(s.get(v,v)))$) v in vs]
-  $?.$%(conj[0]if $5(conj)==1 $(('$*',)+$0(conj))
- $! finish_sol($?[0]if $5($?)==1 $(('or',)+$0($?))
+  $?.$%(conj[0]if $4(conj)==1 $&('$*',)+$0(conj))
+ $! finish_sol($?[0]if $4($?)==1 $&('or',)+$0($?))
 $, solve_and(eqs,v,$A):
  cons=cons_for(v)
- $) i in $+($5(eqs)):
+ $) i in $+($4(eqs)):
   if head(eqs[i])=='=':
    $d=eqs[:i]+eqs[i+1:]
    r=solve(eqs[i],v,$A,$d+cons)
@@ -10932,31 +10932,31 @@ $, solve_and(eqs,v,$A):
     $!('solve',('$*',)+$0(eqs),v)
    $! r
  ps=rel_pairs(eqs+cons,v)
- r=solve_rels(ps,v)if ps is $- $# $( $#
+ r=solve_rels(ps,v)if ps is $- $# $& $#
  if r is $#:
   $!('solve',('$*',)+$0(eqs),v)
  $! r
 $, finish_sol(r):
  ns=[]
  $, walk(e):
-  if $/(e)is $| $* e[0]=='n' $* e[1:].isdigit()$* e $- in ns:
+  if $/(e)is $y $* e[0]=='n' $* e[1:].isdigit()$* e $- in ns:
    ns.$%(e)
   $L $/(e)is $0 $* e $* e[0]!='Q':
    $) a in e[1:]:
     walk(a)
  walk(r)
- if $- ns or ns==['n%d'%(i+1)$) i in $+($5(ns))]:
+ if $- ns or ns==['n%d'%(i+1)$) i in $+($4(ns))]:
   $! r
- tmp=dict([(ns[i],'N%d_'%i)$) i in $+($5(ns))])
+ tmp=dict([(ns[i],'N%d_'%i)$) i in $+($4(ns))])
  r=subsd(r,tmp)
- $! subsd(r,dict([('N%d_'%i,'n%d'%(i+1))$) i in $+($5(ns))]))
+ $! subsd(r,dict([('N%d_'%i,'n%d'%(i+1))$) i in $+($4(ns))]))
 $, sf_csolve(a):
  $! sf_solve(a,$E)
 $, sf_zeros(a,$A=$3):
- $~(a,2,2)
+ ${(a,2,2)
  vs,gs=solvevars(a[1:])
  e=evw(a[0],vs)
- if $5(vs)==1 $* $- $&(e,'$J'):
+ if $4(vs)==1 $* $- $((e,'$J'):
   r=zeros(e,vs[0],$A,cons_for(vs[0]))
   if r is $#:
    ns=numeric_solve(e,vs[0],$A)
@@ -10970,38 +10970,38 @@ $, sf_zeros(a,$A=$3):
 $, sf_czeros(a):
  $! sf_zeros(a,$E)
 $, sf_nsolve(a):
- $~(a,2,4)
+ ${(a,2,4)
  v,g=var_of(a[1])
  e=unhold(evw(a[0],[v]))
- f=$^(e[1],e[2])if $&(e,'=')$( e
- lo=tofl(evalf(ev(a[2])))if $5(a)>2 $( $#
- hi=tofl(evalf(ev(a[3])))if $5(a)>3 $( $#
+ f=$](e[1],e[2])if $((e,'=')$& e
+ lo=tofl(evalf(ev(a[2])))if $4(a)>2 $& $#
+ hi=tofl(evalf(ev(a[3])))if $4(a)>3 $& $#
  $) c in cons_for(v):
-  b=bounds([c],v)if $3 $( $#
+  b=bounds([c],v)if $3 $& $#
  cb=bounds(cons_for(v),v)
  if cb is $- $#:
   lo,hi=tofl(evalf(cb[0])),tofl(evalf(cb[1]))
- r=nsolve(f,v,tofl(evalf(g))if g is $- $# $( $#,lo,hi)
+ r=nsolve(f,v,tofl(evalf(g))if g is $- $# $& $#,lo,hi)
  if r is $#:
-  $!('$|','No solution found')
+  $!('$y','No solution found')
  $! r
 $, sf_desolve(a):
- $~(a,3,3)
+ ${(a,3,3)
  x=a[1]
  y=a[2]
- if $/(x)is $- $| or $/(y)is $- $|:
+ if $/(x)is $- $y or $/(y)is $- $y:
   err('Variable expected')
- $z=split_and(a[0])
+ $|=split_and(a[0])
  ode=$#
  conds=[]
- $) p in $z:
-  if $&(p,'=')$* $&(p[1],'primecall')$* p[1][1]==y:
+ $) p in $|:
+  if $((p,'=')$* $((p[1],'primecall')$* p[1][1]==y:
    conds.$%((p[1][2],evw(p[1][3],[x,y]),evw(p[2],[x,y])))
-  $L $&(p,'=')$* $&(p[1],'*')$* p[1][1]==y $* $- hasprime(p):
+  $L $((p,'=')$* $((p[1],'*')$* p[1][1]==y $* $- hasprime(p):
    conds.$%((0,ev(p[1][2]),ev(p[2])))
-  $L $&(p,'=')$* $&(p[1],'call')$* p[1][1]==y:
+  $L $((p,'=')$* $((p[1],'call')$* p[1][1]==y:
    conds.$%((0,ev(p[1][2]),ev(p[2])))
-  $(:
+  $&:
    ode=p
  if ode is $#:
   err('ODE expected')
@@ -11021,12 +11021,12 @@ $, hasprime(t):
    $! $E
  $! $3
 $, bnd_args(a,i,v):
- lo=ev(a[i])if $5(a)>i $( $#
- hi=ev(a[i+1])if $5(a)>i+1 $( $#
+ lo=ev(a[i])if $4(a)>i $& $#
+ hi=ev(a[i+1])if $4(a)>i+1 $& $#
  cb=bounds(cons_for(v),v)
  if cb is $- $#:
   lo,hi=cb
- $(:
+ $&:
   $) c in cons_for(v):
    h=head(c)
    if h in('>','>=')$* c[1]==v:
@@ -11035,7 +11035,7 @@ $, bnd_args(a,i,v):
     hi=c[2]
  $! lo,hi
 $, sf_fmin(a,kind='min'):
- $~(a,2,4)
+ ${(a,2,4)
  e,v,val=$j(a)
  lo,hi=bnd_args(a,2,v)
  r=fextreme(e,v,kind,lo,hi)
@@ -11046,29 +11046,29 @@ $, sf_fmax(a):
  $! sf_fmin(a,'max')
 ''')
 _x(r'''$, sf_nfmin(a,kind='min'):
- $~(a,2,4)
+ ${(a,2,4)
  e,v,val=$j(a)
  lo,hi=bnd_args(a,2,v)
- $! nfextreme(e,v,kind,tofl(evalf(lo))if lo is $- $# $( $#,
- tofl(evalf(hi))if hi is $- $# $( $#)
+ $! nfextreme(e,v,kind,tofl(evalf(lo))if lo is $- $# $& $#,
+ tofl(evalf(hi))if hi is $- $# $& $#)
 $, sf_nfmax(a):
  $! sf_nfmin(a,'max')
 $, sf_nint(a):
- $~(a,4,4)
+ ${(a,4,4)
  e,v,val=$j(a)
  lo,hi=cs_bounds(a,2)
  $! nint_split(e,v,lo,hi)
 $, sf_arclen(a):
- $~(a,4,4)
+ ${(a,4,4)
  e,v,val=$j(a)
  lo,hi=cs_bounds(a,2)
  $! nice(arclen(e,v,lo,hi))
 $, pt_arg(a):
- if $5(a)==2 $* $&(a[1],'='):
+ if $4(a)==2 $* $((a[1],'='):
   v,p=var_of(a[1])
   e=evw(a[0],[v])
   $! e,v,p
- $~(a,3,3)
+ ${(a,3,3)
  v,_=var_of(a[1])
  e=unhold(evw(a[0],[v]))
  $! e,v,ev(a[2])
@@ -11079,115 +11079,246 @@ $, sf_normal(a):
  e,v,p=pt_arg(a)
  $! normalline(e,v,p)
 $, sf_impdif(a):
- $~(a,3,4)
+ ${(a,3,4)
  x,_=var_of(a[1])
  y,_=var_of(a[2])
  e=evw(a[0],[x,y])
- n=ev(a[3])if $5(a)>3 $( 1
+ n=ev(a[3])if $4(a)>3 $& 1
  $! impdif(e,x,y,n)
 $, rc_args(a):
  v,val=var_of(a[1])
  e=unhold(evw(a[0],[v]))
- h=ev(a[2])if $5(a)>2 $( 0.001
+ h=ev(a[2])if $4(a)>2 $& 0.001
  if val is $#:
   val=v
  $! e,v,val,h
 $, sf_avgrc(a):
- $~(a,2,3)
+ ${(a,2,3)
  e,v,val,h=rc_args(a)
- $! lmap($8 u:$>(avgrc(u,v,val,h)),e)
+ $! lmap($8 u:$=(avgrc(u,v,val,h)),e)
 $, sf_central(a):
- $~(a,2,3)
+ ${(a,2,3)
  e,v,val,h=rc_args(a)
- $! lmap($8 u:$>(centraldiff(u,v,val,h)),e)
+ $! lmap($8 u:$=(centraldiff(u,v,val,h)),e)
 $, sf_nderiv(a):
- $~(a,2,3)
+ ${(a,2,3)
  v,val=var_of(a[1])
  e=unhold(evw(a[0],[v]))
- n=ev(a[2])if $5(a)>2 $( 1
+ n=ev(a[2])if $4(a)>2 $& 1
  if val is $#:
   val=ENV.get(v)
   if val is $#:
    err('Value required: var=value')
  $! evalf($T(diff(e,v,n),v,val))
 $, opt_var(a,i):
- if $5(a)>i:
+ if $4(a)>i:
   v,_=var_of(a[i])
   $! v
  $! $#
 $, sf_expand(a):
- $~(a,1,2)
+ ${(a,1,2)
  v=opt_var(a,1)
  e=ev(a[0])
  $! expand_full(unhold(e),v)
 $, sf_factor(a,$A=$3):
- $~(a,1,2)
+ ${(a,1,2)
  v=opt_var(a,1)
  e=unhold(ev(a[0]))
  $! factor_expr(e,v,$A)
 $, sf_cfactor(a):
  $! sf_factor(a,$E)
 $, sf_comdenom(a):
- $~(a,1,2)
+ ${(a,1,2)
  $! comdenom(unhold(ev(a[0])))
 $, sf_propfrac(a):
- $~(a,1,2)
+ ${(a,1,2)
  v=opt_var(a,1)
  $! lmap($8 u:propfrac(u,v),unhold(ev(a[0])))
 $, polyvar(e,a,i):
  v=opt_var(a,i)
  if v is $#:
-  ss=$q(e)
-  v='x' if 'x' in ss or $- ss $( ss[0]
+  ss=$o(e)
+  v='x' if 'x' in ss or $- ss $& ss[0]
  $! v
 $, sf_polycoeffs(a):
- $~(a,1,2)
+ ${(a,1,2)
  e=unhold(ev(a[0]))
  v=polyvar(e,a,1)
- cs=$Z(e,v)
+ cs=$X(e,v)
  if cs is $#:
   err('Polynomial expected')
- $K $5(cs)>1 $* cs[-1]==0:
+ $K $4(cs)>1 $* cs[-1]==0:
   cs.pop()
  $!('$J',)+$0(reversed(cs))
 $, sf_polydegree(a):
- $~(a,1,2)
+ ${(a,1,2)
  e=unhold(ev(a[0]))
  v=polyvar(e,a,1)
- d=degree($>(e),v)
+ d=degree($=(e),v)
  if d is $#:
   err('Polynomial expected')
  if e==0:
   $!('*',-1,'$N')
  $! d
 $, sf_polyquo(a,which=0):
- $~(a,2,3)
+ ${(a,2,3)
  p=unhold(ev(a[0]))
  q=unhold(ev(a[1]))
  v=polyvar($_(p,q),a,2)
- cp=$Z(p,v)
- cq=$Z(q,v)
+ cp=$X(p,v)
+ cq=$X(q,v)
  if cp is $# or cq is $#:
   err('Polynomial expected')
  qq,rr=e_divmod(cp,cq)
- $! fromcoeffs(qq if which==0 $( rr,v)
+ $! fromcoeffs(qq if which==0 $& rr,v)
 $, sf_polyrem(a):
  $! sf_polyquo(a,1)
 $, sf_polyroots(a,$A=$3):
- $~(a,1,2)
- if $5(a)==1:
+ ${(a,1,2)
+ if $4(a)==1:
   L=ev(a[0])
-  if $- $&(L,'$J'):
+  if $- $((L,'$J'):
    err('List expected')
   v='X_'
   e=polyeval(L,v)
- $(:
+ $&:
   v,_=var_of(a[1])
   e=evw(a[0],[v])
  r=zeros(e,v,$A)
- $! r if r is $- $# $(('$J',)
+ $! r if r is $- $# $&('$J',)
 $, sf_cpolyroots(a):
  $! sf_polyroots(a,$E)
+$, rawnames(t,$?):
+ if $/(t)is $y:
+  if t $- in('pi','e','i','$N')$* t $- in $?:
+   $?.$%(t)
+ $L $/(t)is $0:
+  $) u in t[2:]if t[0]=='call' $& t[1:]:
+   rawnames(u,$?)
+ $! $?
+$, vieta_poly(a):
+ e=unhold(ev(a[0]))
+ if $((e,'='):
+  e=$](e[1],e[2])
+ v=polyvar(e,a,1)
+ cs=$X(e,v)
+ if cs is $#:
+  err('Polynomial expected')
+ $K cs $* cs[-1]==0:
+  cs.pop()
+ if $4(cs)<2:
+  err('Polynomial of degree 1 or more expected')
+ cs.reverse()
+ es=[]
+ $) k in $+(1,$4(cs)):
+  es.$%($O(cs[k],cs[0])if k%2==0 $& $m($O(cs[k],cs[0])))
+ $! v,cs,es
+$, sym_terms(e,vs):
+ if $- vs:
+  $!{():e}if e!=0 $&{}
+ cs=$X(e,vs[0])
+ if cs is $#:
+  err('Polynomial in the roots expected')
+ $?={}
+ $) k in $+($4(cs)):
+  if cs[k]!=0:
+   $) m,w in sym_terms(cs[k],vs[1:]).items():
+    $?[(k,)+m]=w
+ $! $?
+$, sym_elem(n):
+ E=[{(0,)*n:1}]+[{}$) k in $+(n)]
+ $) j in $+(n):
+  $) k in $+(j+1,0,-1):
+   $) m,w in E[k-1].items():
+    m2=m[:j]+(1,)+m[j+1:]
+    E[k][m2]=E[k].get(m2,0)+w
+ $! E
+SYMWORK=[0]
+$, sym_mul(p,q):
+ SYMWORK[0]+=$4(p)*$4(q)
+ if SYMWORK[0]>200000:
+  toobig('symmetric expression too large')
+ $?={}
+ $) m,w in p.items():
+  $) m2,w2 in q.items():
+   t=$0([m[i]+m2[i]$) i in $+($4(m))])
+   $?[t]=$?.get(t,0)+w*w2
+ $! $?
+$, sym_value(e,vs,es):
+ n=$4(vs)
+ if n>8:
+  toobig('vieta with an expression works up to degree 8')
+ f=sym_terms($=(e),vs)
+ E=sym_elem(n)
+ r=0
+ $K f:
+  m=max(f)
+  c=f[m]
+  val=c
+  P={(0,)*n:1}
+  $) k in $+(1,n+1):
+   d=m[k-1]-(m[k]if k<n $& 0)
+   if d<0:
+    err('Not symmetric in the roots '+','.join(vs))
+   val=$:(val,pw(es[k-1],d))
+   $) j in $+(d):
+    P=sym_mul(P,E[k])
+  r=$_(r,val)
+  $) t,w in P.items():
+   u=$=($](f.get(t,0),$:(c,w)))
+   if u==0:
+    f.pop(t,$#)
+   $&:
+    f[t]=u
+ $! r
+$, vieta_rel(es):
+ n=$4(es)
+ E=sym_elem(n)if n<5 $& $#
+ r=['$*']
+ $) k in $+(1,n+1):
+  if E:
+   lhs=0
+   $) m in E[k]:
+    t=1
+    $) j in $+(n):
+     if m[j]:
+      t=$:(t,'r'+$y(j+1))
+    lhs=$_(lhs,t)
+  $&:
+   lhs='e'+$y(k)
+  r.$%(('=',lhs,es[k-1]))
+ $! $0(r)if n>1 $& r[1]
+''')
+_x(r'''$, sf_vieta(a):
+ ${(a,1,4)
+ L=unhold(ev(a[0]))
+ if $((L,'$J'):
+  ${(a,1,2)
+  v=var_of(a[1])[0]if $4(a)>1 $& 'x'
+  r=1
+  $) c in L[1:]:
+   r=$=($:(r,$](v,c)))
+  $! r
+ v,cs,es=vieta_poly(a)
+ if $4(a)<3:
+  $! vieta_rel(es)
+ if $4(a)==4:
+  vs=[$y(n)$) n in unhold(a[3])[1:]]if $((a[3],'$J')$&[]
+ $&:
+  known=[v]
+  $) c in cs:
+   known+=$o(c)
+  vs=[n $) n in rawnames(a[2],[])if n $- in known]
+  vs.sort()
+ if $4(vs)!=$4(es):
+  err('Name all %d roots: $) example vieta(p,x,expr,{a,b})'%$4(es))
+ e=unhold(evw(a[2],vs))
+ SYMWORK[0]=0
+ num=sym_value(getnum(e),vs,es)
+ den=sym_value(getden(e),vs,es)
+ if den==0:
+  $! '$F'
+ $! comdenom($O(num,den))
 $, sf_linsolve(a):
  vs,gs=solvevars(a[1:])
  e=evw(a[0],vs)
@@ -11200,34 +11331,34 @@ $, sf_linsolve(a):
   $! 'false'
  $!('$J',)+$0($h[0][v]$) v in vs)
 $, sf_domain(a):
- $~(a,2,2)
+ ${(a,2,2)
  e,v,val=$j(a)
  r=domain(e,v)
- $! r if r is $- $# $(('domain',e,v)
+ $! r if r is $- $# $&('domain',e,v)
 $, sf_completesq(a):
- $~(a,2,2)
+ ${(a,2,2)
  v,_=var_of(a[1])
  e=unhold(evw(a[0],[v]))
- if $&(e,'='):
-  lhs=complete_sq($^(e[1],e[2]),v,$E)
+ if $((e,'='):
+  lhs=complete_sq($](e[1],e[2]),v,$E)
   $! lhs
  $! complete_sq(e,v,$3)
 $, complete_sq(e,v,eq):
- cs=$Z(e,v)
- if cs is $# or $5(cs)!=3:
+ cs=$X(e,v)
+ if cs is $# or $4(cs)!=3:
   err('Quadratic expected')
  c,b,a=cs
- h=$.($R(b,$:(2,a)))
- k=$.($^(c,$R($:(b,b),$:(4,a))))
+ h=$.($O(b,$:(2,a)))
+ k=$.($](c,$O($:(b,b),$:(4,a))))
  sq=('^',$_(v,h),2)
- t=sq if a==1 $(('*',a,sq)
+ t=sq if a==1 $&('*',a,sq)
  if eq:
   $!('=',('hold',t),$m(k))
  if k==0:
   $!('hold',t)
  $!('hold',('+',t,k))
 $, sf_constructmat(a):
- $~(a,5,5)
+ ${(a,5,5)
  i,_=var_of(a[1])
  j,_=var_of(a[2])
  e=evw(a[0],[i,j])
@@ -11236,15 +11367,15 @@ $, sf_constructmat(a):
  cells(r,c)
  $! mk([[subsd(e,{i:ii,j:jj})$) jj in $+(1,c+1)]$) ii in $+(1,r+1)])
 $, sf_charpoly(a):
- $~(a,2,2)
+ ${(a,2,2)
  A=ev(a[0])
- v=a[1]if $/(a[1])is $| $( ev(a[1])
+ v=a[1]if $/(a[1])is $y $& ev(a[1])
  $! charpoly(A,v)
 $, sf_simplify(a):
  e=unhold(ev(a[0]))
  $! nice(pyth(e))
 SF={
- 'd':sf_d,'$]':sf_int,'$w':sf_limit,'sumseq':sf_sum,
+ 'd':sf_d,'$^':sf_int,'$w':sf_limit,'sumseq':sf_sum,
  'prodseq':sf_prod,'seq':sf_seq,'taylor':sf_taylor,'series':sf_series,
  'dominantterm':sf_dominant,'solve':sf_solve,'csolve':sf_csolve,
  'zeros':sf_zeros,'czeros':sf_czeros,'nsolve':sf_nsolve,
@@ -11252,39 +11383,38 @@ SF={
  'nfmax':sf_nfmax,'nint':sf_nint,'arclen':sf_arclen,
  'tangentline':sf_tangent,'normalline':sf_normal,'impdif':sf_impdif,
  'avgrc':sf_avgrc,'centraldiff':sf_central,'nderivative':sf_nderiv,
- '$>':sf_expand,'factor':sf_factor,'cfactor':sf_cfactor,
+ '$=':sf_expand,'factor':sf_factor,'cfactor':sf_cfactor,
  'comdenom':sf_comdenom,'propfrac':sf_propfrac,
  'polycoeffs':sf_polycoeffs,'polydegree':sf_polydegree,
  'polyquotient':sf_polyquo,'polyremainder':sf_polyrem,
  'polyroots':sf_polyroots,'cpolyroots':sf_cpolyroots,
- 'linsolve':sf_linsolve,'domain':sf_domain,
+ 'linsolve':sf_linsolve,'domain':sf_domain,'vieta':sf_vieta,
  'completesquare':sf_completesq,'constructmat':sf_constructmat,
  'charpoly':sf_charpoly,'simplify':sf_simplify,
  }
 $, when_simp(c,a,b=$#):
- t=tobool(rel(c[0],c[1],c[2]))if isrel(c)$( tobool(c)
+ t=tobool(rel(c[0],c[1],c[2]))if isrel(c)$& tobool(c)
  if t is $E:
   $! a
  if t is $3:
-  $! b if b is $- $# $( '$F'
+  $! b if b is $- $# $& '$F'
  $! $#
-$p['when']=when_simp
+$q['when']=when_simp
 $, finalize(r,quiet=$3):
- if $&(r,'$|'):
+ if $((r,'$y'):
   $! r
- if $- $&(r,'hold'):
-  r=$.(r)if $-($&(r,'$J')or $&(r,'mat'))$( lmap($.,r)
+ if $- $((r,'hold'):
+  r=$.(r)if $-($((r,'$J')or $((r,'mat'))$& lmap($.,r)
   if needpyth(r):
    r=pyth(r)
   if SET['mode']=='approx' or $`(r):
    r=evalf(r)
   $L SET['mode']=='exact':
    r=exactify(r)
- if SET['$A']=='$P' $* $- STATE['$A']$* has(r,'i')$* $- quiet:
-  err('Non-$P result')
+ if SET['$A']=='$Q' $* $- STATE['$A']$* has(r,'i')$* $- quiet:
+  err('Non-$Q result')
  $! r
-''')
-_x(r'''$, sqtrig(e,$?):
+$, sqtrig(e,$?):
  if $/(e)is $- $0 or e[0]=='Q':
   $!
  if e[0]=='^' $* head(e[1])in('sin','cos')$* $g(e[2])$* e[2]>=2:
@@ -11292,12 +11422,12 @@ _x(r'''$, sqtrig(e,$?):
  $) a in e[1:]:
   sqtrig(a,$?)
 $, needpyth(r):
- if $- $&(r,'+'):
+ if $- $((r,'+'):
   $! $3
  $?=[]
  sqtrig(r,$?)
  $) n,u in $?:
-  if(('cos' if n=='sin' $( 'sin'),u)in $?:
+  if(('cos' if n=='sin' $& 'sin'),u)in $?:
    $! $E
  $! $3
 $, pre_register(s):
@@ -11324,7 +11454,8 @@ $, command(c):
  r=command0(c)
  keep()
  $! r
-$, command0(c):
+''')
+_x(r'''$, command0(c):
  p=c.split()
  if $- p:
   $! ''
@@ -11341,15 +11472,15 @@ $, command0(c):
  if k in('approx','auto','exact'):
   SET['mode']=k
   $! 'Mode: '+k
- if k in('$P','$2','rect'):
-  SET['$A']='$P' if k=='$P' $( 'rect'
+ if k in('$Q','$2','rect'):
+  SET['$A']='$Q' if k=='$Q' $& 'rect'
   $! 'Complex format: '+SET['$A']
  if k in('digits','$@'):
-  if $5(p)>1 $* $- p[1].isdigit():
+  if $4(p)>1 $* $- p[1].isdigit():
    $! 'Use :digits n with n from 1 to 15'
-  n=$u(p[1])if $5(p)>1 $( 10
+  n=$u(p[1])if $4(p)>1 $& 10
   OPT['digits']=max(1,min(15,n))
-  $! 'Digits: '+$|(OPT['digits'])
+  $! 'Digits: '+$y(OPT['digits'])
  if k=='ascii':
   OPT['uni']=$3
   $! 'ASCII output'
@@ -11363,7 +11494,7 @@ $, command0(c):
   $) n in sorted(UFUN):
    ps,b=UFUN[n]
    $?.$%(n+'('+','.join(ps)+') = '+fmt(b))
-  $! '\n'.join($?)if $? $( '(none)'
+  $! '\n'.join($?)if $? $& '(none)'
  if k in('clear','clearaz','reset'):
   ENV.clear()
   UFUN.clear()
@@ -11391,11 +11522,11 @@ $, command0(c):
    $! 'Memory information is $- available'
  if k in('mode','modes','getmode'):
   $!('$l='+SET['$l']+' mode='+SET['mode']+' $A='+SET['$A']+
- ' digits='+$|(OPT['digits']))
+ ' digits='+$y(OPT['digits']))
  if k=='test':
   _load('cashelp')
   saved=(dict(SET),dict(OPT))
-  SET.update({'$l':'rad','mode':'auto','$A':'$P'})
+  SET.update({'$l':'rad','mode':'auto','$A':'$Q'})
   OPT.update({'uni':$E,'digits':10})
   try:
    $! selftest(run)
@@ -11422,7 +11553,7 @@ $, command0(c):
    last=key
  if k in('help','?','h'):
   _load('cashelp')
-  $! help(p[1]if $5(p)>1 $( $#)
+  $! help(p[1]if $4(p)>1 $& $#)
  $! 'Unknown command :'+k
 $, run(s):
  s=s.strip()
@@ -11446,13 +11577,13 @@ $, run(s):
  s=closeup(s)
  pre_register(s)
  t=parse(s,isfunc)
- STATE['$A']=(SET['$A']!='$P')
- r=fastnum(t)if SET['mode']=='approx' $( $#
+ STATE['$A']=(SET['$A']!='$Q')
+ r=fastnum(t)if SET['mode']=='approx' $& $#
  if r is $#:
   r=ev(t)
  r=finalize(r)
- if $-($&(t,'define')or($&(r,'$|')$* r[1]=='Done')):
-  STATE['ans']=unhold(r)if $- $&(r,'$|')$( r
+ if $-($((t,'define')or($((r,'$y')$* r[1]=='Done')):
+  STATE['ans']=unhold(r)if $- $((r,'$y')$& r
  keep()
  $?=fmt_top(r)
  un=[]
@@ -11468,8 +11599,8 @@ $, memtext():
  OPT['uni']=$3
  try:
   $?=[':'+SET['$l'],':'+SET['mode'],
- ':'+('$P' if SET['$A']=='$P' $( '$2'),
- ':digits '+$|(OPT['digits'])]
+ ':'+('$Q' if SET['$A']=='$Q' $& '$2'),
+ ':digits '+$y(OPT['digits'])]
   if $- u:
    $?.$%(':ascii')
   $) n in sorted(ENV):
@@ -11479,10 +11610,10 @@ $, memtext():
    $?.$%(n+'('+','.join(ps)+'):='+fmt(b))
  finally:
   OPT['uni']=u
- $! '\n'.join([l $) l in $? if $5(l)<2000 $* all([0<ord(c)<128 $) c in l])])
+ $! '\n'.join([l $) l in $? if $4(l)<2000 $* all([0<ord(c)<128 $) c in l])])
 $, pack(t):
  $?=[]
- $) i in $+(0,$5(t),6):
+ $) i in $+(0,$4(t),6):
   n=0
   $) c in reversed(t[i:i+6]):
    n=n*128+ord(c)
@@ -11532,14 +11663,13 @@ $, menu():
  _load('casmenu')
  runmenu(run)
 GUI=$E
-''')
-_x(r'''$, gui():
+$, gui():
  if $- GUI:
   $! 'The full-screen mode is the separate program ncasgui.'
  try:
   import casgui
  $9 ImportError as ex:
-  if 'casgui' $- in $|(ex):
+  if 'casgui' $- in $y(ex):
    $f
   $! 'casgui is $- installed (needed $) the full-screen mode); using text mode.'
  restore()
@@ -11563,21 +11693,22 @@ $, ver():
 $, calc(s):
  try:
   $! run(s)
- $9 $O as ex:
-  $! 'Error: '+$|(ex)
+ $9 $P as ex:
+  $! 'Error: '+$y(ex)
 $, prompt():
  p=[]
  if SET['$l']!='rad':
   p.$%(SET['$l'])
  if SET['mode']!='auto':
   p.$%(SET['mode'])
- if SET['$A']!='$P':
+ if SET['$A']!='$Q':
   p.$%('$A')
  $! ' '.join(p)+'> '
-$, cas():
+''')
+_x(r'''$, cas():
  restore()
  print('nCAS '+VERSION+' $) TI-Nspire CX II')
- print(('? help, m menu, g full screen, q quit')if GUI $( '? help, m menu, q quit')
+ print(('? help, m menu, g full screen, q quit')if GUI $& '? help, m menu, q quit')
  blank=0
  $K $E:
   try:
@@ -11598,13 +11729,13 @@ $, cas():
    try:
     menu()
    $9 $6 as ex:
-    print('Error: '+$|(ex))
+    print('Error: '+$y(ex))
    $7
   if s.lower()in('g','gui'):
    try:
     r=gui()
    $9 $6 as ex:
-    r='Error: '+$|(ex)
+    r='Error: '+$y(ex)
    if r:
     print(r)
    $7
@@ -11612,8 +11743,8 @@ $, cas():
    $?=run(s)
    if $?:
     print($?)
-  $9 $O as ex:
-   print('Error: '+$|(ex))
+  $9 $P as ex:
+   print('Error: '+$y(ex))
   $9 $C:
    print('Error: Division by zero')
   $9 MemoryError:
@@ -11626,18 +11757,18 @@ $, cas():
   $9 KeyboardInterrupt:
    print('Break')
   $9 RuntimeError as ex:
-   print('Error: Too $2 ('+$|(ex)+')')
+   print('Error: Too $2 ('+$y(ex)+')')
   $9 $6 as ex:
-   print('Error: '+$|(ex))
+   print('Error: '+$y(ex))
 ''')
 _L['cashelp']=(r'''CATS=(
- ('alg','Algebra','solve cSolve zeros cZeros nSolve linSolve factor cFactor $> comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval tExpand tCollect simplify exact approx domain'),
- ('calc','Calculus','d $] $w sumSeq prodSeq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
+ ('alg','Algebra','solve cSolve zeros cZeros nSolve linSolve factor cFactor $= comDenom propFrac getNum getDenom completeSquare polyCoeffs polyDegree polyQuotient polyRemainder polyGcd polyRoots cPolyRoots polyEval vieta tExpand tCollect simplify exact approx domain'),
+ ('calc','Calculus','d $^ $w sumSeq prodSeq taylor series dominantTerm deSolve impDif arcLen tangentLine normalLine fMin fMax nfMin nfMax nInt nDerivative avgRC centralDiff'),
  ('mat','Matrix/vector','det identity transpose rref ref inverse eigVl eigVc charPoly LU QR trace norm rowNorm colNorm diag augment colAugment subMat rowSwap rowAdd mRow mRowAdd crossP dotP unitV simult constructMat newMat randMat dim rowDim colDim mat>$J $J>mat'),
- ('num','Numbers','gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign $H $P imag conj $l'),
+ ('num','Numbers','gcd lcm mod remain intDiv isPrime nCr nPr ! floor ceiling round iPart fPart sign $H $Q imag conj $l'),
  ('$J','Lists/stats','seq sum product mean median stdDev stdDevPop variance varPop max min sortA sortD cumulativeSum deltaList augment left right mid count normPdf normCdf invNorm binomPdf binomCdf poissPdf poissCdf geomPdf geomCdf'),
  ('conv','Conversions (expr>>$B)','>>Decimal >>approxFraction() >>DMS >>DD >>Rad >>Grad >>Polar >>Rect >>Cylind >>Sphere >>exp >>ln >>logbase() >>sin >>cos >>Base2 >>Base10 >>Base16 exp>$J()'),
- ('cmd','Commands',':deg :rad :grad :auto :exact :approx :$P :$2 :digits n :ascii :unicode :vars :clear :clearans :clearhist :free :mode :mem  delvar a  q=quit'),
+ ('cmd','Commands',':deg :rad :grad :auto :exact :approx :$Q :$2 :digits n :ascii :unicode :vars :clear :clearans :clearhist :free :mode :mem  delvar a  q=quit'),
  )
 SYN={
  'solve':'solve(eqn,var) solve(eqn,var=guess)\nsolve(ineq,var) solve(eq1 $* eq2,{x,y})\nsolve(...)|x>0  (n1,n2..=any integer)',
@@ -11648,7 +11779,7 @@ SYN={
  'linsolve':'linSolve({eq1,eq2},{x,y})',
  'factor':'factor(expr[,var]) factor(integer)\nwith var: irrational factors',
  'cfactor':'cFactor(expr[,var]) $2 factors',
- '$>':'$>(expr[,var]) incl. partial fractions',
+ '$=':'$=(expr[,var]) incl. partial fractions',
  'comdenom':'comDenom(expr) common denominator',
  'propfrac':'propFrac(expr[,var]) proper fraction',
  'getnum':'getNum(expr) numerator',
@@ -11659,17 +11790,18 @@ SYN={
  'polyquotient':'polyQuotient(p1,p2[,var])',
  'polyremainder':'polyRemainder(p1,p2[,var])',
  'polygcd':'polyGcd(p1,p2)',
- 'polyroots':'polyRoots(poly,var) polyRoots({$Z})',
+ 'polyroots':'polyRoots(poly,var) polyRoots({$X})',
  'cpolyroots':'cPolyRoots(poly,var)',
- 'polyeval':'polyEval({$Z},x)',
- 'texpand':'tExpand(expr) $> trig of sums/multiples',
+ 'polyeval':'polyEval({$X},x)',
+ 'vieta':"vieta(poly,x) Vieta's formulas\nvieta({r1,r2,..},x) polynomial from roots\nvieta(poly,x,a^2+b^2) symmetric value",
+ 'texpand':'tExpand(expr) $= trig of sums/multiples',
  'tcollect':'tCollect(expr) products -> multiple angles',
  'simplify':'simplify(expr) extra simplification',
  'exact':'exact(expr[,tol]) floats -> fractions',
  'approx':'approx(expr) decimal value',
  'domain':'domain(expr,var)',
  'd':'d(expr,var[,order])  d(expr,var)|var=val\nderivative(...) same',
- '$]':'$](expr,var) antiderivative\nintegral(expr,var,a,b) definite\n(\u222b also accepted)',
+ '$^':'$^(expr,var) antiderivative\nintegral(expr,var,a,b) definite\n(\u222b also accepted)',
  '$w':'$w(expr,var,point[,dir]) dir:-1 left,1 right\npoint may be $N or -$N',
  'sumseq':'sumSeq(expr,var,lo,hi)  (\u03a3) hi may be $N',
  'prodseq':'prodSeq(expr,var,lo,hi)  (\u03a0)',
@@ -11685,14 +11817,14 @@ SYN={
  'fmax':'fMax(expr,var[,lo,hi])',
  'nfmin':'nfMin(expr,var[,lo,hi]) numeric',
  'nfmax':'nfMax(expr,var[,lo,hi]) numeric',
- 'nint':'nInt(expr,var,a,b) numeric $]',
+ 'nint':'nInt(expr,var,a,b) numeric $^',
  'nderivative':'nDerivative(expr,var=val[,order])',
  'avgrc':'avgRC(expr,var[=val][,h])',
  'centraldiff':'centralDiff(expr,var[=val][,h])',
  'det':'det(M)','inverse':'M^-1 or inverse(M)','rref':'rref(M)','ref':'ref(M)',
  'eigvl':'eigVl(M) eigenvalues','eigvc':'eigVc(M) unit eigenvectors (columns)',
  'charpoly':'charPoly(M,var)','lu':'LU(M) -> {L,U,P} with P*M=L*U','qr':'QR(M) -> {Q,R}',
- 'simult':'simult(A,b) solves A*x=b','constructmat':'constructMat(expr,i,j,$o,cols)',
+ 'simult':'simult(A,b) solves A*x=b','constructmat':'constructMat(expr,i,j,$p,cols)',
  'crossp':'crossP(u,v)','dotp':'dotP(u,v)','unitv':'unitV(v)','norm':'norm(M)',
  'seq':'seq(expr,var,lo,hi[,step])',
  'ncr':'nCr(n,k)','npr':'nPr(n,k)','gcd':'gcd(a,b)','lcm':'lcm(a,b)',
@@ -11724,12 +11856,12 @@ $, help($B=$#):
 ''',
 r'''SELFTEST=(
  ('factor(x^2-5x+6)','(x-2)*(x-3)'),
- ('$>((x+1)^3)','x^3+3*x^2+3*x+1'),
+ ('$=((x+1)^3)','x^3+3*x^2+3*x+1'),
  ('solve(x^2-5x+6=0,x)','x=2 or x=3'),
  ('solve(x^2=2,x)','x=-\u221a2 or x=\u221a2'),
  ('d(x^3*sin(x),x)','x^3*cos(x)+3*x^2*sin(x)'),
- ('$](x*e^x,x)','x*e^x-e^x'),
- ('$](1/(1+x^2),x,0,1)','\u03c0/4'),
+ ('$^(x*e^x,x)','x*e^x-e^x'),
+ ('$^(1/(1+x^2),x,0,1)','\u03c0/4'),
  ('$w(sin(x)/x,x,0)','1'),
  ('taylor(e^x,x,3)','x^3/6+x^2/2+x+1'),
  ('sumSeq(k,k,1,n)','n*(n+1)/2'),
@@ -11749,37 +11881,37 @@ $, selftest(run):
   try:
    r=run(q)
   $9 $6 as ex:
-   r='ERR '+$|(ex)
+   r='ERR '+$y(ex)
   if r==a:
    ok+=1
-  $(:
+  $&:
    $?.$%('FAIL '+q+' -> '+r)
- $?.$%('%d/%d tests passed'%(ok,$5(SELFTEST)))
+ $?.$%('%d/%d tests passed'%(ok,$4(SELFTEST)))
  $! '\n'.join($?)
 ''',)
 _L['casmenu']=(r'''ALG=(
- ('Expand','$>(@1`,@2`)',(('$Y',$#),('Var (blank=all)',''))),
- ('Factor','factor(@1`,@2`)',(('$Y',$#),('Var (blank=Q)',''))),
- ('cFactor','cFactor(@1`,@2`)',(('$Y',$#),('Var (blank=all)',''))),
- ('Simplify','simplify(@1)',(('$Y',$#),)),
- ('comDenom','comDenom(@1)',(('$Y',$#),)),
- ('propFrac','propFrac(@1`,@2`)',(('$Y',$#),('Var',''))),
- ('Partial frac','$>(@1,@2)',(('Rational expr',$#),('Var','x'))),
+ ('Expand','$=(@1`,@2`)',(('$Z',$#),('Var (blank=all)',''))),
+ ('Factor','factor(@1`,@2`)',(('$Z',$#),('Var (blank=Q)',''))),
+ ('cFactor','cFactor(@1`,@2`)',(('$Z',$#),('Var (blank=all)',''))),
+ ('Simplify','simplify(@1)',(('$Z',$#),)),
+ ('comDenom','comDenom(@1)',(('$Z',$#),)),
+ ('propFrac','propFrac(@1`,@2`)',(('$Z',$#),('Var',''))),
+ ('Partial frac','$=(@1,@2)',(('Rational expr',$#),('Var','x'))),
  ('Complete sq','completeSquare(@1,@2)',(('Quadratic/eqn',$#),('Var','x'))),
  ('Poly divide','polyQuotient(@1,@2,@3)',(('Dividend',$#),('Divisor',$#),('Var','x'))),
  ('Poly remain','polyRemainder(@1,@2,@3)',(('Dividend',$#),('Divisor',$#),('Var','x'))),
  ('Poly gcd','polyGcd(@1,@2)',(('Poly 1',$#),('Poly 2',$#))),
- ('Substitute','(@1)|@2=@3',(('$Y',$#),('Var','x'),('Value',$#))),
- ('tExpand','tExpand(@1)',(('$Y',$#),)),
- ('tCollect','tCollect(@1)',(('$Y',$#),)),
- ('Decimal','approx(@1)',(('$Y',$#),)),
- ('Exact','exact(@1)',(('$Y',$#),)),
+ ('Substitute','(@1)|@2=@3',(('$Z',$#),('Var','x'),('Value',$#))),
+ ('tExpand','tExpand(@1)',(('$Z',$#),)),
+ ('tCollect','tCollect(@1)',(('$Z',$#),)),
+ ('Decimal','approx(@1)',(('$Z',$#),)),
+ ('Exact','exact(@1)',(('$Z',$#),)),
  )
 CALC=(
  ('Derivative','d(@1,@2`,@3`)',(('f',$#),('Var','x'),('Order',''))),
  ('Deriv at pt','d(@1,@2)|@2=@3',(('f',$#),('Var','x'),('At',$#))),
- ('Integral','$](@1,@2)',(('f',$#),('Var','x'))),
- ('Def $]','$](@1,@2,@3,@4)',(('f',$#),('Var','x'),('Lower ($N ok)',$#),('Upper',$#))),
+ ('Integral','$^(@1,@2)',(('f',$#),('Var','x'))),
+ ('Def $^','$^(@1,@2,@3,@4)',(('f',$#),('Var','x'),('Lower ($N ok)',$#),('Upper',$#))),
  ('Limit','$w(@1,@2,@3`,@4`)',(('f',$#),('Var','x'),('Point ($N ok)','0'),('Side 1/-1',''))),
  ('Taylor','taylor(@1,@2,@3`,@4`)',(('f',$#),('Var','x'),('Order','5'),('Point',''))),
  ('Series','series(@1,@2,@3`,@4`)',(('f',$#),('Var','x'),('Order','5'),('Point',''))),
@@ -11793,18 +11925,21 @@ CALC=(
  ('Arc length','arcLen(@1,@2,@3,@4)',(('f',$#),('Var','x'),('From',$#),('To',$#))),
  ('fMin','fMin(@1,@2`,@3,@4`)',(('f',$#),('Var','x'),('Lower',''),('Upper',''))),
  ('fMax','fMax(@1,@2`,@3,@4`)',(('f',$#),('Var','x'),('Lower',''),('Upper',''))),
- ('Numeric $}','nInt(@1,@2,@3,@4)',(('f',$#),('Var','x'),('Lower',$#),('Upper',$#))),
+ ('Numeric $~','nInt(@1,@2,@3,@4)',(('f',$#),('Var','x'),('Lower',$#),('Upper',$#))),
  )
 SOLV=(
  ('Solve','solve(@1,@2)`|@3`',(('Equation/ineq',$#),('Var','x'),('Condition eg x>0',''))),
  ('cSolve','cSolve(@1,@2)',(('Equation',$#),('Var','x'))),
- ('Zeros','zeros(@1,@2)',(('$Y',$#),('Var','x'))),
- ('cZeros','cZeros(@1,@2)',(('$Y',$#),('Var','x'))),
+ ('Zeros','zeros(@1,@2)',(('$Z',$#),('Var','x'))),
+ ('cZeros','cZeros(@1,@2)',(('$Z',$#),('Var','x'))),
  ('nSolve','nSolve(@1,@2`,@3,@4`)',(('Equation',$#),('Var or x=guess','x'),('Lower',''),('Upper',''))),
  ('System 2 eqs','solve(@1 $* @2,{@3})',(('Eq 1',$#),('Eq 2',$#),('Vars','x,y'))),
  ('System 3 eqs','solve(@1 $* @2 $* @3,{@4})',(('Eq 1',$#),('Eq 2',$#),('Eq 3',$#),('Vars','x,y,z'))),
  ('Poly roots','polyRoots(@1,@2)',(('Polynomial',$#),('Var','x'))),
- ('Domain','domain(@1,@2)',(('$Y',$#),('Var','x'))),
+ ('Domain','domain(@1,@2)',(('$Z',$#),('Var','x'))),
+ ('Vieta formulas','vieta(@1,@2)',(('Polynomial',$#),('Var','x'))),
+ ('Roots to poly','vieta({@1},@2)',(('Roots eg 2,3',$#),('Var','x'))),
+ ('Expr of roots','vieta(@1,@2,@3)',(('Polynomial',$#),('Var','x'),('Expr eg a^2+b^2',$#))),
  )
 MATX=(
  ('det','det(@1)',(('Matrix 1,2;3,4',$#,'m'),)),
@@ -11833,7 +11968,7 @@ NUMB=(
  ('nCr','nCr(@1,@2)',(('n',$#),('r',$#))),
  ('nPr','nPr(@1,@2)',(('n',$#),('r',$#))),
  ('Factorial','(@1)!',(('n',$#),)),
- ('Real part','$P(@1)',(('Complex z',$#),)),
+ ('Real part','$Q(@1)',(('Complex z',$#),)),
  ('Imag part','imag(@1)',(('Complex z',$#),)),
  ('Conjugate','conj(@1)',(('Complex z',$#),)),
  ('|z|','$H(@1)',(('Complex z',$#),)),
@@ -11855,15 +11990,15 @@ LIST=(
  )
 ''',
 r'''CONV=(
- ('>Decimal','(@1)>>Decimal',(('$Y',$#),)),
+ ('>Decimal','(@1)>>Decimal',(('$Z',$#),)),
  ('>Fraction','(@1)>>approxFraction()',(('Decimal',$#),)),
  ('>DMS','(@1)>>DMS',(('Angle',$#),)),
  ('>Polar','(@1)>>Polar',(('Complex/vector',$#),)),
  ('>Rect','(@1)>>Rect',(('Complex',$#),)),
- ('>exp form','(@1)>>exp',(('$Y',$#),)),
- ('>ln form','(@1)>>ln',(('$Y',$#),)),
- ('>sin form','(@1)>>sin',(('$Y',$#),)),
- ('>cos form','(@1)>>cos',(('$Y',$#),)),
+ ('>exp form','(@1)>>exp',(('$Z',$#),)),
+ ('>ln form','(@1)>>ln',(('$Z',$#),)),
+ ('>sin form','(@1)>>sin',(('$Z',$#),)),
+ ('>cos form','(@1)>>cos',(('$Z',$#),)),
  ('>Binary','(@1)>>Base2',(('Integer',$#),)),
  ('>Hex','(@1)>>Base16',(('Integer',$#),)),
  )
@@ -11873,7 +12008,7 @@ SETS=(
  ('Auto mode',':auto',()),
  ('Exact mode',':exact',()),
  ('Approx mode',':approx',()),
- ('Real res',':$P',()),
+ ('Real res',':$Q',()),
  ('Complex res',':$2',()),
  ('Digits',':digits @1',(('Digits 1-15','10'),)),
  ('Show vars',':vars',()),
@@ -11888,10 +12023,10 @@ LOGS=(
  ('log base b','log(@1,@2)',(('Value x',$#),('Base b',$#))),
  ('ln (base e)','ln(@1)',(('Value',$#),)),
  ('log10','log10(@1)',(('Value',$#),)),
- ('Change base','(@1)>>logbase(@2)',(('$Y',$#),('New base','10'))),
+ ('Change base','(@1)>>logbase(@2)',(('$Z',$#),('New base','10'))),
  ('Solve log/exp','solve(@1,@2)',(('Equation',$#),('Var','x'))),
  ('Check answer','(@1)|@2',(('Equation',$#),('Solution eg x=4',$#))),
- ('Domain','domain(@1,@2)',(('$Y',$#),('Var','x'))),
+ ('Domain','domain(@1,@2)',(('$Z',$#),('Var','x'))),
  ('nSolve','nSolve(@1,@2)',(('Equation',$#),('Var or x=guess','x'))),
  )
 MAIN=(
@@ -11915,12 +12050,12 @@ $, ask(q):
 $, show(title,labels):
  print('-- '+title+' --')
  line=''
- $) i in $+($5(labels)):
+ $) i in $+($4(labels)):
   cell=KEYS[i]+' '+labels[i]
   if line:
-   print(line+' '*max(1,16-$5(line))+cell)
+   print(line+' '*max(1,16-$4(line))+cell)
    line=''
-  $(:
+  $&:
    line=cell
  if line:
   print(line)
@@ -11932,9 +12067,9 @@ $, pick(title,labels):
   if s in('','0'):
    $! $#
   i=KEYS.find(s)
-  if $5(s)==1 $* 0<=i<$5(labels):
+  if $4(s)==1 $* 0<=i<$4(labels):
    $! i
-  print('Choose '+KEYS[0]+'-'+KEYS[$5(labels)-1]+', 0 or q')
+  print('Choose '+KEYS[0]+'-'+KEYS[$4(labels)-1]+', 0 or q')
 $, matrix_text(s):
  s=s.strip()
  if s $* s[0]$- in '[(' $*(';' in s or ',' in s):
@@ -11946,38 +12081,38 @@ $, build(item):
  $) p in prompts:
   q=p[0]
   d=p[1]
-  hint='' if $- d $( ' ['+d+']'
+  hint='' if $- d $& ' ['+d+']'
   s=ask(q+hint+': ')
   if $- s:
    if d is $#:
     print('(cancelled)')
     $! $#
    s=d
-  if $5(p)>2 $* p[2]=='m' $* s:
+  if $4(p)>2 $* p[2]=='m' $* s:
    s=matrix_text(s)
   $e.$%(s)
  $! fill(tpl,$e)
 $, fill(tpl,$e):
  $?=''
- $z=tpl.split('`')
- $) k in $+($5($z)):
-  seg=$z[k]
+ $|=tpl.split('`')
+ $) k in $+($4($|)):
+  seg=$|[k]
   if k%2==1:
    blank=$3
-   $) i in $+($5($e)):
-    if('@'+$|(i+1))in seg $* $- $e[i]:
+   $) i in $+($4($e)):
+    if('@'+$y(i+1))in seg $* $- $e[i]:
      blank=$E
    if blank:
     $7
   $?+=seg
  res=''
  i=0
- $K i<$5($?):
+ $K i<$4($?):
   c=$?[i]
-  if c=='@' $* i+1<$5($?)$* '1'<=$?[i+1]<='9':
+  if c=='@' $* i+1<$4($?)$* '1'<=$?[i+1]<='9':
    res+=$e[$u($?[i+1])-1]
    i+=2
-  $(:
+  $&:
    res+=c
    i+=1
  $! res
@@ -12000,8 +12135,8 @@ $, runmenu(run):
     print('> '+cmd)
     try:
      $?=run(cmd)
-    $9 $O as ex:
-     $?='Error: '+$|(ex)
+    $9 $P as ex:
+     $?='Error: '+$y(ex)
     $9 $C:
      $?='Error: Division by zero'
     $9 MemoryError:
@@ -12011,7 +12146,7 @@ $, runmenu(run):
     $9 Quit:
      $f
     $9 $6 as ex:
-     $?='Error: '+$|(ex)
+     $?='Error: '+$y(ex)
     if $?:
      print($?)
     ask('(enter) ')

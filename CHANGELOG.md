@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- New command **vieta** for Vieta's formulas, also in menu ▸ 3 Solve (a, b, c):
+  - `vieta(x^2-5x+6,x)` gives the formulas, `r1+r2=5 and r1*r2=6`; symbolic
+    coefficients work (`r1+r2=-b/a and r1*r2=c/a`). From degree 5 they are
+    written `e1=… and e2=…`, where e_k is the sum of the products of k roots.
+  - `vieta({2,3},x)` builds the polynomial from its roots.
+  - `vieta(2x^2-3x+1,x,a^2+b^2)` gives a symmetric expression of the roots
+    exactly, without solving (`5/4`); fractions such as `1/a+1/b` work, and
+    the letters can be named: `vieta(p,x,u^2+v^2,{u,v})`. Expressions that
+    do not treat the roots alike are refused.
 - Log equations:
   - The full-screen history draws logs with their base: `log(8,2)` as
     log₂(8), `log10(x)` as log₁₀(x); a typed `log(x)` (natural log in nCAS)
